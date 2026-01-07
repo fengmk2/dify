@@ -40,6 +40,8 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+        env:
+          VP_TOKEN: ${{ secrets.VP_TOKEN }}
 
       - name: Run tests
         run: pnpm test:coverage

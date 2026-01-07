@@ -1,5 +1,8 @@
 name: Style check
 
+env:
+  VP_TOKEN: ${{ secrets.VP_TOKEN }}
+
 on:
   workflow_call:
 
