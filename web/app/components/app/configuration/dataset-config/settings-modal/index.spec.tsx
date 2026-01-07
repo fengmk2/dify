@@ -1,4 +1,4 @@
-import type { MockedFunction } from 'vitest'
+import type { MockedFunction } from '@voidzero-dev/vite-plus/test'
 import type { DataSet } from '@/models/datasets'
 import type { RetrievalConfig } from '@/types/app'
 import { render, screen, waitFor } from '@testing-library/react'

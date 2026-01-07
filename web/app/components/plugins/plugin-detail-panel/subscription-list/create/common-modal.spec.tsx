@@ -1,7 +1,7 @@
 import type { TriggerSubscriptionBuilder } from '@/app/components/workflow/block-selector/types'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { afterEach, beforeEach, describe, expect, it, vi } from '@voidzero-dev/vite-plus/test'
 import * as React from 'react'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 // Import after mocks
 import { SupportedCreationMethods } from '@/app/components/plugins/types'
 import { TriggerCredentialTypeEnum } from '@/app/components/workflow/block-selector/types'

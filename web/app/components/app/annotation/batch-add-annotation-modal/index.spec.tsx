@@ -1,4 +1,4 @@
-import type { Mock } from 'vitest'
+import type { Mock } from '@voidzero-dev/vite-plus/test'
 import type { IBatchModalProps } from './index'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import * as React from 'react'

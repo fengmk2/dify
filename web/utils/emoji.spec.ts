@@ -1,4 +1,4 @@
-import type { Mock } from 'vitest'
+import type { Mock } from '@voidzero-dev/vite-plus/test'
 import { SearchIndex } from 'emoji-mart'
 import { searchEmoji } from './emoji'
 

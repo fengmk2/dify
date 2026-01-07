@@ -1,6 +1,6 @@
 import type { Member } from '@/models/common'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { vi } from 'vitest'
+import { vi } from '@voidzero-dev/vite-plus/test'
 import { ToastContext } from '@/app/components/base/toast'
 import Operation from './index'
 

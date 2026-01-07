@@ -1,6 +1,6 @@
 import type { Model, ModelItem } from '@/app/components/header/account-setting/model-provider-page/declarations'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from '@voidzero-dev/vite-plus/test'
 // Import component after mocks
 import Toast from '@/app/components/base/toast'
 

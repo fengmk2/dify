@@ -1,7 +1,7 @@
+import type { Mock } from '@voidzero-dev/vite-plus/test'
 import type {
   PropsWithChildren,
 } from 'react'
-import type { Mock } from 'vitest'
 import type SettingBuiltInToolType from './setting-built-in-tool'
 import type { Tool, ToolParameter } from '@/app/components/tools/types'
 import type ToolPickerType from '@/app/components/workflow/block-selector/tool-picker'

@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import type { PluginPayload } from '../types'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from '@voidzero-dev/vite-plus/test'
 import { AuthCategory } from '../types'
 import Authorize from './index'
 

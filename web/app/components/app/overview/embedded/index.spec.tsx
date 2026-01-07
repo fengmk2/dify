@@ -1,10 +1,10 @@
 import type { SiteInfo } from '@/models/share'
 import { fireEvent, render, screen } from '@testing-library/react'
+import { afterAll, afterEach, describe, expect, it, vi } from '@voidzero-dev/vite-plus/test'
 import copy from 'copy-to-clipboard'
-import * as React from 'react'
 
+import * as React from 'react'
 import { act } from 'react'
-import { afterAll, afterEach, describe, expect, it, vi } from 'vitest'
 import Embedded from './index'
 
 vi.mock('./style.module.css', () => ({

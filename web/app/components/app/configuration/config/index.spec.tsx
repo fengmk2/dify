@@ -1,4 +1,4 @@
-import type { Mock } from 'vitest'
+import type { Mock } from '@voidzero-dev/vite-plus/test'
 import type { ModelConfig, PromptVariable } from '@/models/debug'
 import type { ToolItem } from '@/types/app'
 import { render, screen } from '@testing-library/react'

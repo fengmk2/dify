@@ -1,5 +1,5 @@
 import type { UseQueryResult } from '@tanstack/react-query'
-import type { Mock } from 'vitest'
+import type { Mock } from '@voidzero-dev/vite-plus/test'
 import type { QueryParam } from './filter'
 import type { AnnotationsCountResponse } from '@/models/log'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'

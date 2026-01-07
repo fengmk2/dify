@@ -1,4 +1,4 @@
-import type { MockedFunction } from 'vitest'
+import type { MockedFunction } from '@voidzero-dev/vite-plus/test'
 /**
  * Test GotoAnything search error handling mechanisms
  *

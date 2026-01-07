@@ -1,7 +1,7 @@
 import type { MarketplaceContextValue } from '../context'
 import { fireEvent, render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from '@voidzero-dev/vite-plus/test'
 import SortDropdown from './index'
 
 // ================================

@@ -1,5 +1,5 @@
+import { vi } from '@voidzero-dev/vite-plus/test'
 import * as React from 'react'
-import { vi } from 'vitest'
 
 type TranslationMap = Record<string, string | string[]>
 

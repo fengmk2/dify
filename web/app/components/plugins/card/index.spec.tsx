@@ -1,7 +1,7 @@
 import type { Plugin } from '../types'
 import { render, screen } from '@testing-library/react'
+import { beforeEach, describe, expect, it, vi } from '@voidzero-dev/vite-plus/test'
 import * as React from 'react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { PluginCategoryEnum } from '../types'
 
 import Icon from './base/card-icon'

@@ -1,4 +1,4 @@
-import type { MockedFunction } from 'vitest'
+import type { MockedFunction } from '@voidzero-dev/vite-plus/test'
 import type { Node } from '@/app/components/workflow/types'
 import { getWorkflowEntryNode } from '@/app/components/workflow/utils/workflow-entry'
 

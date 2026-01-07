@@ -1,7 +1,7 @@
 import type { MarketplaceCollection, SearchParams, SearchParamsFromCollection } from './types'
 import type { Plugin } from '@/app/components/plugins/types'
 import { act, fireEvent, render, renderHook, screen } from '@testing-library/react'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from '@voidzero-dev/vite-plus/test'
 import { PluginCategoryEnum } from '@/app/components/plugins/types'
 
 // ================================

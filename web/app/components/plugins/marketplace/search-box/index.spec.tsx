@@ -1,6 +1,6 @@
 import type { Tag } from '@/app/components/plugins/hooks'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from '@voidzero-dev/vite-plus/test'
 import SearchBox from './index'
 import SearchBoxWrapper from './search-box-wrapper'
 import MarketplaceTrigger from './trigger/marketplace'

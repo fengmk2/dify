@@ -1,4 +1,4 @@
-import type { MockInstance } from 'vitest'
+import type { MockInstance } from '@voidzero-dev/vite-plus/test'
 import type { RAGPipelineVariables } from '@/models/pipeline'
 import { fireEvent, render, screen } from '@testing-library/react'
 import * as React from 'react'

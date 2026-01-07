@@ -3,7 +3,7 @@ import type { PluginPayload } from '../types'
 import type { FormSchema } from '@/app/components/base/form/types'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from '@voidzero-dev/vite-plus/test'
 import { AuthCategory } from '../types'
 
 // Create a wrapper with QueryClientProvider

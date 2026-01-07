@@ -1,7 +1,7 @@
 import type { SimpleDetail } from '../../store'
 import type { TriggerOAuthConfig, TriggerProviderApiEntity, TriggerSubscription, TriggerSubscriptionBuilder } from '@/app/components/workflow/block-selector/types'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from '@voidzero-dev/vite-plus/test'
 import { SupportedCreationMethods } from '@/app/components/plugins/types'
 import { TriggerCredentialTypeEnum } from '@/app/components/workflow/block-selector/types'
 import { CreateButtonType, CreateSubscriptionButton, DEFAULT_METHOD } from './index'

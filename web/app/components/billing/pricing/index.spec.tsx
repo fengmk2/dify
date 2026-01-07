@@ -1,4 +1,4 @@
-import type { Mock } from 'vitest'
+import type { Mock } from '@voidzero-dev/vite-plus/test'
 import type { UsagePlanInfo } from '../type'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { useKeyPress } from 'ahooks'

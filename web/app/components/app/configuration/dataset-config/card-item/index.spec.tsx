@@ -1,5 +1,5 @@
+import type { MockedFunction } from '@voidzero-dev/vite-plus/test'
 import type * as React from 'react'
-import type { MockedFunction } from 'vitest'
 import type { IndexingType } from '@/app/components/datasets/create/step-two'
 import type { DataSet } from '@/models/datasets'
 import type { RetrievalConfig } from '@/types/app'

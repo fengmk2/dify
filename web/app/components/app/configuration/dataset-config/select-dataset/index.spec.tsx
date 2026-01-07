@@ -1,8 +1,8 @@
 import type { DataSet } from '@/models/datasets'
 import { act, fireEvent, render, screen } from '@testing-library/react'
-import * as React from 'react'
+import { describe, expect, it, vi } from '@voidzero-dev/vite-plus/test'
 
-import { describe, expect, it, vi } from 'vitest'
+import * as React from 'react'
 import { IndexingType } from '@/app/components/datasets/create/step-two'
 import { DatasetPermission } from '@/models/datasets'
 import { RETRIEVE_METHOD } from '@/types/app'

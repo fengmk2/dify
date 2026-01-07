@@ -1,5 +1,5 @@
 import type { RenderOptions } from '@testing-library/react'
-import type { Mock, MockedFunction } from 'vitest'
+import type { Mock, MockedFunction } from '@voidzero-dev/vite-plus/test'
 import type { ModalContextState } from '@/context/modal-context'
 import { fireEvent, render } from '@testing-library/react'
 import { noop } from 'es-toolkit/function'

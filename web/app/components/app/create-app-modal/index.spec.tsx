@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
+import { afterAll, beforeEach, describe, expect, it, vi } from '@voidzero-dev/vite-plus/test'
 import { useRouter } from 'next/navigation'
-import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest'
 import { trackEvent } from '@/app/components/base/amplitude'
 
 import { ToastContext } from '@/app/components/base/toast'

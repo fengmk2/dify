@@ -1,4 +1,4 @@
-import type { Mock } from 'vitest'
+import type { Mock } from '@voidzero-dev/vite-plus/test'
 import type { InstalledApp as InstalledAppType } from '@/models/explore'
 import { render, screen, waitFor } from '@testing-library/react'
 import { useContext } from 'use-context-selector'
