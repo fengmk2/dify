@@ -5,6 +5,9 @@ env:
 
 on:
   workflow_call:
+    secrets:
+      VP_TOKEN:
+        required: true
 
 concurrency:
   group: style-${{ github.head_ref || github.run_id }}

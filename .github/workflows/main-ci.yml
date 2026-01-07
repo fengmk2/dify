@@ -64,10 +64,14 @@ jobs:
     needs: check-changes
     if: needs.check-changes.outputs.web-changed == 'true'
     uses: ./.github/workflows/web-tests.yml
+    secrets:
+      VP_TOKEN: ${{ secrets.VP_TOKEN }}
 
   style-check:
     name: Style Check
     uses: ./.github/workflows/style.yml
+    secrets:
+      VP_TOKEN: ${{ secrets.VP_TOKEN }}
 
   vdb-tests:
     name: VDB Tests
