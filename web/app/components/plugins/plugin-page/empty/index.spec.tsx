@@ -1,7 +1,7 @@
 import type { FilterState } from '../filter-management'
 import type { SystemFeatures } from '@/types/feature'
 import { act, fireEvent, render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { defaultSystemFeatures, InstallationScope } from '@/types/feature'
 
 // ==================== Imports (after mocks) ====================

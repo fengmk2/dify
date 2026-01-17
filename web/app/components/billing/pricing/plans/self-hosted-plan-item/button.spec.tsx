@@ -1,4 +1,4 @@
-import type { MockedFunction } from 'vitest'
+import type { MockedFunction } from 'vite-plus/test'
 import { fireEvent, render, screen } from '@testing-library/react'
 import * as React from 'react'
 import useTheme from '@/hooks/use-theme'

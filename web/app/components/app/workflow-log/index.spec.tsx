@@ -15,7 +15,7 @@ import type { UseQueryResult } from '@tanstack/react-query'
  * - trigger-by-display.spec.tsx
  */
 
-import type { MockedFunction } from 'vitest'
+import type { MockedFunction } from 'vite-plus/test'
 import type { ILogsProps } from './index'
 import type { WorkflowAppLogDetail, WorkflowLogsResponse, WorkflowRunDetail } from '@/models/log'
 import type { App, AppIconType, AppModeEnum } from '@/types/app'

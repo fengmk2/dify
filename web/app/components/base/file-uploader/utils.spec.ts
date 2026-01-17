@@ -1,4 +1,4 @@
-import type { MockInstance } from 'vitest'
+import type { MockInstance } from 'vite-plus/test'
 import mime from 'mime'
 import { SupportUploadFileTypes } from '@/app/components/workflow/types'
 import { upload } from '@/service/base'

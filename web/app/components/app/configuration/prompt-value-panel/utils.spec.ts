@@ -1,6 +1,6 @@
 import type { PromptVariable } from '@/models/debug'
 
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import { replaceStringWithValues } from './utils'
 
 const promptVariables: PromptVariable[] = [

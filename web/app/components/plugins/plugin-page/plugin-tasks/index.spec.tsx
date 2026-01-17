@@ -1,6 +1,6 @@
 import type { PluginStatus } from '@/app/components/plugins/types'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { TaskStatus } from '@/app/components/plugins/types'
 // Import mocked modules
 import { useMutationClearTaskPlugin, usePluginTaskList } from '@/service/use-plugins'

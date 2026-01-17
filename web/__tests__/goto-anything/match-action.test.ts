@@ -1,4 +1,4 @@
-import type { Mock } from 'vitest'
+import type { Mock } from 'vite-plus/test'
 import type { ActionItem } from '../../app/components/goto-anything/actions/types'
 
 // Import after mocking to get mocked version

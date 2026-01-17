@@ -1,4 +1,4 @@
-import type { Mock } from 'vitest'
+import type { Mock } from 'vite-plus/test'
 import type { FeatureStoreState } from '@/app/components/base/features/store'
 import type { FileUpload } from '@/app/components/base/features/types'
 import { fireEvent, render, screen } from '@testing-library/react'

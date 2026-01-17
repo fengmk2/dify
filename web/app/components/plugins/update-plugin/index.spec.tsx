@@ -7,7 +7,7 @@ import type {
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import * as React from 'react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { PluginCategoryEnum, PluginSource, TaskStatus } from '../types'
 import DowngradeWarningModal from './downgrade-warning'
 import FromGitHub from './from-github'
