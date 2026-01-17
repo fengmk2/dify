@@ -1,7 +1,7 @@
 import type { PluginDetail } from '../types'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { PluginCategoryEnum, PluginSource } from '../types'
 import { BUILTIN_TOOLS_ARRAY } from './constants'
 import { ReadmeEntrance } from './entrance'

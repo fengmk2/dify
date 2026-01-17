@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import type { Credential, PluginPayload } from './types'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, fireEvent, render, renderHook, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { AuthCategory, CredentialTypeEnum } from './types'
 
 // ==================== Mock Setup ====================

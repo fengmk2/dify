@@ -3,7 +3,7 @@ import type { ToolValue } from '@/app/components/workflow/block-selector/types'
 import type { NodeOutPutVar, ToolWithProvider } from '@/app/components/workflow/types'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 
 // ==================== Imports (after mocks) ====================
 

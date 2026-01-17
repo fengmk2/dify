@@ -1,7 +1,7 @@
 import type { PluginDeclaration, UpdateFromGitHubPayload } from '../../../types'
 import type { Item } from '@/app/components/base/select'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { PluginCategoryEnum } from '../../../types'
 import SelectPackage from './selectPackage'
 

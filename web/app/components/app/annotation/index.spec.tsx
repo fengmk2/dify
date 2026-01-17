@@ -1,4 +1,4 @@
-import type { Mock } from 'vitest'
+import type { Mock } from 'vite-plus/test'
 import type { AnnotationItem } from './type'
 import type { App } from '@/types/app'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'

@@ -1,7 +1,7 @@
 import type { Category, Tag } from './constant'
 import type { FilterState } from './index'
 import { act, fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 
 // ==================== Imports (after mocks) ====================
 

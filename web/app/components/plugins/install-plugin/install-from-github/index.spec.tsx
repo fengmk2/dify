@@ -1,6 +1,6 @@
 import type { GitHubRepoReleaseResponse, PluginDeclaration, PluginManifestInMarket, UpdateFromGitHubPayload } from '../../types'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { PluginCategoryEnum } from '../../types'
 import { convertRepoToUrl, parseGitHubUrl, pluginManifestInMarketToPluginProps, pluginManifestToCardPluginProps } from '../utils'
 import InstallFromGitHub from './index'

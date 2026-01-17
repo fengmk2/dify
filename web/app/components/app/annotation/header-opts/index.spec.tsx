@@ -1,5 +1,5 @@
 import type { ComponentProps } from 'react'
-import type { Mock } from 'vitest'
+import type { Mock } from 'vite-plus/test'
 import type { AnnotationItemBasic } from '../type'
 import type { Locale } from '@/i18n-config'
 import { render, screen, waitFor } from '@testing-library/react'

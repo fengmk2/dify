@@ -1,4 +1,4 @@
-import type { Mock } from 'vitest'
+import type { Mock } from 'vite-plus/test'
 import type { UsagePlanInfo } from '@/app/components/billing/type'
 import type { AppContextValue } from '@/context/app-context'
 import type { ProviderContextState } from '@/context/provider-context'

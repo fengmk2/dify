@@ -1,4 +1,4 @@
-import type { MockInstance } from 'vitest'
+import type { MockInstance } from 'vite-plus/test'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import StopEmbeddingModal from './index'
 

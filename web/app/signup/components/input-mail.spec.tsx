@@ -1,4 +1,4 @@
-import type { MockedFunction } from 'vitest'
+import type { MockedFunction } from 'vite-plus/test'
 import type { SystemFeatures } from '@/types/feature'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import * as React from 'react'

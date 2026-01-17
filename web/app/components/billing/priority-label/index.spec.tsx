@@ -1,4 +1,4 @@
-import type { Mock } from 'vitest'
+import type { Mock } from 'vite-plus/test'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { createMockPlan } from '@/__mocks__/provider-context'
 import { useProviderContext } from '@/context/provider-context'

@@ -1,7 +1,7 @@
 import type { PluginPageProps } from './index'
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { useQueryState } from 'nuqs'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 
 import { usePluginInstallation } from '@/hooks/use-query-params'
 // Import mocked modules for assertions
