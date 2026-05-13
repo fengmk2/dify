@@ -248,4 +248,4 @@ catalog:
   zustand: 5.0.13
 minimumReleaseAgeExclude:
   - vite-plus
-  - "@voidzero-dev/*"
+  - '@voidzero-dev/*'
