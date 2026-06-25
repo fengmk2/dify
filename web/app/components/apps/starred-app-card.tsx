@@ -24,16 +24,15 @@ type StarredAppCardProps = {
 
 export function StarredAppCard({ app, onRefresh }: StarredAppCardProps) {
   const { t } = useTranslation()
-  const currentUserId = useAppContextSelector(state => state.userProfile?.id)
-  const workspacePermissionKeys = useAppContextSelector(state => state.workspacePermissionKeys)
+  const currentUserId = useAppContextSelector((state) => state.userProfile?.id)
+  const workspacePermissionKeys = useAppContextSelector((state) => state.workspacePermissionKeys)
   const { data: systemFeatures } = useSuspenseQuery(systemFeaturesQueryOptions())
   const isRbacEnabled = systemFeatures.rbac_enabled
   const isPreviewOnly = hasOnlyAppPreviewPermission(app.permission_keys)
 
   const editTimeText = useMemo(() => {
     const timestamp = app.updated_at || app.created_at
-    if (!timestamp)
-      return ''
+    if (!timestamp) return ''
 
     const timeText = formatTime({
       date: timestamp * 1000,
@@ -56,13 +55,15 @@ export function StarredAppCard({ app, onRefresh }: StarredAppCardProps) {
   const showPreviewOnlyAccessWarning = useCallback(() => {
     toast.warning(t('noAccessResourcePermission', { ns: 'app' }))
   }, [t])
-  const handlePreviewOnlyCardKeyDown = useCallback((event: KeyboardEvent<HTMLElement>) => {
-    if (event.key !== 'Enter' && event.key !== ' ')
-      return
+  const handlePreviewOnlyCardKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLElement>) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return
 
-    event.preventDefault()
-    showPreviewOnlyAccessWarning()
-  }, [showPreviewOnlyAccessWarning])
+      event.preventDefault()
+      showPreviewOnlyAccessWarning()
+    },
+    [showPreviewOnlyAccessWarning],
+  )
   const cardContent = (
     <>
       <div className="relative shrink-0">
@@ -73,7 +74,11 @@ export function StarredAppCard({ app, onRefresh }: StarredAppCardProps) {
           background={app.icon_background}
           imageUrl={app.icon_url}
         />
-        <AppTypeIcon type={app.mode} wrapperClassName="absolute -right-0.5 -bottom-0.5 h-4 w-4 shadow-sm" className="size-3" />
+        <AppTypeIcon
+          type={app.mode}
+          wrapperClassName="absolute -right-0.5 -bottom-0.5 h-4 w-4 shadow-sm"
+          className="size-3"
+        />
       </div>
       <div className="flex min-w-0 flex-1 flex-col gap-0.5 py-px">
         <div className="truncate system-md-semibold text-text-secondary">{app.name}</div>
@@ -88,25 +93,23 @@ export function StarredAppCard({ app, onRefresh }: StarredAppCardProps) {
 
   return (
     <div className="group relative">
-      {isPreviewOnly
-        ? (
-            <article
-              role="button"
-              tabIndex={0}
-              aria-disabled="true"
-              aria-label={app.name}
-              className={cardClassName}
-              onClick={showPreviewOnlyAccessWarning}
-              onKeyDown={handlePreviewOnlyCardKeyDown}
-            >
-              {cardContent}
-            </article>
-          )
-        : (
-            <Link href={href} className={cardClassName}>
-              {cardContent}
-            </Link>
-          )}
+      {isPreviewOnly ? (
+        <article
+          role="button"
+          tabIndex={0}
+          aria-disabled="true"
+          aria-label={app.name}
+          className={cardClassName}
+          onClick={showPreviewOnlyAccessWarning}
+          onKeyDown={handlePreviewOnlyCardKeyDown}
+        >
+          {cardContent}
+        </article>
+      ) : (
+        <Link href={href} className={cardClassName}>
+          {cardContent}
+        </Link>
+      )}
       {!isPreviewOnly && <AppCardActionBar app={app} onRefresh={onRefresh} />}
     </div>
   )

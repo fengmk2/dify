@@ -95,10 +95,15 @@ describe('WorkflowReferencesTable', () => {
 
       expect(await screen.findByText('Support Workflow')).toBeInTheDocument()
       expect(screen.getByText('v3')).toBeInTheDocument()
-      expect(screen.getByText('agentV2.agentDetail.access.workflow.nodeCount:{"count":2}')).toBeInTheDocument()
+      expect(
+        screen.getByText('agentV2.agentDetail.access.workflow.nodeCount:{"count":2}'),
+      ).toBeInTheDocument()
       expect(screen.getByText('formatted-1781660000')).toBeInTheDocument()
-      expect(screen.getByRole('link', { name: 'agentV2.agentDetail.access.workflow.openInStudioFor:{"name":"Support Workflow"}' }))
-        .toHaveAttribute('href', '/app/workflow-app-id/workflow')
+      expect(
+        screen.getByRole('link', {
+          name: 'agentV2.agentDetail.access.workflow.openInStudioFor:{"name":"Support Workflow"}',
+        }),
+      ).toHaveAttribute('href', '/app/workflow-app-id/workflow')
     })
 
     it('should render an empty state when the agent has no workflow references', async () => {
@@ -106,7 +111,9 @@ describe('WorkflowReferencesTable', () => {
 
       renderTable()
 
-      expect(await screen.findByText('agentV2.agentDetail.access.workflow.empty')).toBeInTheDocument()
+      expect(
+        await screen.findByText('agentV2.agentDetail.access.workflow.empty'),
+      ).toBeInTheDocument()
     })
 
     it('should render a loading row while workflow references are pending', () => {
@@ -121,13 +128,13 @@ describe('WorkflowReferencesTable', () => {
   describe('Error state', () => {
     it('should render a retry action when loading workflow references fails', async () => {
       const user = userEvent.setup()
-      mocks.queryFn
-        .mockRejectedValueOnce(new Error('failed'))
-        .mockResolvedValueOnce({ data: [] })
+      mocks.queryFn.mockRejectedValueOnce(new Error('failed')).mockResolvedValueOnce({ data: [] })
 
       renderTable()
 
-      expect(await screen.findByText('agentV2.agentDetail.access.workflow.loadFailed')).toBeInTheDocument()
+      expect(
+        await screen.findByText('agentV2.agentDetail.access.workflow.loadFailed'),
+      ).toBeInTheDocument()
       await user.click(screen.getByRole('button', { name: 'common.operation.retry' }))
 
       await waitFor(() => {

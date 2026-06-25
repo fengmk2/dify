@@ -1,6 +1,9 @@
 'use client'
 
-import type { AgentAppPublishedReferenceResponse, AgentIconType } from '@dify/contracts/api/console/agent/types.gen'
+import type {
+  AgentAppPublishedReferenceResponse,
+  AgentIconType,
+} from '@dify/contracts/api/console/agent/types.gen'
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,14 +14,15 @@ import { useTranslation } from 'react-i18next'
 import AppIcon from '@/app/components/base/app-icon'
 import Link from '@/next/link'
 
-const getWorkflowReferenceHref = (reference: AgentAppPublishedReferenceResponse) => `/app/${reference.app_id}/workflow`
+const getWorkflowReferenceHref = (reference: AgentAppPublishedReferenceResponse) =>
+  `/app/${reference.app_id}/workflow`
 
-const getWorkflowReferenceIconType = (reference: AgentAppPublishedReferenceResponse): AgentIconType | undefined => {
-  if (reference.app_icon_type === 'image' || reference.app_icon_type === 'link')
-    return 'image'
+const getWorkflowReferenceIconType = (
+  reference: AgentAppPublishedReferenceResponse,
+): AgentIconType | undefined => {
+  if (reference.app_icon_type === 'image' || reference.app_icon_type === 'link') return 'image'
 
-  if (reference.app_icon_type === 'emoji')
-    return 'emoji'
+  if (reference.app_icon_type === 'emoji') return 'emoji'
 
   return undefined
 }
@@ -47,14 +51,17 @@ export function AgentWorkflowReferencesDropdown({
         aria-label={t('roster.references.trigger', { name: agentName, count: referenceCount })}
         className="-ml-1 flex shrink-0 cursor-pointer items-center gap-1 rounded-md px-1 py-0.5 outline-hidden hover:bg-state-base-hover focus-visible:ring-2 focus-visible:ring-state-accent-solid data-popup-open:bg-state-base-hover"
       >
-        <span aria-hidden className="i-custom-vender-agent-v2-plan size-3 shrink-0 text-text-tertiary" />
+        <span
+          aria-hidden
+          className="i-custom-vender-agent-v2-plan size-3 shrink-0 text-text-tertiary"
+        />
         <span className="system-xs-regular text-text-tertiary">{referenceCount}</span>
       </DropdownMenuTrigger>
       <DropdownMenuContent placement="bottom-start" sideOffset={4} popupClassName="w-[264px] p-1">
         <div className="flex h-7.5 items-center px-2 system-xs-medium text-text-tertiary">
           {t('roster.references.label', { name: agentName })}
         </div>
-        {publishedReferences.map(reference => (
+        {publishedReferences.map((reference) => (
           <DropdownMenuLinkItem
             key={reference.app_id}
             render={<Link href={getWorkflowReferenceHref(reference)} />}
@@ -70,7 +77,10 @@ export function AgentWorkflowReferencesDropdown({
               />
             </span>
             <span className="min-w-0 flex-1 truncate">{reference.app_name}</span>
-            <span aria-hidden className="i-ri-external-link-line size-3 shrink-0 text-text-tertiary" />
+            <span
+              aria-hidden
+              className="i-ri-external-link-line size-3 shrink-0 text-text-tertiary"
+            />
           </DropdownMenuLinkItem>
         ))}
       </DropdownMenuContent>

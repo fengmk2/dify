@@ -47,7 +47,7 @@ const ProviderName = {
   Tongyi: 'tongyi',
   ChatGLM: 'chatglm',
 } as const
-type ProviderName = typeof ProviderName[keyof typeof ProviderName]
+type ProviderName = (typeof ProviderName)[keyof typeof ProviderName]
 type ProviderAzureToken = {
   openai_api_base?: string
   openai_api_key?: string
@@ -107,7 +107,10 @@ export type NotionPage = DataSourceNotionPage & {
   workspace_id: string
 }
 
-export type DataSourceNotionPageMap = Record<string, DataSourceNotionPage & { workspace_id: string }>
+export type DataSourceNotionPageMap = Record<
+  string,
+  DataSourceNotionPage & { workspace_id: string }
+>
 
 export type DataSourceNotionWorkspace = {
   workspace_name: string
@@ -122,7 +125,7 @@ export const DataSourceProvider = {
   jinaReader: 'jinareader',
   waterCrawl: 'watercrawl',
 } as const
-export type DataSourceProvider = typeof DataSourceProvider[keyof typeof DataSourceProvider]
+export type DataSourceProvider = (typeof DataSourceProvider)[keyof typeof DataSourceProvider]
 
 export type FileUploadConfigResponse = {
   batch_count_limit: number
@@ -137,19 +140,22 @@ export type FileUploadConfigResponse = {
   file_upload_limit: number // default is 5
 }
 
-export type InvitationResult = {
-  status: 'success'
-  email: string
-  url: string
-} | {
-  status: 'already_member'
-  email: string
-  message?: string
-} | {
-  status: 'failed'
-  email: string
-  message: string
-}
+export type InvitationResult =
+  | {
+      status: 'success'
+      email: string
+      url: string
+    }
+  | {
+      status: 'already_member'
+      email: string
+      message?: string
+    }
+  | {
+      status: 'failed'
+      email: string
+      message: string
+    }
 
 export type InvitationResponse = CommonResponse & {
   invitation_results: InvitationResult[]
@@ -160,7 +166,7 @@ export type CodeBasedExtensionForm = {
   label: I18nText
   variable: string
   required: boolean
-  options: { label: I18nText, value: string }[]
+  options: { label: I18nText; value: string }[]
   default: string
   placeholder: string
   max_length?: number

@@ -48,15 +48,13 @@ export function CopyMembersConfirmDialog({
             {t('role.copyMembersTitle', { ns: 'permission' })}
           </AlertDialogTitle>
           <AlertDialogDescription className="w-full system-md-regular wrap-break-word whitespace-pre-wrap text-text-secondary">
-            {
-              isLoadingMemberCount
-                ? t('role.copyMembersLoading', { ns: 'permission' })
-                : t('role.copyMembersDescription', {
-                    ns: 'permission',
-                    name: role.name,
-                    count: memberCount,
-                  })
-            }
+            {isLoadingMemberCount
+              ? t('role.copyMembersLoading', { ns: 'permission' })
+              : t('role.copyMembersDescription', {
+                  ns: 'permission',
+                  name: role.name,
+                  count: memberCount,
+                })}
           </AlertDialogDescription>
         </div>
         <AlertDialogActions>

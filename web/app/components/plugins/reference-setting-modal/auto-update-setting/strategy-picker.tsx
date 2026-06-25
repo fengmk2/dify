@@ -8,10 +8,7 @@ type Props = Readonly<{
   value: AUTO_UPDATE_STRATEGY
   onChange: (value: AUTO_UPDATE_STRATEGY) => void
 }>
-const StrategyPicker = ({
-  value,
-  onChange,
-}: Props) => {
+const StrategyPicker = ({ value, onChange }: Props) => {
   const { t } = useTranslation()
   const options = [
     {
@@ -35,11 +32,10 @@ const StrategyPicker = ({
       value={[value]}
       onValueChange={(nextValue) => {
         const selectedValue = nextValue[0]
-        if (selectedValue)
-          onChange(selectedValue)
+        if (selectedValue) onChange(selectedValue)
       }}
     >
-      {options.map(option => (
+      {options.map((option) => (
         <SegmentedControlItem<AUTO_UPDATE_STRATEGY>
           key={option.value}
           value={option.value}

@@ -13,17 +13,22 @@ type OverviewViewProps = {
 }
 
 const OverviewView = ({ appId }: OverviewViewProps) => {
-  const appDetail = useAppStore(state => state.appDetail)
-  const currentUserId = useAppContextWithSelector(state => state.userProfile?.id)
-  const workspacePermissionKeys = useAppContextWithSelector(state => state.workspacePermissionKeys)
-  const appACLCapabilities = React.useMemo(() => getAppACLCapabilities(appDetail?.permission_keys, {
-    currentUserId,
-    resourceMaintainer: appDetail?.maintainer,
-    workspacePermissionKeys,
-  }), [appDetail?.maintainer, appDetail?.permission_keys, currentUserId, workspacePermissionKeys])
+  const appDetail = useAppStore((state) => state.appDetail)
+  const currentUserId = useAppContextWithSelector((state) => state.userProfile?.id)
+  const workspacePermissionKeys = useAppContextWithSelector(
+    (state) => state.workspacePermissionKeys,
+  )
+  const appACLCapabilities = React.useMemo(
+    () =>
+      getAppACLCapabilities(appDetail?.permission_keys, {
+        currentUserId,
+        resourceMaintainer: appDetail?.maintainer,
+        workspacePermissionKeys,
+      }),
+    [appDetail?.maintainer, appDetail?.permission_keys, currentUserId, workspacePermissionKeys],
+  )
 
-  if (!appDetail || !appACLCapabilities.canMonitor)
-    return null
+  if (!appDetail || !appACLCapabilities.canMonitor) return null
 
   return (
     <div className="flex h-full min-h-0 flex-col">

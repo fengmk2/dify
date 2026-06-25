@@ -38,8 +38,7 @@ export function DeploymentActionsDropdown({
   const { t } = useTranslation('deployments')
   const [open, setOpen] = useState(false)
 
-  if (isDeploymentInProgress)
-    return null
+  if (isDeploymentInProgress) return null
 
   function handleDeployAction(releaseId?: string) {
     onDeploy(releaseId)
@@ -52,8 +51,7 @@ export function DeploymentActionsDropdown({
   }
 
   function handleRequestUndeploy() {
-    if (undeployActionDisabled)
-      return
+    if (undeployActionDisabled) return
 
     onRequestUndeploy()
     setOpen(false)
@@ -69,47 +67,52 @@ export function DeploymentActionsDropdown({
       </DropdownMenuTrigger>
       {open && (
         <DropdownMenuContent placement="bottom-end" sideOffset={4} popupClassName="min-w-44">
-          {isDeployFailed
-            ? (
-                <>
-                  <DropdownMenuItem
-                    className="gap-2 px-3"
-                    onClick={handleViewError}
-                  >
-                    <span aria-hidden className="i-ri-error-warning-line size-4 shrink-0 text-text-tertiary" />
-                    <span className="system-sm-regular text-text-secondary">{t('deployTab.viewError')}</span>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem
-                    className="gap-2 px-3"
-                    onClick={() => handleDeployAction(failedReleaseId)}
-                  >
-                    <span aria-hidden className="i-ri-refresh-line size-4 shrink-0 text-text-tertiary" />
-                    <span className="system-sm-regular text-text-secondary">
-                      {failedReleaseId ? t('deployTab.retry') : t('deployTab.deployOtherVersion')}
-                    </span>
-                  </DropdownMenuItem>
-                </>
-              )
-            : (
-                <>
-                  {!isUndeployed && currentReleaseId && (
-                    <DropdownMenuItem
-                      className="gap-2 px-3"
-                      onClick={() => handleDeployAction(currentReleaseId)}
-                    >
-                      <span aria-hidden className="i-ri-refresh-line size-4 shrink-0 text-text-tertiary" />
-                      <span className="system-sm-regular text-text-secondary">{t('deployTab.redeploy')}</span>
-                    </DropdownMenuItem>
-                  )}
-                  <DropdownMenuItem
-                    className="gap-2 px-3"
-                    onClick={() => handleDeployAction()}
-                  >
-                    <span aria-hidden className="i-ri-rocket-line size-4 shrink-0 text-text-tertiary" />
-                    <span className="system-sm-regular text-text-secondary">{deployActionLabel}</span>
-                  </DropdownMenuItem>
-                </>
+          {isDeployFailed ? (
+            <>
+              <DropdownMenuItem className="gap-2 px-3" onClick={handleViewError}>
+                <span
+                  aria-hidden
+                  className="i-ri-error-warning-line size-4 shrink-0 text-text-tertiary"
+                />
+                <span className="system-sm-regular text-text-secondary">
+                  {t('deployTab.viewError')}
+                </span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                className="gap-2 px-3"
+                onClick={() => handleDeployAction(failedReleaseId)}
+              >
+                <span
+                  aria-hidden
+                  className="i-ri-refresh-line size-4 shrink-0 text-text-tertiary"
+                />
+                <span className="system-sm-regular text-text-secondary">
+                  {failedReleaseId ? t('deployTab.retry') : t('deployTab.deployOtherVersion')}
+                </span>
+              </DropdownMenuItem>
+            </>
+          ) : (
+            <>
+              {!isUndeployed && currentReleaseId && (
+                <DropdownMenuItem
+                  className="gap-2 px-3"
+                  onClick={() => handleDeployAction(currentReleaseId)}
+                >
+                  <span
+                    aria-hidden
+                    className="i-ri-refresh-line size-4 shrink-0 text-text-tertiary"
+                  />
+                  <span className="system-sm-regular text-text-secondary">
+                    {t('deployTab.redeploy')}
+                  </span>
+                </DropdownMenuItem>
               )}
+              <DropdownMenuItem className="gap-2 px-3" onClick={() => handleDeployAction()}>
+                <span aria-hidden className="i-ri-rocket-line size-4 shrink-0 text-text-tertiary" />
+                <span className="system-sm-regular text-text-secondary">{deployActionLabel}</span>
+              </DropdownMenuItem>
+            </>
+          )}
           {!isUndeployed && (
             <>
               <DropdownMenuSeparator />

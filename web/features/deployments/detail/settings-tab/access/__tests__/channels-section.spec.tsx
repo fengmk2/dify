@@ -1,6 +1,6 @@
 import type { AccessChannels, AccessEndpoint } from '@dify/contracts/enterprise/types.gen'
 import { render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { AccessChannelsSection } from '../channels-section'
 
 const mockToggleAccessChannel = vi.hoisted(() => vi.fn())

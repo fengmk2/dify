@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 
 import { CreateFromDSLModalTab } from '@/app/components/app/create-from-dsl-modal'
 import Tab from '../index'

@@ -19,10 +19,7 @@ import { openDeployDrawerAtom } from '../../deploy-drawer/state'
 import { isUndeployedDeploymentRow } from '../../shared/domain/runtime-status'
 import { DETAIL_TABLE_ACTION_TRIGGER_CLASS_NAME } from '../table-styles'
 import { DeleteReleaseDialog } from './delete-release-dialog'
-import {
-  buildDeployMenuSections,
-  releaseUsageCount,
-} from './deploy-release-menu-utils'
+import { buildDeployMenuSections, releaseUsageCount } from './deploy-release-menu-utils'
 import { EditReleaseDialog } from './edit-release-dialog'
 import { exportReleaseDsl } from './release-dsl-export'
 import {
@@ -38,7 +35,12 @@ type ExportReleaseDslInput = {
   appInstanceName?: string
 }
 
-export function DeployReleaseMenu({ appInstanceId, releaseId, releaseRows, onDeleted }: {
+export function DeployReleaseMenu({
+  appInstanceId,
+  releaseId,
+  releaseRows,
+  onDeleted,
+}: {
   appInstanceId: string
   releaseId: string
   releaseRows: Release[]
@@ -53,20 +55,27 @@ export function DeployReleaseMenu({ appInstanceId, releaseId, releaseRows, onDel
   const open = openReleaseMenuId === releaseId
   const environmentDeploymentsQuery = useAtomValue(deployReleaseMenuEnvironmentDeploymentsQueryAtom)
   const appInstanceQuery = useAtomValue(deployReleaseMenuAppInstanceQueryAtom)
-  const deleteRelease = useMutation(consoleQuery.enterprise.releaseService.deleteRelease.mutationOptions())
-  const exportReleaseDslMutation = useMutation(mutationOptions({
-    mutationKey: ['deployments', 'release-dsl-export'],
-    mutationFn: (input: ExportReleaseDslInput) => exportReleaseDsl(input),
-  }))
+  const deleteRelease = useMutation(
+    consoleQuery.enterprise.releaseService.deleteRelease.mutationOptions(),
+  )
+  const exportReleaseDslMutation = useMutation(
+    mutationOptions({
+      mutationKey: ['deployments', 'release-dsl-export'],
+      mutationFn: (input: ExportReleaseDslInput) => exportReleaseDsl(input),
+    }),
+  )
 
-  const environments = (environmentDeploymentsQuery.data?.environmentDeployments ?? [])
-    .map(row => row.environment)
-  const deploymentRows = environmentDeploymentsQuery.data?.environmentDeployments.filter(row => !isUndeployedDeploymentRow(row)) ?? []
-  const targetRelease = releaseRows.find(release => release.id === releaseId)
+  const environments = (environmentDeploymentsQuery.data?.environmentDeployments ?? []).map(
+    (row) => row.environment,
+  )
+  const deploymentRows =
+    environmentDeploymentsQuery.data?.environmentDeployments.filter(
+      (row) => !isUndeployedDeploymentRow(row),
+    ) ?? []
+  const targetRelease = releaseRows.find((release) => release.id === releaseId)
   const appInstanceName = appInstanceQuery.data?.appInstance.displayName
 
-  if (!targetRelease)
-    return null
+  if (!targetRelease) return null
 
   const release = targetRelease
   const targetReleaseName = release.displayName
@@ -83,15 +92,15 @@ export function DeployReleaseMenu({ appInstanceId, releaseId, releaseRows, onDel
       : isReleaseInUse
         ? t('versions.disabledReason.releaseInUse', { count: deleteUsageCount })
         : undefined
-  const deleteActionDisabled = isDeletingRelease || isCheckingDeleteUsage || hasDeleteUsageCheckFailed || isReleaseInUse
+  const deleteActionDisabled =
+    isDeletingRelease || isCheckingDeleteUsage || hasDeleteUsageCheckFailed || isReleaseInUse
 
   function handleOpenChange(nextOpen: boolean) {
     setDeployReleaseMenuOpen({ releaseId, open: nextOpen })
   }
 
   function handleExportDsl() {
-    if (isExportingDsl)
-      return
+    if (isExportingDsl) return
 
     exportReleaseDslMutation.mutate(
       { release, releaseId, appInstanceName },
@@ -107,8 +116,7 @@ export function DeployReleaseMenu({ appInstanceId, releaseId, releaseRows, onDel
   }
 
   function handleDeleteRelease() {
-    if (deleteActionDisabled)
-      return
+    if (deleteActionDisabled) return
 
     deleteRelease.mutate(
       {
@@ -164,45 +172,50 @@ export function DeployReleaseMenu({ appInstanceId, releaseId, releaseRows, onDel
             <DropdownMenuItem
               disabled={isExportingDsl}
               aria-disabled={isExportingDsl}
-              className={cn(
-                'gap-2 px-3',
-                isExportingDsl && 'cursor-not-allowed opacity-60',
-              )}
+              className={cn('gap-2 px-3', isExportingDsl && 'cursor-not-allowed opacity-60')}
               onClick={handleExportDsl}
             >
-              <span aria-hidden className="i-ri-download-2-line size-4 shrink-0 text-text-tertiary" />
+              <span
+                aria-hidden
+                className="i-ri-download-2-line size-4 shrink-0 text-text-tertiary"
+              />
               <span className="system-sm-regular text-text-secondary">
                 {isExportingDsl ? t('versions.exportingDsl') : t('versions.exportDsl')}
               </span>
             </DropdownMenuItem>
-            {groupedRows.length > 0 && <div className="my-1 border-t border-divider-subtle" aria-hidden />}
+            {groupedRows.length > 0 && (
+              <div className="my-1 border-t border-divider-subtle" aria-hidden />
+            )}
             {groupedRows.map((section, sectionIndex) => (
               <div key={section.group}>
-                {sectionIndex > 0 && <div className="my-1 border-t border-divider-subtle" aria-hidden />}
+                {sectionIndex > 0 && (
+                  <div className="my-1 border-t border-divider-subtle" aria-hidden />
+                )}
                 <div className="px-3 pt-1.5 pb-1 system-2xs-medium-uppercase text-text-quaternary">
                   {t(`versions.groupHeader.${section.group}`)}
                 </div>
                 {section.rows.map((row) => {
                   const isDisabled = row.state === 'current' || row.state === 'deploying'
                   return (
-                    <TitleTooltip key={row.environmentId} content={isDisabled ? row.disabledReason : undefined}>
+                    <TitleTooltip
+                      key={row.environmentId}
+                      content={isDisabled ? row.disabledReason : undefined}
+                    >
                       <DropdownMenuItem
                         disabled={isDisabled}
                         aria-disabled={isDisabled}
-                        className={cn(
-                          'gap-2 px-3',
-                          isDisabled && 'cursor-not-allowed opacity-60',
-                        )}
+                        className={cn('gap-2 px-3', isDisabled && 'cursor-not-allowed opacity-60')}
                         onClick={() => {
-                          if (isDisabled)
-                            return
+                          if (isDisabled) return
                           handleOpenChange(false)
-                          openDeployDrawer({ appInstanceId, environmentId: row.environmentId, releaseId })
+                          openDeployDrawer({
+                            appInstanceId,
+                            environmentId: row.environmentId,
+                            releaseId,
+                          })
                         }}
                       >
-                        <span className="system-sm-regular text-text-secondary">
-                          {row.label}
-                        </span>
+                        <span className="system-sm-regular text-text-secondary">{row.label}</span>
                       </DropdownMenuItem>
                     </TitleTooltip>
                   )
@@ -220,8 +233,7 @@ export function DeployReleaseMenu({ appInstanceId, releaseId, releaseRows, onDel
                   deleteActionDisabled && 'cursor-not-allowed opacity-60',
                 )}
                 onClick={() => {
-                  if (deleteActionDisabled)
-                    return
+                  if (deleteActionDisabled) return
                   handleOpenChange(false)
                   setShowDeleteConfirm(true)
                 }}
@@ -234,11 +246,7 @@ export function DeployReleaseMenu({ appInstanceId, releaseId, releaseRows, onDel
         )}
       </DropdownMenu>
 
-      <EditReleaseDialog
-        release={release}
-        open={showEditDialog}
-        onOpenChange={setShowEditDialog}
-      />
+      <EditReleaseDialog release={release} open={showEditDialog} onOpenChange={setShowEditDialog} />
 
       <DeleteReleaseDialog
         open={showDeleteConfirm}

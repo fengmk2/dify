@@ -64,7 +64,9 @@ describe('Switch', () => {
 
   it('should not call onCheckedChange when disabled', async () => {
     const onCheckedChange = vi.fn()
-    const screen = await render(<Switch checked={false} disabled onCheckedChange={onCheckedChange} />)
+    const screen = await render(
+      <Switch checked={false} disabled onCheckedChange={onCheckedChange} />,
+    )
 
     const switchElement = screen.getByRole('switch')
     await expect.element(switchElement).toHaveClass('data-disabled:cursor-not-allowed')
@@ -99,7 +101,10 @@ describe('Switch', () => {
     const switchElement = screen.getByRole('switch').element()
     const thumb = getThumb(switchElement)
 
-    expect(switchElement).toHaveClass('bg-components-toggle-bg-unchecked', 'data-checked:bg-components-toggle-bg')
+    expect(switchElement).toHaveClass(
+      'bg-components-toggle-bg-unchecked',
+      'data-checked:bg-components-toggle-bg',
+    )
     expect(thumb).toHaveClass('data-checked:translate-x-[14px]')
     expect(thumb).not.toHaveAttribute('data-checked')
 
@@ -112,10 +117,12 @@ describe('Switch', () => {
   it('should expose disabled state styling hooks instead of relying on opacity', async () => {
     const screen = await render(<Switch checked={false} disabled />)
 
-    await expect.element(screen.getByRole('switch')).toHaveClass(
-      'data-disabled:bg-components-toggle-bg-unchecked-disabled',
-      'data-disabled:data-checked:bg-components-toggle-bg-disabled',
-    )
+    await expect
+      .element(screen.getByRole('switch'))
+      .toHaveClass(
+        'data-disabled:bg-components-toggle-bg-unchecked-disabled',
+        'data-disabled:data-checked:bg-components-toggle-bg-disabled',
+      )
     await expect.element(screen.getByRole('switch')).toHaveAttribute('data-disabled', '')
 
     await screen.rerender(<Switch checked={true} disabled />)
@@ -125,11 +132,13 @@ describe('Switch', () => {
 
   it('should replace the native focus outline with the accent focus ring', async () => {
     const screen = await render(<Switch checked={false} />)
-    await expect.element(screen.getByRole('switch')).toHaveClass(
-      'outline-hidden',
-      'focus-visible:ring-2',
-      'focus-visible:ring-state-accent-solid',
-    )
+    await expect
+      .element(screen.getByRole('switch'))
+      .toHaveClass(
+        'outline-hidden',
+        'focus-visible:ring-2',
+        'focus-visible:ring-state-accent-solid',
+      )
   })
 
   it('should respect prefers-reduced-motion', async () => {
@@ -140,7 +149,9 @@ describe('Switch', () => {
   describe('loading state', () => {
     it('should render as disabled when loading', async () => {
       const onCheckedChange = vi.fn()
-      const screen = await render(<Switch checked={false} loading onCheckedChange={onCheckedChange} />)
+      const screen = await render(
+        <Switch checked={false} loading onCheckedChange={onCheckedChange} />,
+      )
 
       const switchElement = screen.getByRole('switch')
       await expect.element(switchElement).toHaveClass('data-disabled:cursor-not-allowed')
@@ -163,10 +174,7 @@ describe('Switch', () => {
       const screen = await render(<Switch checked={false} loading size="md" />)
       const spinner = screen.container.querySelector('span[aria-hidden="true"]')
 
-      expect(spinner).toHaveClass(
-        'left-[calc(50%+6px)]',
-        'group-data-checked:left-[calc(50%-6px)]',
-      )
+      expect(spinner).toHaveClass('left-[calc(50%+6px)]', 'group-data-checked:left-[calc(50%-6px)]')
 
       await screen.rerender(<Switch checked={true} loading size="md" />)
 
@@ -206,7 +214,9 @@ describe('SwitchSkeleton', () => {
 
   it('should apply skeleton styles', async () => {
     const screen = await render(<SwitchSkeleton data-testid="skeleton-switch" />)
-    await expect.element(screen.getByTestId('skeleton-switch')).toHaveClass('bg-text-quaternary', 'opacity-20')
+    await expect
+      .element(screen.getByTestId('skeleton-switch'))
+      .toHaveClass('bg-text-quaternary', 'opacity-20')
   })
 
   it('should apply correct skeleton size classes', async () => {

@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import * as React from 'react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import NewMCPCard, { NewMCPButton } from '../create-card'
 
 // Track the mock functions
@@ -18,18 +18,20 @@ vi.mock('@/service/use-tools', () => ({
 // Mock the MCP Modal
 type MockMCPModalProps = {
   show: boolean
-  onConfirm: (info: { name: string, server_url: string }) => void
+  onConfirm: (info: { name: string; server_url: string }) => void
   onHide: () => void
 }
 
 vi.mock('../modal', () => ({
   default: ({ show, onConfirm, onHide }: MockMCPModalProps) => {
-    if (!show)
-      return null
+    if (!show) return null
     return (
       <div data-testid="mcp-modal">
         <span>tools.mcp.modal.title</span>
-        <button data-testid="confirm-btn" onClick={() => onConfirm({ name: 'Test MCP', server_url: 'https://test.com' })}>
+        <button
+          data-testid="confirm-btn"
+          onClick={() => onConfirm({ name: 'Test MCP', server_url: 'https://test.com' })}
+        >
           Confirm
         </button>
         <button data-testid="close-btn" onClick={onHide}>
@@ -43,9 +45,10 @@ vi.mock('../modal', () => ({
 let mockWorkspacePermissionKeys: string[] = ['mcp.manage']
 
 vi.mock('@/context/app-context', () => ({
-  useSelector: (selector: (state: { workspacePermissionKeys: string[] }) => unknown) => selector({
-    workspacePermissionKeys: mockWorkspacePermissionKeys,
-  }),
+  useSelector: (selector: (state: { workspacePermissionKeys: string[] }) => unknown) =>
+    selector({
+      workspacePermissionKeys: mockWorkspacePermissionKeys,
+    }),
 }))
 
 // Mock the plugins service
@@ -111,7 +114,9 @@ describe('NewMCPCard', () => {
     it('should render toolbar button', () => {
       render(<NewMCPButton {...defaultProps} />, { wrapper: createWrapper() })
 
-      expect(screen.getByRole('button', { name: /tools\.mcp\.create\.cardTitle/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /tools\.mcp\.create\.cardTitle/i }),
+      ).toBeInTheDocument()
     })
   })
 

@@ -6,7 +6,10 @@ import { useStore as useJotaiStore, useSetAtom } from 'jotai'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useHooksStore } from '@/app/components/workflow/hooks-store'
 import { useSerialAsyncCallback } from '@/app/components/workflow/hooks/use-serial-async-callback'
-import { agentSoulConfigToFormState, formStateToAgentSoulConfig } from '@/features/agent-v2/agent-composer/conversions'
+import {
+  agentSoulConfigToFormState,
+  formStateToAgentSoulConfig,
+} from '@/features/agent-v2/agent-composer/conversions'
 import {
   agentComposerDraftAtom,
   agentComposerOriginalConfigAtom,
@@ -21,8 +24,7 @@ const DRAFT_AUTOSAVE_WAIT = 5000
 function getModelProviderPluginId(provider: string) {
   const [organization, pluginName] = provider.split('/').filter(Boolean)
 
-  if (organization && pluginName)
-    return `${organization}/${pluginName}`
+  if (organization && pluginName) return `${organization}/${pluginName}`
 
   return provider ? `langgenius/${provider}` : ''
 }
@@ -35,8 +37,7 @@ export function getDefaultAgentSoul(defaultModel?: DefaultModelResponse): AgentS
     },
   }
 
-  if (!defaultModel)
-    return baseConfig
+  if (!defaultModel) return baseConfig
 
   const modelProvider = defaultModel.provider.provider
 
@@ -66,7 +67,7 @@ export function useWorkflowInlineAgentConfigureSync({
   enabled: boolean
 }) {
   const queryClient = useQueryClient()
-  const configsMap = useHooksStore(state => state.configsMap)
+  const configsMap = useHooksStore((state) => state.configsMap)
   const store = useJotaiStore()
   const setOriginalConfig = useSetAtom(agentComposerOriginalConfigAtom)
   const setOriginalDraft = useSetAtom(agentComposerOriginalDraftAtom)
@@ -83,15 +84,18 @@ export function useWorkflowInlineAgentConfigureSync({
   currentModelRef.current = currentModel
   enabledRef.current = enabled
 
-  const getAgentSoulDraft = useCallback(() => formStateToAgentSoulConfig({
-    baseConfig: baseConfigRef.current,
-    formState: store.get(agentComposerDraftAtom),
-    currentModel: currentModelRef.current,
-  }), [store])
+  const getAgentSoulDraft = useCallback(
+    () =>
+      formStateToAgentSoulConfig({
+        baseConfig: baseConfigRef.current,
+        formState: store.get(agentComposerDraftAtom),
+        currentModel: currentModelRef.current,
+      }),
+    [store],
+  )
 
   const saveComposer = useSerialAsyncCallback(async (configSnapshot: AgentSoulConfig) => {
-    if (!configsMap?.flowId || configsMap.flowType !== FlowType.appFlow)
-      return
+    if (!configsMap?.flowId || configsMap.flowType !== FlowType.appFlow) return
 
     const savedDraftKey = JSON.stringify(configSnapshot)
     const composerState = await saveComposerMutation.mutateAsync({
@@ -128,13 +132,16 @@ export function useWorkflowInlineAgentConfigureSync({
     void saveComposer(getAgentSoulDraft())
   }
 
-  const debouncedSaveDraft = useMemo(() => debounce(() => {
-    latestDraftSaveRef.current()
-  }, DRAFT_AUTOSAVE_WAIT), [])
+  const debouncedSaveDraft = useMemo(
+    () =>
+      debounce(() => {
+        latestDraftSaveRef.current()
+      }, DRAFT_AUTOSAVE_WAIT),
+    [],
+  )
 
   const saveDraft = useCallback(async () => {
-    if (!enabledRef.current)
-      return
+    if (!enabledRef.current) return
 
     debouncedSaveDraft.cancel?.()
     await saveComposer(getAgentSoulDraft())
@@ -146,9 +153,9 @@ export function useWorkflowInlineAgentConfigureSync({
       const agentSoulDraftKey = JSON.stringify(agentSoulDraft)
 
       if (
-        !enabledRef.current
-        || !store.get(isAgentComposerDirtyAtom)
-        || lastAutosavedDraftKeyRef.current === agentSoulDraftKey
+        !enabledRef.current ||
+        !store.get(isAgentComposerDirtyAtom) ||
+        lastAutosavedDraftKeyRef.current === agentSoulDraftKey
       ) {
         return
       }

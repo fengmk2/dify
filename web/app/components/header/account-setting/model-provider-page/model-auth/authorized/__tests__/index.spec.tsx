@@ -14,9 +14,10 @@ let mockDoingAction = false
 let mockWorkspacePermissionKeys = ['credential.use', 'credential.create', 'credential.manage']
 
 vi.mock('@/context/app-context', () => ({
-  useSelector: (selector: (state: { workspacePermissionKeys: string[] }) => unknown) => selector({
-    workspacePermissionKeys: mockWorkspacePermissionKeys,
-  }),
+  useSelector: (selector: (state: { workspacePermissionKeys: string[] }) => unknown) =>
+    selector({
+      workspacePermissionKeys: mockWorkspacePermissionKeys,
+    }),
 }))
 
 vi.mock('../../hooks', () => ({
@@ -32,7 +33,16 @@ vi.mock('../../hooks', () => ({
 }))
 
 vi.mock('../authorized-item', () => ({
-  default: ({ credentials, model, disabled, disableEdit, disableDelete, onEdit, onDelete, onItemClick }: {
+  default: ({
+    credentials,
+    model,
+    disabled,
+    disableEdit,
+    disableDelete,
+    onEdit,
+    onDelete,
+    onItemClick,
+  }: {
     credentials: Credential[]
     model?: CustomModel
     disabled?: boolean
@@ -46,9 +56,15 @@ vi.mock('../authorized-item', () => ({
       {credentials.map((cred: Credential) => (
         <div key={cred.credential_id}>
           <span>{cred.credential_name}</span>
-          <button disabled={disabled || disableEdit} onClick={() => onEdit?.(cred, model)}>Edit</button>
-          <button disabled={disabled || disableDelete} onClick={() => onDelete?.(cred, model)}>Delete</button>
-          <button disabled={disabled} onClick={() => onItemClick?.(cred, model)}>Select</button>
+          <button disabled={disabled || disableEdit} onClick={() => onEdit?.(cred, model)}>
+            Edit
+          </button>
+          <button disabled={disabled || disableDelete} onClick={() => onDelete?.(cred, model)}>
+            Delete
+          </button>
+          <button disabled={disabled} onClick={() => onItemClick?.(cred, model)}>
+            Select
+          </button>
         </div>
       ))}
     </div>
@@ -316,6 +332,8 @@ describe('Authorized', () => {
     )
 
     const dialog = screen.getByRole('alertdialog')
-    expect(within(dialog).getByRole('button', { name: /common.operation.confirm/i }))!.toBeDisabled()
+    expect(
+      within(dialog).getByRole('button', { name: /common.operation.confirm/i }),
+    )!.toBeDisabled()
   })
 })

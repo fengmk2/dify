@@ -24,9 +24,7 @@ export function IntegrationSectionLayout({
         scrollbar: 'data-[orientation=vertical]:my-1 data-[orientation=vertical]:me-1',
       }}
     >
-      <div className={bodyClassName}>
-        {children}
-      </div>
+      <div className={bodyClassName}>{children}</div>
     </ScrollArea>
   )
 }

@@ -3,10 +3,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ScopeProvider } from 'jotai-scope'
 import { DeleteDeploymentDialog } from '../delete-dialog'
-import {
-  deleteDeploymentDialogOpenAtom,
-  deploymentActionAppInstanceIdAtom,
-} from '../state'
+import { deleteDeploymentDialogOpenAtom, deploymentActionAppInstanceIdAtom } from '../state'
 
 type QueryOptions = {
   input?: unknown
@@ -62,9 +59,10 @@ vi.mock('jotai-tanstack-query', async () => {
   const { atom } = await import('jotai')
 
   return {
-    atomWithQuery: (createOptions: (get: Getter) => QueryOptions) => atom((get) => {
-      return useQueryMock(createOptions(get))
-    }),
+    atomWithQuery: (createOptions: (get: Getter) => QueryOptions) =>
+      atom((get) => {
+        return useQueryMock(createOptions(get))
+      }),
   }
 })
 
@@ -149,15 +147,18 @@ describe('DeleteDeploymentDialog', () => {
 
       await user.click(screen.getByRole('button', { name: 'deployments.settings.delete' }))
 
-      expect(deleteMutationMock.mutate).toHaveBeenCalledWith({
-        params: {
-          appInstanceId: 'app-instance-1',
+      expect(deleteMutationMock.mutate).toHaveBeenCalledWith(
+        {
+          params: {
+            appInstanceId: 'app-instance-1',
+          },
         },
-      }, expect.objectContaining({
-        onSuccess: expect.any(Function),
-        onError: expect.any(Function),
-        onSettled: expect.any(Function),
-      }))
+        expect.objectContaining({
+          onSuccess: expect.any(Function),
+          onError: expect.any(Function),
+          onSettled: expect.any(Function),
+        }),
+      )
     })
   })
 })

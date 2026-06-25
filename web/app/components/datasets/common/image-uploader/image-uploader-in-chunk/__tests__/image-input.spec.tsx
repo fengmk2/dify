@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 import { FileContextProvider } from '../../store'
 import ImageInput from '../image-input'
 
@@ -14,11 +14,7 @@ vi.mock('@/service/use-common', () => ({
 }))
 
 const renderWithProvider = (ui: React.ReactElement) => {
-  return render(
-    <FileContextProvider>
-      {ui}
-    </FileContextProvider>,
-  )
+  return render(<FileContextProvider>{ui}</FileContextProvider>)
 }
 
 describe('ImageInput (image-uploader-in-chunk)', () => {

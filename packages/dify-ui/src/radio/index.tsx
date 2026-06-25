@@ -17,18 +17,17 @@ const radioRootClassName = cn(
   'data-disabled:data-checked:hover:border-components-radio-border-checked-disabled',
 )
 
-const radioIndicatorClassName = 'flex items-center justify-center data-unchecked:hidden before:size-1.5 before:rounded-full before:bg-current'
+const radioIndicatorClassName =
+  'flex items-center justify-center data-unchecked:hidden before:size-1.5 before:rounded-full before:bg-current'
 
 const radioControlClassName = radioRootClassName
 
 const radioSkeletonClassName = 'size-4 shrink-0 rounded-full bg-text-quaternary opacity-20'
 
-export type RadioRootProps<Value = string>
-  = Omit<BaseRadioNS.Root.Props<Value>, 'className'>
-    & {
-      className?: string
-      variant?: 'control' | 'unstyled'
-    }
+export type RadioRootProps<Value = string> = Omit<BaseRadioNS.Root.Props<Value>, 'className'> & {
+  className?: string
+  variant?: 'control' | 'unstyled'
+}
 
 export function RadioRoot<Value = string>({
   className,
@@ -43,63 +42,32 @@ export function RadioRoot<Value = string>({
   )
 }
 
-export type RadioIndicatorProps
-  = Omit<BaseRadioNS.Indicator.Props, 'className' | 'children'>
-    & {
-      className?: string
-    }
+export type RadioIndicatorProps = Omit<BaseRadioNS.Indicator.Props, 'className' | 'children'> & {
+  className?: string
+}
 
-export function RadioIndicator({
-  className,
-  ...props
-}: RadioIndicatorProps) {
+export function RadioIndicator({ className, ...props }: RadioIndicatorProps) {
+  return <BaseRadio.Indicator className={cn(radioIndicatorClassName, className)} {...props} />
+}
+
+export type RadioControlProps = Omit<RadioIndicatorProps, 'keepMounted'>
+
+export function RadioControl({ className, ...props }: RadioControlProps) {
   return (
-    <BaseRadio.Indicator
-      className={cn(radioIndicatorClassName, className)}
-      {...props}
-    />
+    <BaseRadio.Indicator keepMounted className={cn(radioControlClassName, className)} {...props} />
   )
 }
 
-export type RadioControlProps
-  = Omit<RadioIndicatorProps, 'keepMounted'>
+export type RadioProps<Value = string> = Omit<RadioRootProps<Value>, 'children'>
 
-export function RadioControl({
-  className,
-  ...props
-}: RadioControlProps) {
-  return (
-    <BaseRadio.Indicator
-      keepMounted
-      className={cn(radioControlClassName, className)}
-      {...props}
-    />
-  )
-}
-
-export type RadioProps<Value = string>
-  = Omit<RadioRootProps<Value>, 'children'>
-
-export function Radio<Value = string>({
-  ...props
-}: RadioProps<Value>) {
+export function Radio<Value = string>({ ...props }: RadioProps<Value>) {
   return <RadioRoot {...props} />
 }
 
-export type RadioSkeletonProps
-  = Omit<React.ComponentProps<'div'>, 'className'>
-    & {
-      className?: string
-    }
+export type RadioSkeletonProps = Omit<React.ComponentProps<'div'>, 'className'> & {
+  className?: string
+}
 
-export function RadioSkeleton({
-  className,
-  ...props
-}: RadioSkeletonProps) {
-  return (
-    <div
-      className={cn(radioSkeletonClassName, className)}
-      {...props}
-    />
-  )
+export function RadioSkeleton({ className, ...props }: RadioSkeletonProps) {
+  return <div className={cn(radioSkeletonClassName, className)} {...props} />
 }

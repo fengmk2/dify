@@ -13,7 +13,11 @@ type DatasetAccessConfigQueryOptions = {
   enabled?: boolean
 }
 
-export const useDatasetAccessRules = (datasetId: string, language: AccessControlTemplateLanguage, options?: DatasetAccessConfigQueryOptions) => {
+export const useDatasetAccessRules = (
+  datasetId: string,
+  language: AccessControlTemplateLanguage,
+  options?: DatasetAccessConfigQueryOptions,
+) => {
   return useQuery({
     ...consoleQuery.rbacAccessConfig.datasets.accessRules.queryOptions({
       input: {
@@ -29,7 +33,11 @@ export const useDatasetAccessRules = (datasetId: string, language: AccessControl
   })
 }
 
-export const useDatasetUserAccessSettings = (datasetId: string, language: AccessControlTemplateLanguage, options?: DatasetAccessConfigQueryOptions) => {
+export const useDatasetUserAccessSettings = (
+  datasetId: string,
+  language: AccessControlTemplateLanguage,
+  options?: DatasetAccessConfigQueryOptions,
+) => {
   return useQuery({
     ...consoleQuery.rbacAccessConfig.datasets.userAccessSettings.queryOptions({
       input: {
@@ -50,15 +58,16 @@ export const useUpdateDatasetUserAccessSettings = (datasetId: string) => {
 
   return useMutation({
     mutationKey: [NAME_SPACE, 'update-dataset-user-access-settings', datasetId],
-    mutationFn: (payload: UpdateDatasetUserAccessSettingsRequest) => consoleClient.rbacAccessConfig.datasets.updateUserAccessSettings({
-      params: {
-        datasetId,
-        accountId: payload.accountId,
-      },
-      body: {
-        access_policy_ids: payload.accessPolicyIds,
-      },
-    }),
+    mutationFn: (payload: UpdateDatasetUserAccessSettingsRequest) =>
+      consoleClient.rbacAccessConfig.datasets.updateUserAccessSettings({
+        params: {
+          datasetId,
+          accountId: payload.accountId,
+        },
+        body: {
+          access_policy_ids: payload.accessPolicyIds,
+        },
+      }),
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({
@@ -77,15 +86,16 @@ export const useRemoveDatasetAccessPolicyMemberBindings = (datasetId: string) =>
 
   return useMutation({
     mutationKey: [NAME_SPACE, 'remove-dataset-access-policy-member-bindings', datasetId],
-    mutationFn: (payload: RemoveDatasetAccessPolicyMemberBindingsRequest) => consoleClient.rbacAccessConfig.datasets.removeMemberBindings({
-      params: {
-        datasetId,
-        policyId: payload.accessPolicyId,
-      },
-      body: {
-        account_ids: payload.accountIds,
-      },
-    }),
+    mutationFn: (payload: RemoveDatasetAccessPolicyMemberBindingsRequest) =>
+      consoleClient.rbacAccessConfig.datasets.removeMemberBindings({
+        params: {
+          datasetId,
+          policyId: payload.accessPolicyId,
+        },
+        body: {
+          account_ids: payload.accountIds,
+        },
+      }),
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({
@@ -104,14 +114,15 @@ export const useUpdateDatasetOpenScope = (datasetId: string) => {
 
   return useMutation({
     mutationKey: [NAME_SPACE, 'update-dataset-open-scope', datasetId],
-    mutationFn: (openScope: ResourceOpenScope) => consoleClient.rbacAccessConfig.datasets.updateOpenScope({
-      params: {
-        datasetId,
-      },
-      body: {
-        scope: openScope,
-      },
-    }),
+    mutationFn: (openScope: ResourceOpenScope) =>
+      consoleClient.rbacAccessConfig.datasets.updateOpenScope({
+        params: {
+          datasetId,
+        },
+        body: {
+          scope: openScope,
+        },
+      }),
     onSuccess: async () => {
       await Promise.all([
         queryClient.invalidateQueries({

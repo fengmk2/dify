@@ -9,13 +9,10 @@ type PluginListProps = {
   searchParams?: Promise<LegacyPluginsSearchParams>
 }
 
-const PluginList = async ({
-  searchParams,
-}: PluginListProps) => {
+const PluginList = async ({ searchParams }: PluginListProps) => {
   const redirectPath = getLegacyPluginRedirectPath(await searchParams)
 
-  if (redirectPath)
-    redirect(redirectPath)
+  if (redirectPath) redirect(redirectPath)
 
   return (
     <PluginPage

@@ -5,9 +5,7 @@ import { AccessChannelsSection } from './settings-tab/access/channels-section'
 import { AccessPermissionsSection } from './settings-tab/access/permissions-section'
 import { accessSettingsQueryAtom } from './settings-tab/access/state'
 
-export function AccessTab({ appInstanceId }: {
-  appInstanceId: string
-}) {
+export function AccessTab({ appInstanceId }: { appInstanceId: string }) {
   const accessSettingsQuery = useAtomValue(accessSettingsQueryAtom)
 
   return (

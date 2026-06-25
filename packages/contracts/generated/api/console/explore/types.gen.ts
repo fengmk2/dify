@@ -78,8 +78,8 @@ export type GetExploreAppsLearnDifyResponses = {
   200: LearnDifyAppListResponse
 }
 
-export type GetExploreAppsLearnDifyResponse
-  = GetExploreAppsLearnDifyResponses[keyof GetExploreAppsLearnDifyResponses]
+export type GetExploreAppsLearnDifyResponse =
+  GetExploreAppsLearnDifyResponses[keyof GetExploreAppsLearnDifyResponses]
 
 export type GetExploreAppsByAppIdData = {
   body?: never
@@ -94,8 +94,8 @@ export type GetExploreAppsByAppIdResponses = {
   200: RecommendedAppDetailResponse
 }
 
-export type GetExploreAppsByAppIdResponse
-  = GetExploreAppsByAppIdResponses[keyof GetExploreAppsByAppIdResponses]
+export type GetExploreAppsByAppIdResponse =
+  GetExploreAppsByAppIdResponses[keyof GetExploreAppsByAppIdResponses]
 
 export type GetExploreBannersData = {
   body?: never

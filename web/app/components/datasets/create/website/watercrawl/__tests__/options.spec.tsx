@@ -1,6 +1,6 @@
 import type { CrawlOptions } from '@/models/datasets'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import Options from '../options'
 
 // Test Data Factory
@@ -84,27 +84,39 @@ describe('Options (watercrawl)', () => {
       const payload = createMockCrawlOptions({ crawl_sub_pages: true })
       render(<Options payload={payload} onChange={mockOnChange} />)
 
-      expect(screen.getByRole('checkbox', { name: /crawlSubPage/i })).toHaveAttribute('aria-checked', 'true')
+      expect(screen.getByRole('checkbox', { name: /crawlSubPage/i })).toHaveAttribute(
+        'aria-checked',
+        'true',
+      )
     })
 
     it('should display crawl_sub_pages checkbox without check icon when false', () => {
       const payload = createMockCrawlOptions({ crawl_sub_pages: false })
       render(<Options payload={payload} onChange={mockOnChange} />)
 
-      expect(screen.getByRole('checkbox', { name: /crawlSubPage/i })).toHaveAttribute('aria-checked', 'false')
+      expect(screen.getByRole('checkbox', { name: /crawlSubPage/i })).toHaveAttribute(
+        'aria-checked',
+        'false',
+      )
     })
 
     it('should display only_main_content checkbox with check icon when true', () => {
       const payload = createMockCrawlOptions({ only_main_content: true })
       render(<Options payload={payload} onChange={mockOnChange} />)
-      expect(screen.getByRole('checkbox', { name: /extractOnlyMainContent/i })).toHaveAttribute('aria-checked', 'true')
+      expect(screen.getByRole('checkbox', { name: /extractOnlyMainContent/i })).toHaveAttribute(
+        'aria-checked',
+        'true',
+      )
     })
 
     it('should display only_main_content checkbox without check icon when false', () => {
       const payload = createMockCrawlOptions({ only_main_content: false })
       render(<Options payload={payload} onChange={mockOnChange} />)
 
-      expect(screen.getByRole('checkbox', { name: /extractOnlyMainContent/i })).toHaveAttribute('aria-checked', 'false')
+      expect(screen.getByRole('checkbox', { name: /extractOnlyMainContent/i })).toHaveAttribute(
+        'aria-checked',
+        'false',
+      )
     })
 
     it('should display limit value in input', () => {

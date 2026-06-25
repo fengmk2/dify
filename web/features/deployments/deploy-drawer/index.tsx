@@ -34,7 +34,7 @@ export function DeployDrawer() {
       open={open}
       modal
       swipeDirection="right"
-      onOpenChange={next => !next && closeDeployDrawer()}
+      onOpenChange={(next) => !next && closeDeployDrawer()}
     >
       <DrawerPortal>
         <DrawerBackdrop />
@@ -45,16 +45,16 @@ export function DeployDrawer() {
               className="absolute top-4 right-5 size-6 rounded-md"
             />
             <DrawerContent className="flex min-h-0 flex-1 flex-col bg-components-panel-bg p-0 pb-0">
-              {!drawerAppInstanceId
-                ? <div className="p-6 text-text-tertiary">{t('deployDrawer.notFound')}</div>
-                : (
-                    <DeployForm
-                      key={formKey}
-                      appInstanceId={drawerAppInstanceId}
-                      lockedEnvId={drawerEnvironmentId}
-                      presetReleaseId={drawerReleaseId}
-                    />
-                  )}
+              {!drawerAppInstanceId ? (
+                <div className="p-6 text-text-tertiary">{t('deployDrawer.notFound')}</div>
+              ) : (
+                <DeployForm
+                  key={formKey}
+                  appInstanceId={drawerAppInstanceId}
+                  lockedEnvId={drawerEnvironmentId}
+                  presetReleaseId={drawerReleaseId}
+                />
+              )}
             </DrawerContent>
           </DrawerPopup>
         </DrawerViewport>

@@ -65,22 +65,16 @@ vi.mock('@/app/components/app/overview/app-card', () => ({
   }) => (
     <div>
       <button type="button" onClick={() => onChangeStatus?.(true)}>
-        toggle
-        {' '}
-        {cardType}
+        toggle {cardType}
       </button>
       {onGenerateCode && (
         <button type="button" onClick={() => onGenerateCode()}>
-          generate
-          {' '}
-          {cardType}
+          generate {cardType}
         </button>
       )}
       {onSaveSiteConfig && (
         <button type="button" onClick={() => onSaveSiteConfig({ title: 'Site title' })}>
-          save
-          {' '}
-          {cardType}
+          save {cardType}
         </button>
       )}
     </div>
@@ -167,12 +161,17 @@ describe('CardView ACL edit guards', () => {
         expect(mockFetchAppDetail).toHaveBeenCalled()
       })
       expect(mockFetchAppDetail).toHaveBeenCalledWith({ url: '/apps', id: 'app-1' })
-      expect(mockSetQueryData).toHaveBeenCalledWith(['apps', 'detail', 'app-1'], expect.objectContaining({
-        site: expect.objectContaining({ title: 'Saved site title' }),
-      }))
-      expect(mockAppState.setAppDetail).toHaveBeenCalledWith(expect.objectContaining({
-        site: expect.objectContaining({ title: 'Saved site title' }),
-      }))
+      expect(mockSetQueryData).toHaveBeenCalledWith(
+        ['apps', 'detail', 'app-1'],
+        expect.objectContaining({
+          site: expect.objectContaining({ title: 'Saved site title' }),
+        }),
+      )
+      expect(mockAppState.setAppDetail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          site: expect.objectContaining({ title: 'Saved site title' }),
+        }),
+      )
     })
 
     it('should refresh the Zustand app detail after saving webapp settings', async () => {
@@ -186,12 +185,17 @@ describe('CardView ACL edit guards', () => {
       await waitFor(() => {
         expect(mockFetchAppDetail).toHaveBeenCalledWith({ url: '/apps', id: 'app-1' })
       })
-      expect(mockSetQueryData).toHaveBeenCalledWith(['apps', 'detail', 'app-1'], expect.objectContaining({
-        site: expect.objectContaining({ title: 'Saved site title' }),
-      }))
-      expect(mockAppState.setAppDetail).toHaveBeenCalledWith(expect.objectContaining({
-        site: expect.objectContaining({ title: 'Saved site title' }),
-      }))
+      expect(mockSetQueryData).toHaveBeenCalledWith(
+        ['apps', 'detail', 'app-1'],
+        expect.objectContaining({
+          site: expect.objectContaining({ title: 'Saved site title' }),
+        }),
+      )
+      expect(mockAppState.setAppDetail).toHaveBeenCalledWith(
+        expect.objectContaining({
+          site: expect.objectContaining({ title: 'Saved site title' }),
+        }),
+      )
     })
   })
 })

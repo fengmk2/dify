@@ -2,7 +2,7 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import * as React from 'react'
 
 // Simple Mock Components that reproduce the exact UI issues
-const MockNavLink = ({ name, mode }: { name: string, mode: string }) => {
+const MockNavLink = ({ name, mode }: { name: string; mode: string }) => {
   return (
     <a
       className={`
@@ -23,7 +23,13 @@ const MockNavLink = ({ name, mode }: { name: string, mode: string }) => {
   )
 }
 
-const MockSidebarToggleButton = ({ expand, onToggle }: { expand: boolean, onToggle: () => void }) => {
+const MockSidebarToggleButton = ({
+  expand,
+  onToggle,
+}: {
+  expand: boolean
+  onToggle: () => void
+}) => {
   return (
     <div
       className={`
@@ -46,10 +52,7 @@ const MockSidebarToggleButton = ({ expand, onToggle }: { expand: boolean, onTogg
       </nav>
 
       {/* Toggle button section with consistent padding - issue #1 FIXED */}
-      <div
-        className="shrink-0 px-4 py-3"
-        data-testid="toggle-section"
-      >
+      <div className="shrink-0 px-4 py-3" data-testid="toggle-section">
         <button
           type="button"
           className="flex h-6 w-6 cursor-pointer items-center justify-center"
@@ -68,9 +71,14 @@ const MockAppInfo = ({ expand }: { expand: boolean }) => {
     <div data-testid="app-info" data-expand={expand}>
       <button type="button" className="block w-full">
         {/* Container with layout mode switching - reproduces issue #3 */}
-        <div className={`flex rounded-lg ${expand ? 'flex-col gap-2 p-2 pb-2.5' : 'items-start justify-center gap-1 p-1'}`}>
+        <div
+          className={`flex rounded-lg ${expand ? 'flex-col gap-2 p-2 pb-2.5' : 'items-start justify-center gap-1 p-1'}`}
+        >
           {/* Icon container with justify-between to flex-col switch - reproduces issue #3 */}
-          <div className={`flex items-center self-stretch ${expand ? 'justify-between' : 'flex-col gap-1'}`} data-testid="icon-container">
+          <div
+            className={`flex items-center self-stretch ${expand ? 'justify-between' : 'flex-col gap-1'}`}
+            data-testid="icon-container"
+          >
             {/* Icon with size changes - reproduces issue #3 */}
             <div
               data-testid="app-icon"
@@ -85,9 +93,7 @@ const MockAppInfo = ({ expand }: { expand: boolean }) => {
               Icon
             </div>
             <div className="flex items-center justify-center rounded-md p-0.5">
-              <div className="flex h-5 w-5 items-center justify-center">
-                ⚙️
-              </div>
+              <div className="flex h-5 w-5 items-center justify-center">⚙️</div>
             </div>
           </div>
           {/* Text that appears/disappears conditionally */}
@@ -128,7 +134,9 @@ describe('Sidebar Animation Issues Reproduction', () => {
         expanded = !expanded
       }
 
-      const { rerender } = render(<MockSidebarToggleButton expand={false} onToggle={handleToggle} />)
+      const { rerender } = render(
+        <MockSidebarToggleButton expand={false} onToggle={handleToggle} />,
+      )
 
       // Check collapsed state padding
       const toggleSection = screen.getByTestId('toggle-section')
@@ -147,7 +155,9 @@ describe('Sidebar Animation Issues Reproduction', () => {
 
     it('should verify sidebar width animation is working correctly', () => {
       const handleToggle = vi.fn()
-      const { rerender } = render(<MockSidebarToggleButton expand={false} onToggle={handleToggle} />)
+      const { rerender } = render(
+        <MockSidebarToggleButton expand={false} onToggle={handleToggle} />,
+      )
 
       const container = screen.getByTestId('sidebar-container')
 

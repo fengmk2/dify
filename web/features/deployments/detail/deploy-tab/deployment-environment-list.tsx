@@ -14,53 +14,43 @@ import {
   DetailTableHeader,
   DetailTableRow,
 } from '../table'
-import {
-  DEPLOYMENT_DETAIL_TABLE_COLUMN_CLASS_NAMES,
-} from '../table-styles'
+import { DEPLOYMENT_DETAIL_TABLE_COLUMN_CLASS_NAMES } from '../table-styles'
 import { DeploymentRowActions } from './deployment-row-actions'
 import { DeploymentStatusSummary } from './deployment-status-summary'
 
-function EnvironmentSummary({ environment }: {
+function EnvironmentSummary({
+  environment,
+}: {
   environment: EnvironmentDeployment['environment']
 }) {
-  return (
-    <span className="block truncate text-text-primary">
-      {environment.displayName}
-    </span>
-  )
+  return <span className="block truncate text-text-primary">{environment.displayName}</span>
 }
 
-function CurrentReleaseSummary({ release }: {
-  release: EnvironmentDeployment['currentRelease']
-}) {
-  if (!release)
-    return <span className="text-text-quaternary">—</span>
+function CurrentReleaseSummary({ release }: { release: EnvironmentDeployment['currentRelease'] }) {
+  if (!release) return <span className="text-text-quaternary">—</span>
 
   const commit = releaseCommit(release)
 
   return (
     <div className="flex min-w-0 flex-col gap-1">
       <div className="flex min-w-0 items-baseline gap-1.5">
-        <span className="truncate text-text-primary">
-          {release.displayName}
-        </span>
+        <span className="truncate text-text-primary">{release.displayName}</span>
         {commit !== '—' && (
-          <span className="shrink-0 font-mono system-xs-regular text-text-tertiary">
-            {commit}
-          </span>
+          <span className="shrink-0 font-mono system-xs-regular text-text-tertiary">{commit}</span>
         )}
       </div>
     </div>
   )
 }
 
-function CurrentReleaseMobileSummary({ release }: {
+function CurrentReleaseMobileSummary({
+  release,
+}: {
   release: EnvironmentDeployment['currentRelease']
 }) {
   const { t } = useTranslation('deployments')
 
-  if (!release)
-    return null
+  if (!release) return null
 
   return (
     <div className="flex min-w-0 flex-col gap-1">
@@ -72,7 +62,10 @@ function CurrentReleaseMobileSummary({ release }: {
   )
 }
 
-function DeploymentEnvironmentMobileRow({ appInstanceId, row }: {
+function DeploymentEnvironmentMobileRow({
+  appInstanceId,
+  row,
+}: {
   appInstanceId: string
   row: EnvironmentDeployment
 }) {
@@ -95,7 +88,10 @@ function DeploymentEnvironmentMobileRow({ appInstanceId, row }: {
   )
 }
 
-function DeploymentEnvironmentDesktopRows({ appInstanceId, rows }: {
+function DeploymentEnvironmentDesktopRows({
+  appInstanceId,
+  rows,
+}: {
   appInstanceId: string
   rows: EnvironmentDeployment[]
 }) {
@@ -126,7 +122,10 @@ function DeploymentEnvironmentDesktopRows({ appInstanceId, rows }: {
   )
 }
 
-export function DeploymentEnvironmentList({ appInstanceId, rows }: {
+export function DeploymentEnvironmentList({
+  appInstanceId,
+  rows,
+}: {
   appInstanceId: string
   rows: EnvironmentDeployment[]
 }) {
@@ -135,7 +134,7 @@ export function DeploymentEnvironmentList({ appInstanceId, rows }: {
   return (
     <>
       <DetailTableCardList className="pc:hidden">
-        {rows.map(row => (
+        {rows.map((row) => (
           <DeploymentEnvironmentMobileRow
             key={row.environment.id}
             appInstanceId={appInstanceId}
@@ -147,10 +146,22 @@ export function DeploymentEnvironmentList({ appInstanceId, rows }: {
         <DetailTable>
           <DetailTableHeader>
             <DetailTableRow>
-              <DetailTableHead className={DEPLOYMENT_DETAIL_TABLE_COLUMN_CLASS_NAMES.environment}>{t('deployTab.col.environment')}</DetailTableHead>
-              <DetailTableHead className={DEPLOYMENT_DETAIL_TABLE_COLUMN_CLASS_NAMES.status}>{t('deployTab.col.status')}</DetailTableHead>
-              <DetailTableHead className={DEPLOYMENT_DETAIL_TABLE_COLUMN_CLASS_NAMES.currentRelease}>{t('deployTab.col.currentRelease')}</DetailTableHead>
-              <DetailTableHead className={`${DEPLOYMENT_DETAIL_TABLE_COLUMN_CLASS_NAMES.actions} text-right`}>{t('deployTab.col.actions')}</DetailTableHead>
+              <DetailTableHead className={DEPLOYMENT_DETAIL_TABLE_COLUMN_CLASS_NAMES.environment}>
+                {t('deployTab.col.environment')}
+              </DetailTableHead>
+              <DetailTableHead className={DEPLOYMENT_DETAIL_TABLE_COLUMN_CLASS_NAMES.status}>
+                {t('deployTab.col.status')}
+              </DetailTableHead>
+              <DetailTableHead
+                className={DEPLOYMENT_DETAIL_TABLE_COLUMN_CLASS_NAMES.currentRelease}
+              >
+                {t('deployTab.col.currentRelease')}
+              </DetailTableHead>
+              <DetailTableHead
+                className={`${DEPLOYMENT_DETAIL_TABLE_COLUMN_CLASS_NAMES.actions} text-right`}
+              >
+                {t('deployTab.col.actions')}
+              </DetailTableHead>
             </DetailTableRow>
           </DetailTableHeader>
           <DetailTableBody>

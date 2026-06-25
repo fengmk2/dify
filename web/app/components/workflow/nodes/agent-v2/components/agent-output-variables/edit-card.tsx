@@ -1,7 +1,11 @@
 import type { DeclaredOutputConfig } from '@dify/contracts/api/console/apps/types.gen'
 import type { EditingState, OutputDraft } from './utils'
 import { Button } from '@langgenius/dify-ui/button'
-import { CollapsiblePanel, CollapsibleRoot, CollapsibleTrigger } from '@langgenius/dify-ui/collapsible'
+import {
+  CollapsiblePanel,
+  CollapsibleRoot,
+  CollapsibleTrigger,
+} from '@langgenius/dify-ui/collapsible'
 import { FieldControl, FieldError, FieldLabel, FieldRoot } from '@langgenius/dify-ui/field'
 import { Form } from '@langgenius/dify-ui/form'
 import { Kbd, KbdGroup } from '@langgenius/dify-ui/kbd'
@@ -27,7 +31,7 @@ function ConfirmHotkeyHint() {
 
   return (
     <KbdGroup aria-hidden="true">
-      {displayKeys.map(key => (
+      {displayKeys.map((key) => (
         <Kbd key={key} color="white">
           {key}
         </Kbd>
@@ -52,17 +56,18 @@ export function OutputEditCard({
   const editorRef = useRef<HTMLDivElement>(null)
   const [draft, setDraft] = useState(state.draft)
   const trimmedName = draft.name.trim()
-  const duplicateName = existingOutputs.some((output, index) => output.name === trimmedName && index !== state.index)
+  const duplicateName = existingOutputs.some(
+    (output, index) => output.name === trimmedName && index !== state.index,
+  )
   const nameInvalid = !!trimmedName && !OUTPUT_NAME_PATTERN.test(trimmedName)
   const hasNameError = duplicateName || nameInvalid
   const defaultValueErrorKey = getDefaultValueErrorKey(draft)
   const confirmDisabled = !trimmedName || nameInvalid || duplicateName || !!defaultValueErrorKey
   function updateDraft(next: Partial<OutputDraft>) {
-    setDraft(prev => ({ ...prev, ...next }))
+    setDraft((prev) => ({ ...prev, ...next }))
   }
   function handleConfirm() {
-    if (confirmDisabled)
-      return
+    if (confirmDisabled) return
     onConfirm(createOutputFromDraft(draft), state.index)
   }
   useHotkey(CONFIRM_HOTKEY, handleConfirm, { target: editorRef, ignoreInputs: false })
@@ -93,12 +98,12 @@ export function OutputEditCard({
                 value={draft.name}
                 placeholder={t('nodes.agent.outputVars.namePlaceholder', { ns: 'workflow' })}
                 className="h-6 w-24 px-1.5 py-0 code-sm-semibold"
-                onChange={event => updateDraft({ name: event.currentTarget.value })}
+                onChange={(event) => updateDraft({ name: event.currentTarget.value })}
               />
             </FieldRoot>
             <OutputTypeSelect
               value={draft.type}
-              onChange={value => updateDraft({ type: value })}
+              onChange={(value) => updateDraft({ type: value })}
             />
             <FieldRoot name="required" className="contents">
               <FieldLabel className="flex h-6 items-center gap-x-1 system-xs-regular text-text-tertiary">
@@ -106,7 +111,7 @@ export function OutputEditCard({
                   aria-label={t('nodes.agent.outputVars.requiredLabel', { ns: 'workflow' })}
                   size="xs"
                   checked={draft.required}
-                  onCheckedChange={required => updateDraft({ required })}
+                  onCheckedChange={(required) => updateDraft({ required })}
                 />
                 {t('nodes.agent.outputVars.requiredLabel', { ns: 'workflow' })}
               </FieldLabel>
@@ -114,7 +119,11 @@ export function OutputEditCard({
           </div>
           {hasNameError && (
             <FieldRoot name="nameError" invalid className="contents">
-              <FieldError id={nameErrorId} match className="mt-1 px-1 py-0 system-xs-regular text-text-destructive">
+              <FieldError
+                id={nameErrorId}
+                match
+                className="mt-1 px-1 py-0 system-xs-regular text-text-destructive"
+              >
                 {duplicateName
                   ? t('nodes.agent.outputVars.nameDuplicate', { ns: 'workflow' })
                   : t('nodes.agent.outputVars.nameInvalid', { ns: 'workflow' })}
@@ -130,7 +139,7 @@ export function OutputEditCard({
               value={draft.description}
               placeholder={t('nodes.agent.outputVars.descriptionPlaceholder', { ns: 'workflow' })}
               className="mt-2 h-5 border-transparent bg-transparent px-1 py-0 system-xs-regular shadow-none hover:border-transparent hover:bg-transparent focus:bg-transparent"
-              onChange={event => updateDraft({ description: event.currentTarget.value })}
+              onChange={(event) => updateDraft({ description: event.currentTarget.value })}
             />
           </FieldRoot>
         </div>
@@ -151,9 +160,11 @@ export function OutputEditCard({
                 <Textarea
                   size="small"
                   value={draft.defaultValue}
-                  placeholder={t('nodes.agent.outputVars.defaultValuePlaceholder', { ns: 'workflow' })}
+                  placeholder={t('nodes.agent.outputVars.defaultValuePlaceholder', {
+                    ns: 'workflow',
+                  })}
                   className="mt-1 min-h-6"
-                  onValueChange={defaultValue => updateDraft({ defaultValue })}
+                  onValueChange={(defaultValue) => updateDraft({ defaultValue })}
                 />
                 {defaultValueErrorKey && (
                   <FieldError match className="py-0 system-xs-regular text-text-destructive">

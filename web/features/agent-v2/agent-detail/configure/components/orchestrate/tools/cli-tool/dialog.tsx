@@ -1,8 +1,18 @@
 'use client'
 
-import type { AgentCliTool, EnvScope, EnvVariable } from '@/features/agent-v2/agent-composer/form-state'
+import type {
+  AgentCliTool,
+  EnvScope,
+  EnvVariable,
+} from '@/features/agent-v2/agent-composer/form-state'
 import { Button } from '@langgenius/dify-ui/button'
-import { Dialog, DialogCloseButton, DialogContent, DialogDescription, DialogTitle } from '@langgenius/dify-ui/dialog'
+import {
+  Dialog,
+  DialogCloseButton,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from '@langgenius/dify-ui/dialog'
 import { FieldControl, FieldDescription, FieldLabel, FieldRoot } from '@langgenius/dify-ui/field'
 import { Form } from '@langgenius/dify-ui/form'
 import { toast } from '@langgenius/dify-ui/toast'
@@ -15,7 +25,8 @@ type CliToolFormValues = {
   name?: string
 }
 
-const createCliToolId = () => `cli-tool-${globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`}`
+const createCliToolId = () =>
+  `cli-tool-${globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`}`
 
 const createCliEnvVariable = (): EnvVariable => ({
   id: globalThis.crypto?.randomUUID?.() ?? `${Date.now()}-${Math.random()}`,
@@ -43,7 +54,9 @@ export function CliToolDialog({
   const { t: tCommon } = useTranslation('common')
   const [installCommand, setInstallCommand] = useState(tool?.installCommand ?? '')
   const [toolName, setToolName] = useState(tool?.name ?? '')
-  const [envVariables, setEnvVariables] = useState<EnvVariable[]>(() => tool?.envVariables?.length ? tool.envVariables : [createCliEnvVariable()])
+  const [envVariables, setEnvVariables] = useState<EnvVariable[]>(() =>
+    tool?.envVariables?.length ? tool.envVariables : [createCliEnvVariable()],
+  )
 
   const resetForm = useCallback(() => {
     setInstallCommand(tool?.installCommand ?? '')
@@ -51,76 +64,93 @@ export function CliToolDialog({
     setEnvVariables(tool?.envVariables?.length ? tool.envVariables : [createCliEnvVariable()])
   }, [tool])
 
-  const handleOpenChange = useCallback((nextOpen: boolean) => {
-    if (nextOpen)
-      resetForm()
+  const handleOpenChange = useCallback(
+    (nextOpen: boolean) => {
+      if (nextOpen) resetForm()
 
-    onOpenChange(nextOpen)
-  }, [onOpenChange, resetForm])
+      onOpenChange(nextOpen)
+    },
+    [onOpenChange, resetForm],
+  )
 
-  const updateEnvVariable = useCallback((id: string, updater: (variable: EnvVariable) => EnvVariable) => {
-    setEnvVariables(currentVariables => currentVariables.map(variable => (
-      variable.id === id ? updater(variable) : variable
-    )))
-  }, [])
+  const updateEnvVariable = useCallback(
+    (id: string, updater: (variable: EnvVariable) => EnvVariable) => {
+      setEnvVariables((currentVariables) =>
+        currentVariables.map((variable) => (variable.id === id ? updater(variable) : variable)),
+      )
+    },
+    [],
+  )
 
   const addEnvVariable = useCallback(() => {
-    setEnvVariables(currentVariables => [...currentVariables, createCliEnvVariable()])
+    setEnvVariables((currentVariables) => [...currentVariables, createCliEnvVariable()])
   }, [])
 
   const deleteEnvVariable = useCallback((id: string) => {
-    setEnvVariables(currentVariables => currentVariables.length > 1
-      ? currentVariables.filter(variable => variable.id !== id)
-      : [createCliEnvVariable()],
+    setEnvVariables((currentVariables) =>
+      currentVariables.length > 1
+        ? currentVariables.filter((variable) => variable.id !== id)
+        : [createCliEnvVariable()],
     )
   }, [])
 
-  const handleKeyChange = useCallback((id: string, key: string) => {
-    updateEnvVariable(id, variable => ({ ...variable, key }))
-  }, [updateEnvVariable])
+  const handleKeyChange = useCallback(
+    (id: string, key: string) => {
+      updateEnvVariable(id, (variable) => ({ ...variable, key }))
+    },
+    [updateEnvVariable],
+  )
 
-  const handleScopeChange = useCallback((id: string, scope: EnvScope) => {
-    updateEnvVariable(id, variable => ({ ...variable, scope }))
-  }, [updateEnvVariable])
+  const handleScopeChange = useCallback(
+    (id: string, scope: EnvScope) => {
+      updateEnvVariable(id, (variable) => ({ ...variable, scope }))
+    },
+    [updateEnvVariable],
+  )
 
-  const handleValueChange = useCallback((id: string, value: string) => {
-    updateEnvVariable(id, variable => ({ ...variable, value }))
-  }, [updateEnvVariable])
+  const handleValueChange = useCallback(
+    (id: string, value: string) => {
+      updateEnvVariable(id, (variable) => ({ ...variable, value }))
+    },
+    [updateEnvVariable],
+  )
 
-  const handleSubmit = useCallback((formValues: CliToolFormValues) => {
-    const trimmedName = formValues.name?.trim() || toolName.trim()
-    const trimmedInstallCommand = formValues.installCommand?.trim() || installCommand.trim()
+  const handleSubmit = useCallback(
+    (formValues: CliToolFormValues) => {
+      const trimmedName = formValues.name?.trim() || toolName.trim()
+      const trimmedInstallCommand = formValues.installCommand?.trim() || installCommand.trim()
 
-    if (!trimmedInstallCommand) {
-      toast.error(t('agentDetail.configure.tools.cliDialog.installCommand.required'))
-      return
-    }
-    if (!trimmedName) {
-      toast.error(t('agentDetail.configure.tools.cliDialog.name.required'))
-      return
-    }
+      if (!trimmedInstallCommand) {
+        toast.error(t('agentDetail.configure.tools.cliDialog.installCommand.required'))
+        return
+      }
+      if (!trimmedName) {
+        toast.error(t('agentDetail.configure.tools.cliDialog.name.required'))
+        return
+      }
 
-    onSaveCliTool({
-      ...tool,
-      id: tool?.id ?? createCliToolId(),
-      kind: 'cli',
-      name: trimmedName,
-      installCommand: trimmedInstallCommand,
-      envVariables,
-    })
-    setInstallCommand('')
-    setToolName('')
-    setEnvVariables([createCliEnvVariable()])
-    onOpenChange(false)
-  }, [envVariables, installCommand, onOpenChange, onSaveCliTool, t, tool, toolName])
+      onSaveCliTool({
+        ...tool,
+        id: tool?.id ?? createCliToolId(),
+        kind: 'cli',
+        name: trimmedName,
+        installCommand: trimmedInstallCommand,
+        envVariables,
+      })
+      setInstallCommand('')
+      setToolName('')
+      setEnvVariables([createCliEnvVariable()])
+      onOpenChange(false)
+    },
+    [envVariables, installCommand, onOpenChange, onSaveCliTool, t, tool, toolName],
+  )
 
   const handleCancel = useCallback(() => {
     onOpenChange(false)
   }, [onOpenChange])
 
   const handleDelete = useCallback(() => {
-    if (!tool)
-      return
+    if (!tool) return
 
     onDeleteCliTool?.(tool.id)
     onOpenChange(false)
@@ -132,7 +162,11 @@ export function CliToolDialog({
         <div className="relative px-6 pt-6 pb-3">
           <DialogCloseButton />
           <DialogTitle className="title-2xl-semi-bold text-text-primary">
-            {t(mode === 'edit' ? 'agentDetail.configure.tools.cliDialog.editTitle' : 'agentDetail.configure.tools.cliDialog.title')}
+            {t(
+              mode === 'edit'
+                ? 'agentDetail.configure.tools.cliDialog.editTitle'
+                : 'agentDetail.configure.tools.cliDialog.title',
+            )}
           </DialogTitle>
           <DialogDescription className="mt-1 system-xs-regular text-text-tertiary">
             {t('agentDetail.configure.tools.cliDialog.description')}
@@ -158,9 +192,7 @@ export function CliToolDialog({
               />
             </FieldRoot>
             <FieldRoot name="name">
-              <FieldLabel>
-                {t('agentDetail.configure.tools.cliDialog.name.label')}
-              </FieldLabel>
+              <FieldLabel>{t('agentDetail.configure.tools.cliDialog.name.label')}</FieldLabel>
               <FieldControl
                 autoComplete="off"
                 onValueChange={setToolName}

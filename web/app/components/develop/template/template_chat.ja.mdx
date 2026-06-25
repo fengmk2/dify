@@ -9,12 +9,16 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
   ### ベース URL
   <CodeGroup title="コード" targetCode={props.appDetail.api_base_url} />
 
-  ### 認証
+### 認証
 
-  サービス API は `API-Key` 認証を使用します。
-  <i>**API キーの漏洩を防ぐため、API キーはクライアント側で共有または保存せず、サーバー側で保存することを強くお勧めします。**</i>
+サービス API は `API-Key` 認証を使用します。
 
-  すべての API リクエストにおいて、以下のように `Authorization`HTTP ヘッダーに API キーを含めてください：
+<i>
+  **API キーの漏洩を防ぐため、API
+  キーはクライアント側で共有または保存せず、サーバー側で保存することを強くお勧めします。**
+</i>
+
+すべての API リクエストにおいて、以下のように `Authorization`HTTP ヘッダーに API キーを含めてください：
 
   <CodeGroup title="コード" targetCode='Authorization: Bearer {API_KEY}' />
 </div>
@@ -203,26 +207,26 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="POST"
       label="/chat-messages"
       targetCode={`curl -X POST '${props.appDetail.api_base_url}/chat-messages' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --header 'Content-Type: application/json' \\
 --data-raw '{
-    "inputs": ${JSON.stringify(props.inputs)},
-    "query": "What are the specs of the iPhone 13 Pro Max?",
-    "response_mode": "streaming",
-    "conversation_id": "",
-    "user": "abc-123",
-    "files": [
-        {
-          "type": "image",
-        "transfer_method": "remote_url",
-        "url": "https://cloud.dify.ai/logo/logo-site.png"
-      }
-    ]
+"inputs": ${JSON.stringify(props.inputs)},
+"query": "What are the specs of the iPhone 13 Pro Max?",
+"response_mode": "streaming",
+"conversation_id": "",
+"user": "abc-123",
+"files": [
+{
+"type": "image",
+"transfer_method": "remote_url",
+"url": "https://cloud.dify.ai/logo/logo-site.png"
+}
+]
 }'`}
-    />
-    ### ブロッキングモード
-    <CodeGroup title="応答">
-    ```json {{ title: '応答' }}
+/> ### ブロッキングモード
+<CodeGroup title="応答">
+`json {{ title: '応答' }}
     {
         "event": "message",
         "task_id": "c3800678-a077-43df-a102-53f23ed20b88",
@@ -261,11 +265,10 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
         },
         "created_at": 1705407629
     }
-    ```
-    </CodeGroup>
-    ### ストリーミングモード（基本アシスタント）
-    <CodeGroup title="応答">
-    ```streaming {{ title: '応答' }}
+    `
+</CodeGroup> ### ストリーミングモード（基本アシスタント）
+<CodeGroup title="応答">
+`streaming {{ title: '応答' }}
       data: {"event": "message", "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290", "conversation_id": "45701982-8118-4bc5-8e9b-64562b4555f2", "answer": " I", "created_at": 1679586595}
       data: {"event": "message", "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290", "conversation_id": "45701982-8118-4bc5-8e9b-64562b4555f2", "answer": "'m", "created_at": 1679586595}
       data: {"event": "message", "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290", "conversation_id": "45701982-8118-4bc5-8e9b-64562b4555f2", "answer": " glad", "created_at": 1679586595}
@@ -275,94 +278,95 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       data: {"event": "message_end", "id": "5e52ce04-874b-4d27-9045-b3bc80def685", "conversation_id": "45701982-8118-4bc5-8e9b-64562b4555f2", "metadata": {"usage": {"prompt_tokens": 1033, "prompt_unit_price": "0.001", "prompt_price_unit": "0.001", "prompt_price": "0.0010330", "completion_tokens": 135, "completion_unit_price": "0.002", "completion_price_unit": "0.001", "completion_price": "0.0002700", "total_tokens": 1168, "total_price": "0.0013030", "currency": "USD", "latency": 1.381760165997548}, "retriever_resources": [{"position": 1, "dataset_id": "101b4c97-fc2e-463c-90b1-5261a4cdcafb", "dataset_name": "iPhone", "document_id": "8dd1ad74-0b5f-4175-b735-7d98bbbb4e00", "document_name": "iPhone List", "segment_id": "ed599c7f-2766-4294-9d1d-e5235a61270a", "score": 0.98457545, "content": "\"Model\",\"Release Date\",\"Display Size\",\"Resolution\",\"Processor\",\"RAM\",\"Storage\",\"Camera\",\"Battery\",\"Operating System\"\n\"iPhone 13 Pro Max\",\"September 24, 2021\",\"6.7 inch\",\"1284 x 2778\",\"Hexa-core (2x3.23 GHz Avalanche + 4x1.82 GHz Blizzard)\",\"6 GB\",\"128, 256, 512 GB, 1TB\",\"12 MP\",\"4352 mAh\",\"iOS 15\""}]}}
       data: {"event": "tts_message", "conversation_id": "23dd85f3-1a41-4ea0-b7a9-062734ccfaf9", "message_id": "a8bdc41c-13b2-4c18-bfd9-054b9803038c", "created_at": 1721205487, "task_id": "3bf8a0bb-e73b-4690-9e66-4e429bad8ee7", "audio": "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"}
       data: {"event": "tts_message_end", "conversation_id": "23dd85f3-1a41-4ea0-b7a9-062734ccfaf9", "message_id": "a8bdc41c-13b2-4c18-bfd9-054b9803038c", "created_at": 1721205487, "task_id": "3bf8a0bb-e73b-4690-9e66-4e429bad8ee7", "audio": ""}
-    ```
-    </CodeGroup>
-    ### 応答例（エージェントアシスタント）
-    <CodeGroup title="応答">
-    ```streaming {{ title: '応答' }}
-    data: {"event": "message", "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290", "conversation_id": "45701982-8118-4bc5-8e9b-64562b4555f2", "answer": " I", "created_at": 1679586595}
-    data: {"event": "message", "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290", "conversation_id": "45701982-8118-4bc5-8e9b-64562b4555f2", "answer": "'m", "created_at": 1679586595}
-    data: {"event": "message", "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290", "conversation_id": "45701982-8118-4bc5-8e9b-64562b4555f2", "answer": " glad", "created_at": 1679586595}
-    data: {"event": "message", "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290", "conversation_id": "45701982-8118-4bc5-8e9b-64562b4555f2", "answer": " to", "created_at": 1679586595}
-    data: {"event": "message", "message_id" : "5ad4cb98-f0c7-4085-b384-88c403be6290", "conversation_id": "45701982-8118-4bc5-8e9b-64562b4555f2", "answer": " meet", "created_at": 1679586595}
-    data: {"event": "message", "message_id" : "5ad4cb98-f0c7-4085-b384-88c403be6290", "conversation_id": "45701982-8118-4bc5-8e9b-64562b4555f2", "answer": " you", "created_at": 1679586595}
-    data: {"event": "message_end", "id": "5e52ce04-874b-4d27-9045-b3bc80def685", "conversation_id": "45701982-8118-4bc5-8e9b-64562b4555f2", "metadata": {"usage": {"prompt_tokens": 1033, "prompt_unit_price": "0.001", "prompt_price_unit": "0.001", "prompt_price": "0.0010330", "completion_tokens": 135, "completion_unit_price": "0.002", "completion_price_unit": "0.001", "completion_price": "0.0002700", "total_tokens": 1168, "total_price": "0.0013030", "currency": "USD", "latency": 1.381760165997548}, "retriever_resources": [{"position": 1, "dataset_id": "101b4c97-fc2e-463c-90b1-5261a4cdcafb", "dataset_name": "iPhone", "document_id": "8dd1ad74-0b5f-4175-b735-7d98bbbb4e00", "document_name": "iPhone List", "segment_id": "ed599c7f-2766-4294-9d1d-e5235a61270a", "score": 0.98457545, "content": "\"Model\",\"Release Date\",\"Display Size\",\"Resolution\",\"Processor\",\"RAM\",\"Storage\",\"Camera\",\"Battery\",\"Operating System\"\n\"iPhone 13 Pro Max\",\"September 24, 2021\",\"6.7 inch\",\"1284 x 2778\",\"Hexa-core (2x3.23 GHz Avalanche + 4x1.82 GHz Blizzard)\",\"6 GB\",\"128, 256, 512 GB, 1TB\",\"12 MP\",\"4352 mAh\",\"iOS 15\""}]}}
-    data: {"event": "tts_message", "conversation_id": "23dd85f3-1a41-4ea0-b7a9-062734ccfaf9", "message_id": "a8bdc41c-13b2-4c18-bfd9-054b9803038c", "created_at": 1721205487, "task_id": "3bf8a0bb-e73b-4690-9e66-4e429bad8ee7", "audio": "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"}
-    data: {"event": "tts_message_end", "conversation_id": "23dd85f3-1a41-4ea0-b7a9-062734ccfaf9", "message_id": "a8bdc41c-13b2-4c18-bfd9-054b9803038c", "created_at": 1721205487, "task_id": "3bf8a0bb-e73b-4690-9e66-4e429bad8ee7", "audio": ""}
-  ```
-    </CodeGroup>
-  </Col>
+    `
+</CodeGroup> ### 応答例（エージェントアシスタント）
+<CodeGroup title="応答">
+```streaming {{ title: '応答' }}
+data: {"event": "message", "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290", "conversation_id": "45701982-8118-4bc5-8e9b-64562b4555f2", "answer": " I", "created_at": 1679586595}
+data: {"event": "message", "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290", "conversation_id": "45701982-8118-4bc5-8e9b-64562b4555f2", "answer": "'m", "created_at": 1679586595}
+data: {"event": "message", "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290", "conversation_id": "45701982-8118-4bc5-8e9b-64562b4555f2", "answer": " glad", "created_at": 1679586595}
+data: {"event": "message", "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290", "conversation_id": "45701982-8118-4bc5-8e9b-64562b4555f2", "answer": " to", "created_at": 1679586595}
+data: {"event": "message", "message_id" : "5ad4cb98-f0c7-4085-b384-88c403be6290", "conversation_id": "45701982-8118-4bc5-8e9b-64562b4555f2", "answer": " meet", "created_at": 1679586595}
+data: {"event": "message", "message_id" : "5ad4cb98-f0c7-4085-b384-88c403be6290", "conversation_id": "45701982-8118-4bc5-8e9b-64562b4555f2", "answer": " you", "created_at": 1679586595}
+data: {"event": "message_end", "id": "5e52ce04-874b-4d27-9045-b3bc80def685", "conversation_id": "45701982-8118-4bc5-8e9b-64562b4555f2", "metadata": {"usage": {"prompt_tokens": 1033, "prompt_unit_price": "0.001", "prompt_price_unit": "0.001", "prompt_price": "0.0010330", "completion_tokens": 135, "completion_unit_price": "0.002", "completion_price_unit": "0.001", "completion_price": "0.0002700", "total_tokens": 1168, "total_price": "0.0013030", "currency": "USD", "latency": 1.381760165997548}, "retriever_resources": [{"position": 1, "dataset_id": "101b4c97-fc2e-463c-90b1-5261a4cdcafb", "dataset_name": "iPhone", "document_id": "8dd1ad74-0b5f-4175-b735-7d98bbbb4e00", "document_name": "iPhone List", "segment_id": "ed599c7f-2766-4294-9d1d-e5235a61270a", "score": 0.98457545, "content": "\"Model\",\"Release Date\",\"Display Size\",\"Resolution\",\"Processor\",\"RAM\",\"Storage\",\"Camera\",\"Battery\",\"Operating System\"\n\"iPhone 13 Pro Max\",\"September 24, 2021\",\"6.7 inch\",\"1284 x 2778\",\"Hexa-core (2x3.23 GHz Avalanche + 4x1.82 GHz Blizzard)\",\"6 GB\",\"128, 256, 512 GB, 1TB\",\"12 MP\",\"4352 mAh\",\"iOS 15\""}]}}
+data: {"event": "tts_message", "conversation_id": "23dd85f3-1a41-4ea0-b7a9-062734ccfaf9", "message_id": "a8bdc41c-13b2-4c18-bfd9-054b9803038c", "created_at": 1721205487, "task_id": "3bf8a0bb-e73b-4690-9e66-4e429bad8ee7", "audio": "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"}
+data: {"event": "tts_message_end", "conversation_id": "23dd85f3-1a41-4ea0-b7a9-062734ccfaf9", "message_id": "a8bdc41c-13b2-4c18-bfd9-054b9803038c", "created_at": 1721205487, "task_id": "3bf8a0bb-e73b-4690-9e66-4e429bad8ee7", "audio": ""}
+
+````
+  </CodeGroup>
+</Col>
 </Row>
 
 ---
 <Heading
-  url='/files/upload'
-  method='POST'
-  title='ファイルアップロード'
-  name='#file-upload'
+url='/files/upload'
+method='POST'
+title='ファイルアップロード'
+name='#file-upload'
 />
 <Row>
-  <Col>
-  メッセージ送信時に使用するためのファイルをアップロードします（現在は画像のみサポート）。画像とテキストのマルチモーダル理解を可能にします。
-  png、jpg、jpeg、webp、gif 形式をサポートしています。
-  アップロードされたファイルは現在のエンドユーザーのみが使用できます。
+<Col>
+メッセージ送信時に使用するためのファイルをアップロードします（現在は画像のみサポート）。画像とテキストのマルチモーダル理解を可能にします。
+png、jpg、jpeg、webp、gif 形式をサポートしています。
+アップロードされたファイルは現在のエンドユーザーのみが使用できます。
 
-  ### リクエストボディ
-  このインターフェースは`multipart/form-data`リクエストを必要とします。
-  - `file` (File) 必須
-    アップロードするファイル。
-  - `user` (string) 必須
-    ユーザー識別子、開発者のルールで定義され、アプリケーション内で一意でなければなりません。サービス API は WebApp によって作成された会話を共有しません。
+### リクエストボディ
+このインターフェースは`multipart/form-data`リクエストを必要とします。
+- `file` (File) 必須
+  アップロードするファイル。
+- `user` (string) 必須
+  ユーザー識別子、開発者のルールで定義され、アプリケーション内で一意でなければなりません。サービス API は WebApp によって作成された会話を共有しません。
 
-  ### 応答
-  アップロードが成功すると、サーバーはファイルの ID と関連情報を返します。
-  - `id` (uuid) ID
-  - `name` (string) ファイル名
-  - `size` (int) ファイルサイズ（バイト）
-  - `extension` (string) ファイル拡張子
-  - `mime_type` (string) ファイルの MIME タイプ
-  - `created_by` (uuid) エンドユーザーID
-  - `created_at` (timestamp) 作成タイムスタンプ、例：1705395332
+### 応答
+アップロードが成功すると、サーバーはファイルの ID と関連情報を返します。
+- `id` (uuid) ID
+- `name` (string) ファイル名
+- `size` (int) ファイルサイズ（バイト）
+- `extension` (string) ファイル拡張子
+- `mime_type` (string) ファイルの MIME タイプ
+- `created_by` (uuid) エンドユーザーID
+- `created_at` (timestamp) 作成タイムスタンプ、例：1705395332
 
-  ### エラー
-  - 400, `no_file_uploaded`, ファイルが提供されなければなりません
-  - 400, `too_many_files`, 現在は 1 つのファイルのみ受け付けます
-  - 400, `unsupported_preview`, ファイルはプレビューをサポートしていません
-  - 400, `unsupported_estimate`, ファイルは推定をサポートしていません
-  - 413, `file_too_large`, ファイルが大きすぎます
-  - 415, `unsupported_file_type`, サポートされていない拡張子、現在はドキュメントファイルのみ受け付けます
-  - 503, `s3_connection_failed`, S3 サービスに接続できません
-  - 503, `s3_permission_denied`, S3 にファイルをアップロードする権限がありません
-  - 503, `s3_file_too_large`, ファイルが S3 のサイズ制限を超えています
-  - 500, 内部サーバーエラー
+### エラー
+- 400, `no_file_uploaded`, ファイルが提供されなければなりません
+- 400, `too_many_files`, 現在は 1 つのファイルのみ受け付けます
+- 400, `unsupported_preview`, ファイルはプレビューをサポートしていません
+- 400, `unsupported_estimate`, ファイルは推定をサポートしていません
+- 413, `file_too_large`, ファイルが大きすぎます
+- 415, `unsupported_file_type`, サポートされていない拡張子、現在はドキュメントファイルのみ受け付けます
+- 503, `s3_connection_failed`, S3 サービスに接続できません
+- 503, `s3_permission_denied`, S3 にファイルをアップロードする権限がありません
+- 503, `s3_file_too_large`, ファイルが S3 のサイズ制限を超えています
+- 500, 内部サーバーエラー
 
 
-  </Col>
-  <Col sticky>
-  ### リクエスト例
-  <CodeGroup
-    title="リクエスト"
-    tag="POST"
-    label="/files/upload"
-    targetCode={`curl -X POST '${props.appDetail.api_base_url}/files/upload' \\
+</Col>
+<Col sticky>
+### リクエスト例
+<CodeGroup
+  title="リクエスト"
+  tag="POST"
+  label="/files/upload"
+  targetCode={`curl -X POST '${props.appDetail.api_base_url}/files/upload' \\
 --header 'Authorization: Bearer {api_key}' \\
 --form 'file=@localfile;type=image/[png|jpeg|jpg|webp|gif]' \\
 --form 'user=abc-123'`}
-  />
+/>
 
-  ### 応答例
-  <CodeGroup title="応答">
-    ```json {{ title: '応答' }}
-    {
-      "id": "72fa9618-8f89-4a37-9b33-7e1178a24a67",
-      "name": "example.png",
-      "size": 1024,
-      "extension": "png",
-      "mime_type": "image/png",
-      "created_by": "6ad1ab0a-73ff-4ac1-b9e4-cdb312f71f13",
-      "created_at": 1577836800,
-    }
-  ```
+### 応答例
+<CodeGroup title="応答">
+  ```json {{ title: '応答' }}
+  {
+    "id": "72fa9618-8f89-4a37-9b33-7e1178a24a67",
+    "name": "example.png",
+    "size": 1024,
+    "extension": "png",
+    "mime_type": "image/png",
+    "created_by": "6ad1ab0a-73ff-4ac1-b9e4-cdb312f71f13",
+    "created_at": 1577836800,
+  }
+````
+
   </CodeGroup>
   </Col>
 </Row>
@@ -429,6 +433,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -484,9 +489,10 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="GET"
       label="/files/:file_id/preview?as_attachment=true"
       targetCode={`curl -X GET '${props.appDetail.api_base_url}/files/72fa9618-8f89-4a37-9b33-7e1178a24a67/preview?as_attachment=true' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --output downloaded_file.png`}
-    />
+/>
 
     ### レスポンスヘッダー例
     <CodeGroup title="Response Headers">
@@ -506,6 +512,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     Cache-Control: public, max-age=3600
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -547,6 +554,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -585,6 +593,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
 
     ### 応答
     - `result` (string) 常に"success"を返します
+
   </Col>
   <Col sticky>
 
@@ -593,14 +602,15 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="POST"
       label="/messages/:message_id/feedbacks"
       targetCode={`curl -X POST '${props.appDetail.api_base_url}/messages/:message_id/feedbacks \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --header 'Content-Type: application/json' \\
 --data-raw '{
-    "rating": "like",
-    "user": "abc-123",
-    "content": "message feedback information"
+"rating": "like",
+"user": "abc-123",
+"content": "message feedback information"
 }'`}
-    />
+/>
 
     <CodeGroup title="応答">
     ```json {{ title: '応答' }}
@@ -609,6 +619,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -639,6 +650,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
 
     ### レスポンス
     - `data` (リスト) このアプリの「いいね」とフィードバックの一覧を返します。
+
   </Col>
   <Col sticky>
 
@@ -670,10 +682,10 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
         }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
-
 
 <Heading
   url='/messages/{message_id}/suggested'
@@ -700,6 +712,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
         アプリケーション内で開発者によって一意に定義される必要があります。
       </Property>
     </Properties>
+
   </Col>
   <Col sticky>
 
@@ -708,9 +721,10 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="GET"
       label="/messages/{message_id}/suggested"
       targetCode={`curl --location --request GET '${props.appDetail.api_base_url}/messages/{message_id}/suggested?user=abc-123& \\
+
 --header 'Authorization: Bearer ENTER-YOUR-SECRET-KEY' \\
 --header 'Content-Type: application/json'`}
-    />
+/>
 
     <CodeGroup title="応答">
     ```json {{ title: '応答' }}
@@ -724,6 +738,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -795,11 +810,11 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="GET"
       label="/messages"
       targetCode={`curl -X GET '${props.appDetail.api_base_url}/messages?user=abc-123&conversation_id='\\
+
 --header 'Authorization: Bearer {api_key}'`}
-    />
-    ### 応答例（基本アシスタント）
-    <CodeGroup title="応答">
-    ```json {{ title: '応答' }}
+/> ### 応答例（基本アシスタント）
+<CodeGroup title="応答">
+`json {{ title: '応答' }}
     {
       "limit": 20,
       "has_more": false,
@@ -831,8 +846,8 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
         }
       ]
     }
-    ```
-    </CodeGroup>
+    `
+</CodeGroup>
 
     ### 応答例（エージェントアシスタント）
     <CodeGroup title="応答">
@@ -891,6 +906,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -941,8 +957,9 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
   <Col sticky>
 
     <CodeGroup title="リクエスト" tag="GET" label="/conversations" targetCode={`curl -X GET '${props.appDetail.api_base_url}/conversations?user=abc-123&last_id=&limit=20' \\
+
 --header 'Authorization: Bearer {api_key}'`}
-    />
+/>
 
     <CodeGroup title="応答">
     ```json {{ title: '応答' }}
@@ -969,6 +986,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -997,6 +1015,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
 
     ### 応答
     - `result` (string) 常に"success"を返します
+
   </Col>
   <Col sticky>
 
@@ -1005,22 +1024,25 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="DELETE"
       label="/conversations/:conversation_id"
       targetCode={`curl -X DELETE '${props.appDetail.api_base_url}/conversations/:conversation_id' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --header 'Content-Type: application/json' \\
 --data-raw '{
-    "user": "abc-123"
+"user": "abc-123"
 }'`}
-    />
+/>
 
     <CodeGroup title="応答">
     ```text {{ title: '応答' }}
     204 No Content
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
 ---
+
 <Heading
   url='/conversations/:conversation_id/name'
   method='POST'
@@ -1055,6 +1077,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     - `introduction` (string) 紹介
     - `created_at` (timestamp) 作成タイムスタンプ、例：1705395332
     - `updated_at` (timestamp) 更新タイムスタンプ、例：1705395332
+
   </Col>
   <Col sticky>
 
@@ -1063,14 +1086,15 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="POST"
       label="/conversations/:conversation_id/name"
       targetCode={`curl -X POST '${props.appDetail.api_base_url}/conversations/:conversation_id/name' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --header 'Content-Type: application/json' \\
 --data-raw '{
-    "name": "",
-    "auto_generate": true,
-    "user": "abc-123"
+"name": "",
+"auto_generate": true,
+"user": "abc-123"
 }'`}
-    />
+/>
 
     <CodeGroup title="応答">
     ```json {{ title: '応答' }}
@@ -1084,6 +1108,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1145,8 +1170,9 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="GET"
       label="/conversations/:conversation_id/variables"
       targetCode={`curl -X GET '${props.appDetail.api_base_url}/conversations/{conversation_id}/variables?user=abc-123' \\
+
 --header 'Authorization: Bearer {api_key}'`}
-    />
+/>
 
     <CodeGroup title="Request with variable name filter">
     ```bash {{ title: 'cURL' }}
@@ -1183,6 +1209,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1244,13 +1271,14 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="PUT"
       label="/conversations/:conversation_id/variables/:variable_id"
       targetCode={`curl -X PUT '${props.appDetail.api_base_url}/conversations/{conversation_id}/variables/{variable_id}' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --header 'Content-Type: application/json' \\
 --data-raw '{
-    "value": "Updated Value",
-    "user": "abc-123"
+"value": "Updated Value",
+"user": "abc-123"
 }'`}
-      />
+/>
 
     <CodeGroup title="異なる値型での更新">
     ```bash {{ title: '文字列値' }}
@@ -1297,6 +1325,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1336,9 +1365,10 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="POST"
       label="/audio-to-text"
       targetCode={`curl -X POST '${props.appDetail.api_base_url}/audio-to-text' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --form 'file=@localfile;type=audio/[mp3|mp4|mpeg|mpga|m4a|wav|webm]'`}
-    />
+/>
 
     <CodeGroup title="応答">
     ```json {{ title: '応答' }}
@@ -1347,6 +1377,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1375,6 +1406,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
         ユーザー識別子、開発者によって定義され、アプリ内で一意である必要があります。
       </Property>
     </Properties>
+
   </Col>
   <Col sticky>
 
@@ -1383,9 +1415,10 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="POST"
       label="/text-to-audio"
       targetCode={`curl --location --request POST '${props.appDetail.api_base_url}/text-to-audio' \\
+
 --header 'Authorization: Bearer ENTER-YOUR-SECRET-KEY' \\
 --form 'text=Hello Dify;user=abc-123;message_id=5ad4cb98-f0c7-4085-b384-88c403be6290`}
-    />
+/>
 
     <CodeGroup title="ヘッダー">
     ```json {{ title: 'ヘッダー' }}
@@ -1394,6 +1427,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -1408,13 +1442,14 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
   <Col>
   このアプリケーションの基本情報を取得するために使用されます
 
-  ### Response
-  - `name` (string) アプリケーションの名前
-  - `description` (string) アプリケーションの説明
-  - `tags` (array[string]) アプリケーションのタグ
-  - `mode` (string) アプリケーションのモード
-  - `author_name` (string) 作者の名前
-  </Col>
+### Response
+
+- `name` (string) アプリケーションの名前
+- `description` (string) アプリケーションの説明
+- `tags` (array[string]) アプリケーションのタグ
+- `mode` (string) アプリケーションのモード
+- `author_name` (string) 作者の名前
+    </Col>
   <Col>
     <CodeGroup
       title="リクエスト"
@@ -1580,6 +1615,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -1594,15 +1630,11 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
   <Col>
   このアプリケーションのツールのアイコンを取得するために使用されます
 
-  ### 応答
-  - `tool_icons`(object[string]) ツールアイコン
-    - `tool_name` (string)
-      - `icon` (object|string)
-        - (object) アイコンオブジェクト
-          - `background` (string) 背景色（16 進数形式）
-          - `content`(string) 絵文字
-        - (string) アイコンの URL
-  </Col>
+### 応答
+
+- `tool_icons`(object[string]) ツールアイコン - `tool_name` (string) - `icon` (object|string) - (object) アイコンオブジェクト - `background` (string) 背景色（16 進数形式）- `content`(string) 絵文字 - (string) アイコンの URL
+
+    </Col>
   <Col>
     <CodeGroup
       title="リクエスト"
@@ -1612,20 +1644,21 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
 -H 'Authorization: Bearer {api_key}'`}
     />
 
-    <CodeGroup title="応答">
-    ```json {{ title: '応答' }}
-    {
-      "tool_icons": {
-        "dalle2": "https://cloud.dify.ai/console/api/workspaces/current/tool-provider/builtin/dalle/icon",
-        "api_tool": {
-          "background": "#252525",
-          "content": "\ud83d\ude01"
+      <CodeGroup title="応答">
+      ```json {{ title: '応答' }}
+      {
+        "tool_icons": {
+          "dalle2": "https://cloud.dify.ai/console/api/workspaces/current/tool-provider/builtin/dalle/icon",
+          "api_tool": {
+            "background": "#252525",
+            "content": "\ud83d\ude01"
+          }
         }
       }
-    }
-    ```
-    </CodeGroup>
-  </Col>
+      ```
+      </CodeGroup>
+
+    </Col>
 </Row>
 
 ---
@@ -1684,6 +1717,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ___

@@ -16,9 +16,10 @@ vi.mock('@tanstack/react-query', () => ({
 }))
 
 vi.mock('@/context/app-context', () => ({
-  useSelector: (selector: (state: { workspacePermissionKeys: string[] }) => unknown) => selector({
-    workspacePermissionKeys: mockWorkspacePermissionKeys.value,
-  }),
+  useSelector: (selector: (state: { workspacePermissionKeys: string[] }) => unknown) =>
+    selector({
+      workspacePermissionKeys: mockWorkspacePermissionKeys.value,
+    }),
 }))
 
 const mockTags: Tag[] = [

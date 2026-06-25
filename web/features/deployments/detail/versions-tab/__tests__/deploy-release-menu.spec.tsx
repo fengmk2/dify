@@ -1,7 +1,7 @@
 import type { Release } from '@dify/contracts/enterprise/types.gen'
 import { ReleaseSource } from '@dify/contracts/enterprise/types.gen'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 import { DeployReleaseMenu } from '../deploy-release-menu'
 
 const mockDeleteRelease = vi.hoisted(() => vi.fn())
@@ -51,7 +51,8 @@ vi.mock('../edit-release-dialog', () => ({
 }))
 
 vi.mock('../delete-release-dialog', () => ({
-  DeleteReleaseDialog: ({ open }: { open: boolean }) => open ? <div role="dialog">delete confirm</div> : null,
+  DeleteReleaseDialog: ({ open }: { open: boolean }) =>
+    open ? <div role="dialog">delete confirm</div> : null,
 }))
 
 vi.mock('../release-dsl-export', () => ({

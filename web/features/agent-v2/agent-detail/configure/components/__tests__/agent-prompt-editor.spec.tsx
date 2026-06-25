@@ -118,9 +118,7 @@ const duckDuckGoProviderTool: AgentTool = {
   iconClassName: 'i-simple-icons-duckduckgo',
   credentialKey: 'agentDetail.configure.tools.credential.authOne',
   credentialVariant: 'authorized',
-  actions: [
-    duckDuckGoSearchAction,
-  ],
+  actions: [duckDuckGoSearchAction],
 }
 
 const promptEditorDraft = {
@@ -178,7 +176,8 @@ describe('AgentPromptEditor', () => {
       const store = createStore()
       store.set(agentComposerDraftAtom, {
         ...defaultAgentSoulConfigFormState,
-        prompt: 'Use [§knowledge:retrieval-1:Old Search§] and [§knowledge:retrieval-2:Keep Search§]',
+        prompt:
+          'Use [§knowledge:retrieval-1:Old Search§] and [§knowledge:retrieval-2:Keep Search§]',
         knowledgeRetrievals: [
           { id: 'retrieval-1', name: 'Old Search' },
           { id: 'retrieval-2', name: 'Keep Search' },
@@ -190,18 +189,18 @@ describe('AgentPromptEditor', () => {
         { id: 'retrieval-2', name: 'Keep Search' },
       ])
 
-      expect(store.get(agentComposerPromptAtom)).toBe('Use [§knowledge:retrieval-1:Release Search§] and [§knowledge:retrieval-2:Keep Search§]')
+      expect(store.get(agentComposerPromptAtom)).toBe(
+        'Use [§knowledge:retrieval-1:Release Search§] and [§knowledge:retrieval-2:Keep Search§]',
+      )
     })
 
     it('should update CLI tool reference labels when the tool title changes', () => {
       const store = createStore()
       store.set(agentComposerDraftAtom, {
         ...defaultAgentSoulConfigFormState,
-        prompt: 'Run [§cli_tool:cli-1:Old CLI§] and [§tool:duckduckgo/ddg_search:DuckDuckGo Search§]',
-        tools: [
-          { id: 'cli-1', kind: 'cli', name: 'Old CLI' },
-          duckDuckGoProviderTool,
-        ],
+        prompt:
+          'Run [§cli_tool:cli-1:Old CLI§] and [§tool:duckduckgo/ddg_search:DuckDuckGo Search§]',
+        tools: [{ id: 'cli-1', kind: 'cli', name: 'Old CLI' }, duckDuckGoProviderTool],
       })
 
       store.set(agentComposerToolsAtom, [
@@ -217,7 +216,9 @@ describe('AgentPromptEditor', () => {
         },
       ])
 
-      expect(store.get(agentComposerPromptAtom)).toBe('Run [§cli_tool:cli-1:Release CLI§] and [§tool:duckduckgo/ddg_search:DuckDuckGo Search§]')
+      expect(store.get(agentComposerPromptAtom)).toBe(
+        'Run [§cli_tool:cli-1:Release CLI§] and [§tool:duckduckgo/ddg_search:DuckDuckGo Search§]',
+      )
     })
 
     it('should render selected tool reference icons from configured tools', () => {
@@ -258,24 +259,34 @@ describe('AgentPromptEditor', () => {
     it('should open category menu, show skill submenu, and append the selected reference', async () => {
       const { store, rerenderWithValue } = renderAgentPromptEditor('Review these tenders')
 
-      expect(mockPromptEditor).toHaveBeenCalledWith(expect.objectContaining({
-        disableBracePicker: true,
-        disableSlashPicker: true,
-        rosterReferenceBlock: expect.objectContaining({
-          show: true,
+      expect(mockPromptEditor).toHaveBeenCalledWith(
+        expect.objectContaining({
+          disableBracePicker: true,
+          disableSlashPicker: true,
+          rosterReferenceBlock: expect.objectContaining({
+            show: true,
+          }),
         }),
-      }))
+      )
 
       expect(fireEvent.keyDown(screen.getByRole('textbox'), { key: '/' })).toBe(true)
       rerenderWithValue('Review these tenders/')
-      expect(screen.getByRole('button', { name: /agentDetail\.configure\.skills\.label/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /agentDetail\.configure\.skills\.label/i }),
+      ).toBeInTheDocument()
 
-      fireEvent.click(screen.getByRole('button', { name: /agentDetail\.configure\.skills\.label/i }))
-      expect(screen.queryByRole('button', { name: /agentDetail\.configure\.files\.label/i })).not.toBeInTheDocument()
+      fireEvent.click(
+        screen.getByRole('button', { name: /agentDetail\.configure\.skills\.label/i }),
+      )
+      expect(
+        screen.queryByRole('button', { name: /agentDetail\.configure\.files\.label/i }),
+      ).not.toBeInTheDocument()
 
       fireEvent.click(screen.getByRole('button', { name: /Playwright/i }))
 
-      expect(store.get(agentComposerPromptAtom)).toBe('Review these tenders [§skill:playwright%2FSKILL.md:Playwright§]')
+      expect(store.get(agentComposerPromptAtom)).toBe(
+        'Review these tenders [§skill:playwright%2FSKILL.md:Playwright§]',
+      )
       await waitFor(() => {
         expect(screen.queryByRole('button', { name: /Playwright/i })).not.toBeInTheDocument()
       })
@@ -285,14 +296,20 @@ describe('AgentPromptEditor', () => {
       const { store } = renderAgentPromptEditor('Review these tenders')
 
       fireEvent.focus(screen.getByRole('textbox'))
-      const insertButton = screen.getByRole('button', { name: /agentDetail\.configure\.prompt\.insert\.label/i })
+      const insertButton = screen.getByRole('button', {
+        name: /agentDetail\.configure\.prompt\.insert\.label/i,
+      })
       fireEvent.pointerDown(insertButton)
       fireEvent.click(insertButton)
       fireEvent.pointerUp(insertButton)
 
       expect(store.get(agentComposerPromptAtom)).toBe('Review these tenders/')
-      expect(screen.getByRole('button', { name: /agentDetail\.configure\.skills\.label/i })).toBeInTheDocument()
-      expect(screen.queryByRole('button', { name: /agentDetail\.configure\.prompt\.mention\.label/i })).not.toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /agentDetail\.configure\.skills\.label/i }),
+      ).toBeInTheDocument()
+      expect(
+        screen.queryByRole('button', { name: /agentDetail\.configure\.prompt\.mention\.label/i }),
+      ).not.toBeInTheDocument()
     })
 
     it('should insert references after prompt add actions create skills, files, CLI tools, or knowledge retrievals', () => {
@@ -312,7 +329,13 @@ describe('AgentPromptEditor', () => {
           files={[]}
           tools={[]}
           onToolsChange={vi.fn()}
-          onAddSkill={options => options?.onAdded?.({ id: 'skill-1', name: 'Skill One', skillMdKey: 'skills/skill-1/SKILL.md' })}
+          onAddSkill={(options) =>
+            options?.onAdded?.({
+              id: 'skill-1',
+              name: 'Skill One',
+              skillMdKey: 'skills/skill-1/SKILL.md',
+            })
+          }
           retrievals={[]}
           onBack={vi.fn()}
           onOpenCategory={vi.fn()}
@@ -330,7 +353,14 @@ describe('AgentPromptEditor', () => {
           files={[]}
           tools={[]}
           onToolsChange={vi.fn()}
-          onAddFile={options => options?.onAdded?.({ id: 'file-1', name: 'Guide.md', icon: 'markdown', driveKey: 'files/Guide.md' })}
+          onAddFile={(options) =>
+            options?.onAdded?.({
+              id: 'file-1',
+              name: 'Guide.md',
+              icon: 'markdown',
+              driveKey: 'files/Guide.md',
+            })
+          }
           retrievals={[]}
           onBack={vi.fn()}
           onOpenCategory={vi.fn()}
@@ -348,14 +378,18 @@ describe('AgentPromptEditor', () => {
           files={[]}
           tools={[]}
           onToolsChange={vi.fn()}
-          onAddKnowledge={options => options?.onAdded?.({ id: 'retrieval-1', name: 'Retrieval One', queryMode: 'agent' })}
+          onAddKnowledge={(options) =>
+            options?.onAdded?.({ id: 'retrieval-1', name: 'Retrieval One', queryMode: 'agent' })
+          }
           retrievals={[]}
           onBack={vi.fn()}
           onOpenCategory={vi.fn()}
           onSelect={onSelect}
         />,
       )
-      fireEvent.click(screen.getByRole('button', { name: /agentDetail\.configure\.knowledgeRetrieval\.add/i }))
+      fireEvent.click(
+        screen.getByRole('button', { name: /agentDetail\.configure\.knowledgeRetrieval\.add/i }),
+      )
       expect(onSelect).toHaveBeenCalledWith('[§knowledge:retrieval-1:Retrieval One§]')
 
       rerender(
@@ -366,14 +400,18 @@ describe('AgentPromptEditor', () => {
           files={[]}
           tools={[]}
           onToolsChange={vi.fn()}
-          onAddCliTool={options => options?.onAdded?.({ id: 'cli-1', kind: 'cli', name: 'Lark CLI' })}
+          onAddCliTool={(options) =>
+            options?.onAdded?.({ id: 'cli-1', kind: 'cli', name: 'Lark CLI' })
+          }
           retrievals={[]}
           onBack={vi.fn()}
           onOpenCategory={vi.fn()}
           onSelect={onSelect}
         />,
       )
-      fireEvent.click(screen.getByRole('button', { name: /agentDetail\.configure\.tools\.cliDialog\.title/i }))
+      fireEvent.click(
+        screen.getByRole('button', { name: /agentDetail\.configure\.tools\.cliDialog\.title/i }),
+      )
       expect(onSelect).toHaveBeenCalledWith('[§cli_tool:cli-1:Lark CLI§]')
     })
 
@@ -385,7 +423,9 @@ describe('AgentPromptEditor', () => {
       fireEvent.click(screen.getByRole('button', { name: 'DuckDuckGo' }))
       fireEvent.click(screen.getByRole('button', { name: /DuckDuckGo Search/i }))
 
-      expect(store.get(agentComposerPromptAtom)).toBe('Research [§tool:duckduckgo/ddg_search:DuckDuckGo Search§]')
+      expect(store.get(agentComposerPromptAtom)).toBe(
+        'Research [§tool:duckduckgo/ddg_search:DuckDuckGo Search§]',
+      )
       expect(store.get(agentComposerDraftAtom).tools).toEqual([
         expect.objectContaining({
           id: 'duckduckgo',
@@ -401,7 +441,11 @@ describe('AgentPromptEditor', () => {
       rerenderWithValue('Research/')
       fireEvent.keyDown(screen.getByRole('textbox'), { key: '/' })
       fireEvent.click(screen.getByRole('button', { name: /agentDetail\.configure\.tools\.label/i }))
-      fireEvent.click(screen.getByRole('button', { name: /DuckDuckGo.*agentDetail\.configure\.tools\.toolTabs\.plugins/i }))
+      fireEvent.click(
+        screen.getByRole('button', {
+          name: /DuckDuckGo.*agentDetail\.configure\.tools\.toolTabs\.plugins/i,
+        }),
+      )
 
       expect(store.get(agentComposerPromptAtom)).toBe('Research [§tool:duckduckgo/*:DuckDuckGo§]')
       expect(store.get(agentComposerDraftAtom).tools).toEqual([
@@ -419,23 +463,31 @@ describe('AgentPromptEditor', () => {
       const { rerenderWithValue } = renderAgentPromptEditor('Review/')
 
       fireEvent.keyDown(screen.getByRole('textbox'), { key: '/' })
-      expect(screen.getByRole('button', { name: /agentDetail\.configure\.skills\.label/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /agentDetail\.configure\.skills\.label/i }),
+      ).toBeInTheDocument()
 
       rerenderWithValue('Review')
       fireEvent.keyUp(screen.getByRole('textbox'), { key: 'Backspace' })
 
       await waitFor(() => {
-        expect(screen.queryByRole('button', { name: /agentDetail\.configure\.skills\.label/i })).not.toBeInTheDocument()
+        expect(
+          screen.queryByRole('button', { name: /agentDetail\.configure\.skills\.label/i }),
+        ).not.toBeInTheDocument()
       })
 
       rerenderWithValue('Review/')
       fireEvent.keyDown(screen.getByRole('textbox'), { key: '/' })
-      expect(screen.getByRole('button', { name: /agentDetail\.configure\.skills\.label/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /agentDetail\.configure\.skills\.label/i }),
+      ).toBeInTheDocument()
 
       fireEvent.pointerDown(document.body)
 
       await waitFor(() => {
-        expect(screen.queryByRole('button', { name: /agentDetail\.configure\.skills\.label/i })).not.toBeInTheDocument()
+        expect(
+          screen.queryByRole('button', { name: /agentDetail\.configure\.skills\.label/i }),
+        ).not.toBeInTheDocument()
       })
     })
 
@@ -445,7 +497,9 @@ describe('AgentPromptEditor', () => {
       fireEvent.keyUp(screen.getByRole('textbox'), { key: 'ArrowRight' })
 
       await waitFor(() => {
-        expect(screen.getByRole('button', { name: /agentDetail\.configure\.skills\.label/i })).toBeInTheDocument()
+        expect(
+          screen.getByRole('button', { name: /agentDetail\.configure\.skills\.label/i }),
+        ).toBeInTheDocument()
       })
     })
   })

@@ -10,17 +10,16 @@ type DisplayToggleProps = {
   toggleCollapsed: () => void
 }
 
-const DisplayToggle: FC<DisplayToggleProps> = ({
-  isCollapsed,
-  toggleCollapsed,
-}) => {
+const DisplayToggle: FC<DisplayToggleProps> = ({ isCollapsed, toggleCollapsed }) => {
   const { t } = useTranslation()
-  const label = isCollapsed ? t('segment.expandChunks', { ns: 'datasetDocuments' }) : t('segment.collapseChunks', { ns: 'datasetDocuments' })
+  const label = isCollapsed
+    ? t('segment.expandChunks', { ns: 'datasetDocuments' })
+    : t('segment.collapseChunks', { ns: 'datasetDocuments' })
 
   return (
     <Tooltip>
       <TooltipTrigger
-        render={(
+        render={
           <button
             type="button"
             aria-label={label}
@@ -28,13 +27,13 @@ const DisplayToggle: FC<DisplayToggleProps> = ({
             bg-components-button-secondary-bg p-2 shadow-xs shadow-shadow-shadow-3 backdrop-blur-[5px]"
             onClick={toggleCollapsed}
           >
-            {
-              isCollapsed
-                ? <RiLineHeight className="size-4 text-components-button-secondary-text" />
-                : <Collapse className="size-4 text-components-button-secondary-text" />
-            }
+            {isCollapsed ? (
+              <RiLineHeight className="size-4 text-components-button-secondary-text" />
+            ) : (
+              <Collapse className="size-4 text-components-button-secondary-text" />
+            )}
           </button>
-        )}
+        }
       />
       <TooltipContent className="border-[0.5px] border-components-panel-border system-xs-medium text-text-secondary">
         {label}

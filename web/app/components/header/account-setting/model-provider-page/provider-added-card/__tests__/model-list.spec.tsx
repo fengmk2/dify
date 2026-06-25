@@ -4,7 +4,11 @@ import { ConfigurationMethodEnum } from '../../declarations'
 import ModelList from '../model-list'
 
 const mockSetShowModelLoadBalancingModal = vi.fn()
-let mockWorkspacePermissionKeys: string[] = ['plugin.model_config', 'credential.manage', 'credential.use']
+let mockWorkspacePermissionKeys: string[] = [
+  'plugin.model_config',
+  'credential.manage',
+  'credential.use',
+]
 
 vi.mock('@/context/app-context', () => ({
   useSelector: (selector: (state: { workspacePermissionKeys: string[] }) => unknown) =>
@@ -12,12 +16,21 @@ vi.mock('@/context/app-context', () => ({
 }))
 
 vi.mock('@/context/modal-context', () => ({
-  useModalContextSelector: (selector: (state: { setShowModelLoadBalancingModal: typeof mockSetShowModelLoadBalancingModal }) => unknown) =>
-    selector({ setShowModelLoadBalancingModal: mockSetShowModelLoadBalancingModal }),
+  useModalContextSelector: (
+    selector: (state: {
+      setShowModelLoadBalancingModal: typeof mockSetShowModelLoadBalancingModal
+    }) => unknown,
+  ) => selector({ setShowModelLoadBalancingModal: mockSetShowModelLoadBalancingModal }),
 }))
 
 vi.mock('../model-list-item', () => ({
-  default: ({ model, onModifyLoadBalancing }: { model: ModelItem, onModifyLoadBalancing: (model: ModelItem) => void }) => (
+  default: ({
+    model,
+    onModifyLoadBalancing,
+  }: {
+    model: ModelItem
+    onModifyLoadBalancing: (model: ModelItem) => void
+  }) => (
     <button type="button" onClick={() => onModifyLoadBalancing(model)}>
       {model.model}
     </button>

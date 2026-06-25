@@ -11,26 +11,23 @@ type AgentDetailLayoutProps = {
   children: ReactNode
 }
 
-export function AgentDetailLayout({
-  agentId,
-  children,
-}: AgentDetailLayoutProps) {
+export function AgentDetailLayout({ agentId, children }: AgentDetailLayoutProps) {
   const { t } = useTranslation('agentV2')
-  const agentQuery = useQuery(consoleQuery.agent.byAgentId.get.queryOptions({
-    input: {
-      params: {
-        agent_id: agentId,
+  const agentQuery = useQuery(
+    consoleQuery.agent.byAgentId.get.queryOptions({
+      input: {
+        params: {
+          agent_id: agentId,
+        },
       },
-    },
-  }))
+    }),
+  )
 
   useDocumentTitle(agentQuery.data?.name ?? t('agentDetail.documentTitle'))
 
   return (
     <div className="relative flex h-full min-w-0 flex-col overflow-hidden">
-      <div className="min-h-0 min-w-0 flex-1 overflow-auto">
-        {children}
-      </div>
+      <div className="min-h-0 min-w-0 flex-1 overflow-auto">{children}</div>
     </div>
   )
 }

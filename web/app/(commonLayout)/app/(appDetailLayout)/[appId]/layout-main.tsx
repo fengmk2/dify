@@ -23,12 +23,8 @@ type IAppDetailLayoutProps = {
   appId: string
 }
 
-const isNotFoundError = (error: unknown) => (
-  typeof error === 'object'
-  && error !== null
-  && 'status' in error
-  && error.status === 404
-)
+const isNotFoundError = (error: unknown) =>
+  typeof error === 'object' && error !== null && 'status' in error && error.status === 404
 
 const AppDetailLayout: FC<IAppDetailLayoutProps> = (props) => {
   const {
@@ -39,12 +35,20 @@ const AppDetailLayout: FC<IAppDetailLayoutProps> = (props) => {
   const router = useRouter()
   const pathname = usePathname()
   const { data: systemFeatures } = useSuspenseQuery(systemFeaturesQueryOptions())
-  const { isLoadingCurrentWorkspace, isLoadingWorkspacePermissionKeys, currentWorkspace, userProfile, workspacePermissionKeys } = useAppContext()
+  const {
+    isLoadingCurrentWorkspace,
+    isLoadingWorkspacePermissionKeys,
+    currentWorkspace,
+    userProfile,
+    workspacePermissionKeys,
+  } = useAppContext()
   const isRbacEnabled = systemFeatures.rbac_enabled
-  const { appDetail, setAppDetail } = useStore(useShallow(state => ({
-    appDetail: state.appDetail,
-    setAppDetail: state.setAppDetail,
-  })))
+  const { appDetail, setAppDetail } = useStore(
+    useShallow((state) => ({
+      appDetail: state.appDetail,
+      setAppDetail: state.setAppDetail,
+    })),
+  )
   const [isLoadingAppDetail, setIsLoadingAppDetail] = useState(false)
   const [appDetailRes, setAppDetailRes] = useState<App | null>(null)
   const routeAppDetail = appDetailRes ?? (appDetail?.id === appId ? appDetail : null)
@@ -63,26 +67,24 @@ const AppDetailLayout: FC<IAppDetailLayoutProps> = (props) => {
 
     setAppDetail()
     void Promise.resolve().then(() => {
-      if (!ignore)
-        setIsLoadingAppDetail(true)
+      if (!ignore) setIsLoadingAppDetail(true)
     })
-    fetchAppDetailDirect({ url: '/apps', id: appId }).then((res: App) => {
-      if (ignore)
-        return
+    fetchAppDetailDirect({ url: '/apps', id: appId })
+      .then((res: App) => {
+        if (ignore) return
 
-      setAppDetailRes(res)
-    }).catch((error: unknown) => {
-      if (ignore)
-        return
+        setAppDetailRes(res)
+      })
+      .catch((error: unknown) => {
+        if (ignore) return
 
-      if (isNotFoundError(error))
-        router.replace('/apps')
-    }).finally(() => {
-      if (ignore)
-        return
+        if (isNotFoundError(error)) router.replace('/apps')
+      })
+      .finally(() => {
+        if (ignore) return
 
-      setIsLoadingAppDetail(false)
-    })
+        setIsLoadingAppDetail(false)
+      })
 
     return () => {
       ignore = true
@@ -90,10 +92,15 @@ const AppDetailLayout: FC<IAppDetailLayoutProps> = (props) => {
   }, [appId, router, setAppDetail])
 
   useEffect(() => {
-    if (!routeAppDetail || !currentWorkspace.id || isLoadingCurrentWorkspace || isLoadingWorkspacePermissionKeys || isLoadingAppDetail)
+    if (
+      !routeAppDetail ||
+      !currentWorkspace.id ||
+      isLoadingCurrentWorkspace ||
+      isLoadingWorkspacePermissionKeys ||
+      isLoadingAppDetail
+    )
       return
-    if (routeAppDetail.id !== appId)
-      return
+    if (routeAppDetail.id !== appId) return
 
     const appACLCapabilities = getAppACLCapabilities(routeAppDetail.permission_keys, {
       currentUserId: userProfile?.id,
@@ -107,31 +114,55 @@ const AppDetailLayout: FC<IAppDetailLayoutProps> = (props) => {
     const isOverviewPath = pathname.endsWith('overview')
     const isAccessConfigPath = pathname.endsWith('access-config')
     if (
-      (isLayoutPath && !appACLCapabilities.canAccessLayout)
-      || (isLogsPath && !appACLCapabilities.canAccessLogAndAnnotation)
-      || (isAnnotationsPath && !appACLCapabilities.canAccessLogAndAnnotation)
-      || (isOverviewPath && !appACLCapabilities.canMonitor)
-      || (isAccessConfigPath && !appACLCapabilities.canAccessConfig)
+      (isLayoutPath && !appACLCapabilities.canAccessLayout) ||
+      (isLogsPath && !appACLCapabilities.canAccessLogAndAnnotation) ||
+      (isAnnotationsPath && !appACLCapabilities.canAccessLogAndAnnotation) ||
+      (isOverviewPath && !appACLCapabilities.canMonitor) ||
+      (isAccessConfigPath && !appACLCapabilities.canAccessConfig)
     ) {
-      router.replace(getRedirectionPath(routeAppDetail, {
-        currentUserId: userProfile?.id,
-        resourceMaintainer: routeAppDetail.maintainer,
-        workspacePermissionKeys,
-        isRbacEnabled,
-      }))
+      router.replace(
+        getRedirectionPath(routeAppDetail, {
+          currentUserId: userProfile?.id,
+          resourceMaintainer: routeAppDetail.maintainer,
+          workspacePermissionKeys,
+          isRbacEnabled,
+        }),
+      )
       return
     }
-    if ((routeAppDetail.mode === AppModeEnum.WORKFLOW || routeAppDetail.mode === AppModeEnum.ADVANCED_CHAT) && (pathname).endsWith('configuration')) {
+    if (
+      (routeAppDetail.mode === AppModeEnum.WORKFLOW ||
+        routeAppDetail.mode === AppModeEnum.ADVANCED_CHAT) &&
+      pathname.endsWith('configuration')
+    ) {
       router.replace(`/app/${appId}/workflow`)
-    }
-    else if ((routeAppDetail.mode !== AppModeEnum.WORKFLOW && routeAppDetail.mode !== AppModeEnum.ADVANCED_CHAT) && (pathname).endsWith('workflow')) {
+    } else if (
+      routeAppDetail.mode !== AppModeEnum.WORKFLOW &&
+      routeAppDetail.mode !== AppModeEnum.ADVANCED_CHAT &&
+      pathname.endsWith('workflow')
+    ) {
       router.replace(`/app/${appId}/configuration`)
       return
     }
 
     if (appDetailRes && appDetail?.id !== appDetailRes.id)
       setAppDetail({ ...appDetailRes, enable_sso: false })
-  }, [appDetail?.id, appDetailRes, appId, currentWorkspace.id, isLoadingAppDetail, isLoadingCurrentWorkspace, isLoadingWorkspacePermissionKeys, isRbacEnabled, pathname, routeAppDetail, router, setAppDetail, userProfile?.id, workspacePermissionKeys])
+  }, [
+    appDetail?.id,
+    appDetailRes,
+    appId,
+    currentWorkspace.id,
+    isLoadingAppDetail,
+    isLoadingCurrentWorkspace,
+    isLoadingWorkspacePermissionKeys,
+    isRbacEnabled,
+    pathname,
+    routeAppDetail,
+    router,
+    setAppDetail,
+    userProfile?.id,
+    workspacePermissionKeys,
+  ])
 
   if (!appDetail) {
     return (
@@ -144,15 +175,14 @@ const AppDetailLayout: FC<IAppDetailLayoutProps> = (props) => {
   const isWorkflowPage = pathname.endsWith('/workflow')
 
   return (
-    <div className={cn(
-      'relative flex h-0 grow overflow-hidden',
-      !isWorkflowPage && 'pt-1 pr-1 pb-1',
-    )}
+    <div
+      className={cn('relative flex h-0 grow overflow-hidden', !isWorkflowPage && 'pt-1 pr-1 pb-1')}
     >
-      <div className={cn(
-        'grow overflow-hidden bg-components-panel-bg',
-        !isWorkflowPage && 'rounded-lg shadow-xs shadow-shadow-shadow-3',
-      )}
+      <div
+        className={cn(
+          'grow overflow-hidden bg-components-panel-bg',
+          !isWorkflowPage && 'rounded-lg shadow-xs shadow-shadow-shadow-3',
+        )}
       >
         {children}
       </div>

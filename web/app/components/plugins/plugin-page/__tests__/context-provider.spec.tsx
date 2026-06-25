@@ -1,7 +1,7 @@
 import type { ReactElement, ReactNode } from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { NuqsTestingAdapter } from 'nuqs/adapters/testing'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { createSystemFeaturesWrapper } from '@/__tests__/utils/mock-system-features'
 import { usePluginPageContext } from '../context'
 import { PluginPageContextProvider } from '../context-provider'
@@ -19,25 +19,23 @@ vi.mock('../../hooks', () => ({
 
 const renderWithProviders = (
   ui: ReactElement,
-  options: { enableMarketplace: boolean, searchParams?: string } = { enableMarketplace: true },
+  options: { enableMarketplace: boolean; searchParams?: string } = { enableMarketplace: true },
 ) => {
   const { wrapper: SystemFeaturesWrapper } = createSystemFeaturesWrapper({
     systemFeatures: { enable_marketplace: options.enableMarketplace },
   })
   const Wrapper = ({ children }: { children: ReactNode }) => (
     <SystemFeaturesWrapper>
-      <NuqsTestingAdapter searchParams={options.searchParams ?? ''}>
-        {children}
-      </NuqsTestingAdapter>
+      <NuqsTestingAdapter searchParams={options.searchParams ?? ''}>{children}</NuqsTestingAdapter>
     </SystemFeaturesWrapper>
   )
   return render(ui, { wrapper: Wrapper })
 }
 
 const Consumer = () => {
-  const currentPluginID = usePluginPageContext(v => v.currentPluginID)
-  const setCurrentPluginID = usePluginPageContext(v => v.setCurrentPluginID)
-  const options = usePluginPageContext(v => v.options)
+  const currentPluginID = usePluginPageContext((v) => v.currentPluginID)
+  const setCurrentPluginID = usePluginPageContext((v) => v.setCurrentPluginID)
+  const options = usePluginPageContext((v) => v.options)
 
   return (
     <div>

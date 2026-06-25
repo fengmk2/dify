@@ -2,7 +2,10 @@ import { DropdownMenuItem, DropdownMenuLinkItem } from '@langgenius/dify-ui/drop
 import { useTranslation } from 'react-i18next'
 import { openZendeskWindow } from '@/app/components/base/zendesk/utils'
 import { Plan } from '@/app/components/billing/type'
-import { ExternalLinkIndicator, MenuItemContent } from '@/app/components/header/account-dropdown/menu-item-content'
+import {
+  ExternalLinkIndicator,
+  MenuItemContent,
+} from '@/app/components/header/account-dropdown/menu-item-content'
 import { mailToSupport } from '@/app/components/header/utils/util'
 import { IS_CLOUD_EDITION, SUPPORT_EMAIL_ADDRESS, ZENDESK_WIDGET_KEY } from '@/config'
 import { useAppContext } from '@/context/app-context'
@@ -19,7 +22,8 @@ export default function SupportMenu({ onContactUsClick }: SupportMenuProps) {
   const { userProfile, langGeniusVersionInfo } = useAppContext()
   const { setShowPricingModal } = useModalContext()
   const hasDedicatedChannel = plan.type !== Plan.sandbox || Boolean(SUPPORT_EMAIL_ADDRESS.trim())
-  const shouldShowUpgradeContact = IS_CLOUD_EDITION && enableBilling && plan.type === Plan.sandbox && !hasDedicatedChannel
+  const shouldShowUpgradeContact =
+    IS_CLOUD_EDITION && enableBilling && plan.type === Plan.sandbox && !hasDedicatedChannel
   const hasZendeskWidget = Boolean(ZENDESK_WIDGET_KEY.trim())
 
   return (
@@ -33,12 +37,12 @@ export default function SupportMenu({ onContactUsClick }: SupportMenuProps) {
         >
           <MenuItemContent
             iconClassName="i-ri-chat-smile-2-line text-text-disabled"
-            label={(
+            label={
               <span className="text-text-disabled">
                 {t('userProfile.contactUs', { ns: 'common' })}
               </span>
-            )}
-            trailing={(
+            }
+            trailing={
               <button
                 type="button"
                 className="max-w-30 shrink-0 truncate px-1 system-xs-semibold-uppercase text-saas-dify-blue-accessible transition-colors hover:text-saas-dify-blue-static-hover focus-visible:ring-2 focus-visible:ring-state-accent-solid focus-visible:outline-hidden focus-visible:ring-inset"
@@ -50,7 +54,7 @@ export default function SupportMenu({ onContactUsClick }: SupportMenuProps) {
               >
                 {t('upgradeBtn.encourageShort', { ns: 'billing' })}
               </button>
-            )}
+            }
           />
         </DropdownMenuItem>
       )}
@@ -71,7 +75,12 @@ export default function SupportMenu({ onContactUsClick }: SupportMenuProps) {
       {!shouldShowUpgradeContact && hasDedicatedChannel && !hasZendeskWidget && (
         <DropdownMenuLinkItem
           className="mx-0 h-8 gap-1 px-3 py-1"
-          href={mailToSupport(userProfile.email, plan.type, langGeniusVersionInfo?.current_version, SUPPORT_EMAIL_ADDRESS)}
+          href={mailToSupport(
+            userProfile.email,
+            plan.type,
+            langGeniusVersionInfo?.current_version,
+            SUPPORT_EMAIL_ADDRESS,
+          )}
           rel="noopener noreferrer"
           target="_blank"
         >

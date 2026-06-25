@@ -1,10 +1,11 @@
 import type { OnlineDocumentSliceShape } from '../online-document'
 import type { DataSourceNotionWorkspace, NotionPage } from '@/models/common'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import { createStore } from 'zustand'
 import { createOnlineDocumentSlice } from '../online-document'
 
-const createTestStore = () => createStore<OnlineDocumentSliceShape>((...args) => createOnlineDocumentSlice(...args))
+const createTestStore = () =>
+  createStore<OnlineDocumentSliceShape>((...args) => createOnlineDocumentSlice(...args))
 
 describe('createOnlineDocumentSlice', () => {
   it('should initialize with default values', () => {

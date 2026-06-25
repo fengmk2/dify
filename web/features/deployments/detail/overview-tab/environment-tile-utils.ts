@@ -15,7 +15,13 @@ export type TileConfig = {
   releaseId?: string
 }
 
-export function resolveConfig({ drift, status, hasAnyRelease, latestId, currentReleaseId }: {
+export function resolveConfig({
+  drift,
+  status,
+  hasAnyRelease,
+  latestId,
+  currentReleaseId,
+}: {
   drift: ReturnType<typeof computeDrift>
   status: RuntimeInstanceStatusValue
   hasAnyRelease: boolean

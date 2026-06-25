@@ -1,9 +1,7 @@
 import type { NoteNodeType } from '../note-node/types'
 import { useCallback } from 'react'
 import { useAppContext } from '@/context/app-context'
-import {
-  CUSTOM_NOTE_NODE,
-} from '../note-node/constants'
+import { CUSTOM_NOTE_NODE } from '../note-node/constants'
 import { NoteTheme } from '../note-node/types'
 import { useWorkflowNoteShowAuthorValue } from '../persistence/local-storage-options'
 import { useWorkflowStore } from '../store'

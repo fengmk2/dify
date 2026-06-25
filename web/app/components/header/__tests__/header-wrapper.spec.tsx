@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { vi } from 'vitest'
+import { vi } from 'vite-plus/test'
 import { usePathname } from '@/next/navigation'
 import HeaderWrapper from '../header-wrapper'
 

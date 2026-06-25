@@ -9,9 +9,7 @@ type AccountSectionProps = {
   compact?: boolean
 }
 
-const AccountSection = ({
-  compact = false,
-}: AccountSectionProps) => {
+const AccountSection = ({ compact = false }: AccountSectionProps) => {
   const { userProfile } = useAppContext()
 
   return (
@@ -28,8 +26,17 @@ const AccountSection = ({
             isOpen && 'bg-state-base-hover',
           )}
         >
-          <Avatar avatar={userProfile.avatar_url} name={userProfile.name} size="md" className="size-7" />
-          {!compact && <span className="min-w-0 flex-1 truncate system-md-medium" title={userProfile.name}>{userProfile.name}</span>}
+          <Avatar
+            avatar={userProfile.avatar_url}
+            name={userProfile.name}
+            size="md"
+            className="size-7"
+          />
+          {!compact && (
+            <span className="min-w-0 flex-1 truncate system-md-medium" title={userProfile.name}>
+              {userProfile.name}
+            </span>
+          )}
         </button>
       )}
     />

@@ -1,8 +1,14 @@
 'use client'
 
-import type { AgentConfigSnapshotDetailResponse, AgentConfigSnapshotSummaryResponse } from '@dify/contracts/api/console/agent/types.gen'
+import type {
+  AgentConfigSnapshotDetailResponse,
+  AgentConfigSnapshotSummaryResponse,
+} from '@dify/contracts/api/console/agent/types.gen'
 import type { AgentConfigurePublishPayload } from './publish-bar'
-import type { DefaultModel, Model } from '@/app/components/header/account-setting/model-provider-page/declarations'
+import type {
+  DefaultModel,
+  Model,
+} from '@/app/components/header/account-setting/model-provider-page/declarations'
 import { cn } from '@langgenius/dify-ui/cn'
 import { ScrollArea } from '@langgenius/dify-ui/scroll-area'
 import { useMemo } from 'react'
@@ -68,25 +74,31 @@ export function AgentOrchestratePanel({
   const { t } = useTranslation('agentV2')
   const orchestrateHeadingId = 'agent-configure-orchestrate-heading'
   const orchestrateLabel = t('agentDetail.configure.orchestrate')
-  const driveApiContext = useMemo(() => appId && nodeId
-    ? {
-        agentId,
-        workflow: {
-          appId,
-          nodeId,
-        },
-      }
-    : { agentId }, [agentId, appId, nodeId])
+  const driveApiContext = useMemo(
+    () =>
+      appId && nodeId
+        ? {
+            agentId,
+            workflow: {
+              appId,
+              nodeId,
+            },
+          }
+        : { agentId },
+    [agentId, appId, nodeId],
+  )
 
   return (
-    <div className={cn('relative flex max-w-140 min-w-90 flex-[0_0_min(41.08280255%,560px)] flex-col overflow-hidden rounded-lg border-[0.5px] border-components-panel-border bg-components-panel-bg', className)}>
+    <div
+      className={cn(
+        'relative flex max-w-140 min-w-90 flex-[0_0_min(41.08280255%,560px)] flex-col overflow-hidden rounded-lg border-[0.5px] border-components-panel-border bg-components-panel-bg',
+        className,
+      )}
+    >
       {showHeader && <AgentOrchestrateHeader headingId={orchestrateHeadingId} />}
 
       <AgentOrchestrateReadOnlyContext value={readOnly}>
-        <div
-          aria-readonly={readOnly}
-          className="flex min-h-0 flex-1 flex-col"
-        >
+        <div aria-readonly={readOnly} className="flex min-h-0 flex-1 flex-col">
           <ScrollArea
             className="min-h-0 flex-1 overflow-hidden"
             label={showHeader ? undefined : orchestrateLabel}

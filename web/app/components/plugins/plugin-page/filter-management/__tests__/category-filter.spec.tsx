@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import * as React from 'react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 
 vi.mock('@langgenius/dify-ui/popover', () => import('@/__mocks__/base-ui-popover'))
 
@@ -95,7 +95,9 @@ describe('CategoriesFilter', () => {
     render(<CategoriesFilter value={[]} onChange={vi.fn()} />)
 
     fireEvent.click(screen.getByTestId('popover-trigger'))
-    fireEvent.change(screen.getByPlaceholderText('plugin.searchCategories'), { target: { value: 'mod' } })
+    fireEvent.change(screen.getByPlaceholderText('plugin.searchCategories'), {
+      target: { value: 'mod' },
+    })
 
     expect(screen.queryByText('Tool')).not.toBeInTheDocument()
     expect(screen.getByText('Model')).toBeInTheDocument()

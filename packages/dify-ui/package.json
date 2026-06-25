@@ -1,8 +1,8 @@
 {
   "name": "@langgenius/dify-ui",
-  "type": "module",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
   "exports": {
     "./styles.css": "./src/styles/styles.css",
     "./cn": {
@@ -162,13 +162,6 @@
     "test:watch": "vp test --project unit --watch",
     "type-check": "tsgo"
   },
-  "peerDependencies": {
-    "@base-ui/react": "catalog:",
-    "class-variance-authority": "catalog:",
-    "react": "catalog:",
-    "react-dom": "catalog:",
-    "tailwindcss": "catalog:"
-  },
   "dependencies": {
     "clsx": "catalog:",
     "tailwind-merge": "catalog:"
@@ -192,7 +185,6 @@
     "@types/react-dom": "catalog:",
     "@typescript/native-preview": "catalog:",
     "@vitejs/plugin-react": "catalog:",
-    "@vitest/browser": "catalog:",
     "@vitest/browser-playwright": "catalog:",
     "@vitest/coverage-v8": "catalog:",
     "class-variance-authority": "catalog:",
@@ -206,5 +198,12 @@
     "vite-plus": "catalog:",
     "vitest": "catalog:",
     "vitest-browser-react": "catalog:"
+  },
+  "peerDependencies": {
+    "@base-ui/react": "catalog:",
+    "class-variance-authority": "catalog:",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "tailwindcss": "catalog:"
   }
 }

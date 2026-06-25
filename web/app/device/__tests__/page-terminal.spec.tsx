@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import DevicePage from '../page'
 
 const mockPush = vi.fn()
@@ -64,7 +64,9 @@ beforeEach(async () => {
     mockSearchParams = {}
   })
   mockUseQuery.mockReturnValue({ data: undefined, isError: false } as ReturnType<typeof useQuery>)
-  const mod = await import('@/service/device-flow') as { DeviceFlowError: MockDeviceFlowErrorCtor }
+  const mod = (await import('@/service/device-flow')) as {
+    DeviceFlowError: MockDeviceFlowErrorCtor
+  }
   MockDeviceFlowError = mod.DeviceFlowError
 })
 

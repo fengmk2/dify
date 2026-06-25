@@ -1,7 +1,7 @@
 import * as amplitude from '@amplitude/analytics-browser'
 import { sessionReplayPlugin } from '@amplitude/plugin-session-replay-browser'
 import { render } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 
 const mockConfig = vi.hoisted(() => ({
   AMPLITUDE_API_KEY: 'test-api-key',
@@ -70,7 +70,9 @@ describe('AmplitudeProvider', () => {
 
     it('pageNameEnrichmentPlugin logic works as expected', async () => {
       render(<AmplitudeProvider />)
-      const plugin = vi.mocked(amplitude.add).mock.calls[0]?.[0] as amplitude.Types.EnrichmentPlugin | undefined
+      const plugin = vi.mocked(amplitude.add).mock.calls[0]?.[0] as
+        | amplitude.Types.EnrichmentPlugin
+        | undefined
       expect(plugin).toBeDefined()
       if (!plugin?.execute || !plugin.setup)
         throw new Error('Expected page-name-enrichment plugin with setup/execute')
@@ -83,10 +85,7 @@ describe('AmplitudeProvider', () => {
       const getPageTitle = (evt: amplitude.Types.Event | null | undefined) =>
         (evt?.event_properties as Record<string, unknown> | undefined)?.['[Amplitude] Page Title']
 
-      await setup(
-        {} as Parameters<SetupFn>[0],
-        {} as Parameters<SetupFn>[1],
-      )
+      await setup({} as Parameters<SetupFn>[0], {} as Parameters<SetupFn>[1])
 
       const originalWindowLocation = window.location
       try {
@@ -135,8 +134,7 @@ describe('AmplitudeProvider', () => {
         } as amplitude.Types.Event
         const noPropsResult = await execute(noPropsEvent)
         expect(noPropsResult?.event_properties).toBeUndefined()
-      }
-      finally {
+      } finally {
         Object.defineProperty(window, 'location', {
           value: originalWindowLocation,
           writable: true,

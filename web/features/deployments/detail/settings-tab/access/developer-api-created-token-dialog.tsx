@@ -2,7 +2,13 @@
 
 import { Button } from '@langgenius/dify-ui/button'
 import { cn } from '@langgenius/dify-ui/cn'
-import { Dialog, DialogCloseButton, DialogContent, DialogDescription, DialogTitle } from '@langgenius/dify-ui/dialog'
+import {
+  Dialog,
+  DialogCloseButton,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from '@langgenius/dify-ui/dialog'
 import { toast } from '@langgenius/dify-ui/toast'
 import { useClipboard } from 'foxact/use-clipboard'
 import { useTranslation } from 'react-i18next'
@@ -19,10 +25,7 @@ function buildCurlExample(apiUrl: string, token: string) {
 }'`
 }
 
-function CurlExample({ apiUrl, token }: {
-  apiUrl: string
-  token: string
-}) {
+function CurlExample({ apiUrl, token }: { apiUrl: string; token: string }) {
   const { t } = useTranslation('deployments')
   const curlExample = buildCurlExample(apiUrl, token)
   const { copied, copy } = useClipboard({
@@ -53,7 +56,11 @@ function CurlExample({ apiUrl, token }: {
   )
 }
 
-export function CreatedApiTokenDialog({ token, apiUrl, onDismiss }: {
+export function CreatedApiTokenDialog({
+  token,
+  apiUrl,
+  onDismiss,
+}: {
   token: string
   apiUrl?: string
   onDismiss: () => void
@@ -61,7 +68,11 @@ export function CreatedApiTokenDialog({ token, apiUrl, onDismiss }: {
   const { t } = useTranslation('deployments')
 
   return (
-    <Dialog open={Boolean(token)} onOpenChange={open => !open && onDismiss()} disablePointerDismissal>
+    <Dialog
+      open={Boolean(token)}
+      onOpenChange={(open) => !open && onDismiss()}
+      disablePointerDismissal
+    >
       <DialogContent className="w-120 max-w-[calc(100vw-32px)] overflow-hidden p-0">
         <DialogCloseButton />
         <div className="border-b border-divider-subtle px-6 py-5 pr-14">
@@ -74,16 +85,8 @@ export function CreatedApiTokenDialog({ token, apiUrl, onDismiss }: {
         </div>
 
         <div className="flex flex-col gap-5 px-6 py-5">
-          <CopyPill
-            label={t('access.api.newTokenLabel')}
-            value={token}
-          />
-          {apiUrl && (
-            <CurlExample
-              apiUrl={apiUrl}
-              token={token}
-            />
-          )}
+          <CopyPill label={t('access.api.newTokenLabel')} value={token} />
+          {apiUrl && <CurlExample apiUrl={apiUrl} token={token} />}
         </div>
 
         <div className="flex justify-end border-t border-divider-subtle bg-background-default-subtle px-6 py-4">

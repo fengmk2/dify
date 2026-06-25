@@ -10,14 +10,12 @@ export type SpecificGroupsOrMembersProps = {
   loading?: boolean
 }
 
-export function SpecificGroupsOrMembers({
-  loading = false,
-}: SpecificGroupsOrMembersProps) {
-  const currentMenu = useAccessControlStore(s => s.currentMenu)
-  const specificGroups = useAccessControlStore(s => s.specificGroups)
-  const setSpecificGroups = useAccessControlStore(s => s.setSpecificGroups)
-  const specificMembers = useAccessControlStore(s => s.specificMembers)
-  const setSpecificMembers = useAccessControlStore(s => s.setSpecificMembers)
+export function SpecificGroupsOrMembers({ loading = false }: SpecificGroupsOrMembersProps) {
+  const currentMenu = useAccessControlStore((s) => s.currentMenu)
+  const specificGroups = useAccessControlStore((s) => s.specificGroups)
+  const setSpecificGroups = useAccessControlStore((s) => s.setSpecificGroups)
+  const specificMembers = useAccessControlStore((s) => s.specificMembers)
+  const setSpecificMembers = useAccessControlStore((s) => s.setSpecificMembers)
   const { t } = useTranslation()
 
   if (currentMenu !== AccessMode.SPECIFIC_GROUPS_MEMBERS) {
@@ -25,7 +23,9 @@ export function SpecificGroupsOrMembers({
       <div className="flex items-center p-3">
         <div className="flex grow items-center gap-x-2">
           <span className="i-ri-lock-line size-4 text-text-primary" aria-hidden="true" />
-          <p className="system-sm-medium text-text-primary">{t('accessControlDialog.accessItems.specific', { ns: 'app' })}</p>
+          <p className="system-sm-medium text-text-primary">
+            {t('accessControlDialog.accessItems.specific', { ns: 'app' })}
+          </p>
         </div>
       </div>
     )
@@ -36,7 +36,9 @@ export function SpecificGroupsOrMembers({
       <div className="flex items-center gap-x-1 p-3">
         <div className="flex grow items-center gap-x-1">
           <span className="i-ri-lock-line size-4 text-text-primary" aria-hidden="true" />
-          <p className="system-sm-medium text-text-primary">{t('accessControlDialog.accessItems.specific', { ns: 'app' })}</p>
+          <p className="system-sm-medium text-text-primary">
+            {t('accessControlDialog.accessItems.specific', { ns: 'app' })}
+          </p>
         </div>
         <div className="flex items-center gap-x-1">
           <AddMemberOrGroupDialog disabled={loading} />

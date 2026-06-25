@@ -18,20 +18,18 @@ const DESCRIPTION_WARN_THRESHOLD = 460
 
 function isValidationIssue(error: unknown): error is { message: string } {
   return Boolean(
-    error
-    && typeof error === 'object'
-    && 'message' in error
-    && typeof error.message === 'string',
+    error && typeof error === 'object' && 'message' in error && typeof error.message === 'string',
   )
 }
 
 function hasReleaseNameRequiredError(errors: unknown[]) {
   return errors.some((error) => {
-    if (error === RELEASE_NAME_REQUIRED_ERROR)
-      return true
+    if (error === RELEASE_NAME_REQUIRED_ERROR) return true
 
     if (Array.isArray(error))
-      return error.some(issue => isValidationIssue(issue) && issue.message === RELEASE_NAME_REQUIRED_ERROR)
+      return error.some(
+        (issue) => isValidationIssue(issue) && issue.message === RELEASE_NAME_REQUIRED_ERROR,
+      )
 
     return isValidationIssue(error) && error.message === RELEASE_NAME_REQUIRED_ERROR
   })
@@ -40,7 +38,9 @@ function hasReleaseNameRequiredError(errors: unknown[]) {
 export function ReleaseMetadataFields() {
   const { t } = useTranslation('deployments')
   const [releaseNameField, setReleaseNameField] = useAtom(createReleaseNameFieldAtom)
-  const [releaseDescriptionField, setReleaseDescriptionField] = useAtom(createReleaseDescriptionFieldAtom)
+  const [releaseDescriptionField, setReleaseDescriptionField] = useAtom(
+    createReleaseDescriptionFieldAtom,
+  )
   const hasReleaseNameConflict = useAtomValue(createReleaseHasNameConflictAtom)
   const releaseNameInputRef = useRef<HTMLInputElement>(null)
   const releaseNameErrors = releaseNameField.meta?.errors ?? []
@@ -77,7 +77,11 @@ export function ReleaseMetadataFields() {
           className="h-9"
         />
         {releaseNameError && (
-          <div id="release-name-error" role="alert" className="system-xs-regular text-text-destructive">
+          <div
+            id="release-name-error"
+            role="alert"
+            className="system-xs-regular text-text-destructive"
+          >
             {releaseNameError}
           </div>
         )}
@@ -85,22 +89,23 @@ export function ReleaseMetadataFields() {
 
       <div className="flex flex-col gap-2">
         <div className="flex items-center justify-between gap-3">
-          <label className="system-xs-medium-uppercase text-text-tertiary" htmlFor="release-description">
+          <label
+            className="system-xs-medium-uppercase text-text-tertiary"
+            htmlFor="release-description"
+          >
             {t('versions.releaseDescriptionLabel')}
           </label>
           <div className="flex items-center gap-2">
-            <span className="system-xs-regular text-text-quaternary">
-              {t('versions.optional')}
-            </span>
+            <span className="system-xs-regular text-text-quaternary">{t('versions.optional')}</span>
             <span
               className={cn(
                 'system-xs-regular tabular-nums',
-                releaseDescriptionField.value.length >= DESCRIPTION_WARN_THRESHOLD ? 'text-util-colors-warning-warning-700' : 'text-text-quaternary',
+                releaseDescriptionField.value.length >= DESCRIPTION_WARN_THRESHOLD
+                  ? 'text-util-colors-warning-warning-700'
+                  : 'text-text-quaternary',
               )}
             >
-              {releaseDescriptionField.value.length}
-              /
-              {DESCRIPTION_MAX_LENGTH}
+              {releaseDescriptionField.value.length}/{DESCRIPTION_MAX_LENGTH}
             </span>
           </div>
         </div>

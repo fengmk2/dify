@@ -18,7 +18,7 @@ const GENERATED_IGNORES = [
 
 export default antfu(
   {
-    ignores: original => [
+    ignores: (original) => [
       '**',
       '!packages/**',
       '!web/**',
@@ -62,10 +62,7 @@ export default antfu(
           minLinks: 1,
         },
       ],
-      'markdown-preferences/ordered-list-marker-sequence': [
-        'error',
-        { increment: 'never' },
-      ],
+      'markdown-preferences/ordered-list-marker-sequence': ['error', { increment: 'never' }],
       'markdown-preferences/definitions-last': 'error',
       'markdown-preferences/sort-definitions': 'error',
     },

@@ -1,12 +1,18 @@
 'use client'
 
-import type { AgentConfigSnapshotSummaryResponse, AgentSoulConfig } from '@dify/contracts/api/console/agent/types.gen'
+import type {
+  AgentConfigSnapshotSummaryResponse,
+  AgentSoulConfig,
+} from '@dify/contracts/api/console/agent/types.gen'
 import type { WorkflowAgentComposerResponse } from '@dify/contracts/api/console/apps/types.gen'
 import { skipToken, useQuery } from '@tanstack/react-query'
 import { useAtom } from 'jotai'
 import Loading from '@/app/components/base/loading'
 import { ModelTypeEnum } from '@/app/components/header/account-setting/model-provider-page/declarations'
-import { useDefaultModel, useTextGenerationCurrentProviderAndModelAndModelList } from '@/app/components/header/account-setting/model-provider-page/hooks'
+import {
+  useDefaultModel,
+  useTextGenerationCurrentProviderAndModelAndModelList,
+} from '@/app/components/header/account-setting/model-provider-page/hooks'
 import { AgentComposerProvider } from '@/features/agent-v2/agent-composer/provider'
 import { useHydrateAgentSoulConfigDraft } from '@/features/agent-v2/agent-composer/store'
 import { agentComposerModelAtom } from '@/features/agent-v2/agent-composer/store-modules/model'
@@ -39,21 +45,29 @@ function AgentOrchestrateDrawerPanelContent({
   nodeId,
   open,
 }: AgentOrchestrateDrawerPanelProps) {
-  const rosterComposerQuery = useQuery(consoleQuery.agent.byAgentId.composer.get.queryOptions({
-    input: open && !isInline
-      ? {
-          params: {
-            agent_id: agentId,
-          },
-        }
-      : skipToken,
-  }))
+  const rosterComposerQuery = useQuery(
+    consoleQuery.agent.byAgentId.composer.get.queryOptions({
+      input:
+        open && !isInline
+          ? {
+              params: {
+                agent_id: agentId,
+              },
+            }
+          : skipToken,
+    }),
+  )
   const composerState = isInline ? inlineComposerState : rosterComposerQuery.data
   const agentSoulConfig = composerState?.agent_soul
-  const activeConfigSnapshot = ('active_config_snapshot' in (composerState ?? {}))
-    ? composerState?.active_config_snapshot as AgentConfigSnapshotSummaryResponse | null | undefined
-    : undefined
-  const { currentModel, setConfigureModel, textGenerationModelList } = useAgentOrchestrateModelOptions()
+  const activeConfigSnapshot =
+    'active_config_snapshot' in (composerState ?? {})
+      ? (composerState?.active_config_snapshot as
+          | AgentConfigSnapshotSummaryResponse
+          | null
+          | undefined)
+      : undefined
+  const { currentModel, setConfigureModel, textGenerationModelList } =
+    useAgentOrchestrateModelOptions()
   const { draftSavedAt, saveDraft } = useWorkflowInlineAgentConfigureSync({
     nodeId,
     baseConfig: agentSoulConfig,
@@ -101,9 +115,7 @@ function AgentOrchestrateDrawerPanelContent({
 
 function useAgentOrchestrateModelOptions() {
   const [model, setModel] = useAtom(agentComposerModelAtom)
-  const {
-    data: defaultTextGenerationModel,
-  } = useDefaultModel(ModelTypeEnum.textGeneration)
+  const { data: defaultTextGenerationModel } = useDefaultModel(ModelTypeEnum.textGeneration)
   const defaultModel = defaultTextGenerationModel
     ? {
         provider: defaultTextGenerationModel.provider.provider,
@@ -111,9 +123,8 @@ function useAgentOrchestrateModelOptions() {
       }
     : undefined
   const currentModel = model ?? defaultModel
-  const {
-    textGenerationModelList,
-  } = useTextGenerationCurrentProviderAndModelAndModelList(currentModel)
+  const { textGenerationModelList } =
+    useTextGenerationCurrentProviderAndModelAndModelList(currentModel)
 
   return {
     currentModel,

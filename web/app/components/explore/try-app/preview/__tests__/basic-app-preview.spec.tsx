@@ -1,5 +1,5 @@
 import { cleanup, render, screen, waitFor } from '@testing-library/react'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import BasicAppPreview from '../basic-app-preview'
 
 const mockUseGetTryAppInfo = vi.fn()
@@ -349,10 +349,7 @@ describe('BasicAppPreview', () => {
       const modelConfig = appWithDatasets.model_config as Record<string, unknown>
       modelConfig.dataset_configs = {
         datasets: {
-          datasets: [
-            { dataset: { id: 'dataset-1' } },
-            { dataset: { id: 'dataset-2' } },
-          ],
+          datasets: [{ dataset: { id: 'dataset-1' } }, { dataset: { id: 'dataset-2' } }],
         },
       }
 

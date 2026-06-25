@@ -21,22 +21,13 @@ type RosterFilterItemProps = {
   value: RosterFilterValue
 }
 
-function RosterFilterItem({
-  count,
-  label,
-  value,
-}: RosterFilterItemProps) {
+function RosterFilterItem({ count, label, value }: RosterFilterItemProps) {
   return (
-    <SegmentedControlItem
-      value={value}
-      className="gap-1 data-pressed:text-text-secondary"
-    >
+    <SegmentedControlItem value={value} className="gap-1 data-pressed:text-text-secondary">
       <span>{label}</span>
       {count !== undefined && (
         <span className="flex min-w-4 shrink-0 items-center justify-center rounded-[5px] border border-divider-deep bg-components-badge-bg-dimm px-1 py-0.5 system-2xs-medium-uppercase text-text-tertiary tabular-nums">
-          <span className="min-w-px flex-1 text-center">
-            {count}
-          </span>
+          <span className="min-w-px flex-1 text-center">{count}</span>
         </span>
       )}
     </SegmentedControlItem>
@@ -61,24 +52,16 @@ export function RosterToolbar({
         onValueChange={(value) => {
           const nextFilter = value[0]
 
-          if (nextFilter)
-            onFilterChange(nextFilter)
+          if (nextFilter) onFilterChange(nextFilter)
         }}
       >
-        <RosterFilterItem
-          value="all"
-          label={t('roster.filters.all')}
-        />
+        <RosterFilterItem value="all" label={t('roster.filters.all')} />
         <RosterFilterItem
           value="published"
           label={t('roster.filters.published')}
           count={publishedAgents}
         />
-        <RosterFilterItem
-          value="drafts"
-          label={t('roster.filters.drafts')}
-          count={draftAgents}
-        />
+        <RosterFilterItem value="drafts" label={t('roster.filters.drafts')} count={draftAgents} />
       </SegmentedControl>
       <SearchInput
         aria-label={t('roster.searchLabel')}

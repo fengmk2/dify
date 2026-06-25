@@ -1,4 +1,4 @@
-import type { Mock } from 'vitest'
+import type { Mock } from 'vite-plus/test'
 import { toast, ToastHost } from '@langgenius/dify-ui/toast'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import * as React from 'react'
@@ -79,17 +79,13 @@ beforeEach(() => {
   toast.dismiss()
   mockUseAppContext.mockReturnValue({
     isCurrentWorkspaceManager: true,
-    workspacePermissionKeys: [
-      'billing.view',
-      'billing.manage',
-      'billing.subscription.manage',
-    ],
+    workspacePermissionKeys: ['billing.view', 'billing.manage', 'billing.subscription.manage'],
   })
   mockUseProviderContext.mockReturnValue({
     enableEducationPlan: false,
     isEducationAccount: false,
   })
-  mockUseAsyncWindowOpen.mockReturnValue(vi.fn(async open => await open()))
+  mockUseAsyncWindowOpen.mockReturnValue(vi.fn(async (open) => await open()))
   mockBillingInvoices.mockResolvedValue({ url: 'https://billing.example' })
   mockFetchSubscriptionUrls.mockResolvedValue({ url: 'https://subscription.example' })
   assignedHref = ''
@@ -118,7 +114,9 @@ describe('CloudPlanItem', () => {
       expect(screen.getByText('billing.plans.sandbox.name'))!.toBeInTheDocument()
       expect(screen.getByText('billing.plans.sandbox.description'))!.toBeInTheDocument()
       expect(screen.getByText('billing.plansCommon.free'))!.toBeInTheDocument()
-      expect(screen.getByRole('button', { name: 'billing.plansCommon.currentPlan' }))!.toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: 'billing.plansCommon.currentPlan' }),
+      )!.toBeInTheDocument()
     })
 
     it('should display yearly pricing with discount when planRange is yearly', () => {
@@ -134,7 +132,9 @@ describe('CloudPlanItem', () => {
       const professionalPlan = ALL_PLANS[Plan.professional]
       expect(screen.getByText(`$${professionalPlan.price * 12}`))!.toBeInTheDocument()
       expect(screen.getByText(`$${professionalPlan.price * 10}`))!.toBeInTheDocument()
-      expect(screen.getByText(/billing\.plansCommon\.priceTip.*billing\.plansCommon\.year/))!.toBeInTheDocument()
+      expect(
+        screen.getByText(/billing\.plansCommon\.priceTip.*billing\.plansCommon\.year/),
+      )!.toBeInTheDocument()
     })
 
     it('should show "most popular" badge for professional plan', () => {
@@ -332,9 +332,15 @@ describe('CloudPlanItem', () => {
         />,
       )
 
-      expect(screen.getByRole('button', { name: 'billing.plansCommon.startBuilding' }))!.toBeInTheDocument()
-      expect(screen.queryByRole('button', { name: 'education.useEducationDiscount' })).not.toBeInTheDocument()
-      expect(screen.queryByText('education.planNotSupportEducationDiscount')).not.toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: 'billing.plansCommon.startBuilding' }),
+      )!.toBeInTheDocument()
+      expect(
+        screen.queryByRole('button', { name: 'education.useEducationDiscount' }),
+      ).not.toBeInTheDocument()
+      expect(
+        screen.queryByText('education.planNotSupportEducationDiscount'),
+      ).not.toBeInTheDocument()
     })
 
     it('should hide education unsupported warning when billing manage permission is missing', () => {
@@ -356,8 +362,12 @@ describe('CloudPlanItem', () => {
         />,
       )
 
-      expect(screen.getByRole('button', { name: 'billing.plansCommon.startBuilding' }))!.toBeInTheDocument()
-      expect(screen.queryByText('education.planNotSupportEducationDiscount')).not.toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: 'billing.plansCommon.startBuilding' }),
+      )!.toBeInTheDocument()
+      expect(
+        screen.queryByText('education.planNotSupportEducationDiscount'),
+      ).not.toBeInTheDocument()
     })
 
     it('should show education unsupported warning and switch checkout to professional annual', async () => {
@@ -383,8 +393,12 @@ describe('CloudPlanItem', () => {
       expect(screen.getByText('education.educationPricingConfirm.title'))!.toBeInTheDocument()
       expect(screen.getByText('education.educationPricingConfirm.description'))!.toBeInTheDocument()
       expect(screen.getByRole('button', { name: 'common.operation.close' }))!.toBeInTheDocument()
-      expect(screen.getByRole('button', { name: 'education.educationPricingConfirm.cancel' }))!.toBeInTheDocument()
-      fireEvent.click(screen.getByRole('button', { name: 'education.educationPricingConfirm.continue' }))
+      expect(
+        screen.getByRole('button', { name: 'education.educationPricingConfirm.cancel' }),
+      )!.toBeInTheDocument()
+      fireEvent.click(
+        screen.getByRole('button', { name: 'education.educationPricingConfirm.continue' }),
+      )
 
       await waitFor(() => {
         expect(mockFetchSubscriptionUrls).toHaveBeenCalledWith(Plan.professional, 'year')
@@ -408,10 +422,14 @@ describe('CloudPlanItem', () => {
       )
 
       fireEvent.click(screen.getByRole('button', { name: 'billing.plansCommon.getStarted' }))
-      fireEvent.click(screen.getByRole('button', { name: 'education.educationPricingConfirm.cancel' }))
+      fireEvent.click(
+        screen.getByRole('button', { name: 'education.educationPricingConfirm.cancel' }),
+      )
 
       await waitFor(() => {
-        expect(screen.queryByText('education.educationPricingConfirm.title'))!.not.toBeInTheDocument()
+        expect(
+          screen.queryByText('education.educationPricingConfirm.title'),
+        )!.not.toBeInTheDocument()
         expect(mockFetchSubscriptionUrls).toHaveBeenCalledWith(Plan.team, 'year')
         expect(assignedHref).toBe('https://subscription.example')
       })
@@ -436,7 +454,9 @@ describe('CloudPlanItem', () => {
       fireEvent.click(screen.getByRole('button', { name: 'common.operation.close' }))
 
       await waitFor(() => {
-        expect(screen.queryByText('education.educationPricingConfirm.title'))!.not.toBeInTheDocument()
+        expect(
+          screen.queryByText('education.educationPricingConfirm.title'),
+        )!.not.toBeInTheDocument()
       })
       expect(mockFetchSubscriptionUrls).not.toHaveBeenCalled()
       expect(assignedHref).toBe('')
@@ -447,7 +467,10 @@ describe('CloudPlanItem', () => {
       // Make the first fetch hang until we resolve it
       let resolveFirst!: (v: { url: string }) => void
       mockFetchSubscriptionUrls.mockImplementationOnce(
-        () => new Promise((resolve) => { resolveFirst = resolve }),
+        () =>
+          new Promise((resolve) => {
+            resolveFirst = resolve
+          }),
       )
 
       render(
@@ -477,14 +500,15 @@ describe('CloudPlanItem', () => {
     // Covers L82-83, L85-87: openAsyncWindow error path when invoices returns no url
     it('should invoke onError when billing invoices returns empty url', async () => {
       mockBillingInvoices.mockResolvedValue({ url: '' })
-      const openWindow = vi.fn(async (cb: () => Promise<string>, opts: { onError?: (e: Error) => void }) => {
-        try {
-          await cb()
-        }
-        catch (e) {
-          opts.onError?.(e as Error)
-        }
-      })
+      const openWindow = vi.fn(
+        async (cb: () => Promise<string>, opts: { onError?: (e: Error) => void }) => {
+          try {
+            await cb()
+          } catch (e) {
+            opts.onError?.(e as Error)
+          }
+        },
+      )
       mockUseAsyncWindowOpen.mockReturnValue(openWindow)
 
       render(
@@ -519,7 +543,9 @@ describe('CloudPlanItem', () => {
 
       const teamPlan = ALL_PLANS[Plan.team]
       expect(screen.getByText(`$${teamPlan.price}`))!.toBeInTheDocument()
-      expect(screen.getByText(/billing\.plansCommon\.priceTip.*billing\.plansCommon\.month/))!.toBeInTheDocument()
+      expect(
+        screen.getByText(/billing\.plansCommon\.priceTip.*billing\.plansCommon\.month/),
+      )!.toBeInTheDocument()
       // Should NOT show crossed-out yearly price
       // Should NOT show crossed-out yearly price
       // Should NOT show crossed-out yearly price

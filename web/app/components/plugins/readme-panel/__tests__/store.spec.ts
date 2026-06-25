@@ -1,5 +1,5 @@
 import type { PluginDetail } from '@/app/components/plugins/types'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vite-plus/test'
 import { useReadmePanelStore } from '../store'
 
 describe('readme-panel/store', () => {

@@ -22,18 +22,16 @@ import {
   selectDeployEnvironmentAtom,
   selectDeployReleaseAtom,
 } from '../state'
-import {
-  DeploymentSelect,
-  EnvironmentRow,
-  Field,
-} from './select'
+import { DeploymentSelect, EnvironmentRow, Field } from './select'
 
 export const DEPLOY_DRAWER_BINDING_LIST_CLASS_NAME = 'max-h-none overflow-visible'
 
-function environmentOptionLabel(env: Environment, t: ReturnType<typeof useTranslation<'deployments'>>['t']) {
+function environmentOptionLabel(
+  env: Environment,
+  t: ReturnType<typeof useTranslation<'deployments'>>['t'],
+) {
   const description = env.description.trim()
-  if (description)
-    return `${env.displayName} · ${description}`
+  if (description) return `${env.displayName} · ${description}`
 
   return `${env.displayName} · ${t(`mode.${env.mode}`)} · ${t(`backend.${env.backend}`)}`
 }
@@ -121,40 +119,42 @@ export function ReleaseField() {
 
   return (
     <Field label={t('deployDrawer.releaseLabel')}>
-      {isExistingRelease && displayedRelease
-        ? (
-            <div className="flex flex-col gap-1">
-              <div className="flex items-center justify-between rounded-lg border border-components-panel-border bg-components-panel-bg-blur px-3 py-2">
-                <div className="flex min-w-0 items-center gap-2">
-                  <span className="shrink-0 font-mono system-sm-semibold text-text-primary">{displayedRelease.displayName}</span>
-                  <span className="shrink-0 system-xs-regular text-text-tertiary">·</span>
-                  <span className="shrink-0 font-mono system-xs-regular text-text-tertiary">{releaseCommit(displayedRelease)}</span>
-                </div>
-                <span className="shrink-0 system-xs-regular text-text-quaternary">{formatDate(displayedRelease.createdAt)}</span>
-              </div>
-              <span className="system-xs-regular text-text-tertiary">
-                {t('deployDrawer.existingReleaseHint')}
+      {isExistingRelease && displayedRelease ? (
+        <div className="flex flex-col gap-1">
+          <div className="flex items-center justify-between rounded-lg border border-components-panel-border bg-components-panel-bg-blur px-3 py-2">
+            <div className="flex min-w-0 items-center gap-2">
+              <span className="shrink-0 font-mono system-sm-semibold text-text-primary">
+                {displayedRelease.displayName}
+              </span>
+              <span className="shrink-0 system-xs-regular text-text-tertiary">·</span>
+              <span className="shrink-0 font-mono system-xs-regular text-text-tertiary">
+                {releaseCommit(displayedRelease)}
               </span>
             </div>
-          )
-        : releases.length === 0
-          ? (
-              <DeploymentStateMessage variant="compact">
-                {emptyLabel ?? t('deployDrawer.noReleaseAvailable')}
-              </DeploymentStateMessage>
-            )
-          : (
-              <DeploymentSelect
-                value={selectedReleaseId}
-                onChange={selectRelease}
-                options={releases.map(release => ({
-                  value: release.id,
-                  label: `${release.displayName} · ${releaseCommit(release)}`,
-                }))}
-                ariaLabel={t('deployDrawer.releaseLabel')}
-                placeholder={t('deployDrawer.selectRelease')}
-              />
-            )}
+            <span className="shrink-0 system-xs-regular text-text-quaternary">
+              {formatDate(displayedRelease.createdAt)}
+            </span>
+          </div>
+          <span className="system-xs-regular text-text-tertiary">
+            {t('deployDrawer.existingReleaseHint')}
+          </span>
+        </div>
+      ) : releases.length === 0 ? (
+        <DeploymentStateMessage variant="compact">
+          {emptyLabel ?? t('deployDrawer.noReleaseAvailable')}
+        </DeploymentStateMessage>
+      ) : (
+        <DeploymentSelect
+          value={selectedReleaseId}
+          onChange={selectRelease}
+          options={releases.map((release) => ({
+            value: release.id,
+            label: `${release.displayName} · ${releaseCommit(release)}`,
+          }))}
+          ariaLabel={t('deployDrawer.releaseLabel')}
+          placeholder={t('deployDrawer.selectRelease')}
+        />
+      )}
     </Field>
   )
 }
@@ -172,26 +172,24 @@ export function EnvironmentField() {
       label={t('deployDrawer.targetEnv')}
       hint={lockedEnvId ? t('deployDrawer.lockedHint') : undefined}
     >
-      {lockedEnv
-        ? <EnvironmentRow env={lockedEnv} />
-        : environments.length === 0
-          ? (
-              <DeploymentStateMessage variant="compact">
-                {t('deployDrawer.noNewEnvironmentAvailable')}
-              </DeploymentStateMessage>
-            )
-          : (
-              <DeploymentSelect
-                value={selectedEnvironmentId}
-                onChange={selectEnvironment}
-                options={environments.map(env => ({
-                  value: env.id,
-                  label: environmentOptionLabel(env, t),
-                }))}
-                ariaLabel={t('deployDrawer.targetEnv')}
-                placeholder={t('deployDrawer.selectEnv')}
-              />
-            )}
+      {lockedEnv ? (
+        <EnvironmentRow env={lockedEnv} />
+      ) : environments.length === 0 ? (
+        <DeploymentStateMessage variant="compact">
+          {t('deployDrawer.noNewEnvironmentAvailable')}
+        </DeploymentStateMessage>
+      ) : (
+        <DeploymentSelect
+          value={selectedEnvironmentId}
+          onChange={selectEnvironment}
+          options={environments.map((env) => ({
+            value: env.id,
+            label: environmentOptionLabel(env, t),
+          }))}
+          ariaLabel={t('deployDrawer.targetEnv')}
+          placeholder={t('deployDrawer.selectEnv')}
+        />
+      )}
     </Field>
   )
 }

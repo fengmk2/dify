@@ -3,10 +3,7 @@ import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ScopeProvider } from 'jotai-scope'
 import { EditDeploymentDialog } from '../edit-dialog'
-import {
-  deploymentActionAppInstanceIdAtom,
-  editDeploymentDialogOpenAtom,
-} from '../state'
+import { deploymentActionAppInstanceIdAtom, editDeploymentDialogOpenAtom } from '../state'
 
 type QueryOptions = {
   input?: unknown
@@ -60,9 +57,10 @@ vi.mock('jotai-tanstack-query', async () => {
   const { atom } = await import('jotai')
 
   return {
-    atomWithQuery: (createOptions: (get: Getter) => QueryOptions) => atom((get) => {
-      return useQueryMock(createOptions(get))
-    }),
+    atomWithQuery: (createOptions: (get: Getter) => QueryOptions) =>
+      atom((get) => {
+        return useQueryMock(createOptions(get))
+      }),
   }
 })
 
@@ -162,24 +160,35 @@ describe('EditDeploymentDialog', () => {
 
       const dialog = screen.getByRole('dialog', { name: 'deployments.card.menu.editInfo' })
       await user.clear(within(dialog).getByRole('textbox', { name: 'deployments.settings.name' }))
-      await user.type(within(dialog).getByRole('textbox', { name: 'deployments.settings.name' }), ' Deployment 2 ')
-      await user.clear(within(dialog).getByRole('textbox', { name: 'deployments.settings.description' }))
-      await user.type(within(dialog).getByRole('textbox', { name: 'deployments.settings.description' }), ' Updated description ')
+      await user.type(
+        within(dialog).getByRole('textbox', { name: 'deployments.settings.name' }),
+        ' Deployment 2 ',
+      )
+      await user.clear(
+        within(dialog).getByRole('textbox', { name: 'deployments.settings.description' }),
+      )
+      await user.type(
+        within(dialog).getByRole('textbox', { name: 'deployments.settings.description' }),
+        ' Updated description ',
+      )
       await user.click(within(dialog).getByRole('button', { name: 'deployments.settings.save' }))
 
-      expect(updateMutationMock.mutate).toHaveBeenCalledWith({
-        params: {
-          appInstanceId: 'app-instance-1',
+      expect(updateMutationMock.mutate).toHaveBeenCalledWith(
+        {
+          params: {
+            appInstanceId: 'app-instance-1',
+          },
+          body: {
+            appInstanceId: 'app-instance-1',
+            displayName: 'Deployment 2',
+            description: 'Updated description',
+          },
         },
-        body: {
-          appInstanceId: 'app-instance-1',
-          displayName: 'Deployment 2',
-          description: 'Updated description',
-        },
-      }, expect.objectContaining({
-        onSuccess: expect.any(Function),
-        onError: expect.any(Function),
-      }))
+        expect.objectContaining({
+          onSuccess: expect.any(Function),
+          onError: expect.any(Function),
+        }),
+      )
     })
   })
 })

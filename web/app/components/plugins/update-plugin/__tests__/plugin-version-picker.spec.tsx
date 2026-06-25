@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import PluginVersionPicker from '../plugin-version-picker'
 
 type VersionItem = {
@@ -77,7 +77,11 @@ describe('PluginVersionPicker', () => {
     const currentBadge = screen.getByText('CURRENT')
     const oldVersion = screen.getByText('1.0.0')
 
-    expect(screen.getByText('plugin.detailPanel.switchVersion')).toHaveClass('px-3', 'pb-0.5', 'pt-1')
+    expect(screen.getByText('plugin.detailPanel.switchVersion')).toHaveClass(
+      'px-3',
+      'pb-0.5',
+      'pt-1',
+    )
     expect(currentVersion.closest('.cursor-default')).toHaveClass('px-2', 'py-1', 'opacity-30')
     expect(oldVersion.closest('.cursor-pointer')).toHaveClass('px-2', 'py-1')
     expect(currentVersion.parentElement).toHaveClass('min-h-5', 'gap-1', 'px-1')

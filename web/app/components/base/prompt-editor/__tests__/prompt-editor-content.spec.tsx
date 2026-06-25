@@ -62,8 +62,7 @@ const setSelectionOnEditable = (editable: HTMLElement) => {
   if (lexicalTextNode) {
     range.setStart(lexicalTextNode, 0)
     range.setEnd(lexicalTextNode, 1)
-  }
-  else {
+  } else {
     range.selectNodeContents(editable)
   }
 
@@ -91,7 +90,7 @@ const PromptEditorContentHarness = ({
   captures,
   initialText = '',
   ...props
-}: ComponentProps<typeof PromptEditorContent> & { captures: Captures, initialText?: string }) => (
+}: ComponentProps<typeof PromptEditorContent> & { captures: Captures; initialText?: string }) => (
   <EventEmitterContextProvider>
     <LexicalComposer
       initialConfig={{
@@ -135,7 +134,9 @@ describe('PromptEditorContent', () => {
     Range.prototype.getClientRects = vi.fn(() => {
       const rectList = [mockDOMRect] as unknown as DOMRectList
       Object.defineProperty(rectList, 'length', { value: 1 })
-      Object.defineProperty(rectList, 'item', { value: (index: number) => index === 0 ? mockDOMRect : null })
+      Object.defineProperty(rectList, 'item', {
+        value: (index: number) => (index === 0 ? mockDOMRect : null),
+      })
       return rectList
     })
     Range.prototype.getBoundingClientRect = vi.fn(() => mockDOMRect as DOMRect)
@@ -198,7 +199,10 @@ describe('PromptEditorContent', () => {
 
       act(() => {
         captures.editor?.dispatchCommand(FOCUS_COMMAND, new FocusEvent('focus'))
-        captures.editor?.dispatchCommand(BLUR_COMMAND, new FocusEvent('blur', { relatedTarget: null }))
+        captures.editor?.dispatchCommand(
+          BLUR_COMMAND,
+          new FocusEvent('blur', { relatedTarget: null }),
+        )
       })
 
       expect(onFocus).toHaveBeenCalledTimes(1)
@@ -208,7 +212,8 @@ describe('PromptEditorContent', () => {
 
     it('should render adjacent agent output tokens as inline output blocks', async () => {
       const captures: Captures = { editor: null, eventEmitter: null }
-      const initialText = '[§output:ccc:ccc§][§output:output_3ggg:output_3ggg§][§output:ggg:ggg§][§output:output_3fdfdf:output_3fdfdf§]'
+      const initialText =
+        '[§output:ccc:ccc§][§output:output_3ggg:output_3ggg§][§output:ggg:ggg§][§output:output_3fdfdf:output_3fdfdf§]'
 
       const { container } = render(
         <PromptEditorContentHarness
@@ -257,9 +262,7 @@ describe('PromptEditorContent', () => {
           onEditorChange={vi.fn()}
           agentOutputBlock={{
             show: true,
-            outputs: [
-              { name: 'qna_report.pdf', type: 'string' },
-            ],
+            outputs: [{ name: 'qna_report.pdf', type: 'string' }],
           }}
         />,
       )
@@ -274,9 +277,7 @@ describe('PromptEditorContent', () => {
       const captures: Captures = { editor: null, eventEmitter: null }
       const outputBlock = {
         show: true,
-        outputs: [
-          { name: 'summary', type: 'string' as const },
-        ],
+        outputs: [{ name: 'summary', type: 'string' as const }],
       }
 
       const { rerender } = render(
@@ -304,9 +305,7 @@ describe('PromptEditorContent', () => {
           onEditorChange={vi.fn()}
           agentOutputBlock={{
             show: true,
-            outputs: [
-              { name: 'summary', type: 'file' },
-            ],
+            outputs: [{ name: 'summary', type: 'file' }],
           }}
         />,
       )
@@ -322,10 +321,20 @@ describe('PromptEditorContent', () => {
       const onEditorChange = vi.fn()
       const insertCommand = createCommand<string[]>('prompt-editor-shortcut-insert')
       const insertSpy = vi.fn()
-      const Popup = ({ onClose, onInsert }: { onClose: () => void, onInsert: (command: typeof insertCommand, params: string[]) => void }) => (
+      const Popup = ({
+        onClose,
+        onInsert,
+      }: {
+        onClose: () => void
+        onInsert: (command: typeof insertCommand, params: string[]) => void
+      }) => (
         <>
-          <button type="button" onClick={() => onInsert(insertCommand, ['from-shortcut'])}>Insert shortcut</button>
-          <button type="button" onClick={onClose}>Close shortcut</button>
+          <button type="button" onClick={() => onInsert(insertCommand, ['from-shortcut'])}>
+            Insert shortcut
+          </button>
+          <button type="button" onClick={onClose}>
+            Close shortcut
+          </button>
         </>
       )
 

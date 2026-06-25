@@ -1,5 +1,5 @@
 import { act, render, screen } from '@testing-library/react'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import ReasoningPanel from '../reasoning-panel'
 
 // Mock react-i18next so the reused chat.thinking/chat.thought labels resolve.
@@ -17,7 +17,9 @@ vi.mock('react-i18next', () => ({
 
 // Mock the heavy Markdown renderer to a simple passthrough.
 vi.mock('@/app/components/base/markdown', () => ({
-  Markdown: ({ content }: { content: string }) => <div data-testid="reasoning-markdown">{content}</div>,
+  Markdown: ({ content }: { content: string }) => (
+    <div data-testid="reasoning-markdown">{content}</div>
+  ),
 }))
 
 describe('ReasoningPanel', () => {

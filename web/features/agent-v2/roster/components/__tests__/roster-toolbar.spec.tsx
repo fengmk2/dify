@@ -34,7 +34,9 @@ describe('RosterToolbar', () => {
     const user = userEvent.setup()
     const { onFilterChange } = renderToolbar()
 
-    const publishedFilter = screen.getByRole('button', { name: /agentV2\.roster\.filters\.published/ })
+    const publishedFilter = screen.getByRole('button', {
+      name: /agentV2\.roster\.filters\.published/,
+    })
     const draftsFilter = screen.getByRole('button', { name: /agentV2\.roster\.filters\.drafts/ })
 
     expect(publishedFilter).toBeEnabled()
@@ -48,7 +50,9 @@ describe('RosterToolbar', () => {
   it('renders stable filter count badges and omits the all count', () => {
     renderToolbar()
 
-    expect(screen.getByRole('button', { name: /agentV2\.roster\.filters\.all/ })).not.toHaveTextContent('3')
+    expect(
+      screen.getByRole('button', { name: /agentV2\.roster\.filters\.all/ }),
+    ).not.toHaveTextContent('3')
 
     expect(screen.getByText('1').parentElement).toHaveClass(
       'min-w-4',

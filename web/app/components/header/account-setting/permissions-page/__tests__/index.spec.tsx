@@ -4,7 +4,10 @@ import { toast } from '@langgenius/dify-ui/toast'
 import { render, screen, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { useSelector as useAppContextSelector } from '@/context/app-context'
-import { useCreateWorkspaceRole, useUpdateWorkspaceRole } from '@/service/access-control/use-workspace-roles'
+import {
+  useCreateWorkspaceRole,
+  useUpdateWorkspaceRole,
+} from '@/service/access-control/use-workspace-roles'
 import { useRoleGroups } from '../hooks'
 import PermissionsPage from '../index'
 
@@ -21,9 +24,11 @@ vi.mock('@langgenius/dify-ui/toast', () => ({
 }))
 
 vi.mock('@/context/app-context', () => ({
-  useSelector: vi.fn((selector: (state: AppContextValue) => unknown) => selector({
-    workspacePermissionKeys: mocks.workspacePermissionKeys,
-  } as AppContextValue)),
+  useSelector: vi.fn((selector: (state: AppContextValue) => unknown) =>
+    selector({
+      workspacePermissionKeys: mocks.workspacePermissionKeys,
+    } as AppContextValue),
+  ),
 }))
 
 vi.mock('@/service/access-control/use-workspace-roles', () => ({
@@ -58,8 +63,12 @@ vi.mock('../role-list', () => ({
         {role && (
           <>
             <span>{role.name}</span>
-            <button type="button" onClick={() => onView(role)}>view role</button>
-            <button type="button" onClick={() => onEdit(role)}>edit role</button>
+            <button type="button" onClick={() => onView(role)}>
+              view role
+            </button>
+            <button type="button" onClick={() => onEdit(role)}>
+              edit role
+            </button>
           </>
         )}
       </div>
@@ -75,17 +84,19 @@ vi.mock('../role-modal', () => ({
   }: {
     mode: string
     role?: Role
-    onSubmit: (data: { name: string, description: string, permissionKeys: string[] }) => void
+    onSubmit: (data: { name: string; description: string; permissionKeys: string[] }) => void
   }) => (
     <div role="dialog" aria-label={`${mode} role`}>
       <span>{role?.name}</span>
       <button
         type="button"
-        onClick={() => onSubmit({
-          name: `${mode} name`,
-          description: `${mode} description`,
-          permissionKeys: ['workspace.member.manage'],
-        })}
+        onClick={() =>
+          onSubmit({
+            name: `${mode} name`,
+            description: `${mode} description`,
+            permissionKeys: ['workspace.member.manage'],
+          })
+        }
       >
         submit role
       </button>
@@ -131,30 +142,45 @@ describe('PermissionsPage', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     mocks.workspacePermissionKeys = []
-    vi.mocked(useAppContextSelector).mockImplementation((selector: (state: AppContextValue) => unknown) => selector({
-      workspacePermissionKeys: mocks.workspacePermissionKeys,
-    } as AppContextValue))
+    vi.mocked(useAppContextSelector).mockImplementation(
+      (selector: (state: AppContextValue) => unknown) =>
+        selector({
+          workspacePermissionKeys: mocks.workspacePermissionKeys,
+        } as AppContextValue),
+    )
     vi.mocked(useRoleGroups).mockReturnValue({
-      roleGroups: [{
-        id: 'global_custom',
-        category: 'global_custom',
-        title: 'Custom roles',
-        items: [role],
-      }],
+      roleGroups: [
+        {
+          id: 'global_custom',
+          category: 'global_custom',
+          title: 'Custom roles',
+          items: [role],
+        },
+      ],
       isLoading: false,
       isFetchingNextPage: false,
       fetchNextPage: vi.fn(),
       hasNextPage: false,
       error: null,
     } as ReturnType<typeof useRoleGroups>)
-    vi.mocked(useCreateWorkspaceRole).mockReturnValue(mockMutation(mocks.createWorkspaceRole) as unknown as ReturnType<typeof useCreateWorkspaceRole>)
-    vi.mocked(useUpdateWorkspaceRole).mockReturnValue(mockMutation(mocks.updateWorkspaceRole) as unknown as ReturnType<typeof useUpdateWorkspaceRole>)
+    vi.mocked(useCreateWorkspaceRole).mockReturnValue(
+      mockMutation(mocks.createWorkspaceRole) as unknown as ReturnType<
+        typeof useCreateWorkspaceRole
+      >,
+    )
+    vi.mocked(useUpdateWorkspaceRole).mockReturnValue(
+      mockMutation(mocks.updateWorkspaceRole) as unknown as ReturnType<
+        typeof useUpdateWorkspaceRole
+      >,
+    )
   })
 
   it('hides role creation without workspace role manage permission', () => {
     renderPermissionsPage()
 
-    expect(screen.queryByRole('button', { name: 'permission.role.addRole' })).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: 'permission.role.addRole' }),
+    ).not.toBeInTheDocument()
     expect(screen.getByText('Custom manager')).toBeInTheDocument()
   })
 
@@ -202,11 +228,14 @@ describe('PermissionsPage', () => {
     expect(screen.getByRole('dialog', { name: 'create role' })).toBeInTheDocument()
     await userEvent.click(screen.getByRole('button', { name: 'submit role' }))
 
-    expect(mocks.createWorkspaceRole).toHaveBeenCalledWith({
-      name: 'create name',
-      description: 'create description',
-      permission_keys: ['workspace.member.manage'],
-    }, expect.any(Object))
+    expect(mocks.createWorkspaceRole).toHaveBeenCalledWith(
+      {
+        name: 'create name',
+        description: 'create description',
+        permission_keys: ['workspace.member.manage'],
+      },
+      expect.any(Object),
+    )
     expect(toast.success).toHaveBeenCalledWith('permission.role.created')
   })
 
@@ -219,12 +248,15 @@ describe('PermissionsPage', () => {
     expect(within(dialog).getByText('Custom manager')).toBeInTheDocument()
     await userEvent.click(screen.getByRole('button', { name: 'submit role' }))
 
-    expect(mocks.updateWorkspaceRole).toHaveBeenCalledWith({
-      id: 'role-1',
-      name: 'edit name',
-      description: 'edit description',
-      permission_keys: ['workspace.member.manage'],
-    }, expect.any(Object))
+    expect(mocks.updateWorkspaceRole).toHaveBeenCalledWith(
+      {
+        id: 'role-1',
+        name: 'edit name',
+        description: 'edit description',
+        permission_keys: ['workspace.member.manage'],
+      },
+      expect.any(Object),
+    )
     expect(toast.success).toHaveBeenCalledWith('permission.role.updated')
   })
 })

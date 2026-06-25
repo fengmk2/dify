@@ -22,15 +22,11 @@ const VALUE_LIMIT = {
 }
 
 const normalizeScoreThreshold = (value?: number): number => {
-  const normalizedValue = typeof value === 'number' && Number.isFinite(value)
-    ? value
-    : VALUE_LIMIT.default
+  const normalizedValue =
+    typeof value === 'number' && Number.isFinite(value) ? value : VALUE_LIMIT.default
   const roundedValue = Number.parseFloat(normalizedValue.toFixed(2))
 
-  return Math.min(
-    VALUE_LIMIT.max,
-    Math.max(VALUE_LIMIT.min, roundedValue),
-  )
+  return Math.min(VALUE_LIMIT.max, Math.max(VALUE_LIMIT.min, roundedValue))
 }
 
 const ScoreThresholdItem: FC<Props> = ({

@@ -23,7 +23,11 @@ import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import AppIcon from '@/app/components/base/app-icon'
 import { useChat } from '@/app/components/base/chat/chat/hooks'
-import { buildChatItemTree, getLastAnswer, isValidGeneratedAnswer } from '@/app/components/base/chat/utils'
+import {
+  buildChatItemTree,
+  getLastAnswer,
+  isValidGeneratedAnswer,
+} from '@/app/components/base/chat/utils'
 import { getProcessedFilesFromResponse } from '@/app/components/base/file-uploader/utils'
 import Loading from '@/app/components/base/loading'
 import { ModelFeatureEnum } from '@/app/components/header/account-setting/model-provider-page/declarations'
@@ -83,7 +87,8 @@ const disabledFileUploadConfig = {
   fileUploadConfig: ChatConfig['system_parameters']
 }
 
-const getModelSettings = (agentSoulConfig?: AgentSoulConfig) => agentSoulConfig?.model?.model_settings ?? {}
+const getModelSettings = (agentSoulConfig?: AgentSoulConfig) =>
+  agentSoulConfig?.model?.model_settings ?? {}
 
 const toEnabledConfig = (config?: { enabled?: boolean } | null) => ({
   ...config,
@@ -91,14 +96,10 @@ const toEnabledConfig = (config?: { enabled?: boolean } | null) => ({
 })
 
 const toInputType = (type: string): InputVarType => {
-  if (type === InputVarType.paragraph)
-    return InputVarType.paragraph
-  if (type === InputVarType.select)
-    return InputVarType.select
-  if (type === InputVarType.number)
-    return InputVarType.number
-  if (type === InputVarType.json || type === InputVarType.jsonObject)
-    return InputVarType.json
+  if (type === InputVarType.paragraph) return InputVarType.paragraph
+  if (type === InputVarType.select) return InputVarType.select
+  if (type === InputVarType.number) return InputVarType.number
+  if (type === InputVarType.json || type === InputVarType.jsonObject) return InputVarType.json
 
   return InputVarType.textInput
 }
@@ -160,7 +161,9 @@ const fetchAgentConversationMessages = (agentId: string, conversationId: string)
   })
 }
 
-const toFileResponse = (file: NonNullable<MessageDetailResponse['message_files']>[number]): FileResponse => ({
+const toFileResponse = (
+  file: NonNullable<MessageDetailResponse['message_files']>[number],
+): FileResponse => ({
   related_id: file.id ?? file.upload_file_id,
   extension: '',
   filename: file.filename,
@@ -173,20 +176,24 @@ const toFileResponse = (file: NonNullable<MessageDetailResponse['message_files']
   remote_url: file.url ?? '',
 })
 
-const toLogMessages = (message: MessageDetailResponse['message'], answer: string, files: MessageDetailResponse['message_files']) => {
-  if (!Array.isArray(message))
-    return []
+const toLogMessages = (
+  message: MessageDetailResponse['message'],
+  answer: string,
+  files: MessageDetailResponse['message_files'],
+) => {
+  if (!Array.isArray(message)) return []
 
   const logMessages = message as IChatItem['log']
-  if (logMessages?.at(-1)?.role === 'assistant')
-    return logMessages
+  if (logMessages?.at(-1)?.role === 'assistant') return logMessages
 
   return [
     ...(logMessages ?? []),
     {
       role: 'assistant',
       text: answer,
-      files: getProcessedFilesFromResponse((files?.filter(file => file.belongs_to === 'assistant') || []).map(toFileResponse)),
+      files: getProcessedFilesFromResponse(
+        (files?.filter((file) => file.belongs_to === 'assistant') || []).map(toFileResponse),
+      ),
     },
   ]
 }
@@ -203,13 +210,13 @@ const toAgentThoughtItem = (thought: AgentThought, conversationId: string): Thou
   files: thought.files,
 })
 
-const toFeedback = (feedback: NonNullable<MessageDetailResponse['feedbacks']>[number] | undefined): FeedbackType | undefined => {
-  if (!feedback)
-    return undefined
+const toFeedback = (
+  feedback: NonNullable<MessageDetailResponse['feedbacks']>[number] | undefined,
+): FeedbackType | undefined => {
+  if (!feedback) return undefined
 
   const rating = feedback.rating as MessageRating
-  if (rating !== 'like' && rating !== 'dislike' && rating !== null)
-    return undefined
+  if (rating !== 'like' && rating !== 'dislike' && rating !== null) return undefined
 
   return {
     rating,
@@ -232,8 +239,8 @@ function getFormattedAgentDebugChatTree(messages: MessageDetailResponse[]): Chat
 
   messages.forEach((item) => {
     const answer = getAgentDebugMessageAnswer(item)
-    const questionFiles = item.message_files?.filter(file => file.belongs_to === 'user') || []
-    const answerFiles = item.message_files?.filter(file => file.belongs_to === 'assistant') || []
+    const questionFiles = item.message_files?.filter((file) => file.belongs_to === 'user') || []
+    const answerFiles = item.message_files?.filter((file) => file.belongs_to === 'assistant') || []
     const answerTokens = item.answer_tokens ?? 0
     const messageTokens = item.message_tokens ?? 0
     const latency = item.provider_response_latency ?? 0
@@ -249,10 +256,14 @@ function getFormattedAgentDebugChatTree(messages: MessageDetailResponse[]): Chat
       id: item.id,
       content: answer,
       agent_thoughts: addFileInfos(
-        sortAgentSorts((item.agent_thoughts ?? []).map(thought => toAgentThoughtItem(thought, item.conversation_id))),
+        sortAgentSorts(
+          (item.agent_thoughts ?? []).map((thought) =>
+            toAgentThoughtItem(thought, item.conversation_id),
+          ),
+        ),
         item.message_files as unknown as FileEntity[],
       ),
-      feedback: toFeedback(item.feedbacks?.find(feedback => feedback.from_source === 'user')),
+      feedback: toFeedback(item.feedbacks?.find((feedback) => feedback.from_source === 'user')),
       isAnswer: true,
       log: toLogMessages(item.message, answer, item.message_files),
       message_files: getProcessedFilesFromResponse(answerFiles.map(toFileResponse)),
@@ -304,7 +315,7 @@ const buildChatConfig = ({
     prompt_type: PromptMode.simple,
     chat_prompt_config: DEFAULT_CHAT_PROMPT_CONFIG,
     completion_prompt_config: DEFAULT_COMPLETION_PROMPT_CONFIG,
-    user_input_form: (agentSoulConfig?.app_variables ?? []).map(variable => ({
+    user_input_form: (agentSoulConfig?.app_variables ?? []).map((variable) => ({
       'text-input': {
         default: String(variable.default ?? ''),
         label: variable.name,
@@ -317,7 +328,9 @@ const buildChatConfig = ({
     dataset_query_variable: '',
     opening_statement: appFeatures.opening_statement ?? '',
     suggested_questions: appFeatures.suggested_questions ?? [],
-    suggested_questions_after_answer: toEnabledConfig(appFeatures.suggested_questions_after_answer) as ChatConfig['suggested_questions_after_answer'],
+    suggested_questions_after_answer: toEnabledConfig(
+      appFeatures.suggested_questions_after_answer,
+    ) as ChatConfig['suggested_questions_after_answer'],
     more_like_this: { enabled: false },
     text_to_speech: toEnabledConfig(appFeatures.text_to_speech) as ChatConfig['text_to_speech'],
     speech_to_text: toEnabledConfig(appFeatures.speech_to_text),
@@ -361,13 +374,16 @@ const buildChatConfig = ({
         reranking_model_name: '',
       },
       top_k: agentSoulConfig?.knowledge?.query_config?.top_k ?? 4,
-      score_threshold_enabled: agentSoulConfig?.knowledge?.query_config?.score_threshold_enabled ?? false,
+      score_threshold_enabled:
+        agentSoulConfig?.knowledge?.query_config?.score_threshold_enabled ?? false,
       score_threshold: agentSoulConfig?.knowledge?.query_config?.score_threshold ?? 0.8,
       datasets: {
-        datasets: datasets.map(dataset => ({
-          enabled: true,
-          id: dataset.id ?? '',
-        })).filter(dataset => dataset.id),
+        datasets: datasets
+          .map((dataset) => ({
+            enabled: true,
+            id: dataset.id ?? '',
+          }))
+          .filter((dataset) => dataset.id),
       },
     },
     file_upload: disabledFileUploadConfig,
@@ -390,7 +406,7 @@ function AgentPreviewChatEmptyState({
   hasInstructions: boolean
 }) {
   const { t } = useTranslation('agentV2')
-  const imageUrl = (agentIconType === 'image' || agentIconType === 'link') ? agentIcon : undefined
+  const imageUrl = agentIconType === 'image' || agentIconType === 'link' ? agentIcon : undefined
   const iconType = imageUrl ? 'image' : agentIconType
 
   return (
@@ -505,21 +521,27 @@ function AgentPreviewChatSession({
   const { userProfile } = useAppContext()
   const prompt = useAtomValue(agentComposerPromptAtom)
   const currentModel = useAtomValue(agentComposerModelAtom)
-  const config = useMemo(() => buildChatConfig({
-    agentSoulConfig,
-    currentModel,
-    prompt,
-  }), [agentSoulConfig, currentModel, prompt])
-  const inputsForm = useMemo(() => (agentSoulConfig?.app_variables ?? []).map(toInputForm), [agentSoulConfig?.app_variables])
+  const config = useMemo(
+    () =>
+      buildChatConfig({
+        agentSoulConfig,
+        currentModel,
+        prompt,
+      }),
+    [agentSoulConfig, currentModel, prompt],
+  )
+  const inputsForm = useMemo(
+    () => (agentSoulConfig?.app_variables ?? []).map(toInputForm),
+    [agentSoulConfig?.app_variables],
+  )
   const inputs = useMemo(() => {
     return inputsForm.reduce<Inputs>((acc, input) => {
       acc[input.variable] = (input.default ?? '') as Inputs[string]
       return acc
     }, {})
   }, [inputsForm])
-  const {
-    textGenerationModelList,
-  } = useTextGenerationCurrentProviderAndModelAndModelList(currentModel)
+  const { textGenerationModelList } =
+    useTextGenerationCurrentProviderAndModelAndModelList(currentModel)
   const {
     chatList,
     setTargetMessageId,
@@ -545,49 +567,65 @@ function AgentPreviewChatSession({
     debugConversationId ?? undefined,
   )
 
-  const doSend: OnSend = useCallback(async (message, files, isRegenerate = false, parentAnswer: ChatItem | null = null) => {
-    try {
-      await onSaveDraftBeforeRun?.()
-    }
-    catch {
-      return
-    }
+  const doSend: OnSend = useCallback(
+    async (message, files, isRegenerate = false, parentAnswer: ChatItem | null = null) => {
+      try {
+        await onSaveDraftBeforeRun?.()
+      } catch {
+        return
+      }
 
-    const currentProvider = textGenerationModelList.find(item => item.provider === config.model.provider)
-    const selectedModel = currentProvider?.models.find(model => model.model === config.model.name)
-    const supportVision = selectedModel?.features?.includes(ModelFeatureEnum.vision)
-    const data: Record<string, unknown> = {
-      query: message,
+      const currentProvider = textGenerationModelList.find(
+        (item) => item.provider === config.model.provider,
+      )
+      const selectedModel = currentProvider?.models.find(
+        (model) => model.model === config.model.name,
+      )
+      const supportVision = selectedModel?.features?.includes(ModelFeatureEnum.vision)
+      const data: Record<string, unknown> = {
+        query: message,
+        inputs,
+        parent_message_id: (isRegenerate ? parentAnswer?.id : getLastAnswer(chatList)?.id) || null,
+      }
+
+      if (files?.length && supportVision) data.files = files
+
+      handleSend(`agent/${agentId}/chat-messages`, data as Parameters<typeof handleSend>[1], {
+        onGetConversationMessages: (conversationId) =>
+          fetchAgentConversationMessages(agentId, conversationId),
+        onGetSuggestedQuestions: (responseItemId) =>
+          fetchAgentSuggestedQuestions(agentId, responseItemId),
+      })
+    },
+    [
+      agentId,
+      chatList,
+      config.model.name,
+      config.model.provider,
+      handleSend,
       inputs,
-      parent_message_id: (isRegenerate ? parentAnswer?.id : getLastAnswer(chatList)?.id) || null,
-    }
+      onSaveDraftBeforeRun,
+      textGenerationModelList,
+    ],
+  )
 
-    if (files?.length && supportVision)
-      data.files = files
+  const doRegenerate = useCallback(
+    (chatItem: ChatItem, editedQuestion?: { message: string; files?: FileEntity[] }) => {
+      const question = editedQuestion
+        ? chatItem
+        : chatList.find((item) => item.id === chatItem.parentMessageId)
+      if (!question) return
 
-    handleSend(
-      `agent/${agentId}/chat-messages`,
-      data as Parameters<typeof handleSend>[1],
-      {
-        onGetConversationMessages: conversationId => fetchAgentConversationMessages(agentId, conversationId),
-        onGetSuggestedQuestions: responseItemId => fetchAgentSuggestedQuestions(agentId, responseItemId),
-      },
-    )
-  }, [agentId, chatList, config.model.name, config.model.provider, handleSend, inputs, onSaveDraftBeforeRun, textGenerationModelList])
-
-  const doRegenerate = useCallback((chatItem: ChatItem, editedQuestion?: { message: string, files?: FileEntity[] }) => {
-    const question = editedQuestion ? chatItem : chatList.find(item => item.id === chatItem.parentMessageId)
-    if (!question)
-      return
-
-    const parentAnswer = chatList.find(item => item.id === question.parentMessageId)
-    doSend(
-      editedQuestion ? editedQuestion.message : question.content,
-      editedQuestion ? editedQuestion.files : question.message_files,
-      true,
-      isValidGeneratedAnswer(parentAnswer) ? parentAnswer : null,
-    )
-  }, [chatList, doSend])
+      const parentAnswer = chatList.find((item) => item.id === question.parentMessageId)
+      doSend(
+        editedQuestion ? editedQuestion.message : question.content,
+        editedQuestion ? editedQuestion.files : question.message_files,
+        true,
+        isValidGeneratedAnswer(parentAnswer) ? parentAnswer : null,
+      )
+    },
+    [chatList, doSend],
+  )
   const isEmptyChat = chatList.length === 0
   const hasInstructions = !!config.pre_prompt.trim()
 
@@ -596,27 +634,26 @@ function AgentPreviewChatSession({
       config={config}
       chatList={chatList}
       isResponding={isResponding}
-      chatNode={isEmptyChat && (
-        <AgentPreviewChatEmptyState
-          agentIcon={agentIcon}
-          agentIconBackground={agentIconBackground}
-          agentIconType={agentIconType}
-          agentName={agentName}
-          hasInstructions={hasInstructions}
-        />
-      )}
+      chatNode={
+        isEmptyChat && (
+          <AgentPreviewChatEmptyState
+            agentIcon={agentIcon}
+            agentIconBackground={agentIconBackground}
+            agentIconType={agentIconType}
+            agentName={agentName}
+            hasInstructions={hasInstructions}
+          />
+        )
+      }
       chatContainerClassName={cn('pt-6', isEmptyChat ? 'px-12' : 'px-3')}
-      chatFooterClassName={cn(
-        'pb-0',
-        isEmptyChat ? '!bottom-[27%] px-12 pt-3' : 'px-3 pt-10',
-      )}
+      chatFooterClassName={cn('pb-0', isEmptyChat ? '!bottom-[27%] px-12 pt-3' : 'px-3 pt-10')}
       showFileUpload={false}
       suggestedQuestions={suggestedQuestions}
       onSend={doSend}
       inputs={inputs}
       inputsForm={inputsForm}
       onRegenerate={doRegenerate}
-      switchSibling={siblingMessageId => setTargetMessageId(siblingMessageId)}
+      switchSibling={(siblingMessageId) => setTargetMessageId(siblingMessageId)}
       onStopResponding={handleStop}
       showPromptLog
       questionIcon={<Avatar avatar={userProfile.avatar_url} name={userProfile.name} size="xl" />}

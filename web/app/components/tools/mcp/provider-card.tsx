@@ -38,13 +38,7 @@ const isMCPCardActionTarget = (target: EventTarget | null) => {
   return target instanceof HTMLElement && Boolean(target.closest('[data-mcp-card-action]'))
 }
 
-const MCPCard = ({
-  currentProvider,
-  data,
-  onUpdate,
-  handleSelect,
-  onDeleted,
-}: Props) => {
+const MCPCard = ({ currentProvider, data, onUpdate, handleSelect, onDeleted }: Props) => {
   const { t } = useTranslation()
   const { formatTimeFromNow } = useFormatTimeFromNow()
   const canManageMCP = useCanManageMCP()
@@ -58,41 +52,35 @@ const MCPCard = ({
 
   const [isOperationShow, setIsOperationShow] = useState(false)
 
-  const [isShowUpdateModal, {
-    setTrue: showUpdateModal,
-    setFalse: hideUpdateModal,
-  }] = useBoolean(false)
+  const [isShowUpdateModal, { setTrue: showUpdateModal, setFalse: hideUpdateModal }] =
+    useBoolean(false)
 
-  const [isShowDeleteConfirm, {
-    setTrue: showDeleteConfirm,
-    setFalse: hideDeleteConfirm,
-  }] = useBoolean(false)
+  const [isShowDeleteConfirm, { setTrue: showDeleteConfirm, setFalse: hideDeleteConfirm }] =
+    useBoolean(false)
 
-  const [deleting, {
-    setTrue: showDeleting,
-    setFalse: hideDeleting,
-  }] = useBoolean(false)
+  const [deleting, { setTrue: showDeleting, setFalse: hideDeleting }] = useBoolean(false)
 
-  const handleUpdate = useCallback(async (form: MCPModalConfirmPayload) => {
-    if (!canManageMCP)
-      return
+  const handleUpdate = useCallback(
+    async (form: MCPModalConfirmPayload) => {
+      if (!canManageMCP) return
 
-    const res = await updateMCP({
-      ...form,
-      provider_id: data.id,
-    }) as MutationResult
-    if (res.result === 'success') {
-      hideUpdateModal()
-      onUpdate(data.id)
-    }
-  }, [canManageMCP, data, updateMCP, hideUpdateModal, onUpdate])
+      const res = (await updateMCP({
+        ...form,
+        provider_id: data.id,
+      })) as MutationResult
+      if (res.result === 'success') {
+        hideUpdateModal()
+        onUpdate(data.id)
+      }
+    },
+    [canManageMCP, data, updateMCP, hideUpdateModal, onUpdate],
+  )
 
   const handleDelete = useCallback(async () => {
-    if (!canManageMCP)
-      return
+    if (!canManageMCP) return
 
     showDeleting()
-    const res = await deleteMCP(data.id) as MutationResult
+    const res = (await deleteMCP(data.id)) as MutationResult
     hideDeleting()
     if (res.result === 'success') {
       hideDeleteConfirm()
@@ -104,22 +92,25 @@ const MCPCard = ({
     handleSelect(data.id)
   }, [data.id, handleSelect])
 
-  const handleCardClick = useCallback((event: MouseEvent<HTMLDivElement>) => {
-    if (isMCPCardActionTarget(event.target))
-      return
+  const handleCardClick = useCallback(
+    (event: MouseEvent<HTMLDivElement>) => {
+      if (isMCPCardActionTarget(event.target)) return
 
-    handleSelectProvider()
-  }, [handleSelectProvider])
+      handleSelectProvider()
+    },
+    [handleSelectProvider],
+  )
 
-  const handleCardKeyDown = useCallback((event: KeyboardEvent<HTMLDivElement>) => {
-    if (isMCPCardActionTarget(event.target))
-      return
-    if (event.key !== 'Enter' && event.key !== ' ')
-      return
+  const handleCardKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLDivElement>) => {
+      if (isMCPCardActionTarget(event.target)) return
+      if (event.key !== 'Enter' && event.key !== ' ') return
 
-    event.preventDefault()
-    handleSelectProvider()
-  }, [handleSelectProvider])
+      event.preventDefault()
+      handleSelectProvider()
+    },
+    [handleSelectProvider],
+  )
 
   return (
     <div
@@ -129,7 +120,8 @@ const MCPCard = ({
       onKeyDown={handleCardKeyDown}
       className={cn(
         'group relative flex cursor-pointer flex-col overflow-hidden rounded-xl border-[0.5px] border-components-panel-border bg-components-panel-on-panel-item-bg shadow-xs hover:bg-components-panel-on-panel-item-bg-hover',
-        currentProvider?.id === data.id && 'border-components-option-card-option-selected-border bg-components-panel-on-panel-item-bg-hover',
+        currentProvider?.id === data.id &&
+          'border-components-option-card-option-selected-border bg-components-panel-on-panel-item-bg-hover',
       )}
     >
       <div className="flex shrink-0 items-center gap-3 rounded-t-xl p-4">
@@ -137,22 +129,35 @@ const MCPCard = ({
           <Icon src={data.icon} />
         </div>
         <div className="min-w-0 grow">
-          <div className="mb-1 truncate system-md-semibold text-text-secondary" title={data.name}>{data.name}</div>
-          <div className="truncate system-xs-regular text-text-tertiary" title={data.server_identifier}>{data.server_identifier}</div>
+          <div className="mb-1 truncate system-md-semibold text-text-secondary" title={data.name}>
+            {data.name}
+          </div>
+          <div
+            className="truncate system-xs-regular text-text-tertiary"
+            title={data.server_identifier}
+          >
+            {data.server_identifier}
+          </div>
         </div>
       </div>
       <div className="flex items-center gap-1 rounded-b-xl pt-1.5 pr-2.5 pb-2.5 pl-4">
         <div className="flex w-0 grow items-center gap-2">
           {data.tools.length > 0 && (
-            <div className="shrink-0 system-xs-regular text-text-tertiary">{t('mcp.toolsCount', { ns: 'tools', count: data.tools.length })}</div>
+            <div className="shrink-0 system-xs-regular text-text-tertiary">
+              {t('mcp.toolsCount', { ns: 'tools', count: data.tools.length })}
+            </div>
           )}
           {!data.tools.length && (
-            <div className="shrink-0 system-xs-regular text-text-tertiary">{t('mcp.noTools', { ns: 'tools' })}</div>
+            <div className="shrink-0 system-xs-regular text-text-tertiary">
+              {t('mcp.noTools', { ns: 'tools' })}
+            </div>
           )}
           {updatedAtText && (
             <>
               <div className="system-xs-regular text-divider-deep">·</div>
-              <div className="truncate system-xs-regular text-text-tertiary" title={updatedAtText}>{updatedAtText}</div>
+              <div className="truncate system-xs-regular text-text-tertiary" title={updatedAtText}>
+                {updatedAtText}
+              </div>
             </>
           )}
         </div>
@@ -165,7 +170,13 @@ const MCPCard = ({
         )}
       </div>
       {canManageMCP && (
-        <div data-mcp-card-action className={cn('absolute top-2.5 right-2.5 hidden group-hover:block', isOperationShow && 'block')}>
+        <div
+          data-mcp-card-action
+          className={cn(
+            'absolute top-2.5 right-2.5 hidden group-hover:block',
+            isOperationShow && 'block',
+          )}
+        >
           <OperationDropdown
             inCard
             onOpenChange={setIsOperationShow}
@@ -182,7 +193,10 @@ const MCPCard = ({
           onHide={hideUpdateModal}
         />
       )}
-      <AlertDialog open={canManageMCP && isShowDeleteConfirm} onOpenChange={open => !open && hideDeleteConfirm()}>
+      <AlertDialog
+        open={canManageMCP && isShowDeleteConfirm}
+        onOpenChange={(open) => !open && hideDeleteConfirm()}
+      >
         <AlertDialogContent>
           <div className="flex flex-col gap-2 px-6 pt-6 pb-4">
             <AlertDialogTitle className="w-full truncate title-2xl-semi-bold text-text-primary">
@@ -193,7 +207,9 @@ const MCPCard = ({
             </div>
           </div>
           <AlertDialogActions>
-            <AlertDialogCancelButton>{t('operation.cancel', { ns: 'common' })}</AlertDialogCancelButton>
+            <AlertDialogCancelButton>
+              {t('operation.cancel', { ns: 'common' })}
+            </AlertDialogCancelButton>
             <AlertDialogConfirmButton loading={deleting} disabled={deleting} onClick={handleDelete}>
               {t('operation.confirm', { ns: 'common' })}
             </AlertDialogConfirmButton>

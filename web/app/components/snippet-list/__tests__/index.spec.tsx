@@ -34,7 +34,8 @@ vi.mock('@/service/use-snippets', () => ({
     mutateAsync: vi.fn(),
     isPending: false,
   }),
-  useInfiniteSnippetList: (params: unknown, options: unknown) => mockUseInfiniteSnippetList(params, options),
+  useInfiniteSnippetList: (params: unknown, options: unknown) =>
+    mockUseInfiniteSnippetList(params, options),
   useUpdateSnippetMutation: () => ({
     mutate: vi.fn(),
     isPending: false,
@@ -83,19 +84,22 @@ vi.mock('@/context/app-context', () => ({
 
     return state
   },
-  useSelector: <T,>(selector: (state: {
-    isCurrentWorkspaceEditor: boolean
-    isCurrentWorkspaceDatasetOperator: boolean
-    isLoadingCurrentWorkspace: boolean
-    userProfile: { id: string }
-    workspacePermissionKeys: string[]
-  }) => T): T => selector({
-    isCurrentWorkspaceEditor: mockIsCurrentWorkspaceEditor(),
-    isCurrentWorkspaceDatasetOperator: mockIsCurrentWorkspaceDatasetOperator(),
-    isLoadingCurrentWorkspace: false,
-    userProfile: { id: 'creator-1' },
-    workspacePermissionKeys: mockWorkspacePermissionKeys(),
-  }),
+  useSelector: <T,>(
+    selector: (state: {
+      isCurrentWorkspaceEditor: boolean
+      isCurrentWorkspaceDatasetOperator: boolean
+      isLoadingCurrentWorkspace: boolean
+      userProfile: { id: string }
+      workspacePermissionKeys: string[]
+    }) => T,
+  ): T =>
+    selector({
+      isCurrentWorkspaceEditor: mockIsCurrentWorkspaceEditor(),
+      isCurrentWorkspaceDatasetOperator: mockIsCurrentWorkspaceDatasetOperator(),
+      isLoadingCurrentWorkspace: false,
+      userProfile: { id: 'creator-1' },
+      workspacePermissionKeys: mockWorkspacePermissionKeys(),
+    }),
 }))
 
 vi.mock('@/service/use-common', () => ({
@@ -127,19 +131,23 @@ vi.mock('@/next/dynamic', () => ({
           'data-testid': 'tag-management-modal',
           'data-show': String(props.show),
         },
-        React.createElement('button', { type: 'button', onClick: props.onClose }, 'close tag modal'),
-        React.createElement('button', { type: 'button', onClick: props.onTagsChange }, 'refresh tags'),
+        React.createElement(
+          'button',
+          { type: 'button', onClick: props.onClose },
+          'close tag modal',
+        ),
+        React.createElement(
+          'button',
+          { type: 'button', onClick: props.onTagsChange },
+          'refresh tags',
+        ),
       )
     }
   },
 }))
 
 vi.mock('@/features/tag-management/components/tag-filter', () => ({
-  TagFilter: ({
-    onOpenTagManagement,
-  }: {
-    onOpenTagManagement: () => void
-  }) => (
+  TagFilter: ({ onOpenTagManagement }: { onOpenTagManagement: () => void }) => (
     <button type="button" onClick={onOpenTagManagement}>
       common.tag.placeholder
     </button>
@@ -159,8 +167,12 @@ vi.mock('@/features/tag-management/components/tag-selector', () => ({
     onTagsChange: () => void
   }) => (
     <div data-testid="snippet-card-tags">
-      <button type="button" onClick={onOpenTagManagement}>open card tags</button>
-      <button type="button" onClick={onTagsChange}>refresh card tags</button>
+      <button type="button" onClick={onOpenTagManagement}>
+        open card tags
+      </button>
+      <button type="button" onClick={onTagsChange}>
+        refresh card tags
+      </button>
     </div>
   ),
 }))
@@ -194,27 +206,29 @@ const mockFetchNextPage = vi.fn()
 
 const mockSnippetListState = {
   data: {
-    pages: [{
-      data: [
-        {
-          id: 'snippet-1',
-          name: 'Sales Snippet',
-          description: 'Builds a sales follow-up.',
-          type: 'node',
-          is_published: true,
-          use_count: 12,
-          tags: [],
-          created_at: 1704067200,
-          created_by: 'creator-1',
-          updated_at: 1704153600,
-          updated_by: 'creator-2',
-        },
-      ],
-      page: 1,
-      limit: 30,
-      total: 1,
-      has_more: false,
-    }],
+    pages: [
+      {
+        data: [
+          {
+            id: 'snippet-1',
+            name: 'Sales Snippet',
+            description: 'Builds a sales follow-up.',
+            type: 'node',
+            is_published: true,
+            use_count: 12,
+            tags: [],
+            created_at: 1704067200,
+            created_by: 'creator-1',
+            updated_at: 1704153600,
+            updated_by: 'creator-2',
+          },
+        ],
+        page: 1,
+        limit: 30,
+        total: 1,
+        has_more: false,
+      },
+    ],
   },
   isLoading: false,
   isFetching: false,
@@ -265,7 +279,10 @@ describe('SnippetList', () => {
     expect(screen.getByText('common.tag.placeholder')).toBeInTheDocument()
     expect(screen.getByPlaceholderText('workflow.tabs.searchSnippets')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'snippet.create' })).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: /Sales Snippet/ })).toHaveAttribute('href', '/snippets/snippet-1/orchestrate')
+    expect(screen.getByRole('link', { name: /Sales Snippet/ })).toHaveAttribute(
+      'href',
+      '/snippets/snippet-1/orchestrate',
+    )
     expect(screen.getByTestId('tag-management-modal')).toBeInTheDocument()
   })
 
@@ -276,15 +293,18 @@ describe('SnippetList', () => {
 
     renderList()
 
-    expect(mockUseInfiniteSnippetList).toHaveBeenCalledWith({
-      page: 1,
-      limit: 30,
-      keyword: 'sales',
-      tag_ids: ['tag-1', 'tag-2'],
-      creator_ids: ['creator-1', 'creator-2'],
-    }, {
-      enabled: true,
-    })
+    expect(mockUseInfiniteSnippetList).toHaveBeenCalledWith(
+      {
+        page: 1,
+        limit: 30,
+        keyword: 'sales',
+        tag_ids: ['tag-1', 'tag-2'],
+        creator_ids: ['creator-1', 'creator-2'],
+      },
+      {
+        enabled: true,
+      },
+    )
   })
 
   it('updates the search query state from the search input', () => {
@@ -347,13 +367,15 @@ describe('SnippetList', () => {
     mockUseInfiniteSnippetList.mockReturnValue({
       ...mockSnippetListState,
       data: {
-        pages: [{
-          data: [],
-          page: 1,
-          limit: 30,
-          total: 0,
-          has_more: false,
-        }],
+        pages: [
+          {
+            data: [],
+            page: 1,
+            limit: 30,
+            total: 0,
+            has_more: false,
+          },
+        ],
       },
       refetch: mockRefetch,
       fetchNextPage: mockFetchNextPage,
@@ -389,9 +411,10 @@ describe('SnippetList', () => {
 
     renderList()
 
-    intersectionCallback?.([
-      { isIntersecting: true } as IntersectionObserverEntry,
-    ], {} as IntersectionObserver)
+    intersectionCallback?.(
+      [{ isIntersecting: true } as IntersectionObserverEntry],
+      {} as IntersectionObserver,
+    )
 
     expect(mockFetchNextPage).toHaveBeenCalledTimes(1)
   })
@@ -411,9 +434,10 @@ describe('SnippetList', () => {
 
     renderList()
 
-    intersectionCallback?.([
-      { isIntersecting: true } as IntersectionObserverEntry,
-    ], {} as IntersectionObserver)
+    intersectionCallback?.(
+      [{ isIntersecting: true } as IntersectionObserverEntry],
+      {} as IntersectionObserver,
+    )
     expect(mockFetchNextPage).not.toHaveBeenCalled()
   })
 

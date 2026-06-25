@@ -1,13 +1,9 @@
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 import InstalledApp from '../page'
 
 vi.mock('@/app/components/explore/installed-app', () => ({
-  default: ({ id }: { id: string }) => (
-    <main aria-label="installed app">
-      {id}
-    </main>
-  ),
+  default: ({ id }: { id: string }) => <main aria-label="installed app">{id}</main>,
 }))
 
 describe('installed app route', () => {

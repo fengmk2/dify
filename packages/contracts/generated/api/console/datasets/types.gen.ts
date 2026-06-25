@@ -479,13 +479,13 @@ export type ExternalHitTestingPayload = {
   query: string
 }
 
-export type ExternalRetrievalTestResponse
-  = | {
-    [key: string]: unknown
-  }
+export type ExternalRetrievalTestResponse =
+  | {
+      [key: string]: unknown
+    }
   | Array<{
-    [key: string]: unknown
-  }>
+      [key: string]: unknown
+    }>
 
 export type HitTestingPayload = {
   attachment_ids?: Array<string> | null
@@ -933,11 +933,11 @@ export type RerankingModel = {
   reranking_provider_name?: string | null
 }
 
-export type RetrievalMethod
-  = | 'full_text_search'
-    | 'hybrid_search'
-    | 'keyword_search'
-    | 'semantic_search'
+export type RetrievalMethod =
+  | 'full_text_search'
+  | 'hybrid_search'
+  | 'keyword_search'
+  | 'semantic_search'
 
 export type WeightModel = {
   keyword_setting?: WeightKeywordSetting | null
@@ -1168,8 +1168,8 @@ export type GetDatasetsApiBaseInfoResponses = {
   200: ApiBaseUrlResponse
 }
 
-export type GetDatasetsApiBaseInfoResponse
-  = GetDatasetsApiBaseInfoResponses[keyof GetDatasetsApiBaseInfoResponses]
+export type GetDatasetsApiBaseInfoResponse =
+  GetDatasetsApiBaseInfoResponses[keyof GetDatasetsApiBaseInfoResponses]
 
 export type GetDatasetsApiKeysData = {
   body?: never
@@ -1182,8 +1182,8 @@ export type GetDatasetsApiKeysResponses = {
   200: ApiKeyList
 }
 
-export type GetDatasetsApiKeysResponse
-  = GetDatasetsApiKeysResponses[keyof GetDatasetsApiKeysResponses]
+export type GetDatasetsApiKeysResponse =
+  GetDatasetsApiKeysResponses[keyof GetDatasetsApiKeysResponses]
 
 export type PostDatasetsApiKeysData = {
   body?: never
@@ -1200,8 +1200,8 @@ export type PostDatasetsApiKeysResponses = {
   200: ApiKeyItem
 }
 
-export type PostDatasetsApiKeysResponse
-  = PostDatasetsApiKeysResponses[keyof PostDatasetsApiKeysResponses]
+export type PostDatasetsApiKeysResponse =
+  PostDatasetsApiKeysResponses[keyof PostDatasetsApiKeysResponses]
 
 export type DeleteDatasetsApiKeysByApiKeyIdData = {
   body?: never
@@ -1216,8 +1216,8 @@ export type DeleteDatasetsApiKeysByApiKeyIdResponses = {
   204: void
 }
 
-export type DeleteDatasetsApiKeysByApiKeyIdResponse
-  = DeleteDatasetsApiKeysByApiKeyIdResponses[keyof DeleteDatasetsApiKeysByApiKeyIdResponses]
+export type DeleteDatasetsApiKeysByApiKeyIdResponse =
+  DeleteDatasetsApiKeysByApiKeyIdResponses[keyof DeleteDatasetsApiKeysByApiKeyIdResponses]
 
 export type GetDatasetsBatchImportStatusByJobIdData = {
   body?: never
@@ -1232,8 +1232,8 @@ export type GetDatasetsBatchImportStatusByJobIdResponses = {
   200: SegmentBatchImportStatusResponse
 }
 
-export type GetDatasetsBatchImportStatusByJobIdResponse
-  = GetDatasetsBatchImportStatusByJobIdResponses[keyof GetDatasetsBatchImportStatusByJobIdResponses]
+export type GetDatasetsBatchImportStatusByJobIdResponse =
+  GetDatasetsBatchImportStatusByJobIdResponses[keyof GetDatasetsBatchImportStatusByJobIdResponses]
 
 export type PostDatasetsBatchImportStatusByJobIdData = {
   body: BatchImportPayload
@@ -1248,8 +1248,8 @@ export type PostDatasetsBatchImportStatusByJobIdResponses = {
   200: SegmentBatchImportStatusResponse
 }
 
-export type PostDatasetsBatchImportStatusByJobIdResponse
-  = PostDatasetsBatchImportStatusByJobIdResponses[keyof PostDatasetsBatchImportStatusByJobIdResponses]
+export type PostDatasetsBatchImportStatusByJobIdResponse =
+  PostDatasetsBatchImportStatusByJobIdResponses[keyof PostDatasetsBatchImportStatusByJobIdResponses]
 
 export type PostDatasetsExternalData = {
   body: ExternalDatasetCreatePayload
@@ -1267,8 +1267,8 @@ export type PostDatasetsExternalResponses = {
   201: DatasetDetail
 }
 
-export type PostDatasetsExternalResponse
-  = PostDatasetsExternalResponses[keyof PostDatasetsExternalResponses]
+export type PostDatasetsExternalResponse =
+  PostDatasetsExternalResponses[keyof PostDatasetsExternalResponses]
 
 export type GetDatasetsExternalKnowledgeApiData = {
   body?: never
@@ -1285,8 +1285,8 @@ export type GetDatasetsExternalKnowledgeApiResponses = {
   200: ExternalKnowledgeApiListResponse
 }
 
-export type GetDatasetsExternalKnowledgeApiResponse
-  = GetDatasetsExternalKnowledgeApiResponses[keyof GetDatasetsExternalKnowledgeApiResponses]
+export type GetDatasetsExternalKnowledgeApiResponse =
+  GetDatasetsExternalKnowledgeApiResponses[keyof GetDatasetsExternalKnowledgeApiResponses]
 
 export type PostDatasetsExternalKnowledgeApiData = {
   body: ExternalKnowledgeApiPayload
@@ -1299,8 +1299,8 @@ export type PostDatasetsExternalKnowledgeApiResponses = {
   201: ExternalKnowledgeApiResponse
 }
 
-export type PostDatasetsExternalKnowledgeApiResponse
-  = PostDatasetsExternalKnowledgeApiResponses[keyof PostDatasetsExternalKnowledgeApiResponses]
+export type PostDatasetsExternalKnowledgeApiResponse =
+  PostDatasetsExternalKnowledgeApiResponses[keyof PostDatasetsExternalKnowledgeApiResponses]
 
 export type DeleteDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdData = {
   body?: never
@@ -1315,8 +1315,8 @@ export type DeleteDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdResponses 
   204: void
 }
 
-export type DeleteDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdResponse
-  = DeleteDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdResponses[keyof DeleteDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdResponses]
+export type DeleteDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdResponse =
+  DeleteDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdResponses[keyof DeleteDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdResponses]
 
 export type GetDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdData = {
   body?: never
@@ -1335,8 +1335,8 @@ export type GetDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdResponses = {
   200: ExternalKnowledgeApiResponse
 }
 
-export type GetDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdResponse
-  = GetDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdResponses[keyof GetDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdResponses]
+export type GetDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdResponse =
+  GetDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdResponses[keyof GetDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdResponses]
 
 export type PatchDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdData = {
   body: ExternalKnowledgeApiPayload
@@ -1351,8 +1351,8 @@ export type PatchDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdResponses =
   200: ExternalKnowledgeApiResponse
 }
 
-export type PatchDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdResponse
-  = PatchDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdResponses[keyof PatchDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdResponses]
+export type PatchDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdResponse =
+  PatchDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdResponses[keyof PatchDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdResponses]
 
 export type GetDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdUseCheckData = {
   body?: never
@@ -1367,8 +1367,8 @@ export type GetDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdUseCheckRespo
   200: UsageCountResponse
 }
 
-export type GetDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdUseCheckResponse
-  = GetDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdUseCheckResponses[keyof GetDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdUseCheckResponses]
+export type GetDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdUseCheckResponse =
+  GetDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdUseCheckResponses[keyof GetDatasetsExternalKnowledgeApiByExternalKnowledgeApiIdUseCheckResponses]
 
 export type PostDatasetsIndexingEstimateData = {
   body: IndexingEstimatePayload
@@ -1381,8 +1381,8 @@ export type PostDatasetsIndexingEstimateResponses = {
   200: IndexingEstimateResponse
 }
 
-export type PostDatasetsIndexingEstimateResponse
-  = PostDatasetsIndexingEstimateResponses[keyof PostDatasetsIndexingEstimateResponses]
+export type PostDatasetsIndexingEstimateResponse =
+  PostDatasetsIndexingEstimateResponses[keyof PostDatasetsIndexingEstimateResponses]
 
 export type PostDatasetsInitData = {
   body: KnowledgeConfig
@@ -1412,8 +1412,8 @@ export type GetDatasetsMetadataBuiltInResponses = {
   200: DatasetMetadataBuiltInFieldsResponse
 }
 
-export type GetDatasetsMetadataBuiltInResponse
-  = GetDatasetsMetadataBuiltInResponses[keyof GetDatasetsMetadataBuiltInResponses]
+export type GetDatasetsMetadataBuiltInResponse =
+  GetDatasetsMetadataBuiltInResponses[keyof GetDatasetsMetadataBuiltInResponses]
 
 export type PostDatasetsNotionIndexingEstimateData = {
   body: NotionEstimatePayload
@@ -1426,8 +1426,8 @@ export type PostDatasetsNotionIndexingEstimateResponses = {
   200: IndexingEstimate
 }
 
-export type PostDatasetsNotionIndexingEstimateResponse
-  = PostDatasetsNotionIndexingEstimateResponses[keyof PostDatasetsNotionIndexingEstimateResponses]
+export type PostDatasetsNotionIndexingEstimateResponse =
+  PostDatasetsNotionIndexingEstimateResponses[keyof PostDatasetsNotionIndexingEstimateResponses]
 
 export type GetDatasetsProcessRuleData = {
   body?: never
@@ -1442,8 +1442,8 @@ export type GetDatasetsProcessRuleResponses = {
   200: OpaqueObjectResponse
 }
 
-export type GetDatasetsProcessRuleResponse
-  = GetDatasetsProcessRuleResponses[keyof GetDatasetsProcessRuleResponses]
+export type GetDatasetsProcessRuleResponse =
+  GetDatasetsProcessRuleResponses[keyof GetDatasetsProcessRuleResponses]
 
 export type GetDatasetsRetrievalSettingData = {
   body?: never
@@ -1456,8 +1456,8 @@ export type GetDatasetsRetrievalSettingResponses = {
   200: RetrievalSettingResponse
 }
 
-export type GetDatasetsRetrievalSettingResponse
-  = GetDatasetsRetrievalSettingResponses[keyof GetDatasetsRetrievalSettingResponses]
+export type GetDatasetsRetrievalSettingResponse =
+  GetDatasetsRetrievalSettingResponses[keyof GetDatasetsRetrievalSettingResponses]
 
 export type GetDatasetsRetrievalSettingByVectorTypeData = {
   body?: never
@@ -1472,8 +1472,8 @@ export type GetDatasetsRetrievalSettingByVectorTypeResponses = {
   200: RetrievalSettingResponse
 }
 
-export type GetDatasetsRetrievalSettingByVectorTypeResponse
-  = GetDatasetsRetrievalSettingByVectorTypeResponses[keyof GetDatasetsRetrievalSettingByVectorTypeResponses]
+export type GetDatasetsRetrievalSettingByVectorTypeResponse =
+  GetDatasetsRetrievalSettingByVectorTypeResponses[keyof GetDatasetsRetrievalSettingByVectorTypeResponses]
 
 export type DeleteDatasetsByDatasetIdData = {
   body?: never
@@ -1488,8 +1488,8 @@ export type DeleteDatasetsByDatasetIdResponses = {
   204: void
 }
 
-export type DeleteDatasetsByDatasetIdResponse
-  = DeleteDatasetsByDatasetIdResponses[keyof DeleteDatasetsByDatasetIdResponses]
+export type DeleteDatasetsByDatasetIdResponse =
+  DeleteDatasetsByDatasetIdResponses[keyof DeleteDatasetsByDatasetIdResponses]
 
 export type GetDatasetsByDatasetIdData = {
   body?: never
@@ -1509,8 +1509,8 @@ export type GetDatasetsByDatasetIdResponses = {
   200: DatasetDetailWithPartialMembersResponse
 }
 
-export type GetDatasetsByDatasetIdResponse
-  = GetDatasetsByDatasetIdResponses[keyof GetDatasetsByDatasetIdResponses]
+export type GetDatasetsByDatasetIdResponse =
+  GetDatasetsByDatasetIdResponses[keyof GetDatasetsByDatasetIdResponses]
 
 export type PatchDatasetsByDatasetIdData = {
   body: DatasetUpdatePayload
@@ -1530,8 +1530,8 @@ export type PatchDatasetsByDatasetIdResponses = {
   200: DatasetDetailWithPartialMembersResponse
 }
 
-export type PatchDatasetsByDatasetIdResponse
-  = PatchDatasetsByDatasetIdResponses[keyof PatchDatasetsByDatasetIdResponses]
+export type PatchDatasetsByDatasetIdResponse =
+  PatchDatasetsByDatasetIdResponses[keyof PatchDatasetsByDatasetIdResponses]
 
 export type PostDatasetsByDatasetIdApiKeysByStatusData = {
   body?: never
@@ -1547,8 +1547,8 @@ export type PostDatasetsByDatasetIdApiKeysByStatusResponses = {
   200: SimpleResultResponse
 }
 
-export type PostDatasetsByDatasetIdApiKeysByStatusResponse
-  = PostDatasetsByDatasetIdApiKeysByStatusResponses[keyof PostDatasetsByDatasetIdApiKeysByStatusResponses]
+export type PostDatasetsByDatasetIdApiKeysByStatusResponse =
+  PostDatasetsByDatasetIdApiKeysByStatusResponses[keyof PostDatasetsByDatasetIdApiKeysByStatusResponses]
 
 export type GetDatasetsByDatasetIdAutoDisableLogsData = {
   body?: never
@@ -1567,8 +1567,8 @@ export type GetDatasetsByDatasetIdAutoDisableLogsResponses = {
   200: AutoDisableLogsResponse
 }
 
-export type GetDatasetsByDatasetIdAutoDisableLogsResponse
-  = GetDatasetsByDatasetIdAutoDisableLogsResponses[keyof GetDatasetsByDatasetIdAutoDisableLogsResponses]
+export type GetDatasetsByDatasetIdAutoDisableLogsResponse =
+  GetDatasetsByDatasetIdAutoDisableLogsResponses[keyof GetDatasetsByDatasetIdAutoDisableLogsResponses]
 
 export type GetDatasetsByDatasetIdBatchByBatchIndexingEstimateData = {
   body?: never
@@ -1584,8 +1584,8 @@ export type GetDatasetsByDatasetIdBatchByBatchIndexingEstimateResponses = {
   200: OpaqueObjectResponse
 }
 
-export type GetDatasetsByDatasetIdBatchByBatchIndexingEstimateResponse
-  = GetDatasetsByDatasetIdBatchByBatchIndexingEstimateResponses[keyof GetDatasetsByDatasetIdBatchByBatchIndexingEstimateResponses]
+export type GetDatasetsByDatasetIdBatchByBatchIndexingEstimateResponse =
+  GetDatasetsByDatasetIdBatchByBatchIndexingEstimateResponses[keyof GetDatasetsByDatasetIdBatchByBatchIndexingEstimateResponses]
 
 export type GetDatasetsByDatasetIdBatchByBatchIndexingStatusData = {
   body?: never
@@ -1601,8 +1601,8 @@ export type GetDatasetsByDatasetIdBatchByBatchIndexingStatusResponses = {
   200: DocumentStatusListResponse
 }
 
-export type GetDatasetsByDatasetIdBatchByBatchIndexingStatusResponse
-  = GetDatasetsByDatasetIdBatchByBatchIndexingStatusResponses[keyof GetDatasetsByDatasetIdBatchByBatchIndexingStatusResponses]
+export type GetDatasetsByDatasetIdBatchByBatchIndexingStatusResponse =
+  GetDatasetsByDatasetIdBatchByBatchIndexingStatusResponses[keyof GetDatasetsByDatasetIdBatchByBatchIndexingStatusResponses]
 
 export type DeleteDatasetsByDatasetIdDocumentsData = {
   body?: never
@@ -1617,8 +1617,8 @@ export type DeleteDatasetsByDatasetIdDocumentsResponses = {
   204: void
 }
 
-export type DeleteDatasetsByDatasetIdDocumentsResponse
-  = DeleteDatasetsByDatasetIdDocumentsResponses[keyof DeleteDatasetsByDatasetIdDocumentsResponses]
+export type DeleteDatasetsByDatasetIdDocumentsResponse =
+  DeleteDatasetsByDatasetIdDocumentsResponses[keyof DeleteDatasetsByDatasetIdDocumentsResponses]
 
 export type GetDatasetsByDatasetIdDocumentsData = {
   body?: never
@@ -1640,8 +1640,8 @@ export type GetDatasetsByDatasetIdDocumentsResponses = {
   200: DocumentWithSegmentsListResponse
 }
 
-export type GetDatasetsByDatasetIdDocumentsResponse
-  = GetDatasetsByDatasetIdDocumentsResponses[keyof GetDatasetsByDatasetIdDocumentsResponses]
+export type GetDatasetsByDatasetIdDocumentsResponse =
+  GetDatasetsByDatasetIdDocumentsResponses[keyof GetDatasetsByDatasetIdDocumentsResponses]
 
 export type PostDatasetsByDatasetIdDocumentsData = {
   body: KnowledgeConfig
@@ -1656,8 +1656,8 @@ export type PostDatasetsByDatasetIdDocumentsResponses = {
   200: DatasetAndDocumentResponse
 }
 
-export type PostDatasetsByDatasetIdDocumentsResponse
-  = PostDatasetsByDatasetIdDocumentsResponses[keyof PostDatasetsByDatasetIdDocumentsResponses]
+export type PostDatasetsByDatasetIdDocumentsResponse =
+  PostDatasetsByDatasetIdDocumentsResponses[keyof PostDatasetsByDatasetIdDocumentsResponses]
 
 export type PostDatasetsByDatasetIdDocumentsDownloadZipData = {
   body: DocumentBatchDownloadZipPayload
@@ -1672,8 +1672,8 @@ export type PostDatasetsByDatasetIdDocumentsDownloadZipResponses = {
   200: BinaryFileResponse
 }
 
-export type PostDatasetsByDatasetIdDocumentsDownloadZipResponse
-  = PostDatasetsByDatasetIdDocumentsDownloadZipResponses[keyof PostDatasetsByDatasetIdDocumentsDownloadZipResponses]
+export type PostDatasetsByDatasetIdDocumentsDownloadZipResponse =
+  PostDatasetsByDatasetIdDocumentsDownloadZipResponses[keyof PostDatasetsByDatasetIdDocumentsDownloadZipResponses]
 
 export type PostDatasetsByDatasetIdDocumentsGenerateSummaryData = {
   body: GenerateSummaryPayload
@@ -1694,8 +1694,8 @@ export type PostDatasetsByDatasetIdDocumentsGenerateSummaryResponses = {
   200: SimpleResultResponse
 }
 
-export type PostDatasetsByDatasetIdDocumentsGenerateSummaryResponse
-  = PostDatasetsByDatasetIdDocumentsGenerateSummaryResponses[keyof PostDatasetsByDatasetIdDocumentsGenerateSummaryResponses]
+export type PostDatasetsByDatasetIdDocumentsGenerateSummaryResponse =
+  PostDatasetsByDatasetIdDocumentsGenerateSummaryResponses[keyof PostDatasetsByDatasetIdDocumentsGenerateSummaryResponses]
 
 export type PostDatasetsByDatasetIdDocumentsMetadataData = {
   body: MetadataOperationData
@@ -1710,8 +1710,8 @@ export type PostDatasetsByDatasetIdDocumentsMetadataResponses = {
   204: void
 }
 
-export type PostDatasetsByDatasetIdDocumentsMetadataResponse
-  = PostDatasetsByDatasetIdDocumentsMetadataResponses[keyof PostDatasetsByDatasetIdDocumentsMetadataResponses]
+export type PostDatasetsByDatasetIdDocumentsMetadataResponse =
+  PostDatasetsByDatasetIdDocumentsMetadataResponses[keyof PostDatasetsByDatasetIdDocumentsMetadataResponses]
 
 export type PatchDatasetsByDatasetIdDocumentsStatusByActionBatchData = {
   body?: never
@@ -1727,8 +1727,8 @@ export type PatchDatasetsByDatasetIdDocumentsStatusByActionBatchResponses = {
   200: SimpleResultResponse
 }
 
-export type PatchDatasetsByDatasetIdDocumentsStatusByActionBatchResponse
-  = PatchDatasetsByDatasetIdDocumentsStatusByActionBatchResponses[keyof PatchDatasetsByDatasetIdDocumentsStatusByActionBatchResponses]
+export type PatchDatasetsByDatasetIdDocumentsStatusByActionBatchResponse =
+  PatchDatasetsByDatasetIdDocumentsStatusByActionBatchResponses[keyof PatchDatasetsByDatasetIdDocumentsStatusByActionBatchResponses]
 
 export type DeleteDatasetsByDatasetIdDocumentsByDocumentIdData = {
   body?: never
@@ -1744,8 +1744,8 @@ export type DeleteDatasetsByDatasetIdDocumentsByDocumentIdResponses = {
   204: void
 }
 
-export type DeleteDatasetsByDatasetIdDocumentsByDocumentIdResponse
-  = DeleteDatasetsByDatasetIdDocumentsByDocumentIdResponses[keyof DeleteDatasetsByDatasetIdDocumentsByDocumentIdResponses]
+export type DeleteDatasetsByDatasetIdDocumentsByDocumentIdResponse =
+  DeleteDatasetsByDatasetIdDocumentsByDocumentIdResponses[keyof DeleteDatasetsByDatasetIdDocumentsByDocumentIdResponses]
 
 export type GetDatasetsByDatasetIdDocumentsByDocumentIdData = {
   body?: never
@@ -1767,8 +1767,8 @@ export type GetDatasetsByDatasetIdDocumentsByDocumentIdResponses = {
   200: OpaqueObjectResponse
 }
 
-export type GetDatasetsByDatasetIdDocumentsByDocumentIdResponse
-  = GetDatasetsByDatasetIdDocumentsByDocumentIdResponses[keyof GetDatasetsByDatasetIdDocumentsByDocumentIdResponses]
+export type GetDatasetsByDatasetIdDocumentsByDocumentIdResponse =
+  GetDatasetsByDatasetIdDocumentsByDocumentIdResponses[keyof GetDatasetsByDatasetIdDocumentsByDocumentIdResponses]
 
 export type GetDatasetsByDatasetIdDocumentsByDocumentIdDownloadData = {
   body?: never
@@ -1784,8 +1784,8 @@ export type GetDatasetsByDatasetIdDocumentsByDocumentIdDownloadResponses = {
   200: UrlResponse
 }
 
-export type GetDatasetsByDatasetIdDocumentsByDocumentIdDownloadResponse
-  = GetDatasetsByDatasetIdDocumentsByDocumentIdDownloadResponses[keyof GetDatasetsByDatasetIdDocumentsByDocumentIdDownloadResponses]
+export type GetDatasetsByDatasetIdDocumentsByDocumentIdDownloadResponse =
+  GetDatasetsByDatasetIdDocumentsByDocumentIdDownloadResponses[keyof GetDatasetsByDatasetIdDocumentsByDocumentIdDownloadResponses]
 
 export type GetDatasetsByDatasetIdDocumentsByDocumentIdIndexingEstimateData = {
   body?: never
@@ -1806,8 +1806,8 @@ export type GetDatasetsByDatasetIdDocumentsByDocumentIdIndexingEstimateResponses
   200: OpaqueObjectResponse
 }
 
-export type GetDatasetsByDatasetIdDocumentsByDocumentIdIndexingEstimateResponse
-  = GetDatasetsByDatasetIdDocumentsByDocumentIdIndexingEstimateResponses[keyof GetDatasetsByDatasetIdDocumentsByDocumentIdIndexingEstimateResponses]
+export type GetDatasetsByDatasetIdDocumentsByDocumentIdIndexingEstimateResponse =
+  GetDatasetsByDatasetIdDocumentsByDocumentIdIndexingEstimateResponses[keyof GetDatasetsByDatasetIdDocumentsByDocumentIdIndexingEstimateResponses]
 
 export type GetDatasetsByDatasetIdDocumentsByDocumentIdIndexingStatusData = {
   body?: never
@@ -1827,8 +1827,8 @@ export type GetDatasetsByDatasetIdDocumentsByDocumentIdIndexingStatusResponses =
   200: DocumentStatusResponse
 }
 
-export type GetDatasetsByDatasetIdDocumentsByDocumentIdIndexingStatusResponse
-  = GetDatasetsByDatasetIdDocumentsByDocumentIdIndexingStatusResponses[keyof GetDatasetsByDatasetIdDocumentsByDocumentIdIndexingStatusResponses]
+export type GetDatasetsByDatasetIdDocumentsByDocumentIdIndexingStatusResponse =
+  GetDatasetsByDatasetIdDocumentsByDocumentIdIndexingStatusResponses[keyof GetDatasetsByDatasetIdDocumentsByDocumentIdIndexingStatusResponses]
 
 export type PutDatasetsByDatasetIdDocumentsByDocumentIdMetadataData = {
   body: DocumentMetadataUpdatePayload
@@ -1849,8 +1849,8 @@ export type PutDatasetsByDatasetIdDocumentsByDocumentIdMetadataResponses = {
   200: SimpleResultMessageResponse
 }
 
-export type PutDatasetsByDatasetIdDocumentsByDocumentIdMetadataResponse
-  = PutDatasetsByDatasetIdDocumentsByDocumentIdMetadataResponses[keyof PutDatasetsByDatasetIdDocumentsByDocumentIdMetadataResponses]
+export type PutDatasetsByDatasetIdDocumentsByDocumentIdMetadataResponse =
+  PutDatasetsByDatasetIdDocumentsByDocumentIdMetadataResponses[keyof PutDatasetsByDatasetIdDocumentsByDocumentIdMetadataResponses]
 
 export type GetDatasetsByDatasetIdDocumentsByDocumentIdNotionSyncData = {
   body?: never
@@ -1866,8 +1866,8 @@ export type GetDatasetsByDatasetIdDocumentsByDocumentIdNotionSyncResponses = {
   200: SimpleResultResponse
 }
 
-export type GetDatasetsByDatasetIdDocumentsByDocumentIdNotionSyncResponse
-  = GetDatasetsByDatasetIdDocumentsByDocumentIdNotionSyncResponses[keyof GetDatasetsByDatasetIdDocumentsByDocumentIdNotionSyncResponses]
+export type GetDatasetsByDatasetIdDocumentsByDocumentIdNotionSyncResponse =
+  GetDatasetsByDatasetIdDocumentsByDocumentIdNotionSyncResponses[keyof GetDatasetsByDatasetIdDocumentsByDocumentIdNotionSyncResponses]
 
 export type GetDatasetsByDatasetIdDocumentsByDocumentIdPipelineExecutionLogData = {
   body?: never
@@ -1883,8 +1883,8 @@ export type GetDatasetsByDatasetIdDocumentsByDocumentIdPipelineExecutionLogRespo
   200: OpaqueObjectResponse
 }
 
-export type GetDatasetsByDatasetIdDocumentsByDocumentIdPipelineExecutionLogResponse
-  = GetDatasetsByDatasetIdDocumentsByDocumentIdPipelineExecutionLogResponses[keyof GetDatasetsByDatasetIdDocumentsByDocumentIdPipelineExecutionLogResponses]
+export type GetDatasetsByDatasetIdDocumentsByDocumentIdPipelineExecutionLogResponse =
+  GetDatasetsByDatasetIdDocumentsByDocumentIdPipelineExecutionLogResponses[keyof GetDatasetsByDatasetIdDocumentsByDocumentIdPipelineExecutionLogResponses]
 
 export type PatchDatasetsByDatasetIdDocumentsByDocumentIdProcessingPauseData = {
   body?: never
@@ -1900,8 +1900,8 @@ export type PatchDatasetsByDatasetIdDocumentsByDocumentIdProcessingPauseResponse
   204: void
 }
 
-export type PatchDatasetsByDatasetIdDocumentsByDocumentIdProcessingPauseResponse
-  = PatchDatasetsByDatasetIdDocumentsByDocumentIdProcessingPauseResponses[keyof PatchDatasetsByDatasetIdDocumentsByDocumentIdProcessingPauseResponses]
+export type PatchDatasetsByDatasetIdDocumentsByDocumentIdProcessingPauseResponse =
+  PatchDatasetsByDatasetIdDocumentsByDocumentIdProcessingPauseResponses[keyof PatchDatasetsByDatasetIdDocumentsByDocumentIdProcessingPauseResponses]
 
 export type PatchDatasetsByDatasetIdDocumentsByDocumentIdProcessingResumeData = {
   body?: never
@@ -1917,8 +1917,8 @@ export type PatchDatasetsByDatasetIdDocumentsByDocumentIdProcessingResumeRespons
   204: void
 }
 
-export type PatchDatasetsByDatasetIdDocumentsByDocumentIdProcessingResumeResponse
-  = PatchDatasetsByDatasetIdDocumentsByDocumentIdProcessingResumeResponses[keyof PatchDatasetsByDatasetIdDocumentsByDocumentIdProcessingResumeResponses]
+export type PatchDatasetsByDatasetIdDocumentsByDocumentIdProcessingResumeResponse =
+  PatchDatasetsByDatasetIdDocumentsByDocumentIdProcessingResumeResponses[keyof PatchDatasetsByDatasetIdDocumentsByDocumentIdProcessingResumeResponses]
 
 export type PatchDatasetsByDatasetIdDocumentsByDocumentIdProcessingByActionData = {
   body?: never
@@ -1940,8 +1940,8 @@ export type PatchDatasetsByDatasetIdDocumentsByDocumentIdProcessingByActionRespo
   200: SimpleResultResponse
 }
 
-export type PatchDatasetsByDatasetIdDocumentsByDocumentIdProcessingByActionResponse
-  = PatchDatasetsByDatasetIdDocumentsByDocumentIdProcessingByActionResponses[keyof PatchDatasetsByDatasetIdDocumentsByDocumentIdProcessingByActionResponses]
+export type PatchDatasetsByDatasetIdDocumentsByDocumentIdProcessingByActionResponse =
+  PatchDatasetsByDatasetIdDocumentsByDocumentIdProcessingByActionResponses[keyof PatchDatasetsByDatasetIdDocumentsByDocumentIdProcessingByActionResponses]
 
 export type PostDatasetsByDatasetIdDocumentsByDocumentIdRenameData = {
   body: DocumentRenamePayload
@@ -1957,8 +1957,8 @@ export type PostDatasetsByDatasetIdDocumentsByDocumentIdRenameResponses = {
   200: DocumentResponse
 }
 
-export type PostDatasetsByDatasetIdDocumentsByDocumentIdRenameResponse
-  = PostDatasetsByDatasetIdDocumentsByDocumentIdRenameResponses[keyof PostDatasetsByDatasetIdDocumentsByDocumentIdRenameResponses]
+export type PostDatasetsByDatasetIdDocumentsByDocumentIdRenameResponse =
+  PostDatasetsByDatasetIdDocumentsByDocumentIdRenameResponses[keyof PostDatasetsByDatasetIdDocumentsByDocumentIdRenameResponses]
 
 export type PostDatasetsByDatasetIdDocumentsByDocumentIdSegmentData = {
   body: SegmentCreatePayload
@@ -1974,8 +1974,8 @@ export type PostDatasetsByDatasetIdDocumentsByDocumentIdSegmentResponses = {
   200: SegmentDetailResponse
 }
 
-export type PostDatasetsByDatasetIdDocumentsByDocumentIdSegmentResponse
-  = PostDatasetsByDatasetIdDocumentsByDocumentIdSegmentResponses[keyof PostDatasetsByDatasetIdDocumentsByDocumentIdSegmentResponses]
+export type PostDatasetsByDatasetIdDocumentsByDocumentIdSegmentResponse =
+  PostDatasetsByDatasetIdDocumentsByDocumentIdSegmentResponses[keyof PostDatasetsByDatasetIdDocumentsByDocumentIdSegmentResponses]
 
 export type PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentByActionData = {
   body?: never
@@ -1994,8 +1994,8 @@ export type PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentByActionResponse
   200: SimpleResultResponse
 }
 
-export type PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentByActionResponse
-  = PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentByActionResponses[keyof PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentByActionResponses]
+export type PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentByActionResponse =
+  PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentByActionResponses[keyof PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentByActionResponses]
 
 export type DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsData = {
   body?: never
@@ -2013,8 +2013,8 @@ export type DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsResponses = {
   204: void
 }
 
-export type DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsResponse
-  = DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsResponses[keyof DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsResponses]
+export type DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsResponse =
+  DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsResponses[keyof DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsResponses]
 
 export type GetDatasetsByDatasetIdDocumentsByDocumentIdSegmentsData = {
   body?: never
@@ -2037,8 +2037,8 @@ export type GetDatasetsByDatasetIdDocumentsByDocumentIdSegmentsResponses = {
   200: ConsoleSegmentListResponse
 }
 
-export type GetDatasetsByDatasetIdDocumentsByDocumentIdSegmentsResponse
-  = GetDatasetsByDatasetIdDocumentsByDocumentIdSegmentsResponses[keyof GetDatasetsByDatasetIdDocumentsByDocumentIdSegmentsResponses]
+export type GetDatasetsByDatasetIdDocumentsByDocumentIdSegmentsResponse =
+  GetDatasetsByDatasetIdDocumentsByDocumentIdSegmentsResponses[keyof GetDatasetsByDatasetIdDocumentsByDocumentIdSegmentsResponses]
 
 export type GetDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBatchImportData = {
   body?: never
@@ -2054,8 +2054,8 @@ export type GetDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBatchImportRespon
   200: SegmentBatchImportStatusResponse
 }
 
-export type GetDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBatchImportResponse
-  = GetDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBatchImportResponses[keyof GetDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBatchImportResponses]
+export type GetDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBatchImportResponse =
+  GetDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBatchImportResponses[keyof GetDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBatchImportResponses]
 
 export type PostDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBatchImportData = {
   body: BatchImportPayload
@@ -2071,8 +2071,8 @@ export type PostDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBatchImportRespo
   200: SegmentBatchImportStatusResponse
 }
 
-export type PostDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBatchImportResponse
-  = PostDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBatchImportResponses[keyof PostDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBatchImportResponses]
+export type PostDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBatchImportResponse =
+  PostDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBatchImportResponses[keyof PostDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBatchImportResponses]
 
 export type DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdData = {
   body?: never
@@ -2089,8 +2089,8 @@ export type DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdRes
   204: void
 }
 
-export type DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdResponse
-  = DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdResponses[keyof DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdResponses]
+export type DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdResponse =
+  DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdResponses[keyof DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdResponses]
 
 export type PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdData = {
   body: SegmentUpdatePayload
@@ -2107,8 +2107,8 @@ export type PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdResp
   200: SegmentDetailResponse
 }
 
-export type PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdResponse
-  = PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdResponses[keyof PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdResponses]
+export type PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdResponse =
+  PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdResponses[keyof PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdResponses]
 
 export type GetDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksData = {
   body?: never
@@ -2129,8 +2129,8 @@ export type GetDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildC
   200: ChildChunkListResponse
 }
 
-export type GetDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksResponse
-  = GetDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksResponses[keyof GetDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksResponses]
+export type GetDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksResponse =
+  GetDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksResponses[keyof GetDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksResponses]
 
 export type PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksData = {
   body: ChildChunkBatchUpdatePayload
@@ -2147,8 +2147,8 @@ export type PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChil
   200: ChildChunkBatchUpdateResponse
 }
 
-export type PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksResponse
-  = PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksResponses[keyof PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksResponses]
+export type PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksResponse =
+  PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksResponses[keyof PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksResponses]
 
 export type PostDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksData = {
   body: ChildChunkCreatePayload
@@ -2165,11 +2165,11 @@ export type PostDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChild
   200: ChildChunkDetailResponse
 }
 
-export type PostDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksResponse
-  = PostDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksResponses[keyof PostDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksResponses]
+export type PostDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksResponse =
+  PostDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksResponses[keyof PostDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksResponses]
 
-export type DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksByChildChunkIdData
-  = {
+export type DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksByChildChunkIdData =
+  {
     body?: never
     path: {
       child_chunk_id: string
@@ -2181,16 +2181,16 @@ export type DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChi
     url: '/datasets/{dataset_id}/documents/{document_id}/segments/{segment_id}/child_chunks/{child_chunk_id}'
   }
 
-export type DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksByChildChunkIdResponses
-  = {
+export type DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksByChildChunkIdResponses =
+  {
     204: void
   }
 
-export type DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksByChildChunkIdResponse
-  = DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksByChildChunkIdResponses[keyof DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksByChildChunkIdResponses]
+export type DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksByChildChunkIdResponse =
+  DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksByChildChunkIdResponses[keyof DeleteDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksByChildChunkIdResponses]
 
-export type PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksByChildChunkIdData
-  = {
+export type PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksByChildChunkIdData =
+  {
     body: ChildChunkUpdatePayload
     path: {
       child_chunk_id: string
@@ -2202,13 +2202,13 @@ export type PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChil
     url: '/datasets/{dataset_id}/documents/{document_id}/segments/{segment_id}/child_chunks/{child_chunk_id}'
   }
 
-export type PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksByChildChunkIdResponses
-  = {
+export type PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksByChildChunkIdResponses =
+  {
     200: ChildChunkDetailResponse
   }
 
-export type PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksByChildChunkIdResponse
-  = PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksByChildChunkIdResponses[keyof PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksByChildChunkIdResponses]
+export type PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksByChildChunkIdResponse =
+  PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksByChildChunkIdResponses[keyof PatchDatasetsByDatasetIdDocumentsByDocumentIdSegmentsBySegmentIdChildChunksByChildChunkIdResponses]
 
 export type GetDatasetsByDatasetIdDocumentsByDocumentIdSummaryStatusData = {
   body?: never
@@ -2228,8 +2228,8 @@ export type GetDatasetsByDatasetIdDocumentsByDocumentIdSummaryStatusResponses = 
   200: OpaqueObjectResponse
 }
 
-export type GetDatasetsByDatasetIdDocumentsByDocumentIdSummaryStatusResponse
-  = GetDatasetsByDatasetIdDocumentsByDocumentIdSummaryStatusResponses[keyof GetDatasetsByDatasetIdDocumentsByDocumentIdSummaryStatusResponses]
+export type GetDatasetsByDatasetIdDocumentsByDocumentIdSummaryStatusResponse =
+  GetDatasetsByDatasetIdDocumentsByDocumentIdSummaryStatusResponses[keyof GetDatasetsByDatasetIdDocumentsByDocumentIdSummaryStatusResponses]
 
 export type GetDatasetsByDatasetIdDocumentsByDocumentIdWebsiteSyncData = {
   body?: never
@@ -2245,8 +2245,8 @@ export type GetDatasetsByDatasetIdDocumentsByDocumentIdWebsiteSyncResponses = {
   200: SimpleResultResponse
 }
 
-export type GetDatasetsByDatasetIdDocumentsByDocumentIdWebsiteSyncResponse
-  = GetDatasetsByDatasetIdDocumentsByDocumentIdWebsiteSyncResponses[keyof GetDatasetsByDatasetIdDocumentsByDocumentIdWebsiteSyncResponses]
+export type GetDatasetsByDatasetIdDocumentsByDocumentIdWebsiteSyncResponse =
+  GetDatasetsByDatasetIdDocumentsByDocumentIdWebsiteSyncResponses[keyof GetDatasetsByDatasetIdDocumentsByDocumentIdWebsiteSyncResponses]
 
 export type GetDatasetsByDatasetIdErrorDocsData = {
   body?: never
@@ -2265,8 +2265,8 @@ export type GetDatasetsByDatasetIdErrorDocsResponses = {
   200: ErrorDocsResponse
 }
 
-export type GetDatasetsByDatasetIdErrorDocsResponse
-  = GetDatasetsByDatasetIdErrorDocsResponses[keyof GetDatasetsByDatasetIdErrorDocsResponses]
+export type GetDatasetsByDatasetIdErrorDocsResponse =
+  GetDatasetsByDatasetIdErrorDocsResponses[keyof GetDatasetsByDatasetIdErrorDocsResponses]
 
 export type PostDatasetsByDatasetIdExternalHitTestingData = {
   body: ExternalHitTestingPayload
@@ -2286,8 +2286,8 @@ export type PostDatasetsByDatasetIdExternalHitTestingResponses = {
   200: ExternalRetrievalTestResponse
 }
 
-export type PostDatasetsByDatasetIdExternalHitTestingResponse
-  = PostDatasetsByDatasetIdExternalHitTestingResponses[keyof PostDatasetsByDatasetIdExternalHitTestingResponses]
+export type PostDatasetsByDatasetIdExternalHitTestingResponse =
+  PostDatasetsByDatasetIdExternalHitTestingResponses[keyof PostDatasetsByDatasetIdExternalHitTestingResponses]
 
 export type PostDatasetsByDatasetIdHitTestingData = {
   body: HitTestingPayload
@@ -2307,8 +2307,8 @@ export type PostDatasetsByDatasetIdHitTestingResponses = {
   200: HitTestingResponse
 }
 
-export type PostDatasetsByDatasetIdHitTestingResponse
-  = PostDatasetsByDatasetIdHitTestingResponses[keyof PostDatasetsByDatasetIdHitTestingResponses]
+export type PostDatasetsByDatasetIdHitTestingResponse =
+  PostDatasetsByDatasetIdHitTestingResponses[keyof PostDatasetsByDatasetIdHitTestingResponses]
 
 export type GetDatasetsByDatasetIdIndexingStatusData = {
   body?: never
@@ -2323,8 +2323,8 @@ export type GetDatasetsByDatasetIdIndexingStatusResponses = {
   200: DocumentStatusListResponse
 }
 
-export type GetDatasetsByDatasetIdIndexingStatusResponse
-  = GetDatasetsByDatasetIdIndexingStatusResponses[keyof GetDatasetsByDatasetIdIndexingStatusResponses]
+export type GetDatasetsByDatasetIdIndexingStatusResponse =
+  GetDatasetsByDatasetIdIndexingStatusResponses[keyof GetDatasetsByDatasetIdIndexingStatusResponses]
 
 export type GetDatasetsByDatasetIdMetadataData = {
   body?: never
@@ -2339,8 +2339,8 @@ export type GetDatasetsByDatasetIdMetadataResponses = {
   200: DatasetMetadataListResponse
 }
 
-export type GetDatasetsByDatasetIdMetadataResponse
-  = GetDatasetsByDatasetIdMetadataResponses[keyof GetDatasetsByDatasetIdMetadataResponses]
+export type GetDatasetsByDatasetIdMetadataResponse =
+  GetDatasetsByDatasetIdMetadataResponses[keyof GetDatasetsByDatasetIdMetadataResponses]
 
 export type PostDatasetsByDatasetIdMetadataData = {
   body: MetadataArgs
@@ -2355,8 +2355,8 @@ export type PostDatasetsByDatasetIdMetadataResponses = {
   201: DatasetMetadataResponse
 }
 
-export type PostDatasetsByDatasetIdMetadataResponse
-  = PostDatasetsByDatasetIdMetadataResponses[keyof PostDatasetsByDatasetIdMetadataResponses]
+export type PostDatasetsByDatasetIdMetadataResponse =
+  PostDatasetsByDatasetIdMetadataResponses[keyof PostDatasetsByDatasetIdMetadataResponses]
 
 export type PostDatasetsByDatasetIdMetadataBuiltInByActionData = {
   body?: never
@@ -2372,8 +2372,8 @@ export type PostDatasetsByDatasetIdMetadataBuiltInByActionResponses = {
   204: void
 }
 
-export type PostDatasetsByDatasetIdMetadataBuiltInByActionResponse
-  = PostDatasetsByDatasetIdMetadataBuiltInByActionResponses[keyof PostDatasetsByDatasetIdMetadataBuiltInByActionResponses]
+export type PostDatasetsByDatasetIdMetadataBuiltInByActionResponse =
+  PostDatasetsByDatasetIdMetadataBuiltInByActionResponses[keyof PostDatasetsByDatasetIdMetadataBuiltInByActionResponses]
 
 export type DeleteDatasetsByDatasetIdMetadataByMetadataIdData = {
   body?: never
@@ -2389,8 +2389,8 @@ export type DeleteDatasetsByDatasetIdMetadataByMetadataIdResponses = {
   204: void
 }
 
-export type DeleteDatasetsByDatasetIdMetadataByMetadataIdResponse
-  = DeleteDatasetsByDatasetIdMetadataByMetadataIdResponses[keyof DeleteDatasetsByDatasetIdMetadataByMetadataIdResponses]
+export type DeleteDatasetsByDatasetIdMetadataByMetadataIdResponse =
+  DeleteDatasetsByDatasetIdMetadataByMetadataIdResponses[keyof DeleteDatasetsByDatasetIdMetadataByMetadataIdResponses]
 
 export type PatchDatasetsByDatasetIdMetadataByMetadataIdData = {
   body: MetadataUpdatePayload
@@ -2406,8 +2406,8 @@ export type PatchDatasetsByDatasetIdMetadataByMetadataIdResponses = {
   200: DatasetMetadataResponse
 }
 
-export type PatchDatasetsByDatasetIdMetadataByMetadataIdResponse
-  = PatchDatasetsByDatasetIdMetadataByMetadataIdResponses[keyof PatchDatasetsByDatasetIdMetadataByMetadataIdResponses]
+export type PatchDatasetsByDatasetIdMetadataByMetadataIdResponse =
+  PatchDatasetsByDatasetIdMetadataByMetadataIdResponses[keyof PatchDatasetsByDatasetIdMetadataByMetadataIdResponses]
 
 export type GetDatasetsByDatasetIdNotionSyncData = {
   body?: never
@@ -2422,8 +2422,8 @@ export type GetDatasetsByDatasetIdNotionSyncResponses = {
   200: SimpleResultResponse
 }
 
-export type GetDatasetsByDatasetIdNotionSyncResponse
-  = GetDatasetsByDatasetIdNotionSyncResponses[keyof GetDatasetsByDatasetIdNotionSyncResponses]
+export type GetDatasetsByDatasetIdNotionSyncResponse =
+  GetDatasetsByDatasetIdNotionSyncResponses[keyof GetDatasetsByDatasetIdNotionSyncResponses]
 
 export type GetDatasetsByDatasetIdPermissionPartUsersData = {
   body?: never
@@ -2443,8 +2443,8 @@ export type GetDatasetsByDatasetIdPermissionPartUsersResponses = {
   200: PartialMemberListResponse
 }
 
-export type GetDatasetsByDatasetIdPermissionPartUsersResponse
-  = GetDatasetsByDatasetIdPermissionPartUsersResponses[keyof GetDatasetsByDatasetIdPermissionPartUsersResponses]
+export type GetDatasetsByDatasetIdPermissionPartUsersResponse =
+  GetDatasetsByDatasetIdPermissionPartUsersResponses[keyof GetDatasetsByDatasetIdPermissionPartUsersResponses]
 
 export type GetDatasetsByDatasetIdQueriesData = {
   body?: never
@@ -2459,8 +2459,8 @@ export type GetDatasetsByDatasetIdQueriesResponses = {
   200: DatasetQueryListResponse
 }
 
-export type GetDatasetsByDatasetIdQueriesResponse
-  = GetDatasetsByDatasetIdQueriesResponses[keyof GetDatasetsByDatasetIdQueriesResponses]
+export type GetDatasetsByDatasetIdQueriesResponse =
+  GetDatasetsByDatasetIdQueriesResponses[keyof GetDatasetsByDatasetIdQueriesResponses]
 
 export type GetDatasetsByDatasetIdRelatedAppsData = {
   body?: never
@@ -2475,8 +2475,8 @@ export type GetDatasetsByDatasetIdRelatedAppsResponses = {
   200: RelatedAppListResponse
 }
 
-export type GetDatasetsByDatasetIdRelatedAppsResponse
-  = GetDatasetsByDatasetIdRelatedAppsResponses[keyof GetDatasetsByDatasetIdRelatedAppsResponses]
+export type GetDatasetsByDatasetIdRelatedAppsResponse =
+  GetDatasetsByDatasetIdRelatedAppsResponses[keyof GetDatasetsByDatasetIdRelatedAppsResponses]
 
 export type PostDatasetsByDatasetIdRetryData = {
   body: DocumentRetryPayload
@@ -2491,8 +2491,8 @@ export type PostDatasetsByDatasetIdRetryResponses = {
   204: void
 }
 
-export type PostDatasetsByDatasetIdRetryResponse
-  = PostDatasetsByDatasetIdRetryResponses[keyof PostDatasetsByDatasetIdRetryResponses]
+export type PostDatasetsByDatasetIdRetryResponse =
+  PostDatasetsByDatasetIdRetryResponses[keyof PostDatasetsByDatasetIdRetryResponses]
 
 export type GetDatasetsByDatasetIdUseCheckData = {
   body?: never
@@ -2507,8 +2507,8 @@ export type GetDatasetsByDatasetIdUseCheckResponses = {
   200: UsageCheckResponse
 }
 
-export type GetDatasetsByDatasetIdUseCheckResponse
-  = GetDatasetsByDatasetIdUseCheckResponses[keyof GetDatasetsByDatasetIdUseCheckResponses]
+export type GetDatasetsByDatasetIdUseCheckResponse =
+  GetDatasetsByDatasetIdUseCheckResponses[keyof GetDatasetsByDatasetIdUseCheckResponses]
 
 export type GetDatasetsByResourceIdApiKeysData = {
   body?: never
@@ -2523,8 +2523,8 @@ export type GetDatasetsByResourceIdApiKeysResponses = {
   200: ApiKeyList
 }
 
-export type GetDatasetsByResourceIdApiKeysResponse
-  = GetDatasetsByResourceIdApiKeysResponses[keyof GetDatasetsByResourceIdApiKeysResponses]
+export type GetDatasetsByResourceIdApiKeysResponse =
+  GetDatasetsByResourceIdApiKeysResponses[keyof GetDatasetsByResourceIdApiKeysResponses]
 
 export type PostDatasetsByResourceIdApiKeysData = {
   body?: never
@@ -2543,8 +2543,8 @@ export type PostDatasetsByResourceIdApiKeysResponses = {
   201: ApiKeyItem
 }
 
-export type PostDatasetsByResourceIdApiKeysResponse
-  = PostDatasetsByResourceIdApiKeysResponses[keyof PostDatasetsByResourceIdApiKeysResponses]
+export type PostDatasetsByResourceIdApiKeysResponse =
+  PostDatasetsByResourceIdApiKeysResponses[keyof PostDatasetsByResourceIdApiKeysResponses]
 
 export type DeleteDatasetsByResourceIdApiKeysByApiKeyIdData = {
   body?: never
@@ -2560,5 +2560,5 @@ export type DeleteDatasetsByResourceIdApiKeysByApiKeyIdResponses = {
   204: void
 }
 
-export type DeleteDatasetsByResourceIdApiKeysByApiKeyIdResponse
-  = DeleteDatasetsByResourceIdApiKeysByApiKeyIdResponses[keyof DeleteDatasetsByResourceIdApiKeysByApiKeyIdResponses]
+export type DeleteDatasetsByResourceIdApiKeysByApiKeyIdResponse =
+  DeleteDatasetsByResourceIdApiKeysByApiKeyIdResponses[keyof DeleteDatasetsByResourceIdApiKeysByApiKeyIdResponses]

@@ -1,6 +1,9 @@
 'use client'
 
-import type { AgentIconType, AgentReferencingWorkflowResponse } from '@dify/contracts/api/console/agent/types.gen'
+import type {
+  AgentIconType,
+  AgentReferencingWorkflowResponse,
+} from '@dify/contracts/api/console/agent/types.gen'
 import type { ReactNode } from 'react'
 import { Button } from '@langgenius/dify-ui/button'
 import { useQuery } from '@tanstack/react-query'
@@ -16,20 +19,21 @@ type WorkflowReferencesTableProps = {
 
 const workflowTableColSpan = 5
 
-const getWorkflowReferenceHref = (reference: AgentReferencingWorkflowResponse) => `/app/${reference.app_id}/workflow`
+const getWorkflowReferenceHref = (reference: AgentReferencingWorkflowResponse) =>
+  `/app/${reference.app_id}/workflow`
 
-export function WorkflowReferencesTable({
-  agentId,
-}: WorkflowReferencesTableProps) {
+export function WorkflowReferencesTable({ agentId }: WorkflowReferencesTableProps) {
   const { t } = useTranslation('agentV2')
   const { t: tCommon } = useTranslation('common')
-  const workflowReferencesQuery = useQuery(consoleQuery.agent.byAgentId.referencingWorkflows.get.queryOptions({
-    input: {
-      params: {
-        agent_id: agentId,
+  const workflowReferencesQuery = useQuery(
+    consoleQuery.agent.byAgentId.referencingWorkflows.get.queryOptions({
+      input: {
+        params: {
+          agent_id: agentId,
+        },
       },
-    },
-  }))
+    }),
+  )
   const workflowReferences = workflowReferencesQuery.data?.data ?? []
 
   return (
@@ -88,30 +92,34 @@ export function WorkflowReferencesTable({
               {t('agentDetail.access.workflow.empty')}
             </WorkflowAccessStateRow>
           )}
-          {workflowReferencesQuery.isSuccess && workflowReferences.map(reference => (
-            <WorkflowAccessRow
-              key={`${reference.app_id}:${reference.workflow_id}`}
-              reference={reference}
-            />
-          ))}
+          {workflowReferencesQuery.isSuccess &&
+            workflowReferences.map((reference) => (
+              <WorkflowAccessRow
+                key={`${reference.app_id}:${reference.workflow_id}`}
+                reference={reference}
+              />
+            ))}
         </tbody>
       </table>
     </div>
   )
 }
 
-function WorkflowAccessRow({
-  reference,
-}: {
-  reference: AgentReferencingWorkflowResponse
-}) {
+function WorkflowAccessRow({ reference }: { reference: AgentReferencingWorkflowResponse }) {
   const { t } = useTranslation('agentV2')
   const { formatTime } = useTimestamp()
-  const imageUrl = (reference.app_icon_type === 'image' || reference.app_icon_type === 'link') ? reference.app_icon : undefined
-  const iconType = (imageUrl ? 'image' : reference.app_icon_type) as AgentIconType | null | undefined
-  const updatedAt = reference.app_updated_at != null
-    ? formatTime(reference.app_updated_at, t('roster.dateTimeFormat'))
-    : t('agentDetail.access.workflow.notAvailable')
+  const imageUrl =
+    reference.app_icon_type === 'image' || reference.app_icon_type === 'link'
+      ? reference.app_icon
+      : undefined
+  const iconType = (imageUrl ? 'image' : reference.app_icon_type) as
+    | AgentIconType
+    | null
+    | undefined
+  const updatedAt =
+    reference.app_updated_at != null
+      ? formatTime(reference.app_updated_at, t('roster.dateTimeFormat'))
+      : t('agentDetail.access.workflow.notAvailable')
   const nodeCount = reference.node_ids?.length ?? 0
 
   return (
@@ -128,9 +136,7 @@ function WorkflowAccessRow({
               imageUrl={imageUrl}
             />
           </span>
-          <span className="truncate">
-            {reference.app_name}
-          </span>
+          <span className="truncate">{reference.app_name}</span>
         </div>
       </td>
       <td className="truncate px-3" translate="no">
@@ -145,7 +151,9 @@ function WorkflowAccessRow({
       <td className="px-3">
         <Link
           href={getWorkflowReferenceHref(reference)}
-          aria-label={t('agentDetail.access.workflow.openInStudioFor', { name: reference.app_name })}
+          aria-label={t('agentDetail.access.workflow.openInStudioFor', {
+            name: reference.app_name,
+          })}
           className="inline-flex items-center gap-0.5 rounded-sm text-text-secondary hover:text-text-accent hover:underline focus-visible:ring-2 focus-visible:ring-state-accent-solid focus-visible:outline-hidden"
         >
           {t('agentDetail.access.workflow.openInStudio')}
@@ -156,14 +164,14 @@ function WorkflowAccessRow({
   )
 }
 
-function WorkflowAccessStateRow({
-  children,
-}: {
-  children: ReactNode
-}) {
+function WorkflowAccessStateRow({ children }: { children: ReactNode }) {
   return (
     <tr className="h-20 border-b border-divider-subtle">
-      <td colSpan={workflowTableColSpan} aria-live="polite" className="px-3 text-center text-text-tertiary">
+      <td
+        colSpan={workflowTableColSpan}
+        aria-live="polite"
+        className="px-3 text-center text-text-tertiary"
+      >
         {children}
       </td>
     </tr>

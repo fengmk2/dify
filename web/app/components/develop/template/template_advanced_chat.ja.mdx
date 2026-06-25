@@ -9,12 +9,16 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
   ### ベース URL
   <CodeGroup title="コード" targetCode={props.appDetail.api_base_url} />
 
-  ### 認証
+### 認証
 
-  サービス API は `API-Key` 認証を使用します。
-  <i>**API キーはサーバー側に保存し、クライアント側で共有または保存しないことを強くお勧めします。API キーの漏洩は深刻な結果を招く可能性があります。**</i>
+サービス API は `API-Key` 認証を使用します。
 
-  すべての API リクエストには、以下のように `Authorization`HTTP ヘッダーに API キーを含めてください：
+<i>
+  **API キーはサーバー側に保存し、クライアント側で共有または保存しないことを強くお勧めします。API
+  キーの漏洩は深刻な結果を招く可能性があります。**
+</i>
+
+すべての API リクエストには、以下のように `Authorization`HTTP ヘッダーに API キーを含めてください：
 
   <CodeGroup title="コード" targetCode='Authorization: Bearer {API_KEY}' />
 </div>
@@ -260,25 +264,25 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="POST"
       label="/chat-messages"
       targetCode={`curl -X POST '${props.appDetail.api_base_url}/chat-messages' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --header 'Content-Type: application/json' \\
 --data-raw '{
-    "inputs": ${JSON.stringify(props.inputs)},
-    "query": "What are the specs of the iPhone 13 Pro Max?",
-    "response_mode": "streaming",
-    "conversation_id": "",
-    "user": "abc-123",
-    "files": [
-        {
-            "type": "image",
-            "transfer_method": "remote_url",
-            "url": "https://cloud.dify.ai/logo/logo-site.png"
-        }
-    ]
+"inputs": ${JSON.stringify(props.inputs)},
+"query": "What are the specs of the iPhone 13 Pro Max?",
+"response_mode": "streaming",
+"conversation_id": "",
+"user": "abc-123",
+"files": [
+{
+"type": "image",
+"transfer_method": "remote_url",
+"url": "https://cloud.dify.ai/logo/logo-site.png"
+}
+]
 }'`}
-    />
-    ### ブロッキングモード
-    ブロッキングモードでは、通常のチャット応答、または一時停止したワークフロー応答のいずれかが返されます。
+/> ### ブロッキングモード
+ブロッキングモードでは、通常のチャット応答、または一時停止したワークフロー応答のいずれかが返されます。
 
     Advanced Chat が Human-in-the-Loop で一時停止すると、`event` は `workflow_paused` になります。
     それでもペイロードには `message_id`、`conversation_id`、`answer`、`workflow_run_id` が含まれ、`data` には `paused_nodes` と `reasons` が追加されます。
@@ -640,6 +644,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
 </Row>
 
 ---
+
 <Heading
   url='/files/upload'
   method='POST'
@@ -652,51 +657,56 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
   アプリケーションでサポートされている形式をサポートします。
   アップロードされたファイルは現在のエンドユーザーのみが使用できます。
 
-  ### リクエストボディ
-  このインターフェースは`multipart/form-data`リクエストを必要とします。
-  - `file` (File) 必須
-    アップロードするファイル。
-  - `user` (string) 必須
-    ユーザー識別子、開発者のルールによって定義され、アプリケーション内で一意でなければなりません。サービス API は WebApp によって作成された会話を共有しません。
+### リクエストボディ
 
-  ### 応答
-  アップロードが成功すると、サーバーはファイルの ID と関連情報を返します。
-  - `id` (uuid) ID
-  - `name` (string) ファイル名
-  - `size` (int) ファイルサイズ（バイト）
-  - `extension` (string) ファイル拡張子
-  - `mime_type` (string) ファイルの MIME タイプ
-  - `created_by` (uuid) エンドユーザーID
-  - `created_at` (timestamp) 作成タイムスタンプ、例：1705395332
+このインターフェースは`multipart/form-data`リクエストを必要とします。
 
-  ### エラー
-  - 400, `no_file_uploaded`, ファイルが提供されなければなりません
-  - 400, `too_many_files`, 現在は 1 つのファイルのみ受け付けます
-  - 400, `unsupported_preview`, ファイルはプレビューをサポートしていません
-  - 400, `unsupported_estimate`, ファイルは推定をサポートしていません
-  - 413, `file_too_large`, ファイルが大きすぎます
-  - 415, `unsupported_file_type`, サポートされていない拡張子、現在はドキュメントファイルのみ受け付けます
-  - 503, `s3_connection_failed`, S3 サービスに接続できません
-  - 503, `s3_permission_denied`, S3 にファイルをアップロードする権限がありません
-  - 503, `s3_file_too_large`, ファイルが S3 のサイズ制限を超えています
-  - 500, 内部サーバーエラー
+- `file` (File) 必須
+  アップロードするファイル。
+- `user` (string) 必須
+  ユーザー識別子、開発者のルールによって定義され、アプリケーション内で一意でなければなりません。サービス API は WebApp によって作成された会話を共有しません。
 
+### 応答
+
+アップロードが成功すると、サーバーはファイルの ID と関連情報を返します。
+
+- `id` (uuid) ID
+- `name` (string) ファイル名
+- `size` (int) ファイルサイズ（バイト）
+- `extension` (string) ファイル拡張子
+- `mime_type` (string) ファイルの MIME タイプ
+- `created_by` (uuid) エンドユーザーID
+- `created_at` (timestamp) 作成タイムスタンプ、例：1705395332
+
+### エラー
+
+- 400, `no_file_uploaded`, ファイルが提供されなければなりません
+- 400, `too_many_files`, 現在は 1 つのファイルのみ受け付けます
+- 400, `unsupported_preview`, ファイルはプレビューをサポートしていません
+- 400, `unsupported_estimate`, ファイルは推定をサポートしていません
+- 413, `file_too_large`, ファイルが大きすぎます
+- 415, `unsupported_file_type`, サポートされていない拡張子、現在はドキュメントファイルのみ受け付けます
+- 503, `s3_connection_failed`, S3 サービスに接続できません
+- 503, `s3_permission_denied`, S3 にファイルをアップロードする権限がありません
+- 503, `s3_file_too_large`, ファイルが S3 のサイズ制限を超えています
+- 500, 内部サーバーエラー
 
   </Col>
   <Col sticky>
   ### リクエスト例
 
-  <CodeGroup
-    title="リクエスト"
-    tag="POST"
-    label="/files/upload"
-    targetCode={`curl -X POST '${props.appDetail.api_base_url}/files/upload' \\
+<CodeGroup
+  title="リクエスト"
+  tag="POST"
+  label="/files/upload"
+  targetCode={`curl -X POST '${props.appDetail.api_base_url}/files/upload' \\
 --header 'Authorization: Bearer {api_key}' \\
 --form 'file=@localfile;type=image/[png|jpeg|jpg|webp|gif]' \\
 --form 'user=abc-123'`}
-  />
+/>
 
-  ### 応答例
+### 応答例
+
   <CodeGroup title="応答">
     ```json {{ title: '応答' }}
     {
@@ -775,6 +785,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -830,9 +841,10 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="GET"
       label="/files/:file_id/preview?as_attachment=true"
       targetCode={`curl -X GET '${props.appDetail.api_base_url}/files/72fa9618-8f89-4a37-9b33-7e1178a24a67/preview?as_attachment=true' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --output downloaded_file.png`}
-    />
+/>
 
     ### レスポンスヘッダー例
     <CodeGroup title="Response Headers">
@@ -852,6 +864,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     Cache-Control: public, max-age=3600
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -926,6 +939,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     - 404, フォームが存在しない、または現在のアプリに属していない
     - 412, `human_input_form_submitted`, 既に送信済み
     - 412, `human_input_form_expired`, 期限切れ
+
   </Col>
   <Col sticky>
     <CodeGroup
@@ -959,6 +973,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -990,6 +1005,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     - 404, フォームが存在しない、または現在のアプリに属していない
     - 412, `human_input_form_submitted`, 既に送信済み
     - 412, `human_input_form_expired`, 期限切れ
+
   </Col>
   <Col sticky>
     <CodeGroup
@@ -1011,6 +1027,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     {}
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1040,6 +1057,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     Server-Sent Events ストリーム（`text/event-stream`）。
     主なイベントは `workflow_paused`、`node_started`、`node_finished`、`human_input_form_filled`、`human_input_form_timeout`、`workflow_finished` です。
     呼び出し時点でワークフローがすでに完了している場合、このエンドポイントは完了イベントを 1 件だけ即座に返します。
+
   </Col>
   <Col sticky>
     <CodeGroup
@@ -1087,6 +1105,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     data: {"event":"workflow_finished","workflow_run_id":"5d7ef348-e1c1-4f6d-bb9b-62cc2fb2ef3c","task_id":"1784c3dd-20eb-4919-bd5d-a8d800b74ada","data":{"id":"5d7ef348-e1c1-4f6d-bb9b-62cc2fb2ef3c","workflow_id":"e46514f1-c008-41ff-94b0-4f33d4b97d36","status":"succeeded","outputs":{"output":"field 1 filled!"},"error":null,"elapsed_time":0.364935,"total_tokens":0,"total_steps":5,"created_by":{"id":"7932d34c-dcf4-4fba-b770-f2a9de88c0a0","user":"abc-123"},"created_at":1776087877,"finished_at":1776087877,"exceptions_count":0,"files":[]}}
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1125,6 +1144,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
 
     ### 応答
     - `result` (string) 常に"success"を返します
+
   </Col>
   <Col sticky>
 
@@ -1133,14 +1153,15 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="POST"
       label="/messages/:message_id/feedbacks"
       targetCode={`curl -X POST '${props.appDetail.api_base_url}/messages/:message_id/feedbacks' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --header 'Content-Type: application/json' \\
 --data-raw '{
-    "rating": "like",
-    "user": "abc-123",
-    "content": "message feedback information"
+"rating": "like",
+"user": "abc-123",
+"content": "message feedback information"
 }'`}
-    />
+/>
 
     <CodeGroup title="応答">
     ```json {{ title: '応答' }}
@@ -1149,6 +1170,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1179,6 +1201,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
 
     ### レスポンス
     - `data` (リスト) このアプリの「いいね」とフィードバックの一覧を返します。
+
   </Col>
   <Col sticky>
 
@@ -1187,9 +1210,10 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="GET"
       label="/app/feedbacks"
       targetCode={`curl -X GET '${props.appDetail.api_base_url}/app/feedbacks?page=1&limit=20' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --header 'Content-Type: application/json'`}
-    />
+/>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -1212,10 +1236,10 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
         }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
-
 
 <Heading
   url='/messages/{message_id}/suggested'
@@ -1242,6 +1266,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
         アプリケーション内で開発者によって一意に定義されるべきです。
       </Property>
     </Properties>
+
   </Col>
   <Col sticky>
 
@@ -1250,9 +1275,10 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="GET"
       label="/messages/{message_id}/suggested"
       targetCode={`curl --location --request GET '${props.appDetail.api_base_url}/messages/{message_id}/suggested?user=abc-123' \\
+
 --header 'Authorization: Bearer ENTER-YOUR-SECRET-KEY' \\
 --header 'Content-Type: application/json'`}
-    />
+/>
 
     <CodeGroup title="応答">
     ```json {{ title: '応答' }}
@@ -1266,6 +1292,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1326,11 +1353,11 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="GET"
       label="/messages"
       targetCode={`curl -X GET '${props.appDetail.api_base_url}/messages?user=abc-123&conversation_id={conversation_id}'
+
 --header 'Authorization: Bearer {api_key}'`}
-    />
-    ### 応答例
-    <CodeGroup title="応答">
-    ```json {{ title: '応答' }}
+/> ### 応答例
+<CodeGroup title="応答">
+`json {{ title: '応答' }}
     {
       "limit": 20,
       "has_more": false,
@@ -1361,8 +1388,9 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
         }
       ]
     }
-    ```
-    </CodeGroup>
+    `
+</CodeGroup>
+
   </Col>
 </Row>
 
@@ -1417,8 +1445,9 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="GET"
       label="/conversations"
       targetCode={`curl -X GET '${props.appDetail.api_base_url}/conversations?user=abc-123&last_id=&limit=20' \\
+
 --header 'Authorization: Bearer {api_key}'`}
-    />
+/>
 
     <CodeGroup title="応答">
     ```json {{ title: '応答' }}
@@ -1445,6 +1474,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1473,6 +1503,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
 
     ### 応答
     - `result` (string) 常に"success"を返します
+
   </Col>
   <Col sticky>
 
@@ -1481,23 +1512,26 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="DELETE"
       label="/conversations/:conversation_id"
       targetCode={`curl -X DELETE '${props.appDetail.api_base_url}/conversations/{conversation_id}' \\
+
 --header 'Content-Type: application/json' \\
 --header 'Accept: application/json' \\
 --header 'Authorization: Bearer {api_key}' \\
 --data '{
-    "user": "abc-123"
+"user": "abc-123"
 }'`}
-    />
+/>
 
     <CodeGroup title="応答">
     ```text {{ title: '応答' }}
     204 No Content
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
 ---
+
 <Heading
   url='/conversations/:conversation_id/name'
   method='POST'
@@ -1532,6 +1566,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     - `introduction` (string) 紹介
     - `created_at` (timestamp) 作成タイムスタンプ、例：1705395332
     - `updated_at` (timestamp) 更新タイムスタンプ、例：1705395332
+
   </Col>
   <Col sticky>
 
@@ -1540,14 +1575,15 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="POST"
       label="/conversations/:conversation_id/name"
       targetCode={`curl -X POST '${props.appDetail.api_base_url}/conversations/{conversation_id}/name' \\
+
 --header 'Content-Type: application/json' \\
 --header 'Authorization: Bearer {api_key}' \\
 --data-raw '{
-    "name": "",
-    "auto_generate": true,
-    "user": "abc-123"
+"name": "",
+"auto_generate": true,
+"user": "abc-123"
 }'`}
-    />
+/>
 
     <CodeGroup title="応答">
     ```json {{ title: '応答' }}
@@ -1562,6 +1598,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1624,14 +1661,16 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       label="/conversations/:conversation_id/variables"
       debug="true"
       targetCode={`curl -X GET '${props.appDetail.api_base_url}/conversations/{conversation_id}/variables?user=abc-123' \\
+
 --header 'Authorization: Bearer {api_key}'`} />
 
     <CodeGroup
       title="変数名フィルター付きリクエスト"
       language="bash"
       targetCode={`curl -X GET '${props.appDetail.api_base_url}/conversations/{conversation_id}/variables?user=abc-123&variable_name=customer_name' \\
+
 --header 'Authorization: Bearer {api_key}'`}
-    />
+/>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -1661,6 +1700,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1722,13 +1762,14 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="PUT"
       label="/conversations/:conversation_id/variables/:variable_id"
       targetCode={`curl -X PUT '${props.appDetail.api_base_url}/conversations/{conversation_id}/variables/{variable_id}' \\
+
 --header 'Content-Type: application/json' \\
 --header 'Authorization: Bearer {api_key}' \\
 --data-raw '{
-    "value": "Updated Value",
-    "user": "abc-123"
+"value": "Updated Value",
+"user": "abc-123"
 }'`}
-    />
+/>
 
     <CodeGroup
       title="異なる値型での更新"
@@ -1736,11 +1777,12 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
         {
           title: '文字列値',
           code: `curl -X PUT '${props.appDetail.api_base_url}/conversations/{conversation_id}/variables/{variable_id}' \\
+
 --header 'Content-Type: application/json' \\
 --header 'Authorization: Bearer {api_key}' \\
 --data-raw '{
-    "value": "新しい文字列値",
-    "user": "abc-123"
+"value": "新しい文字列値",
+"user": "abc-123"
 }'`,
         }, {
           title: '数値',
@@ -1757,12 +1799,12 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
 --header 'Content-Type: application/json' \\
 --header 'Authorization: Bearer {api_key}' \\
 --data-raw '{
-    "value": {"product": "Widget", "quantity": 10, "price": 29.99},
-    "user": "abc-123"
+"value": {"product": "Widget", "quantity": 10, "price": 29.99},
+"user": "abc-123"
 }'`,
-        },
-      ]}
-    />
+},
+]}
+/>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -1777,6 +1819,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1816,9 +1859,10 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="POST"
       label="/audio-to-text"
       targetCode={`curl -X POST '${props.appDetail.api_base_url}/audio-to-text' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --form 'file=@localfile;type=audio/[mp3|mp4|mpeg|mpga|m4a|wav|webm]'`}
-    />
+/>
 
     <CodeGroup title="応答">
     ```json {{ title: '応答' }}
@@ -1827,6 +1871,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1855,6 +1900,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
         ユーザー識別子、開発者によって定義され、アプリ内で一意であることを保証しなければなりません。
       </Property>
     </Properties>
+
   </Col>
   <Col sticky>
 
@@ -1863,14 +1909,15 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="POST"
       label="/text-to-audio"
       targetCode={`curl -o text-to-audio.mp3 -X POST '${props.appDetail.api_base_url}/text-to-audio' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --header 'Content-Type: application/json' \\
 --data-raw '{
-    "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290",
-    "text": "Hello Dify",
-    "user": "abc-123",
+"message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290",
+"text": "Hello Dify",
+"user": "abc-123",
 }'`}
-    />
+/>
 
     <CodeGroup title="ヘッダー">
     ```json {{ title: 'ヘッダー' }}
@@ -1879,6 +1926,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -1893,13 +1941,15 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
   <Col>
   このアプリケーションの基本情報を取得するために使用されます
 
-  ### Response
-  - `name` (string) アプリケーションの名前
-  - `description` (string) アプリケーションの説明
-  - `tags` (array[string]) アプリケーションのタグ
-  - `mode` (string) アプリケーションのモード
-  - `author_name` (string) 作者の名前
-  </Col>
+### Response
+
+- `name` (string) アプリケーションの名前
+- `description` (string) アプリケーションの説明
+- `tags` (array[string]) アプリケーションのタグ
+- `mode` (string) アプリケーションのモード
+- `author_name` (string) 作者の名前
+
+    </Col>
   <Col>
     <CodeGroup
       title="リクエスト"
@@ -1909,21 +1959,22 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
 -H 'Authorization: Bearer {api_key}'`}
     />
 
-    <CodeGroup title="Response">
-    ```json {{ title: 'Response' }}
-    {
-      "name": "My App",
-      "description": "This is my app.",
-      "tags": [
-        "tag1",
-        "tag2"
-      ],
-      "mode": "advanced-chat",
-      "author_name": "Dify"
-    }
-    ```
-    </CodeGroup>
-  </Col>
+      <CodeGroup title="Response">
+      ```json {{ title: 'Response' }}
+      {
+        "name": "My App",
+        "description": "This is my app.",
+        "tags": [
+          "tag1",
+          "tag2"
+        ],
+        "mode": "advanced-chat",
+        "author_name": "Dify"
+      }
+      ```
+      </CodeGroup>
+
+    </Col>
 </Row>
 
 ---
@@ -2066,6 +2117,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -2080,39 +2132,37 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
   <Col>
   このアプリケーションのツールのアイコンを取得するために使用されます
 
-  ### 応答
-  - `tool_icons`(object[string]) ツールアイコン
-    - `tool_name` (string)
-      - `icon` (object|string)
-        - (object) アイコンオブジェクト
-          - `background` (string) 背景色（16 進数形式）
-          - `content`(string) 絵文字
-        - (string) アイコンの URL
-  </Col>
+### 応答
+
+- `tool_icons`(object[string]) ツールアイコン - `tool_name` (string) - `icon` (object|string) - (object) アイコンオブジェクト - `background` (string) 背景色（16 進数形式）- `content`(string) 絵文字 - (string) アイコンの URL
+
+    </Col>
   <Col>
 
-    <CodeGroup
-      title="リクエスト"
-      tag="GET"
-      label="/meta"
-      targetCode={`curl -X GET '${props.appDetail.api_base_url}/meta' \\
--H 'Authorization: Bearer {api_key}'`}
-    />
+      <CodeGroup
+        title="リクエスト"
+        tag="GET"
+        label="/meta"
+        targetCode={`curl -X GET '${props.appDetail.api_base_url}/meta' \\
 
-    <CodeGroup title="応答">
-    ```json {{ title: '応答' }}
-    {
-      "tool_icons": {
-        "dalle2": "https://cloud.dify.ai/console/api/workspaces/current/tool-provider/builtin/dalle/icon",
-        "api_tool": {
-          "background": "#252525",
-          "content": "\ud83d\ude01"
+  -H 'Authorization: Bearer {api_key}'`}
+  />
+
+      <CodeGroup title="応答">
+      ```json {{ title: '応答' }}
+      {
+        "tool_icons": {
+          "dalle2": "https://cloud.dify.ai/console/api/workspaces/current/tool-provider/builtin/dalle/icon",
+          "api_tool": {
+            "background": "#252525",
+            "content": "\ud83d\ude01"
+          }
         }
       }
-    }
-    ```
-    </CodeGroup>
-  </Col>
+      ```
+      </CodeGroup>
+
+    </Col>
 </Row>
 
 ---
@@ -2171,6 +2221,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ___

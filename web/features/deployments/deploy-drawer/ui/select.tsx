@@ -3,13 +3,24 @@
 import type { Environment, EnvironmentStatus } from '@dify/contracts/enterprise/types.gen'
 import { EnvironmentStatus as EnvironmentStatusEnum } from '@dify/contracts/enterprise/types.gen'
 import { cn } from '@langgenius/dify-ui/cn'
-import { Select, SelectContent, SelectItem, SelectItemIndicator, SelectItemText, SelectTrigger } from '@langgenius/dify-ui/select'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectItemIndicator,
+  SelectItemText,
+  SelectTrigger,
+} from '@langgenius/dify-ui/select'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@langgenius/dify-ui/tooltip'
 import { useTranslation } from 'react-i18next'
 import { TitleTooltip } from '../../components/title-tooltip'
 import { ModeBadge } from './status-badge'
 
-export function Field({ label, hint, children }: {
+export function Field({
+  label,
+  hint,
+  children,
+}: {
   label: string
   hint?: string
   children: React.ReactNode
@@ -40,16 +51,21 @@ type SelectProps = {
   placeholder?: string
 }
 
-export function DeploymentSelect({ value, onChange, options, ariaLabel, placeholder }: SelectProps) {
+export function DeploymentSelect({
+  value,
+  onChange,
+  options,
+  ariaLabel,
+  placeholder,
+}: SelectProps) {
   const { t } = useTranslation('deployments')
-  const selectedOption = options.find(option => option.value === value)
+  const selectedOption = options.find((option) => option.value === value)
 
   return (
     <Select
       value={value ?? null}
       onValueChange={(next) => {
-        if (!next)
-          return
+        if (!next) return
         onChange(next)
       }}
       disabled={options.length === 0}
@@ -64,28 +80,22 @@ export function DeploymentSelect({ value, onChange, options, ariaLabel, placehol
         {selectedOption?.label ?? placeholder ?? t('deployDrawer.defaultSelect')}
       </SelectTrigger>
       <SelectContent popupClassName="w-(--anchor-width)">
-        {options.map(opt => opt.value
-          ? (
-              <SelectItem
-                key={opt.value}
-                value={opt.value}
-                disabled={opt.disabled}
-              >
-                <TitleTooltip content={opt.disabled ? opt.disabledReason : undefined}>
-                  <SelectItemText>{opt.label}</SelectItemText>
-                </TitleTooltip>
-                <SelectItemIndicator />
-              </SelectItem>
-            )
-          : null)}
+        {options.map((opt) =>
+          opt.value ? (
+            <SelectItem key={opt.value} value={opt.value} disabled={opt.disabled}>
+              <TitleTooltip content={opt.disabled ? opt.disabledReason : undefined}>
+                <SelectItemText>{opt.label}</SelectItemText>
+              </TitleTooltip>
+              <SelectItemIndicator />
+            </SelectItem>
+          ) : null,
+        )}
       </SelectContent>
     </Select>
   )
 }
 
-function EnvironmentHealthDot({ status }: {
-  status: EnvironmentStatus
-}) {
+function EnvironmentHealthDot({ status }: { status: EnvironmentStatus }) {
   const { t } = useTranslation('deployments')
   const label = t(`health.${status}`)
   const isReady = status === EnvironmentStatusEnum.ENVIRONMENT_STATUS_READY
@@ -93,7 +103,7 @@ function EnvironmentHealthDot({ status }: {
   return (
     <Tooltip>
       <TooltipTrigger
-        render={(
+        render={
           <span
             aria-label={label}
             className={cn(
@@ -109,7 +119,7 @@ function EnvironmentHealthDot({ status }: {
               )}
             />
           </span>
-        )}
+        }
       />
       <TooltipContent>{label}</TooltipContent>
     </Tooltip>

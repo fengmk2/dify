@@ -5,7 +5,7 @@ import type {
 } from '@dify/contracts/enterprise/types.gen'
 import type { TFunction } from 'i18next'
 import { ReleaseSource, RuntimeInstanceStatus } from '@dify/contracts/enterprise/types.gen'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import { buildDeployMenuSections } from './deploy-release-menu-utils'
 
 const t = ((key: string, options?: { name?: string }) => {

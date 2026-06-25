@@ -23,10 +23,7 @@ type AppInfoDetailLayerProps = {
   open?: boolean
 }
 
-const AppInfoDetailLayer = ({
-  actions,
-  open = actions.panelOpen,
-}: AppInfoDetailLayerProps) => {
+const AppInfoDetailLayer = ({ actions, open = actions.panelOpen }: AppInfoDetailLayerProps) => {
   const {
     appDetail,
     closePanel,
@@ -43,8 +40,7 @@ const AppInfoDetailLayer = ({
     onConfirmDelete,
   } = actions
 
-  if (!appDetail)
-    return null
+  if (!appDetail) return null
 
   return (
     <>
@@ -79,26 +75,22 @@ export const AppInfoView = ({
   actions,
   renderDetail = true,
 }: AppInfoViewProps) => {
-  const {
-    appDetail,
-    panelOpen,
-    setPanelOpen,
-    activeModal,
-    secretEnvList,
-  } = actions
-  const currentUserId = useAppContextWithSelector(state => state.userProfile?.id)
-  const workspacePermissionKeys = useAppContextWithSelector(state => state.workspacePermissionKeys)
+  const { appDetail, panelOpen, setPanelOpen, activeModal, secretEnvList } = actions
+  const currentUserId = useAppContextWithSelector((state) => state.userProfile?.id)
+  const workspacePermissionKeys = useAppContextWithSelector(
+    (state) => state.workspacePermissionKeys,
+  )
   const appACLCapabilities = getAppACLCapabilities(appDetail?.permission_keys, {
     currentUserId,
     resourceMaintainer: appDetail?.maintainer,
     workspacePermissionKeys,
   })
 
-  if (!appDetail)
-    return null
+  if (!appDetail) return null
 
   const detailLayerOpen = onlyShowDetail ? openState : panelOpen
-  const shouldRenderDetailLayer = renderDetail && (detailLayerOpen || activeModal || secretEnvList.length > 0)
+  const shouldRenderDetailLayer =
+    renderDetail && (detailLayerOpen || activeModal || secretEnvList.length > 0)
 
   return (
     <div>
@@ -107,17 +99,11 @@ export const AppInfoView = ({
           appDetail={appDetail}
           expand={expand}
           onClick={() => {
-            if (appACLCapabilities.canAccessLayout)
-              setPanelOpen(v => !v)
+            if (appACLCapabilities.canAccessLayout) setPanelOpen((v) => !v)
           }}
         />
       )}
-      {shouldRenderDetailLayer && (
-        <AppInfoDetailLayer
-          actions={actions}
-          open={detailLayerOpen}
-        />
-      )}
+      {shouldRenderDetailLayer && <AppInfoDetailLayer actions={actions} open={detailLayerOpen} />}
     </div>
   )
 }

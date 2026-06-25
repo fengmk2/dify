@@ -9,12 +9,16 @@ Chat applications support session persistence, allowing previous chat history to
   ### Base URL
   <CodeGroup title="Code" targetCode={props.appDetail.api_base_url} />
 
-  ### Authentication
+### Authentication
 
-  The Service API uses `API-Key` authentication.
-  <i>**Strongly recommend storing your API Key on the server-side, not shared or stored on the client-side, to avoid possible API-Key leakage that can lead to serious consequences.**</i>
+The Service API uses `API-Key` authentication.
 
-  For all API requests, include your API Key in the `Authorization`HTTP Header, as shown below:
+<i>
+  **Strongly recommend storing your API Key on the server-side, not shared or stored on the
+  client-side, to avoid possible API-Key leakage that can lead to serious consequences.**
+</i>
+
+For all API requests, include your API Key in the `Authorization`HTTP Header, as shown below:
 
   <CodeGroup title="Code" targetCode='Authorization: Bearer {API_KEY}' />
 </div>
@@ -260,25 +264,25 @@ Chat applications support session persistence, allowing previous chat history to
       tag="POST"
       label="/chat-messages"
       targetCode={`curl -X POST '${props.appDetail.api_base_url}/chat-messages' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --header 'Content-Type: application/json' \\
 --data-raw '{
-    "inputs": ${JSON.stringify(props.inputs)},
-    "query": "What are the specs of the iPhone 13 Pro Max?",
-    "response_mode": "streaming",
-    "conversation_id": "",
-    "user": "abc-123",
-    "files": [
-        {
-            "type": "image",
-            "transfer_method": "remote_url",
-            "url": "https://cloud.dify.ai/logo/logo-site.png"
-        }
-    ]
+"inputs": ${JSON.stringify(props.inputs)},
+"query": "What are the specs of the iPhone 13 Pro Max?",
+"response_mode": "streaming",
+"conversation_id": "",
+"user": "abc-123",
+"files": [
+{
+"type": "image",
+"transfer_method": "remote_url",
+"url": "https://cloud.dify.ai/logo/logo-site.png"
+}
+]
 }'`}
-    />
-    ### Blocking Mode
-    Blocking mode can return a normal chat message or a paused workflow response.
+/> ### Blocking Mode
+Blocking mode can return a normal chat message or a paused workflow response.
 
     When advanced chat pauses for Human-in-the-Loop, `event` becomes `workflow_paused`.
     The payload still includes `message_id`, `conversation_id`, `answer`, and `workflow_run_id`, and `data` adds `paused_nodes` plus `reasons`.
@@ -640,6 +644,7 @@ Chat applications support session persistence, allowing previous chat history to
 </Row>
 
 ---
+
 <Heading
   url='/files/upload'
   method='POST'
@@ -652,35 +657,39 @@ Chat applications support session persistence, allowing previous chat history to
   Supports any formats that are supported by your application.
   Uploaded files are for use by the current end-user only.
 
-  ### Request Body
-  This interface requires a `multipart/form-data` request.
-  - `file` (File) Required
-    The file to be uploaded.
-  - `user` (string) Required
-    User identifier, defined by the developer's rules, must be unique within the application. The Service API does not share conversations created by the WebApp.
+### Request Body
 
-  ### Response
-  After a successful upload, the server will return the file's ID and related information.
-  - `id` (uuid) ID
-  - `name` (string) File name
-  - `size` (int) File size (bytes)
-  - `extension` (string) File extension
-  - `mime_type` (string) File mime-type
-  - `created_by` (uuid) End-user ID
-  - `created_at` (timestamp) Creation timestamp, e.g., 1705395332
+This interface requires a `multipart/form-data` request.
 
-  ### Errors
-  - 400, `no_file_uploaded`, a file must be provided
-  - 400, `too_many_files`, currently only one file is accepted
-  - 400, `unsupported_preview`, the file does not support preview
-  - 400, `unsupported_estimate`, the file does not support estimation
-  - 413, `file_too_large`, the file is too large
-  - 415, `unsupported_file_type`, unsupported extension, currently only document files are accepted
-  - 503, `s3_connection_failed`, unable to connect to S3 service
-  - 503, `s3_permission_denied`, no permission to upload files to S3
-  - 503, `s3_file_too_large`, file exceeds S3 size limit
-  - 500, internal server error
+- `file` (File) Required
+  The file to be uploaded.
+- `user` (string) Required
+  User identifier, defined by the developer's rules, must be unique within the application. The Service API does not share conversations created by the WebApp.
 
+### Response
+
+After a successful upload, the server will return the file's ID and related information.
+
+- `id` (uuid) ID
+- `name` (string) File name
+- `size` (int) File size (bytes)
+- `extension` (string) File extension
+- `mime_type` (string) File mime-type
+- `created_by` (uuid) End-user ID
+- `created_at` (timestamp) Creation timestamp, e.g., 1705395332
+
+### Errors
+
+- 400, `no_file_uploaded`, a file must be provided
+- 400, `too_many_files`, currently only one file is accepted
+- 400, `unsupported_preview`, the file does not support preview
+- 400, `unsupported_estimate`, the file does not support estimation
+- 413, `file_too_large`, the file is too large
+- 415, `unsupported_file_type`, unsupported extension, currently only document files are accepted
+- 503, `s3_connection_failed`, unable to connect to S3 service
+- 503, `s3_permission_denied`, no permission to upload files to S3
+- 503, `s3_file_too_large`, file exceeds S3 size limit
+- 500, internal server error
 
   </Col>
   <Col sticky>
@@ -695,7 +704,8 @@ Chat applications support session persistence, allowing previous chat history to
 --form 'user=abc-123'`}
   />
 
-  ### Response Example
+### Response Example
+
   <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
     {
@@ -774,6 +784,7 @@ Chat applications support session persistence, allowing previous chat history to
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -829,9 +840,10 @@ Chat applications support session persistence, allowing previous chat history to
       tag="GET"
       label="/files/:file_id/preview?as_attachment=true"
       targetCode={`curl -X GET '${props.appDetail.api_base_url}/files/72fa9618-8f89-4a37-9b33-7e1178a24a67/preview?as_attachment=true' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --output downloaded_file.png`}
-    />
+/>
 
     ### Response Headers Example
     <CodeGroup title="Response Headers">
@@ -851,6 +863,7 @@ Chat applications support session persistence, allowing previous chat history to
     Cache-Control: public, max-age=3600
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -894,6 +907,7 @@ Chat applications support session persistence, allowing previous chat history to
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -925,6 +939,7 @@ Chat applications support session persistence, allowing previous chat history to
     - 404, form not found or does not belong to current app
     - 412, `human_input_form_submitted`, form already submitted
     - 412, `human_input_form_expired`, form expired
+
   </Col>
   <Col sticky>
     <CodeGroup
@@ -958,6 +973,7 @@ Chat applications support session persistence, allowing previous chat history to
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -989,6 +1005,7 @@ Chat applications support session persistence, allowing previous chat history to
     - 404, form not found or does not belong to current app
     - 412, `human_input_form_submitted`, form already submitted
     - 412, `human_input_form_expired`, form expired
+
   </Col>
   <Col sticky>
     <CodeGroup
@@ -1010,6 +1027,7 @@ Chat applications support session persistence, allowing previous chat history to
     {}
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1039,6 +1057,7 @@ Chat applications support session persistence, allowing previous chat history to
     Server-Sent Events stream (`text/event-stream`).
     Typical events include `workflow_paused`, `node_started`, `node_finished`, `human_input_form_filled`, `human_input_form_timeout`, and `workflow_finished`.
     If the workflow has already finished when you call this endpoint, the server returns a single finished event immediately.
+
   </Col>
   <Col sticky>
     <CodeGroup
@@ -1086,6 +1105,7 @@ Chat applications support session persistence, allowing previous chat history to
     data: {"event":"workflow_finished","workflow_run_id":"5d7ef348-e1c1-4f6d-bb9b-62cc2fb2ef3c","task_id":"1784c3dd-20eb-4919-bd5d-a8d800b74ada","data":{"id":"5d7ef348-e1c1-4f6d-bb9b-62cc2fb2ef3c","workflow_id":"e46514f1-c008-41ff-94b0-4f33d4b97d36","status":"succeeded","outputs":{"output":"field 1 filled!"},"error":null,"elapsed_time":0.364935,"total_tokens":0,"total_steps":5,"created_by":{"id":"7932d34c-dcf4-4fba-b770-f2a9de88c0a0","user":"abc-123"},"created_at":1776087877,"finished_at":1776087877,"exceptions_count":0,"files":[]}}
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1124,6 +1144,7 @@ Chat applications support session persistence, allowing previous chat history to
 
     ### Response
     - `result` (string) Always returns "success"
+
   </Col>
   <Col sticky>
 
@@ -1132,14 +1153,15 @@ Chat applications support session persistence, allowing previous chat history to
       tag="POST"
       label="/messages/:message_id/feedbacks"
       targetCode={`curl -X POST '${props.appDetail.api_base_url}/messages/:message_id/feedbacks' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --header 'Content-Type: application/json' \\
 --data-raw '{
-    "rating": "like",
-    "user": "abc-123",
-    "content": "message feedback information"
+"rating": "like",
+"user": "abc-123",
+"content": "message feedback information"
 }'`}
-    />
+/>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -1148,6 +1170,7 @@ Chat applications support session persistence, allowing previous chat history to
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1178,6 +1201,7 @@ Chat applications support session persistence, allowing previous chat history to
 
     ### Response
     - `data` (List) return apps feedback list.
+
   </Col>
   <Col sticky>
 
@@ -1186,9 +1210,10 @@ Chat applications support session persistence, allowing previous chat history to
       tag="GET"
       label="/app/feedbacks"
       targetCode={`curl -X GET '${props.appDetail.api_base_url}/app/feedbacks?page=1&limit=20' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --header 'Content-Type: application/json'`}
-    />
+/>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -1211,6 +1236,7 @@ Chat applications support session persistence, allowing previous chat history to
       }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -1240,6 +1266,7 @@ Chat applications support session persistence, allowing previous chat history to
         Should be uniquely defined by the developer within the application.
       </Property>
     </Properties>
+
   </Col>
   <Col sticky>
 
@@ -1248,9 +1275,10 @@ Chat applications support session persistence, allowing previous chat history to
       tag="GET"
       label="/messages/{message_id}/suggested"
       targetCode={`curl --location --request GET '${props.appDetail.api_base_url}/messages/{message_id}/suggested?user=abc-123' \\
+
 --header 'Authorization: Bearer ENTER-YOUR-SECRET-KEY' \\
 --header 'Content-Type: application/json'`}
-    />
+/>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -1264,6 +1292,7 @@ Chat applications support session persistence, allowing previous chat history to
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1324,8 +1353,9 @@ Chat applications support session persistence, allowing previous chat history to
       tag="GET"
       label="/messages"
       targetCode={`curl -X GET '${props.appDetail.api_base_url}/messages?user=abc-123&conversation_id={conversation_id}'
+
 --header 'Authorization: Bearer {api_key}'`}
-    />
+/>
 
     ### Response Example
     <CodeGroup title="Response">
@@ -1362,6 +1392,7 @@ Chat applications support session persistence, allowing previous chat history to
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1417,8 +1448,9 @@ Chat applications support session persistence, allowing previous chat history to
       tag="GET"
       label="/conversations"
       targetCode={`curl -X GET '${props.appDetail.api_base_url}/conversations?user=abc-123&last_id=&limit=20' \\
+
 --header 'Authorization: Bearer {api_key}'`}
-    />
+/>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -1445,6 +1477,7 @@ Chat applications support session persistence, allowing previous chat history to
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1473,6 +1506,7 @@ Chat applications support session persistence, allowing previous chat history to
 
     ### Response
     - `result` (string) Always returns "success"
+
   </Col>
   <Col sticky>
 
@@ -1481,23 +1515,26 @@ Chat applications support session persistence, allowing previous chat history to
       tag="DELETE"
       label="/conversations/:conversation_id"
       targetCode={`curl -X DELETE '${props.appDetail.api_base_url}/conversations/{conversation_id}' \\
+
 --header 'Content-Type: application/json' \\
 --header 'Accept: application/json' \\
 --header 'Authorization: Bearer {api_key}' \\
 --data '{
-    "user": "abc-123"
+"user": "abc-123"
 }'`}
-    />
+/>
 
     <CodeGroup title="Response">
     ```text {{ title: 'Response' }}
     204 No Content
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
 ---
+
 <Heading
   url='/conversations/:conversation_id/name'
   method='POST'
@@ -1532,6 +1569,7 @@ Chat applications support session persistence, allowing previous chat history to
     - `introduction` (string) Introduction
     - `created_at` (timestamp) Creation timestamp, e.g., 1705395332
     - `updated_at` (timestamp) Update timestamp, e.g., 1705395332
+
   </Col>
   <Col sticky>
 
@@ -1540,14 +1578,15 @@ Chat applications support session persistence, allowing previous chat history to
       tag="POST"
       label="/conversations/:conversation_id/name"
       targetCode={`curl -X POST '${props.appDetail.api_base_url}/conversations/{conversation_id}/name' \\
+
 --header 'Content-Type: application/json' \\
 --header 'Authorization: Bearer {api_key}' \\
 --data-raw '{
-    "name": "",
-    "auto_generate": true,
-    "user": "abc-123"
+"name": "",
+"auto_generate": true,
+"user": "abc-123"
 }'`}
-    />
+/>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -1562,6 +1601,7 @@ Chat applications support session persistence, allowing previous chat history to
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1624,14 +1664,16 @@ Chat applications support session persistence, allowing previous chat history to
       label="/conversations/:conversation_id/variables"
       debug="true"
       targetCode={`curl -X GET '${props.appDetail.api_base_url}/conversations/{conversation_id}/variables?user=abc-123' \\
+
 --header 'Authorization: Bearer {api_key}'`} />
 
     <CodeGroup
       title="Request with variable name filter"
       language="bash"
       targetCode={`curl -X GET '${props.appDetail.api_base_url}/conversations/{conversation_id}/variables?user=abc-123&variable_name=customer_name' \\
+
 --header 'Authorization: Bearer {api_key}'`}
-    />
+/>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -1661,6 +1703,7 @@ Chat applications support session persistence, allowing previous chat history to
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1722,13 +1765,14 @@ Chat applications support session persistence, allowing previous chat history to
       tag="PUT"
       label="/conversations/:conversation_id/variables/:variable_id"
       targetCode={`curl -X PUT '${props.appDetail.api_base_url}/conversations/{conversation_id}/variables/{variable_id}' \\
+
 --header 'Content-Type: application/json' \\
 --header 'Authorization: Bearer {api_key}' \\
 --data-raw '{
-    "value": "Updated Value",
-    "user": "abc-123"
+"value": "Updated Value",
+"user": "abc-123"
 }'`}
-    />
+/>
 
     <CodeGroup
       title="Update with different value types"
@@ -1736,11 +1780,12 @@ Chat applications support session persistence, allowing previous chat history to
         {
           title: 'String',
           code: `curl -X PUT '${props.appDetail.api_base_url}/conversations/{conversation_id}/variables/{variable_id}' \\
+
 --header 'Content-Type: application/json' \\
 --header 'Authorization: Bearer {api_key}' \\
 --data-raw '{
-    "value": "New string value",
-    "user": "abc-123"
+"value": "New string value",
+"user": "abc-123"
 }'`,
         }, {
           title: 'Number',
@@ -1757,12 +1802,12 @@ Chat applications support session persistence, allowing previous chat history to
 --header 'Content-Type: application/json' \\
 --header 'Authorization: Bearer {api_key}' \\
 --data-raw '{
-    "value": {"product": "Widget", "quantity": 10, "price": 29.99},
-    "user": "abc-123"
+"value": {"product": "Widget", "quantity": 10, "price": 29.99},
+"user": "abc-123"
 }'`,
-        },
-      ]}
-    />
+},
+]}
+/>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -1777,6 +1822,7 @@ Chat applications support session persistence, allowing previous chat history to
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1816,9 +1862,10 @@ Chat applications support session persistence, allowing previous chat history to
       tag="POST"
       label="/audio-to-text"
       targetCode={`curl -X POST '${props.appDetail.api_base_url}/audio-to-text' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --form 'file=@localfile;type=audio/[mp3|mp4|mpeg|mpga|m4a|wav|webm]'`}
-    />
+/>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -1827,6 +1874,7 @@ Chat applications support session persistence, allowing previous chat history to
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1855,6 +1903,7 @@ Chat applications support session persistence, allowing previous chat history to
         The user identifier, defined by the developer, must ensure uniqueness within the app.
       </Property>
     </Properties>
+
   </Col>
   <Col sticky>
 
@@ -1863,14 +1912,15 @@ Chat applications support session persistence, allowing previous chat history to
       tag="POST"
       label="/text-to-audio"
       targetCode={`curl -o text-to-audio.mp3 -X POST '${props.appDetail.api_base_url}/text-to-audio' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --header 'Content-Type: application/json' \\
 --data-raw '{
-    "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290",
-    "text": "Hello Dify",
-    "user": "abc-123",
+"message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290",
+"text": "Hello Dify",
+"user": "abc-123",
 }'`}
-    />
+/>
 
     <CodeGroup title="headers">
     ```json {{ title: 'headers' }}
@@ -1879,6 +1929,7 @@ Chat applications support session persistence, allowing previous chat history to
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -1893,13 +1944,15 @@ Chat applications support session persistence, allowing previous chat history to
   <Col>
   Used to get basic information about this application
 
-  ### Response
-  - `name` (string) application name
-  - `description` (string) application description
-  - `tags` (array[string]) application tags
-  - `mode` (string) application mode
-  - `author_name` (string) application author name
-  </Col>
+### Response
+
+- `name` (string) application name
+- `description` (string) application description
+- `tags` (array[string]) application tags
+- `mode` (string) application mode
+- `author_name` (string) application author name
+
+    </Col>
   <Col>
     <CodeGroup
       title="Request"
@@ -1909,21 +1962,22 @@ Chat applications support session persistence, allowing previous chat history to
 -H 'Authorization: Bearer {api_key}'`}
     />
 
-    <CodeGroup title="Response">
-    ```json {{ title: 'Response' }}
-    {
-      "name": "My App",
-      "description": "This is my app.",
-      "tags": [
-        "tag1",
-        "tag2"
-      ],
-      "mode": "advanced-chat",
-      "author_name": "Dify"
-    }
-    ```
-    </CodeGroup>
-  </Col>
+      <CodeGroup title="Response">
+      ```json {{ title: 'Response' }}
+      {
+        "name": "My App",
+        "description": "This is my app.",
+        "tags": [
+          "tag1",
+          "tag2"
+        ],
+        "mode": "advanced-chat",
+        "author_name": "Dify"
+      }
+      ```
+      </CodeGroup>
+
+    </Col>
 </Row>
 
 ---
@@ -2066,6 +2120,7 @@ Chat applications support session persistence, allowing previous chat history to
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -2080,15 +2135,11 @@ Chat applications support session persistence, allowing previous chat history to
   <Col>
   Used to get icons of tools in this application
 
-  ### Response
-  - `tool_icons`(object[string]) tool icons
-    - `tool_name` (string)
-      - `icon` (object|string)
-        - (object) icon object
-          - `background` (string) background color in hex format
-          - `content`(string) emoji
-        - (string) url of icon
-  </Col>
+### Response
+
+- `tool_icons`(object[string]) tool icons - `tool_name` (string) - `icon` (object|string) - (object) icon object - `background` (string) background color in hex format - `content`(string) emoji - (string) url of icon
+
+    </Col>
   <Col>
     <CodeGroup
       title="Request"
@@ -2098,21 +2149,23 @@ Chat applications support session persistence, allowing previous chat history to
 -H 'Authorization: Bearer {api_key}'`}
     />
 
-    <CodeGroup title="Response">
-    ```json {{ title: 'Response' }}
-    {
-      "tool_icons": {
-        "dalle2": "https://cloud.dify.ai/console/api/workspaces/current/tool-provider/builtin/dalle/icon",
-        "api_tool": {
-          "background": "#252525",
-          "content": "\ud83d\ude01"
+      <CodeGroup title="Response">
+      ```json {{ title: 'Response' }}
+      {
+        "tool_icons": {
+          "dalle2": "https://cloud.dify.ai/console/api/workspaces/current/tool-provider/builtin/dalle/icon",
+          "api_tool": {
+            "background": "#252525",
+            "content": "\ud83d\ude01"
+          }
         }
       }
-    }
-    ```
-    </CodeGroup>
-  </Col>
+      ```
+      </CodeGroup>
+
+    </Col>
 </Row>
+
 ---
 
 <Heading
@@ -2169,6 +2222,7 @@ Chat applications support session persistence, allowing previous chat history to
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ___
@@ -2219,6 +2273,7 @@ ___
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -2266,6 +2321,7 @@ ___
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -2316,6 +2372,7 @@ ___
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -2350,6 +2407,7 @@ ___
     204 No Content
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -2403,6 +2461,7 @@ ___
     ```
     </CodeGroup>
     This interface is executed asynchronously, so it will return a job_id. You can get the final execution result by querying the job status interface.
+
   </Col>
 </Row>
 ---
@@ -2443,5 +2502,6 @@ ___
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>

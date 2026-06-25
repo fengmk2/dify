@@ -1,9 +1,11 @@
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 import CornerMark from '../corner-mark'
 
 vi.mock('../../../../base/icons/src/vender/plugin', () => ({
-  LeftCorner: ({ className }: { className: string }) => <svg data-testid="left-corner" className={className} />,
+  LeftCorner: ({ className }: { className: string }) => (
+    <svg data-testid="left-corner" className={className} />
+  ),
 }))
 
 describe('CornerMark', () => {

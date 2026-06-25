@@ -14,8 +14,7 @@ export const useEducationDiscount = () => {
   const canManageBilling = hasPermission(workspacePermissionKeys, BillingPermission.Manage)
 
   const handleEducationDiscount = useCallback(async () => {
-    if (isEducationDiscountLoading)
-      return
+    if (isEducationDiscountLoading) return
 
     if (!canManageBilling) {
       toast.error(t('buyPermissionDeniedTip', { ns: 'billing' }))
@@ -26,8 +25,7 @@ export const useEducationDiscount = () => {
     try {
       const res = await fetchSubscriptionUrls(Plan.professional, 'year')
       window.location.href = res.url
-    }
-    finally {
+    } finally {
       setIsEducationDiscountLoading(false)
     }
   }, [canManageBilling, isEducationDiscountLoading, t])

@@ -30,10 +30,12 @@ vi.mock('@/app/components/billing/pricing', () => ({
 }))
 
 vi.mock('@/app/components/header/account-setting', () => ({
-  default: ({ activeTab, onCancelAction }: { activeTab: string, onCancelAction: () => void }) => (
+  default: ({ activeTab, onCancelAction }: { activeTab: string; onCancelAction: () => void }) => (
     <>
       <div data-testid="account-setting-active-tab">{activeTab}</div>
-      <button type="button" onClick={onCancelAction}>cancel account setting</button>
+      <button type="button" onClick={onCancelAction}>
+        cancel account setting
+      </button>
     </>
   ),
 }))
@@ -81,14 +83,14 @@ const createPlan = (overrides: PlanOverrides = {}): PlanShape => ({
   },
 })
 
-const renderProvider = (children: React.ReactNode = <div data-testid="modal-context-test-child" />) => renderWithNuqs(
-  <ModalContextProvider>
-    {children}
-  </ModalContextProvider>,
-)
+const renderProvider = (
+  children: React.ReactNode = <div data-testid="modal-context-test-child" />,
+) => renderWithNuqs(<ModalContextProvider>{children}</ModalContextProvider>)
 
 const AccountSettingOpener = () => {
-  const setShowAccountSettingModal = useModalContextSelector(state => state.setShowAccountSettingModal)
+  const setShowAccountSettingModal = useModalContextSelector(
+    (state) => state.setShowAccountSettingModal,
+  )
 
   return (
     <button
@@ -101,7 +103,9 @@ const AccountSettingOpener = () => {
 }
 
 const PreferencesOpener = () => {
-  const setShowAccountSettingModal = useModalContextSelector(state => state.setShowAccountSettingModal)
+  const setShowAccountSettingModal = useModalContextSelector(
+    (state) => state.setShowAccountSettingModal,
+  )
 
   return (
     <button
@@ -175,7 +179,9 @@ describe('ModalContextProvider trigger events limit modal', () => {
     await user.click(await screen.findByRole('button', { name: 'cancel account setting' }))
 
     expect(mockSetEducationVerifying).toHaveBeenCalledWith(expect.any(Function))
-    const updater = mockSetEducationVerifying.mock.calls[0]?.[0] as (educationVerifying: string) => string | null
+    const updater = mockSetEducationVerifying.mock.calls[0]?.[0] as (
+      educationVerifying: string,
+    ) => string | null
     expect(updater('yes')).toBeNull()
     expect(updater('no')).toBe('no')
   })
@@ -191,7 +197,9 @@ describe('ModalContextProvider trigger events limit modal', () => {
 
     await user.click(screen.getByRole('button', { name: 'open preferences' }))
 
-    expect(await screen.findByTestId('account-setting-active-tab')).toHaveTextContent(ACCOUNT_SETTING_TAB.PREFERENCES)
+    expect(await screen.findByTestId('account-setting-active-tab')).toHaveTextContent(
+      ACCOUNT_SETTING_TAB.PREFERENCES,
+    )
   })
 
   it('relies on the in-memory guard when localStorage reads throw', async () => {
@@ -265,7 +273,9 @@ describe('ModalContextProvider trigger events limit modal', () => {
 
     await user.click(screen.getByText('billing.triggerLimitModal.upgrade'))
 
-    await waitFor(() => expect(screen.getByText('billing.plansCommon.mostPopular')).toBeInTheDocument())
+    await waitFor(() =>
+      expect(screen.getByText('billing.plansCommon.mostPopular')).toBeInTheDocument(),
+    )
     expect(screen.queryByText('400')).not.toBeInTheDocument()
   })
 })

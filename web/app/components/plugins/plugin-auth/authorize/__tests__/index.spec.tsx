@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import type { PluginPayload } from '../../types'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { AuthCategory } from '../../types'
 import Authorize from '../index'
 
@@ -20,9 +20,7 @@ const createTestQueryClient = () =>
 const createWrapper = () => {
   const testQueryClient = createTestQueryClient()
   return ({ children }: { children: ReactNode }) => (
-    <QueryClientProvider client={testQueryClient}>
-      {children}
-    </QueryClientProvider>
+    <QueryClientProvider client={testQueryClient}>{children}</QueryClientProvider>
   )
 }
 
@@ -94,7 +92,11 @@ const createPluginPayload = (overrides: Partial<PluginPayload> = {}): PluginPayl
 describe('Authorize', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    mockAppContext.workspacePermissionKeys = ['credential.use', 'credential.create', 'credential.manage']
+    mockAppContext.workspacePermissionKeys = [
+      'credential.use',
+      'credential.create',
+      'credential.manage',
+    ]
     mockGetPluginOAuthClientSchema.mockReturnValue({
       schema: [],
       is_oauth_custom_client_enabled: false,
@@ -107,14 +109,9 @@ describe('Authorize', () => {
     it('should render nothing when canOAuth and canApiKey are both false/undefined', () => {
       const pluginPayload = createPluginPayload()
 
-      render(
-        <Authorize
-          pluginPayload={pluginPayload}
-          canOAuth={false}
-          canApiKey={false}
-        />,
-        { wrapper: createWrapper() },
-      )
+      render(<Authorize pluginPayload={pluginPayload} canOAuth={false} canApiKey={false} />, {
+        wrapper: createWrapper(),
+      })
 
       expect(screen.queryByRole('button')).not.toBeInTheDocument()
     })
@@ -122,14 +119,9 @@ describe('Authorize', () => {
     it('should render only OAuth button when canOAuth is true and canApiKey is false', () => {
       const pluginPayload = createPluginPayload()
 
-      render(
-        <Authorize
-          pluginPayload={pluginPayload}
-          canOAuth={true}
-          canApiKey={false}
-        />,
-        { wrapper: createWrapper() },
-      )
+      render(<Authorize pluginPayload={pluginPayload} canOAuth={true} canApiKey={false} />, {
+        wrapper: createWrapper(),
+      })
 
       // OAuth button should exist (either configured or setup button)
       expect(screen.getByRole('button')).toBeInTheDocument()
@@ -138,14 +130,9 @@ describe('Authorize', () => {
     it('should render only API Key button when canApiKey is true and canOAuth is false', () => {
       const pluginPayload = createPluginPayload()
 
-      render(
-        <Authorize
-          pluginPayload={pluginPayload}
-          canOAuth={false}
-          canApiKey={true}
-        />,
-        { wrapper: createWrapper() },
-      )
+      render(<Authorize pluginPayload={pluginPayload} canOAuth={false} canApiKey={true} />, {
+        wrapper: createWrapper(),
+      })
 
       expect(screen.getByRole('button')).toBeInTheDocument()
     })
@@ -153,14 +140,9 @@ describe('Authorize', () => {
     it('should render both OAuth and API Key buttons when both are true', () => {
       const pluginPayload = createPluginPayload()
 
-      render(
-        <Authorize
-          pluginPayload={pluginPayload}
-          canOAuth={true}
-          canApiKey={true}
-        />,
-        { wrapper: createWrapper() },
-      )
+      render(<Authorize pluginPayload={pluginPayload} canOAuth={true} canApiKey={true} />, {
+        wrapper: createWrapper(),
+      })
 
       const buttons = screen.getAllByRole('button')
       expect(buttons.length).toBe(2)
@@ -217,14 +199,9 @@ describe('Authorize', () => {
     it('should render divider by default (showDivider defaults to true)', () => {
       const pluginPayload = createPluginPayload()
 
-      render(
-        <Authorize
-          pluginPayload={pluginPayload}
-          canOAuth={true}
-          canApiKey={true}
-        />,
-        { wrapper: createWrapper() },
-      )
+      render(<Authorize pluginPayload={pluginPayload} canOAuth={true} canApiKey={true} />, {
+        wrapper: createWrapper(),
+      })
 
       expect(screen.getByText('or')).toBeInTheDocument()
     })
@@ -256,13 +233,9 @@ describe('Authorize', () => {
         const pluginPayload = createPluginPayload()
         mockAppContext.workspacePermissionKeys = ['credential.use']
 
-        render(
-          <Authorize
-            pluginPayload={pluginPayload}
-            canOAuth={true}
-          />,
-          { wrapper: createWrapper() },
-        )
+        render(<Authorize pluginPayload={pluginPayload} canOAuth={true} />, {
+          wrapper: createWrapper(),
+        })
 
         expect(screen.getByRole('button')).toBeDisabled()
       })
@@ -271,13 +244,9 @@ describe('Authorize', () => {
         const pluginPayload = createPluginPayload()
         mockAppContext.workspacePermissionKeys = ['credential.use']
 
-        render(
-          <Authorize
-            pluginPayload={pluginPayload}
-            canApiKey={true}
-          />,
-          { wrapper: createWrapper() },
-        )
+        render(<Authorize pluginPayload={pluginPayload} canApiKey={true} />, {
+          wrapper: createWrapper(),
+        })
 
         expect(screen.getByRole('button')).toBeDisabled()
       })
@@ -285,14 +254,9 @@ describe('Authorize', () => {
       it('should not disable buttons when credential.create is present', () => {
         const pluginPayload = createPluginPayload()
 
-        render(
-          <Authorize
-            pluginPayload={pluginPayload}
-            canOAuth={true}
-            canApiKey={true}
-          />,
-          { wrapper: createWrapper() },
-        )
+        render(<Authorize pluginPayload={pluginPayload} canOAuth={true} canApiKey={true} />, {
+          wrapper: createWrapper(),
+        })
 
         const buttons = screen.getAllByRole('button')
         buttons.forEach((button) => {
@@ -346,7 +310,7 @@ describe('Authorize', () => {
         )
 
         const buttons = screen.getAllByRole('button')
-        buttons.forEach(button => expect(button).toBeDisabled())
+        buttons.forEach((button) => expect(button).toBeDisabled())
       })
     })
   })
@@ -358,24 +322,14 @@ describe('Authorize', () => {
 
       // When canApiKey is false, should show "useOAuthAuth"
       const { rerender } = render(
-        <Authorize
-          pluginPayload={pluginPayload}
-          canOAuth={true}
-          canApiKey={false}
-        />,
+        <Authorize pluginPayload={pluginPayload} canOAuth={true} canApiKey={false} />,
         { wrapper: createWrapper() },
       )
 
       expect(screen.getByRole('button')).toHaveTextContent('plugin.auth')
 
       // When canApiKey is true, button text changes
-      rerender(
-        <Authorize
-          pluginPayload={pluginPayload}
-          canOAuth={true}
-          canApiKey={true}
-        />,
-      )
+      rerender(<Authorize pluginPayload={pluginPayload} canOAuth={true} canApiKey={true} />)
 
       const buttons = screen.getAllByRole('button')
       expect(buttons.length).toBe(2)
@@ -418,23 +372,13 @@ describe('Authorize', () => {
       const pluginPayload = createPluginPayload()
 
       const { rerender } = render(
-        <Authorize
-          pluginPayload={pluginPayload}
-          canOAuth={true}
-          canApiKey={false}
-        />,
+        <Authorize pluginPayload={pluginPayload} canOAuth={true} canApiKey={false} />,
         { wrapper: createWrapper() },
       )
 
       expect(screen.getAllByRole('button').length).toBe(1)
 
-      rerender(
-        <Authorize
-          pluginPayload={pluginPayload}
-          canOAuth={true}
-          canApiKey={true}
-        />,
-      )
+      rerender(<Authorize pluginPayload={pluginPayload} canOAuth={true} canApiKey={true} />)
 
       expect(screen.getAllByRole('button').length).toBe(2)
     })
@@ -443,23 +387,13 @@ describe('Authorize', () => {
       const pluginPayload = createPluginPayload()
 
       const { rerender } = render(
-        <Authorize
-          pluginPayload={pluginPayload}
-          canOAuth={false}
-          canApiKey={true}
-        />,
+        <Authorize pluginPayload={pluginPayload} canOAuth={false} canApiKey={true} />,
         { wrapper: createWrapper() },
       )
 
       expect(screen.getAllByRole('button').length).toBe(1)
 
-      rerender(
-        <Authorize
-          pluginPayload={pluginPayload}
-          canOAuth={true}
-          canApiKey={true}
-        />,
-      )
+      rerender(<Authorize pluginPayload={pluginPayload} canOAuth={true} canApiKey={true} />)
 
       expect(screen.getAllByRole('button').length).toBe(2)
     })
@@ -468,23 +402,13 @@ describe('Authorize', () => {
       const pluginPayload = createPluginPayload()
 
       const { rerender } = render(
-        <Authorize
-          pluginPayload={pluginPayload}
-          canApiKey={true}
-          theme="primary"
-        />,
+        <Authorize pluginPayload={pluginPayload} canApiKey={true} theme="primary" />,
         { wrapper: createWrapper() },
       )
 
       const primaryClassName = screen.getByRole('button').className
 
-      rerender(
-        <Authorize
-          pluginPayload={pluginPayload}
-          canApiKey={true}
-          theme="secondary"
-        />,
-      )
+      rerender(<Authorize pluginPayload={pluginPayload} canApiKey={true} theme="secondary" />)
 
       const secondaryClassName = screen.getByRole('button').className
       expect(primaryClassName).not.toBe(secondaryClassName)
@@ -502,29 +426,25 @@ describe('Authorize', () => {
       }
 
       expect(() => {
-        render(
-          <Authorize
-            pluginPayload={pluginPayload}
-            canOAuth={true}
-            canApiKey={true}
-          />,
-          { wrapper: createWrapper() },
-        )
+        render(<Authorize pluginPayload={pluginPayload} canOAuth={true} canApiKey={true} />, {
+          wrapper: createWrapper(),
+        })
       }).not.toThrow()
     })
 
     it('should handle all auth categories', () => {
-      const categories = [AuthCategory.tool, AuthCategory.datasource, AuthCategory.model, AuthCategory.trigger]
+      const categories = [
+        AuthCategory.tool,
+        AuthCategory.datasource,
+        AuthCategory.model,
+        AuthCategory.trigger,
+      ]
 
       categories.forEach((category) => {
         const pluginPayload = createPluginPayload({ category })
 
         const { unmount } = render(
-          <Authorize
-            pluginPayload={pluginPayload}
-            canOAuth={true}
-            canApiKey={true}
-          />,
+          <Authorize pluginPayload={pluginPayload} canOAuth={true} canApiKey={true} />,
           { wrapper: createWrapper() },
         )
 
@@ -538,13 +458,9 @@ describe('Authorize', () => {
       const pluginPayload = createPluginPayload({ provider: '' })
 
       expect(() => {
-        render(
-          <Authorize
-            pluginPayload={pluginPayload}
-            canOAuth={true}
-          />,
-          { wrapper: createWrapper() },
-        )
+        render(<Authorize pluginPayload={pluginPayload} canOAuth={true} />, {
+          wrapper: createWrapper(),
+        })
       }).not.toThrow()
     })
 
@@ -593,11 +509,7 @@ describe('Authorize', () => {
       expect(screen.getByRole('button')).not.toBeDisabled()
 
       rerender(
-        <Authorize
-          pluginPayload={pluginPayload}
-          canOAuth={true}
-          notAllowCustomCredential={true}
-        />,
+        <Authorize pluginPayload={pluginPayload} canOAuth={true} notAllowCustomCredential={true} />,
       )
 
       expect(screen.getByRole('button')).toBeDisabled()
@@ -612,13 +524,9 @@ describe('Authorize', () => {
         category: AuthCategory.model,
       })
 
-      render(
-        <Authorize
-          pluginPayload={pluginPayload}
-          canOAuth={true}
-        />,
-        { wrapper: createWrapper() },
-      )
+      render(<Authorize pluginPayload={pluginPayload} canOAuth={true} />, {
+        wrapper: createWrapper(),
+      })
 
       expect(screen.getByRole('button')).toBeInTheDocument()
     })
@@ -629,13 +537,9 @@ describe('Authorize', () => {
         category: AuthCategory.datasource,
       })
 
-      render(
-        <Authorize
-          pluginPayload={pluginPayload}
-          canApiKey={true}
-        />,
-        { wrapper: createWrapper() },
-      )
+      render(<Authorize pluginPayload={pluginPayload} canApiKey={true} />, {
+        wrapper: createWrapper(),
+      })
 
       expect(screen.getByRole('button')).toBeInTheDocument()
     })
@@ -649,14 +553,9 @@ describe('Authorize', () => {
       })
 
       expect(() => {
-        render(
-          <Authorize
-            pluginPayload={pluginPayload}
-            canOAuth={true}
-            canApiKey={true}
-          />,
-          { wrapper: createWrapper() },
-        )
+        render(<Authorize pluginPayload={pluginPayload} canOAuth={true} canApiKey={true} />, {
+          wrapper: createWrapper(),
+        })
       }).not.toThrow()
     })
   })
@@ -727,14 +626,9 @@ describe('Authorize', () => {
     it('should have accessible button elements', () => {
       const pluginPayload = createPluginPayload()
 
-      render(
-        <Authorize
-          pluginPayload={pluginPayload}
-          canOAuth={true}
-          canApiKey={true}
-        />,
-        { wrapper: createWrapper() },
-      )
+      render(<Authorize pluginPayload={pluginPayload} canOAuth={true} canApiKey={true} />, {
+        wrapper: createWrapper(),
+      })
 
       const buttons = screen.getAllByRole('button')
       expect(buttons.length).toBe(2)
@@ -744,14 +638,9 @@ describe('Authorize', () => {
       const pluginPayload = createPluginPayload()
       mockAppContext.workspacePermissionKeys = ['credential.use']
 
-      render(
-        <Authorize
-          pluginPayload={pluginPayload}
-          canOAuth={true}
-          canApiKey={true}
-        />,
-        { wrapper: createWrapper() },
-      )
+      render(<Authorize pluginPayload={pluginPayload} canOAuth={true} canApiKey={true} />, {
+        wrapper: createWrapper(),
+      })
 
       const buttons = screen.getAllByRole('button')
       buttons.forEach((button) => {

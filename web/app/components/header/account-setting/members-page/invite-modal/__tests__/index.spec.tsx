@@ -3,7 +3,7 @@ import { toast } from '@langgenius/dify-ui/toast'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { vi } from 'vitest'
+import { vi } from 'vite-plus/test'
 import { useProviderContextSelector } from '@/context/provider-context'
 import { useWorkspaceRoleList } from '@/service/access-control/use-workspace-roles'
 import { inviteMember } from '@/service/common'
@@ -31,15 +31,29 @@ vi.mock('@/context/i18n', () => ({
   useLocale: () => 'en-US',
 }))
 vi.mock('react-multi-email', () => ({
-  ReactMultiEmail: ({ emails, onChange, getLabel }: { emails: string[], onChange: (emails: string[]) => void, getLabel: (email: string, index: number, removeEmail: (index: number) => void) => React.ReactNode }) => (
+  ReactMultiEmail: ({
+    emails,
+    onChange,
+    getLabel,
+  }: {
+    emails: string[]
+    onChange: (emails: string[]) => void
+    getLabel: (
+      email: string,
+      index: number,
+      removeEmail: (index: number) => void,
+    ) => React.ReactNode
+  }) => (
     <div>
       <input
         data-testid="mock-email-input"
-        onChange={e => onChange(e.target.value ? e.target.value.split(',') : [])}
+        onChange={(e) => onChange(e.target.value ? e.target.value.split(',') : [])}
       />
       {emails.map((email: string, index: number) => (
         <div key={email}>
-          {getLabel(email, index, (idx: number) => onChange(emails.filter((_: string, i: number) => i !== idx)))}
+          {getLabel(email, index, (idx: number) =>
+            onChange(emails.filter((_: string, i: number) => i !== idx)),
+          )}
         </div>
       ))}
     </div>
@@ -51,55 +65,58 @@ describe('InviteModal', () => {
   const mockOnSend = vi.fn()
   const mockRefreshLicenseLimit = vi.fn()
 
-  const createQueryClient = () => new QueryClient({
-    defaultOptions: {
-      queries: {
-        retry: false,
-        staleTime: Infinity,
+  const createQueryClient = () =>
+    new QueryClient({
+      defaultOptions: {
+        queries: {
+          retry: false,
+          staleTime: Infinity,
+        },
+        mutations: {
+          retry: false,
+        },
       },
-      mutations: {
-        retry: false,
-      },
-    },
-  })
+    })
 
   beforeEach(() => {
     vi.clearAllMocks()
 
     vi.mocked(useWorkspaceRoleList).mockReturnValue({
       data: {
-        pages: [{
-          data: [
-            {
-              id: 'admin',
-              tenant_id: 'tenant-id',
-              type: 'workspace',
-              category: 'global_system_default',
-              name: 'Admin',
-              description: 'Can manage workspace settings',
-              is_builtin: true,
-              permission_keys: [],
-              role_tag: '',
+        pages: [
+          {
+            data: [
+              {
+                id: 'admin',
+                tenant_id: 'tenant-id',
+                type: 'workspace',
+                category: 'global_system_default',
+                name: 'Admin',
+                description: 'Can manage workspace settings',
+                is_builtin: true,
+                permission_keys: [],
+                role_tag: '',
+              },
+              {
+                id: 'normal',
+                tenant_id: 'tenant-id',
+                type: 'workspace',
+                category: 'global_system_default',
+                name: 'Normal',
+                description: 'Can use apps',
+                is_builtin: true,
+                permission_keys: [],
+                role_tag: '',
+              },
+            ],
+            pagination: {
+              total_count: 2,
+              per_page: 20,
+              current_page: 1,
+              total_pages: 1,
             },
-            {
-              id: 'normal',
-              tenant_id: 'tenant-id',
-              type: 'workspace',
-              category: 'global_system_default',
-              name: 'Normal',
-              description: 'Can use apps',
-              is_builtin: true,
-              permission_keys: [],
-              role_tag: '',
-            },
-          ],
-          pagination: {
-            total_count: 2,
-            per_page: 20,
-            current_page: 1,
-            total_pages: 1,
           },
-        }],
+        ],
         pageParams: [1],
       },
       isLoading: false,
@@ -109,10 +126,12 @@ describe('InviteModal', () => {
       fetchNextPage: vi.fn(),
     } as unknown as ReturnType<typeof useWorkspaceRoleList>)
 
-    vi.mocked(useProviderContextSelector).mockImplementation(selector => selector({
-      licenseLimit: { workspace_members: { size: 5, limit: 10 } },
-      refreshLicenseLimit: mockRefreshLicenseLimit,
-    } as unknown as Parameters<typeof selector>[0]))
+    vi.mocked(useProviderContextSelector).mockImplementation((selector) =>
+      selector({
+        licenseLimit: { workspace_members: { size: 5, limit: 10 } },
+        refreshLicenseLimit: mockRefreshLicenseLimit,
+      } as unknown as Parameters<typeof selector>[0]),
+    )
   })
 
   const renderModal = (isEmailSetup = true, queryClient = createQueryClient()) => ({
@@ -241,10 +260,12 @@ describe('InviteModal', () => {
   })
 
   it('should keep send button disabled when license limit is exceeded', async () => {
-    vi.mocked(useProviderContextSelector).mockImplementation(selector => selector({
-      licenseLimit: { workspace_members: { size: 10, limit: 10 } },
-      refreshLicenseLimit: mockRefreshLicenseLimit,
-    } as unknown as Parameters<typeof selector>[0]))
+    vi.mocked(useProviderContextSelector).mockImplementation((selector) =>
+      selector({
+        licenseLimit: { workspace_members: { size: 10, limit: 10 } },
+        refreshLicenseLimit: mockRefreshLicenseLimit,
+      } as unknown as Parameters<typeof selector>[0]),
+    )
 
     renderModal()
 
@@ -290,10 +311,12 @@ describe('InviteModal', () => {
   })
 
   it('should show unlimited label when workspace member limit is zero', async () => {
-    vi.mocked(useProviderContextSelector).mockImplementation(selector => selector({
-      licenseLimit: { workspace_members: { size: 5, limit: 0 } },
-      refreshLicenseLimit: mockRefreshLicenseLimit,
-    } as unknown as Parameters<typeof selector>[0]))
+    vi.mocked(useProviderContextSelector).mockImplementation((selector) =>
+      selector({
+        licenseLimit: { workspace_members: { size: 5, limit: 0 } },
+        refreshLicenseLimit: mockRefreshLicenseLimit,
+      } as unknown as Parameters<typeof selector>[0]),
+    )
 
     renderModal()
 
@@ -301,10 +324,12 @@ describe('InviteModal', () => {
   })
 
   it('should initialize usedSize to zero when workspace_members.size is null', async () => {
-    vi.mocked(useProviderContextSelector).mockImplementation(selector => selector({
-      licenseLimit: { workspace_members: { size: null, limit: 10 } },
-      refreshLicenseLimit: mockRefreshLicenseLimit,
-    } as unknown as Parameters<typeof selector>[0]))
+    vi.mocked(useProviderContextSelector).mockImplementation((selector) =>
+      selector({
+        licenseLimit: { workspace_members: { size: null, limit: 10 } },
+        refreshLicenseLimit: mockRefreshLicenseLimit,
+      } as unknown as Parameters<typeof selector>[0]),
+    )
 
     renderModal()
 
@@ -333,10 +358,12 @@ describe('InviteModal', () => {
   })
 
   it('should show destructive text color when used size exceeds limit', async () => {
-    vi.mocked(useProviderContextSelector).mockImplementation(selector => selector({
-      licenseLimit: { workspace_members: { size: 10, limit: 10 } },
-      refreshLicenseLimit: mockRefreshLicenseLimit,
-    } as unknown as Parameters<typeof selector>[0]))
+    vi.mocked(useProviderContextSelector).mockImplementation((selector) =>
+      selector({
+        licenseLimit: { workspace_members: { size: 10, limit: 10 } },
+        refreshLicenseLimit: mockRefreshLicenseLimit,
+      } as unknown as Parameters<typeof selector>[0]),
+    )
 
     renderModal()
 
@@ -381,10 +408,12 @@ describe('InviteModal', () => {
 
   it('should show destructive color and disable send button when limit is exactly met with one email', async () => {
     // size=10, limit=10 - adding 1 email makes usedSize=11 > limit=10
-    vi.mocked(useProviderContextSelector).mockImplementation(selector => selector({
-      licenseLimit: { workspace_members: { size: 10, limit: 10 } },
-      refreshLicenseLimit: mockRefreshLicenseLimit,
-    } as unknown as Parameters<typeof selector>[0]))
+    vi.mocked(useProviderContextSelector).mockImplementation((selector) =>
+      selector({
+        licenseLimit: { workspace_members: { size: 10, limit: 10 } },
+        refreshLicenseLimit: mockRefreshLicenseLimit,
+      } as unknown as Parameters<typeof selector>[0]),
+    )
 
     renderModal()
 
@@ -428,10 +457,12 @@ describe('InviteModal', () => {
 
   it('should not show error text color when isLimited is false even with many emails', async () => {
     // size=0, limit=0 → isLimited=false, usedSize=emails.length
-    vi.mocked(useProviderContextSelector).mockImplementation(selector => selector({
-      licenseLimit: { workspace_members: { size: 0, limit: 0 } },
-      refreshLicenseLimit: mockRefreshLicenseLimit,
-    } as unknown as Parameters<typeof selector>[0]))
+    vi.mocked(useProviderContextSelector).mockImplementation((selector) =>
+      selector({
+        licenseLimit: { workspace_members: { size: 0, limit: 0 } },
+        refreshLicenseLimit: mockRefreshLicenseLimit,
+      } as unknown as Parameters<typeof selector>[0]),
+    )
 
     renderModal()
 

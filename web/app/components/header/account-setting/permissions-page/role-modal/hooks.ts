@@ -7,13 +7,13 @@ export const useWorkspacePermissionGroups = () => {
   const { data: workspacePermissionCatalog } = useWorkspacePermissionCatalog()
 
   const groups = useMemo(() => {
-    return (workspacePermissionCatalog?.groups || []).map(group => ({
+    return (workspacePermissionCatalog?.groups || []).map((group) => ({
       ...group,
       group_name: t(`group.${group.group_key}`, {
         ns: 'permission',
         defaultValue: group.group_name,
       }),
-      permissions: group.permissions.map(permission => ({
+      permissions: group.permissions.map((permission) => ({
         ...permission,
         name: t(permission.key, {
           ns: 'permissionKeys',
@@ -23,11 +23,9 @@ export const useWorkspacePermissionGroups = () => {
     }))
   }, [t, workspacePermissionCatalog?.groups])
 
-  const allPermissions = groups.flatMap(g => g.permissions) || []
+  const allPermissions = groups.flatMap((g) => g.permissions) || []
 
-  const permissionMap = Object.fromEntries(
-    allPermissions.map(p => [p.key, p]),
-  )
+  const permissionMap = Object.fromEntries(allPermissions.map((p) => [p.key, p]))
 
   return {
     groups,

@@ -55,15 +55,12 @@ function KnowledgeRetrievalDialogIcon() {
   )
 }
 
-function DialogFormLabel({
-  children,
-  id,
-}: {
-  children: ReactNode
-  id?: string
-}) {
+function DialogFormLabel({ children, id }: { children: ReactNode; id?: string }) {
   return (
-    <div id={id} className="flex min-h-6 items-center system-sm-semibold-uppercase text-text-secondary">
+    <div
+      id={id}
+      className="flex min-h-6 items-center system-sm-semibold-uppercase text-text-secondary"
+    >
       {children}
     </div>
   )
@@ -146,17 +143,21 @@ const createDatasetFromRef = (dataset: AgentKnowledgeDatasetConfig, index: numbe
   }
 }
 
-const getSelectedDatasets = (item?: AgentKnowledgeRetrievalItem) => (
+const getSelectedDatasets = (item?: AgentKnowledgeRetrievalItem) =>
   item?.selectedDatasets ?? item?.datasetRefs?.map(createDatasetFromRef) ?? []
-)
 
-const createMetadataCondition = ({ id, name, type }: MetadataInDoc): MetadataFilteringCondition => ({
+const createMetadataCondition = ({
+  id,
+  name,
+  type,
+}: MetadataInDoc): MetadataFilteringCondition => ({
   id: globalThis.crypto?.randomUUID?.() ?? `${Date.now()}`,
   metadata_id: id,
   name,
-  comparison_operator: type === MetadataFilteringVariableType.number
-    ? ComparisonOperator.equal
-    : ComparisonOperator.is,
+  comparison_operator:
+    type === MetadataFilteringVariableType.number
+      ? ComparisonOperator.equal
+      : ComparisonOperator.is,
 })
 
 export function AgentKnowledgeRetrievalDialog({
@@ -174,25 +175,38 @@ export function AgentKnowledgeRetrievalDialog({
 }) {
   const { t } = useTranslation('agentV2')
   const docLink = useDocLink()
-  const [name, setName] = useState(() => item?.name ?? initialName ?? t('agentDetail.configure.knowledgeRetrieval.retrievalOne'))
+  const [name, setName] = useState(
+    () => item?.name ?? initialName ?? t('agentDetail.configure.knowledgeRetrieval.retrievalOne'),
+  )
   const [isEditingName, setIsEditingName] = useState(false)
   const nameInputRef = useRef<HTMLInputElement>(null)
-  const [queryMode, setQueryMode] = useState<KnowledgeRetrievalQueryMode>(item?.queryMode ?? 'agent')
+  const [queryMode, setQueryMode] = useState<KnowledgeRetrievalQueryMode>(
+    item?.queryMode ?? 'agent',
+  )
   const [customQuery, setCustomQuery] = useState(item?.customQuery ?? '')
-  const [selectedDatasets, setSelectedDatasets] = useState<DataSet[]>(() => getSelectedDatasets(item))
+  const [selectedDatasets, setSelectedDatasets] = useState<DataSet[]>(() =>
+    getSelectedDatasets(item),
+  )
   const [retrievalMode, setRetrievalMode] = useState(item?.retrievalMode ?? RETRIEVE_TYPE.multiWay)
-  const [multipleRetrievalConfig, setMultipleRetrievalConfig] = useState(item?.multipleRetrievalConfig ?? createDefaultRetrievalConfig)
+  const [multipleRetrievalConfig, setMultipleRetrievalConfig] = useState(
+    item?.multipleRetrievalConfig ?? createDefaultRetrievalConfig,
+  )
   const [rerankModelOpen, setRerankModelOpen] = useState(false)
-  const [metadataFilterMode, setMetadataFilterMode] = useState<MetadataFilteringModeEnum>(item?.metadataFilterMode ?? WorkflowMetadataFilteringModeEnum.disabled)
-  const [metadataFilteringConditions, setMetadataFilteringConditions] = useState(item?.metadataFilteringConditions ?? {
-    logical_operator: LogicalOperator.and,
-    conditions: [] as MetadataFilteringCondition[],
-  })
-  const [metadataModelConfig, setMetadataModelConfig] = useState<ModelConfig | undefined>(item?.metadataModelConfig)
+  const [metadataFilterMode, setMetadataFilterMode] = useState<MetadataFilteringModeEnum>(
+    item?.metadataFilterMode ?? WorkflowMetadataFilteringModeEnum.disabled,
+  )
+  const [metadataFilteringConditions, setMetadataFilteringConditions] = useState(
+    item?.metadataFilteringConditions ?? {
+      logical_operator: LogicalOperator.and,
+      conditions: [] as MetadataFilteringCondition[],
+    },
+  )
+  const [metadataModelConfig, setMetadataModelConfig] = useState<ModelConfig | undefined>(
+    item?.metadataModelConfig,
+  )
   const queryModeLabelId = 'agent-knowledge-retrieval-query-mode-label'
   const updateItem = (patch: Partial<AgentKnowledgeRetrievalItem>) => {
-    if (!item)
-      return
+    if (!item) return
 
     onItemChange?.({
       ...item,
@@ -209,17 +223,15 @@ export function AgentKnowledgeRetrievalDialog({
     })
   }
   const metadataList = useMemo(() => {
-    const datasetsWithMetadata = selectedDatasets.filter(dataset => !!dataset.doc_metadata)
+    const datasetsWithMetadata = selectedDatasets.filter((dataset) => !!dataset.doc_metadata)
 
-    if (datasetsWithMetadata.length === 0)
-      return []
+    if (datasetsWithMetadata.length === 0) return []
 
-    return intersectionBy(...datasetsWithMetadata.map(dataset => dataset.doc_metadata!), 'name')
+    return intersectionBy(...datasetsWithMetadata.map((dataset) => dataset.doc_metadata!), 'name')
   }, [selectedDatasets])
 
   useEffect(() => {
-    if (!isEditingName)
-      return
+    if (!isEditingName) return
 
     nameInputRef.current?.focus()
     nameInputRef.current?.select()
@@ -233,36 +245,31 @@ export function AgentKnowledgeRetrievalDialog({
         </DialogTitle>
         <div className="flex items-center gap-2 px-4 pt-3">
           <KnowledgeRetrievalDialogIcon />
-          {isEditingName
-            ? (
-                <Input
-                  ref={nameInputRef}
-                  aria-label={t('agentDetail.configure.knowledgeRetrieval.dialog.nameLabel')}
-                  className="h-7 min-w-0 flex-1 rounded-md px-1 py-0 system-xl-semibold text-text-primary"
-                  value={name}
-                  onBlur={() => setIsEditingName(false)}
-                  onChange={(event) => {
-                    const nextName = event.currentTarget.value
-                    setName(nextName)
-                    updateItem({ name: nextName })
-                  }}
-                  onKeyDown={(event) => {
-                    if (event.key === 'Enter')
-                      setIsEditingName(false)
-                  }}
-                />
-              )
-            : (
-                <button
-                  type="button"
-                  className="flex h-7 min-w-0 flex-1 items-center rounded-md px-1 py-0 text-left system-xl-semibold text-text-primary hover:bg-components-input-bg-hover focus-visible:border focus-visible:border-components-input-border-active focus-visible:bg-components-input-bg-active focus-visible:shadow-xs focus-visible:ring-2 focus-visible:ring-state-accent-solid focus-visible:outline-hidden"
-                  onClick={() => setIsEditingName(true)}
-                >
-                  <span className="min-w-0 truncate">
-                    {name}
-                  </span>
-                </button>
-              )}
+          {isEditingName ? (
+            <Input
+              ref={nameInputRef}
+              aria-label={t('agentDetail.configure.knowledgeRetrieval.dialog.nameLabel')}
+              className="h-7 min-w-0 flex-1 rounded-md px-1 py-0 system-xl-semibold text-text-primary"
+              value={name}
+              onBlur={() => setIsEditingName(false)}
+              onChange={(event) => {
+                const nextName = event.currentTarget.value
+                setName(nextName)
+                updateItem({ name: nextName })
+              }}
+              onKeyDown={(event) => {
+                if (event.key === 'Enter') setIsEditingName(false)
+              }}
+            />
+          ) : (
+            <button
+              type="button"
+              className="flex h-7 min-w-0 flex-1 items-center rounded-md px-1 py-0 text-left system-xl-semibold text-text-primary hover:bg-components-input-bg-hover focus-visible:border focus-visible:border-components-input-border-active focus-visible:bg-components-input-bg-active focus-visible:shadow-xs focus-visible:ring-2 focus-visible:ring-state-accent-solid focus-visible:outline-hidden"
+              onClick={() => setIsEditingName(true)}
+            >
+              <span className="min-w-0 truncate">{name}</span>
+            </button>
+          )}
           <DialogCloseButton className="static size-7 shrink-0 rounded-md" />
         </div>
 
@@ -282,7 +289,7 @@ export function AgentKnowledgeRetrievalDialog({
                 }
               }}
             >
-              {queryModeOptions.map(mode => (
+              {queryModeOptions.map((mode) => (
                 <RadioRoot
                   key={mode}
                   value={mode}
@@ -296,38 +303,40 @@ export function AgentKnowledgeRetrievalDialog({
                 </RadioRoot>
               ))}
             </RadioGroup>
-            {queryMode === 'custom'
-              ? (
-                  <>
-                    <div className="pt-1">
-                      <Textarea
-                        aria-label={t('agentDetail.configure.knowledgeRetrieval.dialog.query.customInputLabel')}
-                        className="h-20 resize-none rounded-lg px-3 py-2 system-sm-regular"
-                        placeholder={t('agentDetail.configure.knowledgeRetrieval.dialog.query.customPlaceholder')}
-                        value={customQuery}
-                        onValueChange={(nextQuery) => {
-                          setCustomQuery(nextQuery)
-                          updateItem({ customQuery: nextQuery })
-                        }}
-                      />
-                    </div>
-                    <p className="system-xs-regular text-text-tertiary">
-                      {t('agentDetail.configure.knowledgeRetrieval.dialog.query.customDescription')}
-                    </p>
-                  </>
-                )
-              : (
-                  <p className="pt-1 system-xs-regular text-text-tertiary">
-                    {t('agentDetail.configure.knowledgeRetrieval.dialog.query.agentDescription')}
-                  </p>
-                )}
+            {queryMode === 'custom' ? (
+              <>
+                <div className="pt-1">
+                  <Textarea
+                    aria-label={t(
+                      'agentDetail.configure.knowledgeRetrieval.dialog.query.customInputLabel',
+                    )}
+                    className="h-20 resize-none rounded-lg px-3 py-2 system-sm-regular"
+                    placeholder={t(
+                      'agentDetail.configure.knowledgeRetrieval.dialog.query.customPlaceholder',
+                    )}
+                    value={customQuery}
+                    onValueChange={(nextQuery) => {
+                      setCustomQuery(nextQuery)
+                      updateItem({ customQuery: nextQuery })
+                    }}
+                  />
+                </div>
+                <p className="system-xs-regular text-text-tertiary">
+                  {t('agentDetail.configure.knowledgeRetrieval.dialog.query.customDescription')}
+                </p>
+              </>
+            ) : (
+              <p className="pt-1 system-xs-regular text-text-tertiary">
+                {t('agentDetail.configure.knowledgeRetrieval.dialog.query.agentDescription')}
+              </p>
+            )}
           </div>
 
           <div className="px-4 py-2">
             <Field
               title={t('agentDetail.configure.knowledgeRetrieval.dialog.knowledge.label')}
               required
-              operations={(
+              operations={
                 <div className="flex items-center space-x-1">
                   <RetrievalConfig
                     payload={{
@@ -350,7 +359,7 @@ export function AgentKnowledgeRetrievalDialog({
                   />
                   <div className="h-3 w-px bg-divider-regular" />
                   <AddKnowledge
-                    selectedIds={selectedDatasets.map(dataset => dataset.id)}
+                    selectedIds={selectedDatasets.map((dataset) => dataset.id)}
                     modal
                     onChange={(nextDatasets) => {
                       setSelectedDatasets(nextDatasets)
@@ -358,7 +367,7 @@ export function AgentKnowledgeRetrievalDialog({
                     }}
                   />
                 </div>
-              )}
+              }
             >
               <DatasetList
                 list={selectedDatasets}
@@ -395,7 +404,9 @@ export function AgentKnowledgeRetrievalDialog({
                 setMetadataFilteringConditions((current) => {
                   const nextConditions = {
                     ...current,
-                    conditions: current.conditions.filter(condition => condition.id !== conditionId),
+                    conditions: current.conditions.filter(
+                      (condition) => condition.id !== conditionId,
+                    ),
                   }
                   updateItem({ metadataFilteringConditions: nextConditions })
                   return nextConditions
@@ -405,9 +416,10 @@ export function AgentKnowledgeRetrievalDialog({
                 setMetadataFilteringConditions((current) => {
                   const nextConditions = {
                     ...current,
-                    logical_operator: current.logical_operator === LogicalOperator.and
-                      ? LogicalOperator.or
-                      : LogicalOperator.and,
+                    logical_operator:
+                      current.logical_operator === LogicalOperator.and
+                        ? LogicalOperator.or
+                        : LogicalOperator.and,
                   }
                   updateItem({ metadataFilteringConditions: nextConditions })
                   return nextConditions
@@ -417,7 +429,9 @@ export function AgentKnowledgeRetrievalDialog({
                 setMetadataFilteringConditions((current) => {
                   const nextConditions = {
                     ...current,
-                    conditions: current.conditions.map(condition => condition.id === conditionId ? nextCondition : condition),
+                    conditions: current.conditions.map((condition) =>
+                      condition.id === conditionId ? nextCondition : condition,
+                    ),
                   }
                   updateItem({ metadataFilteringConditions: nextConditions })
                   return nextConditions

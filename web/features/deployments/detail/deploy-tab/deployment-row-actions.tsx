@@ -9,19 +9,28 @@ import { useTranslation } from 'react-i18next'
 import { consoleQuery } from '@/service/client'
 import { openDeployDrawerAtom } from '../../deploy-drawer/state'
 import { createDeploymentIdempotencyKey } from '../../shared/domain/idempotency'
-import { isRuntimeDeploymentInProgress, isUndeployedDeploymentRow } from '../../shared/domain/runtime-status'
+import {
+  isRuntimeDeploymentInProgress,
+  isUndeployedDeploymentRow,
+} from '../../shared/domain/runtime-status'
 import { DeploymentErrorDialog } from './deployment-error-dialog'
 import { DeploymentActionsDropdown } from './deployment-row-actions-menu'
 import { UndeployDeploymentDialog } from './undeploy-deployment-dialog'
 
-export function DeploymentRowActions({ appInstanceId, envId, row }: {
+export function DeploymentRowActions({
+  appInstanceId,
+  envId,
+  row,
+}: {
   appInstanceId: string
   envId: string
   row: EnvironmentDeployment
 }) {
   const { t } = useTranslation('deployments')
   const openDeployDrawer = useSetAtom(openDeployDrawerAtom)
-  const undeployDeployment = useMutation(consoleQuery.enterprise.deploymentService.undeploy.mutationOptions())
+  const undeployDeployment = useMutation(
+    consoleQuery.enterprise.deploymentService.undeploy.mutationOptions(),
+  )
   const [showUndeployConfirm, setShowUndeployConfirm] = useState(false)
   const [showErrorDetail, setShowErrorDetail] = useState(false)
   const isUndeployed = isUndeployedDeploymentRow(row)
@@ -41,8 +50,7 @@ export function DeploymentRowActions({ appInstanceId, envId, row }: {
   }
 
   function handleUndeploy() {
-    if (isUndeployRequesting)
-      return
+    if (isUndeployRequesting) return
 
     undeployDeployment.mutate(
       {
@@ -65,8 +73,8 @@ export function DeploymentRowActions({ appInstanceId, envId, row }: {
     <div
       role="presentation"
       className="flex shrink-0 items-center"
-      onClick={e => e.stopPropagation()}
-      onKeyDown={e => e.stopPropagation()}
+      onClick={(e) => e.stopPropagation()}
+      onKeyDown={(e) => e.stopPropagation()}
     >
       <DeploymentActionsDropdown
         currentReleaseId={currentReleaseId}
@@ -82,11 +90,7 @@ export function DeploymentRowActions({ appInstanceId, envId, row }: {
       />
 
       {isDeployFailed && (
-        <DeploymentErrorDialog
-          open={showErrorDetail}
-          row={row}
-          onOpenChange={setShowErrorDetail}
-        />
+        <DeploymentErrorDialog open={showErrorDetail} row={row} onOpenChange={setShowErrorDetail} />
       )}
 
       {!isUndeployed && !isDeploymentInProgress && (

@@ -1,4 +1,7 @@
-import type { CustomModel, ModelProvider } from '@/app/components/header/account-setting/model-provider-page/declarations'
+import type {
+  CustomModel,
+  ModelProvider,
+} from '@/app/components/header/account-setting/model-provider-page/declarations'
 import { fireEvent, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ModelTypeEnum } from '@/app/components/header/account-setting/model-provider-page/declarations'
@@ -9,9 +12,10 @@ const mockWorkspacePermissionKeys = vi.hoisted(() => ({
 }))
 
 vi.mock('@/context/app-context', () => ({
-  useSelector: (selector: (state: { workspacePermissionKeys: string[] }) => unknown) => selector({
-    workspacePermissionKeys: mockWorkspacePermissionKeys.value,
-  }),
+  useSelector: (selector: (state: { workspacePermissionKeys: string[] }) => unknown) =>
+    selector({
+      workspacePermissionKeys: mockWorkspacePermissionKeys.value,
+    }),
 }))
 
 // Mock components
@@ -195,7 +199,11 @@ describe('SwitchCredentialInLoadBalancing', () => {
 
   // not_allowed_to_use=true: indicator is red and destructive button text is shown
   it('should show red indicator and unavailable button text when credential has not_allowed_to_use=true', () => {
-    const unavailableCredential = { credential_id: 'cred-1', credential_name: 'Key 1', not_allowed_to_use: true }
+    const unavailableCredential = {
+      credential_id: 'cred-1',
+      credential_name: 'Key 1',
+      not_allowed_to_use: true,
+    }
 
     render(
       <SwitchCredentialInLoadBalancing
@@ -213,7 +221,11 @@ describe('SwitchCredentialInLoadBalancing', () => {
 
   // from_enterprise=true on the selected credential: Enterprise badge appears in the trigger
   it('should show Enterprise badge when selected credential has from_enterprise=true', () => {
-    const enterpriseCredential = { credential_id: 'cred-1', credential_name: 'Enterprise Key', from_enterprise: true }
+    const enterpriseCredential = {
+      credential_id: 'cred-1',
+      credential_name: 'Enterprise Key',
+      from_enterprise: true,
+    }
 
     render(
       <SwitchCredentialInLoadBalancing

@@ -1,5 +1,5 @@
 import { act, cleanup, fireEvent, render, screen } from '@testing-library/react'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vite-plus/test'
 import ApiAccess from '../index'
 
 // Mock context and hooks for Card component
@@ -130,7 +130,10 @@ describe('ApiAccess', () => {
       const { container } = render(<ApiAccess expand={true} apiEnabled={true} />)
 
       expect(container.firstChild).toHaveClass('px-1', 'py-2')
-      expect(screen.getByText('common.appMenus.apiAccess')).toHaveClass('system-sm-regular', 'truncate')
+      expect(screen.getByText('common.appMenus.apiAccess')).toHaveClass(
+        'system-sm-regular',
+        'truncate',
+      )
     })
   })
 })

@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 import { setPostLoginRedirect } from '@/app/signin/utils/post-login-redirect'
 import Chooser from '../chooser'
 
@@ -50,8 +50,6 @@ describe('Chooser', () => {
     })
     render(<Chooser userCode="ABCD-3456" ssoAvailable={true} />)
     fireEvent.click(screen.getByRole('button', { name: /Sign in with SSO/i }))
-    expect(window.location.href).toBe(
-      '/openapi/v1/oauth/device/sso-initiate?user_code=ABCD-3456',
-    )
+    expect(window.location.href).toBe('/openapi/v1/oauth/device/sso-initiate?user_code=ABCD-3456')
   })
 })

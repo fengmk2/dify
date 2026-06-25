@@ -1,4 +1,4 @@
-import type { Mock } from 'vitest'
+import type { Mock } from 'vite-plus/test'
 import { TooltipProvider } from '@langgenius/dify-ui/tooltip'
 import { render, screen } from '@testing-library/react'
 import { createMockPlan } from '@/__mocks__/provider-context'
@@ -100,7 +100,9 @@ describe('PriorityLabel', () => {
       renderPriorityLabel()
 
       expect(screen.getByText('billing.plansCommon.priority.standard')).toBeInTheDocument()
-      expect(screen.queryByText('billing.plansCommon.documentProcessingPriority')).not.toBeInTheDocument()
+      expect(
+        screen.queryByText('billing.plansCommon.documentProcessingPriority'),
+      ).not.toBeInTheDocument()
     })
 
     it('should render a top priority trigger without mounting upgrade tip by default', () => {
@@ -109,7 +111,9 @@ describe('PriorityLabel', () => {
       renderPriorityLabel()
 
       expect(screen.getByText('billing.plansCommon.priority.top-priority')).toBeInTheDocument()
-      expect(screen.queryByText('billing.plansCommon.documentProcessingPriorityTip')).not.toBeInTheDocument()
+      expect(
+        screen.queryByText('billing.plansCommon.documentProcessingPriorityTip'),
+      ).not.toBeInTheDocument()
     })
   })
 })

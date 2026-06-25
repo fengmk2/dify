@@ -54,9 +54,10 @@ vi.mock('@langgenius/dify-ui/toast', () => ({
 }))
 
 vi.mock('@/context/app-context', () => ({
-  useSelector: <T,>(selector: (state: { workspacePermissionKeys: string[] }) => T): T => selector({
-    workspacePermissionKeys: mockWorkspacePermissionKeys.value,
-  }),
+  useSelector: <T,>(selector: (state: { workspacePermissionKeys: string[] }) => T): T =>
+    selector({
+      workspacePermissionKeys: mockWorkspacePermissionKeys.value,
+    }),
 }))
 let capturedHooksStore: Record<string, unknown> | undefined
 let capturedWorkflowNodes: WorkflowProps['nodes'] | undefined
@@ -67,7 +68,8 @@ let snippetDetailStoreState: {
 }
 
 vi.mock('@/app/components/snippets/store', () => ({
-  useSnippetDetailStore: (selector: (state: typeof snippetDetailStoreState) => unknown) => selector(snippetDetailStoreState),
+  useSnippetDetailStore: (selector: (state: typeof snippetDetailStoreState) => unknown) =>
+    selector(snippetDetailStoreState),
 }))
 
 vi.mock('@/next/navigation', () => ({
@@ -156,9 +158,7 @@ vi.mock('@/app/components/workflow', () => ({
     capturedHooksStore = hooksStore
     capturedWorkflowNodes = nodes
 
-    return (
-      <div data-testid="workflow-inner-context">{children}</div>
-    )
+    return <div data-testid="workflow-inner-context">{children}</div>
   },
 }))
 
@@ -181,11 +181,21 @@ vi.mock('@/app/components/snippets/components/snippet-children', () => ({
     onPublish: () => void
   }) => (
     <div>
-      {!isEditing && canEdit && <button type="button" onClick={onEdit}>edit</button>}
+      {!isEditing && canEdit && (
+        <button type="button" onClick={onEdit}>
+          edit
+        </button>
+      )}
       <a href="/snippets">snippets list</a>
-      <button type="button" onClick={onExitEditingWithoutSave}>exit without save</button>
-      <button type="button" disabled={!canSave} onClick={onPublish}>publish</button>
-      <button type="button" onClick={onCancel}>cancel</button>
+      <button type="button" onClick={onExitEditingWithoutSave}>
+        exit without save
+      </button>
+      <button type="button" disabled={!canSave} onClick={onPublish}>
+        publish
+      </button>
+      <button type="button" onClick={onCancel}>
+        cancel
+      </button>
     </div>
   ),
 }))
@@ -199,18 +209,22 @@ vi.mock('@/app/components/snippets/components/snippet-sidebar', () => ({
     onFieldsChange: (fields: SnippetInputField[]) => void
   }) => (
     <div>
-      <button type="button" onClick={() => onFieldsChange([])}>remove</button>
+      <button type="button" onClick={() => onFieldsChange([])}>
+        remove
+      </button>
       <button
         type="button"
-        onClick={() => onFieldsChange([
-          ...fields,
-          {
-            type: PipelineInputVarType.textInput,
-            label: 'New Field',
-            variable: 'new_field',
-            required: true,
-          },
-        ])}
+        onClick={() =>
+          onFieldsChange([
+            ...fields,
+            {
+              type: PipelineInputVarType.textInput,
+              label: 'New Field',
+              variable: 'new_field',
+              required: true,
+            },
+          ])
+        }
       >
         submit
       </button>
@@ -290,11 +304,12 @@ const createNodeMetadata = (type: BlockEnum) => ({
   checkValid: vi.fn(),
 })
 
-const createDraftNode = (id = 'draft-node') => ({
-  id,
-  position: { x: 10, y: 20 },
-  data: { type: BlockEnum.Code, title: 'Draft node' },
-}) as WorkflowProps['nodes'][number]
+const createDraftNode = (id = 'draft-node') =>
+  ({
+    id,
+    position: { x: 10, y: 20 },
+    data: { type: BlockEnum.Code, title: 'Draft node' },
+  }) as WorkflowProps['nodes'][number]
 
 describe('SnippetMain', () => {
   beforeEach(() => {
@@ -348,7 +363,7 @@ describe('SnippetMain', () => {
       })
 
       expect(screen.queryByRole('button', { name: 'edit' })).not.toBeInTheDocument()
-      expect(capturedWorkflowNodes?.map(node => node.id)).toEqual(['draft-node'])
+      expect(capturedWorkflowNodes?.map((node) => node.id)).toEqual(['draft-node'])
     })
 
     it('should stay readonly without snippet create-and-modify permission', async () => {
@@ -362,7 +377,7 @@ describe('SnippetMain', () => {
 
       expect(screen.queryByRole('button', { name: 'edit' })).not.toBeInTheDocument()
 
-      const doSyncWorkflowDraft = capturedHooksStore?.doSyncWorkflowDraft as (() => Promise<void>)
+      const doSyncWorkflowDraft = capturedHooksStore?.doSyncWorkflowDraft as () => Promise<void>
       await doSyncWorkflowDraft()
 
       expect(mockDoSyncWorkflowDraft).not.toHaveBeenCalled()
@@ -379,9 +394,9 @@ describe('SnippetMain', () => {
       })
 
       expect(screen.getByRole('button', { name: 'edit' })).toBeInTheDocument()
-      expect(capturedWorkflowNodes?.map(node => node.id)).toEqual(['published-node'])
+      expect(capturedWorkflowNodes?.map((node) => node.id)).toEqual(['published-node'])
 
-      const doSyncWorkflowDraft = capturedHooksStore?.doSyncWorkflowDraft as (() => Promise<void>)
+      const doSyncWorkflowDraft = capturedHooksStore?.doSyncWorkflowDraft as () => Promise<void>
       await doSyncWorkflowDraft()
 
       expect(mockDoSyncWorkflowDraft).not.toHaveBeenCalled()
@@ -400,10 +415,12 @@ describe('SnippetMain', () => {
       fireEvent.click(screen.getByRole('button', { name: 'edit' }))
 
       await waitFor(() => {
-        expect(capturedWorkflowNodes?.map(node => node.id)).toEqual(['draft-node'])
+        expect(capturedWorkflowNodes?.map((node) => node.id)).toEqual(['draft-node'])
       })
 
-      const doSyncWorkflowDraft = capturedHooksStore?.doSyncWorkflowDraft as ((notRefreshWhenSyncError?: boolean) => Promise<void>)
+      const doSyncWorkflowDraft = capturedHooksStore?.doSyncWorkflowDraft as (
+        notRefreshWhenSyncError?: boolean,
+      ) => Promise<void>
       await doSyncWorkflowDraft(true)
 
       expect(mockDoSyncWorkflowDraft).not.toHaveBeenCalled()
@@ -429,17 +446,20 @@ describe('SnippetMain', () => {
       fireEvent.click(screen.getByRole('button', { name: 'submit' }))
 
       await waitFor(() => {
-        expect(mockSyncInputFieldsDraft).toHaveBeenCalledWith([
-          payload.inputFields[0],
+        expect(mockSyncInputFieldsDraft).toHaveBeenCalledWith(
+          [
+            payload.inputFields[0],
+            {
+              type: PipelineInputVarType.textInput,
+              label: 'New Field',
+              variable: 'new_field',
+              required: true,
+            },
+          ],
           {
-            type: PipelineInputVarType.textInput,
-            label: 'New Field',
-            variable: 'new_field',
-            required: true,
+            onRefresh: expect.any(Function),
           },
-        ], {
-          onRefresh: expect.any(Function),
-        })
+        )
       })
     })
   })
@@ -448,7 +468,7 @@ describe('SnippetMain', () => {
     it('should sync workflow draft during normal editing changes', async () => {
       renderSnippetMain({ currentNodes: [createDraftNode()] })
 
-      const doSyncWorkflowDraft = capturedHooksStore?.doSyncWorkflowDraft as (() => Promise<void>)
+      const doSyncWorkflowDraft = capturedHooksStore?.doSyncWorkflowDraft as () => Promise<void>
       await doSyncWorkflowDraft()
 
       expect(mockDoSyncWorkflowDraft).toHaveBeenCalledTimes(1)
@@ -465,7 +485,9 @@ describe('SnippetMain', () => {
         expect(mockPush).toHaveBeenCalledWith('/snippets')
       })
       expect(mockDoSyncWorkflowDraft).toHaveBeenCalledWith(true)
-      expect(mockDoSyncWorkflowDraft.mock.invocationCallOrder[0]!).toBeLessThan(mockPush.mock.invocationCallOrder[0]!)
+      expect(mockDoSyncWorkflowDraft.mock.invocationCallOrder[0]!).toBeLessThan(
+        mockPush.mock.invocationCallOrder[0]!,
+      )
       expect(mockHandleRestoreFromPublishedWorkflow).not.toHaveBeenCalled()
       expect(mockSyncInputFieldsDraft).not.toHaveBeenCalled()
     })
@@ -492,8 +514,9 @@ describe('SnippetMain', () => {
       })
       mockDoSyncWorkflowDraft.mockClear()
 
-      const doSyncWorkflowDraft = capturedHooksStore?.doSyncWorkflowDraft as (() => Promise<void>)
-      const syncWorkflowDraftWhenPageClose = capturedHooksStore?.syncWorkflowDraftWhenPageClose as (() => void)
+      const doSyncWorkflowDraft = capturedHooksStore?.doSyncWorkflowDraft as () => Promise<void>
+      const syncWorkflowDraftWhenPageClose =
+        capturedHooksStore?.syncWorkflowDraftWhenPageClose as () => void
       await doSyncWorkflowDraft()
       syncWorkflowDraftWhenPageClose()
 
@@ -511,7 +534,9 @@ describe('SnippetMain', () => {
       mockDoSyncWorkflowDraft.mockClear()
 
       fireEvent.click(screen.getByRole('button', { name: 'edit' }))
-      const doSyncWorkflowDraft = capturedHooksStore?.doSyncWorkflowDraft as ((notRefreshWhenSyncError?: boolean) => Promise<void>)
+      const doSyncWorkflowDraft = capturedHooksStore?.doSyncWorkflowDraft as (
+        notRefreshWhenSyncError?: boolean,
+      ) => Promise<void>
       await doSyncWorkflowDraft(true)
 
       expect(mockDoSyncWorkflowDraft).not.toHaveBeenCalled()
@@ -541,7 +566,7 @@ describe('SnippetMain', () => {
       fireEvent.click(screen.getByRole('button', { name: 'edit' }))
 
       await waitFor(() => {
-        expect(capturedWorkflowNodes?.map(node => node.id)).toContain('latest-node')
+        expect(capturedWorkflowNodes?.map((node) => node.id)).toContain('latest-node')
       })
     })
   })
@@ -623,10 +648,12 @@ describe('SnippetMain', () => {
         expect(mockPublishSnippetMutateAsync).toHaveBeenCalled()
       })
       expect(mockDoSyncWorkflowDraft).toHaveBeenCalledWith(true)
-      expect(mockDoSyncWorkflowDraft.mock.invocationCallOrder[0]!).toBeLessThan(mockPublishSnippetMutateAsync.mock.invocationCallOrder[0]!)
+      expect(mockDoSyncWorkflowDraft.mock.invocationCallOrder[0]!).toBeLessThan(
+        mockPublishSnippetMutateAsync.mock.invocationCallOrder[0]!,
+      )
 
       await waitFor(() => {
-        expect(capturedWorkflowNodes?.map(node => node.id)).toContain('published-draft-node')
+        expect(capturedWorkflowNodes?.map((node) => node.id)).toContain('published-draft-node')
       })
     })
   })
@@ -688,13 +715,13 @@ describe('SnippetMain', () => {
       })
       fireEvent.click(screen.getByRole('button', { name: 'edit' }))
       await waitFor(() => {
-        expect(capturedWorkflowNodes?.map(node => node.id)).toContain('latest-draft-node')
+        expect(capturedWorkflowNodes?.map((node) => node.id)).toContain('latest-draft-node')
       })
 
       fireEvent.click(screen.getByRole('button', { name: 'cancel' }))
 
       await waitFor(() => {
-        expect(capturedWorkflowNodes?.map(node => node.id)).toContain('published-node')
+        expect(capturedWorkflowNodes?.map((node) => node.id)).toContain('published-node')
       })
     })
   })
@@ -706,18 +733,34 @@ describe('SnippetMain', () => {
       expect(capturedHooksStore?.fetchInspectVars).toBe(mockFetchInspectVars)
       expect(capturedHooksStore?.hasNodeInspectVars).toBe(mockInspectVarsCrud.hasNodeInspectVars)
       expect(capturedHooksStore?.hasSetInspectVar).toBe(mockInspectVarsCrud.hasSetInspectVar)
-      expect(capturedHooksStore?.fetchInspectVarValue).toBe(mockInspectVarsCrud.fetchInspectVarValue)
+      expect(capturedHooksStore?.fetchInspectVarValue).toBe(
+        mockInspectVarsCrud.fetchInspectVarValue,
+      )
       expect(capturedHooksStore?.editInspectVarValue).toBe(mockInspectVarsCrud.editInspectVarValue)
-      expect(capturedHooksStore?.renameInspectVarName).toBe(mockInspectVarsCrud.renameInspectVarName)
-      expect(capturedHooksStore?.appendNodeInspectVars).toBe(mockInspectVarsCrud.appendNodeInspectVars)
+      expect(capturedHooksStore?.renameInspectVarName).toBe(
+        mockInspectVarsCrud.renameInspectVarName,
+      )
+      expect(capturedHooksStore?.appendNodeInspectVars).toBe(
+        mockInspectVarsCrud.appendNodeInspectVars,
+      )
       expect(capturedHooksStore?.deleteInspectVar).toBe(mockInspectVarsCrud.deleteInspectVar)
-      expect(capturedHooksStore?.deleteNodeInspectorVars).toBe(mockInspectVarsCrud.deleteNodeInspectorVars)
-      expect(capturedHooksStore?.deleteAllInspectorVars).toBe(mockInspectVarsCrud.deleteAllInspectorVars)
+      expect(capturedHooksStore?.deleteNodeInspectorVars).toBe(
+        mockInspectVarsCrud.deleteNodeInspectorVars,
+      )
+      expect(capturedHooksStore?.deleteAllInspectorVars).toBe(
+        mockInspectVarsCrud.deleteAllInspectorVars,
+      )
       expect(capturedHooksStore?.isInspectVarEdited).toBe(mockInspectVarsCrud.isInspectVarEdited)
       expect(capturedHooksStore?.resetToLastRunVar).toBe(mockInspectVarsCrud.resetToLastRunVar)
-      expect(capturedHooksStore?.invalidateSysVarValues).toBe(mockInspectVarsCrud.invalidateSysVarValues)
-      expect(capturedHooksStore?.resetConversationVar).toBe(mockInspectVarsCrud.resetConversationVar)
-      expect(capturedHooksStore?.invalidateConversationVarValues).toBe(mockInspectVarsCrud.invalidateConversationVarValues)
+      expect(capturedHooksStore?.invalidateSysVarValues).toBe(
+        mockInspectVarsCrud.invalidateSysVarValues,
+      )
+      expect(capturedHooksStore?.resetConversationVar).toBe(
+        mockInspectVarsCrud.resetConversationVar,
+      )
+      expect(capturedHooksStore?.invalidateConversationVarValues).toBe(
+        mockInspectVarsCrud.invalidateConversationVarValues,
+      )
     })
   })
 
@@ -730,7 +773,9 @@ describe('SnippetMain', () => {
         nodesMap: Partial<Record<BlockEnum, unknown>>
       }
 
-      expect(availableNodesMetaData.nodes.map(node => node.metaData.type)).toEqual([BlockEnum.LLM])
+      expect(availableNodesMetaData.nodes.map((node) => node.metaData.type)).toEqual([
+        BlockEnum.LLM,
+      ])
       expect(availableNodesMetaData.nodesMap[BlockEnum.LLM]).toBeDefined()
       expect(availableNodesMetaData.nodesMap[BlockEnum.HumanInput]).toBeUndefined()
       expect(availableNodesMetaData.nodesMap[BlockEnum.End]).toBeUndefined()
@@ -744,17 +789,23 @@ describe('SnippetMain', () => {
 
       expect(capturedHooksStore?.handleBackupDraft).toBe(mockHandleBackupDraft)
       expect(capturedHooksStore?.handleLoadBackupDraft).toBe(mockHandleLoadBackupDraft)
-      expect(capturedHooksStore?.handleRestoreFromPublishedWorkflow).toBe(mockHandleRestoreFromPublishedWorkflow)
+      expect(capturedHooksStore?.handleRestoreFromPublishedWorkflow).toBe(
+        mockHandleRestoreFromPublishedWorkflow,
+      )
       expect(capturedHooksStore?.handleRun).toBe(mockHandleRun)
       expect(capturedHooksStore?.handleStopRun).toBe(mockHandleStopRun)
       expect(capturedHooksStore?.handleStartWorkflowRun).toBe(mockHandleStartWorkflowRun)
-      expect(capturedHooksStore?.handleWorkflowStartRunInWorkflow).toBe(mockHandleWorkflowStartRunInWorkflow)
+      expect(capturedHooksStore?.handleWorkflowStartRunInWorkflow).toBe(
+        mockHandleWorkflowStartRunInWorkflow,
+      )
     })
 
     it('should pass snippet workflow run detail urls to WorkflowWithInnerContext', () => {
       renderSnippetMain()
 
-      const getWorkflowRunAndTraceUrl = capturedHooksStore?.getWorkflowRunAndTraceUrl as ((runId?: string) => { runUrl: string, traceUrl: string }) | undefined
+      const getWorkflowRunAndTraceUrl = capturedHooksStore?.getWorkflowRunAndTraceUrl as
+        | ((runId?: string) => { runUrl: string; traceUrl: string })
+        | undefined
 
       expect(getWorkflowRunAndTraceUrl?.('run-1')).toEqual({
         runUrl: '/snippets/snippet-1/workflow-runs/run-1',

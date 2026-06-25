@@ -1,6 +1,6 @@
 import type { HitTesting } from '@/models/datasets'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import ChunkDetailModal from '../chunk-detail-modal'
 
 vi.mock('@/app/components/base/file-uploader/file-type-icon', () => ({
@@ -20,7 +20,9 @@ vi.mock('../../../documents/detail/completed/common/dot', () => ({
 }))
 
 vi.mock('../../../documents/detail/completed/common/segment-index-tag', () => ({
-  SegmentIndexTag: ({ positionId }: { positionId: number }) => <span data-testid="segment-index-tag">{positionId}</span>,
+  SegmentIndexTag: ({ positionId }: { positionId: number }) => (
+    <span data-testid="segment-index-tag">{positionId}</span>
+  ),
 }))
 
 vi.mock('../../../documents/detail/completed/common/summary-text', () => ({
@@ -32,7 +34,9 @@ vi.mock('@/app/components/datasets/documents/detail/completed/common/tag', () =>
 }))
 
 vi.mock('../child-chunks-item', () => ({
-  default: ({ payload }: { payload: { id: string } }) => <div data-testid="child-chunk">{payload.id}</div>,
+  default: ({ payload }: { payload: { id: string } }) => (
+    <div data-testid="child-chunk">{payload.id}</div>
+  ),
 }))
 
 vi.mock('../mask', () => ({

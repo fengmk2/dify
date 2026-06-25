@@ -2,7 +2,7 @@ import { existsSync, readFileSync, statSync, writeFileSync } from 'node:fs'
 import { mkdtemp, rm, writeFile } from 'node:fs/promises'
 import { tmpdir } from 'node:os'
 import { join } from 'node:path'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it } from 'vite-plus/test'
 import { BadYamlFormatError, ConcurrentAccessError } from './errors'
 import { YamlStore } from './store'
 
@@ -49,8 +49,7 @@ describe('YamlStore.doGet', () => {
     let caught: unknown
     try {
       store.doGet({ key: 'name', default: '' })
-    }
-    catch (err) {
+    } catch (err) {
       caught = err
     }
     expect(caught).toBeInstanceOf(BadYamlFormatError)
@@ -126,7 +125,9 @@ describe('FileBasedStore.withLock concurrency', () => {
 
     await s1.lock()
 
-    await expect(s2.set({ key: 'key', default: '' }, 'blocked')).rejects.toThrow(ConcurrentAccessError)
+    await expect(s2.set({ key: 'key', default: '' }, 'blocked')).rejects.toThrow(
+      ConcurrentAccessError,
+    )
 
     await s1.unlock()
 

@@ -1,6 +1,6 @@
 import type { Tag } from '../../../../hooks'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 import ToolSelectorTrigger from '../tool-selector'
 
 const tagsMap: Record<string, Tag> = {

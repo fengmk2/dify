@@ -5,7 +5,7 @@ import { agentComposerDraftAtom } from '../store'
 import { resolveDraftFieldUpdate } from './utils'
 
 export const agentComposerEnvVariablesAtom = atom(
-  get => get(agentComposerDraftAtom).envVariables,
+  (get) => get(agentComposerDraftAtom).envVariables,
   (get, set, envVariablesUpdate: DraftFieldUpdate<EnvVariable[]>) => {
     const draft = get(agentComposerDraftAtom)
 

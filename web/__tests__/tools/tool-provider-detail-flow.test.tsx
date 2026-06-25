@@ -9,7 +9,7 @@ import type { Collection } from '@/app/components/tools/types'
  */
 import { cleanup, fireEvent, render, screen, waitFor } from '@testing-library/react'
 
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { CollectionType } from '@/app/components/tools/types'
 
 vi.mock('react-i18next', () => ({
@@ -24,13 +24,11 @@ vi.mock('react-i18next', () => ({
         'createTool.deleteToolConfirmContent': 'Are you sure?',
         'createTool.toolInput.title': 'Tool Input',
         'createTool.toolInput.required': 'Required',
-        'openInStudio': 'Open in Studio',
+        openInStudio: 'Open in Studio',
         'api.actionSuccess': 'Action succeeded',
       }
-      if (key === 'detailPanel.actionNum')
-        return `${opts?.num ?? 0} actions`
-      if (key === 'includeToolNum')
-        return `${opts?.num ?? 0} actions`
+      if (key === 'detailPanel.actionNum') return `${opts?.num ?? 0} actions`
+      if (key === 'includeToolNum') return `${opts?.num ?? 0} actions`
       return map[key] ?? key
     },
   }),
@@ -48,9 +46,15 @@ vi.mock('@/context/app-context', () => ({
   useAppContext: () => ({
     isCurrentWorkspaceManager: true,
   }),
-  useSelector: (selector: (state: { workspacePermissionKeys: string[] }) => unknown) => selector({
-    workspacePermissionKeys: ['tool.manage', 'credential.create', 'credential.manage', 'credential.use'],
-  }),
+  useSelector: (selector: (state: { workspacePermissionKeys: string[] }) => unknown) =>
+    selector({
+      workspacePermissionKeys: [
+        'tool.manage',
+        'credential.create',
+        'credential.manage',
+        'credential.use',
+      ],
+    }),
 }))
 
 const mockSetShowModelModal = vi.fn()
@@ -62,9 +66,7 @@ vi.mock('@/context/modal-context', () => ({
 
 vi.mock('@/context/provider-context', () => ({
   useProviderContext: () => ({
-    modelProviders: [
-      { provider: 'model-provider-1', name: 'Model Provider 1' },
-    ],
+    modelProviders: [{ provider: 'model-provider-1', name: 'Model Provider 1' }],
   }),
 }))
 
@@ -83,7 +85,13 @@ const mockFetchWorkflowToolDetail = vi.fn().mockResolvedValue({
   workflow_app_id: 'app-123',
   tool: {
     parameters: [
-      { name: 'query', llm_description: 'Search query', form: 'text', required: true, type: 'string' },
+      {
+        name: 'query',
+        llm_description: 'Search query',
+        form: 'text',
+        required: true,
+        type: 'string',
+      },
     ],
     labels: ['search'],
   },
@@ -147,7 +155,9 @@ vi.mock('@/app/components/header/account-setting/model-provider-page/declaration
 }))
 
 vi.mock('@/app/components/plugins/card/base/card-icon', () => ({
-  default: ({ src }: { src: string }) => <div data-testid="card-icon" data-src={typeof src === 'string' ? src : 'emoji'} />,
+  default: ({ src }: { src: string }) => (
+    <div data-testid="card-icon" data-src={typeof src === 'string' ? src : 'emoji'} />
+  ),
 }))
 
 vi.mock('@/app/components/plugins/card/base/description', () => ({
@@ -155,13 +165,9 @@ vi.mock('@/app/components/plugins/card/base/description', () => ({
 }))
 
 vi.mock('@/app/components/plugins/card/base/org-info', () => ({
-  default: ({ orgName, packageName }: { orgName: string, packageName: string }) => (
+  default: ({ orgName, packageName }: { orgName: string; packageName: string }) => (
     <div data-testid="org-info">
-      {orgName}
-      {' '}
-      /
-      {' '}
-      {packageName}
+      {orgName} / {packageName}
     </div>
   ),
 }))
@@ -171,31 +177,79 @@ vi.mock('@/app/components/plugins/card/base/title', () => ({
 }))
 
 vi.mock('@/app/components/tools/edit-custom-collection-modal', () => ({
-  default: ({ onHide, onEdit, onRemove }: { onHide: () => void, onEdit: (data: unknown) => void, onRemove: () => void, payload: unknown }) => (
+  default: ({
+    onHide,
+    onEdit,
+    onRemove,
+  }: {
+    onHide: () => void
+    onEdit: (data: unknown) => void
+    onRemove: () => void
+    payload: unknown
+  }) => (
     <div data-testid="edit-custom-modal">
-      <button data-testid="custom-modal-hide" onClick={onHide}>Hide</button>
-      <button data-testid="custom-modal-save" onClick={() => onEdit({ name: 'updated', labels: [] })}>Save</button>
-      <button data-testid="custom-modal-remove" onClick={onRemove}>Remove</button>
+      <button data-testid="custom-modal-hide" onClick={onHide}>
+        Hide
+      </button>
+      <button
+        data-testid="custom-modal-save"
+        onClick={() => onEdit({ name: 'updated', labels: [] })}
+      >
+        Save
+      </button>
+      <button data-testid="custom-modal-remove" onClick={onRemove}>
+        Remove
+      </button>
     </div>
   ),
 }))
 
 vi.mock('@/app/components/tools/setting/build-in/config-credentials', () => ({
-  default: ({ onCancel, onSaved, onRemove }: { collection: Collection, onCancel: () => void, onSaved: (v: Record<string, unknown>) => void, onRemove: () => void }) => (
+  default: ({
+    onCancel,
+    onSaved,
+    onRemove,
+  }: {
+    collection: Collection
+    onCancel: () => void
+    onSaved: (v: Record<string, unknown>) => void
+    onRemove: () => void
+  }) => (
     <div data-testid="config-credential">
-      <button data-testid="cred-cancel" onClick={onCancel}>Cancel</button>
-      <button data-testid="cred-save" onClick={() => onSaved({ api_key: 'test-key' })}>Save</button>
-      <button data-testid="cred-remove" onClick={onRemove}>Remove</button>
+      <button data-testid="cred-cancel" onClick={onCancel}>
+        Cancel
+      </button>
+      <button data-testid="cred-save" onClick={() => onSaved({ api_key: 'test-key' })}>
+        Save
+      </button>
+      <button data-testid="cred-remove" onClick={onRemove}>
+        Remove
+      </button>
     </div>
   ),
 }))
 
 vi.mock('@/app/components/tools/workflow-tool', () => ({
-  WorkflowToolDrawer: ({ onHide, onSave, onRemove }: { payload: unknown, onHide: () => void, onSave: (d: unknown) => void, onRemove: () => void }) => (
+  WorkflowToolDrawer: ({
+    onHide,
+    onSave,
+    onRemove,
+  }: {
+    payload: unknown
+    onHide: () => void
+    onSave: (d: unknown) => void
+    onRemove: () => void
+  }) => (
     <div data-testid="workflow-tool-modal">
-      <button data-testid="wf-modal-hide" onClick={onHide}>Hide</button>
-      <button data-testid="wf-modal-save" onClick={() => onSave({ name: 'updated-wf' })}>Save</button>
-      <button data-testid="wf-modal-remove" onClick={onRemove}>Remove</button>
+      <button data-testid="wf-modal-hide" onClick={onHide}>
+        Hide
+      </button>
+      <button data-testid="wf-modal-save" onClick={() => onSave({ name: 'updated-wf' })}>
+        Save
+      </button>
+      <button data-testid="wf-modal-remove" onClick={onRemove}>
+        Remove
+      </button>
     </div>
   ),
 }))
@@ -237,7 +291,13 @@ describe('Tool Provider Detail Flow Integration', () => {
   describe('Built-in Provider', () => {
     it('renders provider detail with title, author, and description', async () => {
       const collection = makeCollection()
-      render(<ProviderDetail collection={collection} onHide={mockOnHide} onRefreshData={mockOnRefreshData} />)
+      render(
+        <ProviderDetail
+          collection={collection}
+          onHide={mockOnHide}
+          onRefreshData={mockOnRefreshData}
+        />,
+      )
 
       await waitFor(() => {
         expect(screen.getByTestId('title')).toHaveTextContent('Test Collection')
@@ -248,7 +308,13 @@ describe('Tool Provider Detail Flow Integration', () => {
 
     it('loads tool list from API on mount', async () => {
       const collection = makeCollection()
-      render(<ProviderDetail collection={collection} onHide={mockOnHide} onRefreshData={mockOnRefreshData} />)
+      render(
+        <ProviderDetail
+          collection={collection}
+          onHide={mockOnHide}
+          onRefreshData={mockOnRefreshData}
+        />,
+      )
 
       await waitFor(() => {
         expect(mockFetchBuiltInToolList).toHaveBeenCalledWith('test_collection')
@@ -265,7 +331,13 @@ describe('Tool Provider Detail Flow Integration', () => {
         allow_delete: true,
         is_team_authorization: false,
       })
-      render(<ProviderDetail collection={collection} onHide={mockOnHide} onRefreshData={mockOnRefreshData} />)
+      render(
+        <ProviderDetail
+          collection={collection}
+          onHide={mockOnHide}
+          onRefreshData={mockOnRefreshData}
+        />,
+      )
 
       await waitFor(() => {
         expect(screen.getByText('Set up credentials')).toBeInTheDocument()
@@ -277,7 +349,13 @@ describe('Tool Provider Detail Flow Integration', () => {
         allow_delete: true,
         is_team_authorization: true,
       })
-      render(<ProviderDetail collection={collection} onHide={mockOnHide} onRefreshData={mockOnRefreshData} />)
+      render(
+        <ProviderDetail
+          collection={collection}
+          onHide={mockOnHide}
+          onRefreshData={mockOnRefreshData}
+        />,
+      )
 
       await waitFor(() => {
         expect(screen.getByText('Authorized')).toBeInTheDocument()
@@ -290,7 +368,13 @@ describe('Tool Provider Detail Flow Integration', () => {
         allow_delete: true,
         is_team_authorization: false,
       })
-      render(<ProviderDetail collection={collection} onHide={mockOnHide} onRefreshData={mockOnRefreshData} />)
+      render(
+        <ProviderDetail
+          collection={collection}
+          onHide={mockOnHide}
+          onRefreshData={mockOnRefreshData}
+        />,
+      )
 
       await waitFor(() => {
         expect(screen.getByText('Set up credentials')).toBeInTheDocument()
@@ -307,7 +391,13 @@ describe('Tool Provider Detail Flow Integration', () => {
         allow_delete: true,
         is_team_authorization: false,
       })
-      render(<ProviderDetail collection={collection} onHide={mockOnHide} onRefreshData={mockOnRefreshData} />)
+      render(
+        <ProviderDetail
+          collection={collection}
+          onHide={mockOnHide}
+          onRefreshData={mockOnRefreshData}
+        />,
+      )
 
       await waitFor(() => {
         expect(screen.getByText('Set up credentials')).toBeInTheDocument()
@@ -320,7 +410,9 @@ describe('Tool Provider Detail Flow Integration', () => {
 
       fireEvent.click(screen.getByTestId('cred-save'))
       await waitFor(() => {
-        expect(mockUpdateBuiltInToolCredential).toHaveBeenCalledWith('test_collection', { api_key: 'test-key' })
+        expect(mockUpdateBuiltInToolCredential).toHaveBeenCalledWith('test_collection', {
+          api_key: 'test-key',
+        })
         expect(mockOnRefreshData).toHaveBeenCalled()
       })
     })
@@ -330,7 +422,13 @@ describe('Tool Provider Detail Flow Integration', () => {
         allow_delete: true,
         is_team_authorization: false,
       })
-      render(<ProviderDetail collection={collection} onHide={mockOnHide} onRefreshData={mockOnRefreshData} />)
+      render(
+        <ProviderDetail
+          collection={collection}
+          onHide={mockOnHide}
+          onRefreshData={mockOnRefreshData}
+        />,
+      )
 
       await waitFor(() => {
         fireEvent.click(screen.getByText('Set up credentials'))
@@ -356,7 +454,13 @@ describe('Tool Provider Detail Flow Integration', () => {
         allow_delete: true,
         is_team_authorization: false,
       })
-      render(<ProviderDetail collection={collection} onHide={mockOnHide} onRefreshData={mockOnRefreshData} />)
+      render(
+        <ProviderDetail
+          collection={collection}
+          onHide={mockOnHide}
+          onRefreshData={mockOnRefreshData}
+        />,
+      )
 
       await waitFor(() => {
         expect(screen.getByText('Set up credentials')).toBeInTheDocument()
@@ -381,7 +485,13 @@ describe('Tool Provider Detail Flow Integration', () => {
         type: CollectionType.custom,
         allow_delete: true,
       })
-      render(<ProviderDetail collection={collection} onHide={mockOnHide} onRefreshData={mockOnRefreshData} />)
+      render(
+        <ProviderDetail
+          collection={collection}
+          onHide={mockOnHide}
+          onRefreshData={mockOnRefreshData}
+        />,
+      )
 
       await waitFor(() => {
         expect(mockFetchCustomCollection).toHaveBeenCalledWith('test_collection')
@@ -397,7 +507,13 @@ describe('Tool Provider Detail Flow Integration', () => {
         type: CollectionType.custom,
         allow_delete: true,
       })
-      render(<ProviderDetail collection={collection} onHide={mockOnHide} onRefreshData={mockOnRefreshData} />)
+      render(
+        <ProviderDetail
+          collection={collection}
+          onHide={mockOnHide}
+          onRefreshData={mockOnRefreshData}
+        />,
+      )
 
       await waitFor(() => {
         expect(screen.getByText('Edit')).toBeInTheDocument()
@@ -420,7 +536,13 @@ describe('Tool Provider Detail Flow Integration', () => {
         type: CollectionType.custom,
         allow_delete: true,
       })
-      render(<ProviderDetail collection={collection} onHide={mockOnHide} onRefreshData={mockOnRefreshData} />)
+      render(
+        <ProviderDetail
+          collection={collection}
+          onHide={mockOnHide}
+          onRefreshData={mockOnRefreshData}
+        />,
+      )
 
       await waitFor(() => {
         expect(screen.getByText('Edit')).toBeInTheDocument()
@@ -450,7 +572,13 @@ describe('Tool Provider Detail Flow Integration', () => {
         type: CollectionType.workflow,
         allow_delete: true,
       })
-      render(<ProviderDetail collection={collection} onHide={mockOnHide} onRefreshData={mockOnRefreshData} />)
+      render(
+        <ProviderDetail
+          collection={collection}
+          onHide={mockOnHide}
+          onRefreshData={mockOnRefreshData}
+        />,
+      )
 
       await waitFor(() => {
         expect(mockFetchWorkflowToolDetail).toHaveBeenCalledWith('test-collection')
@@ -467,7 +595,13 @@ describe('Tool Provider Detail Flow Integration', () => {
         type: CollectionType.workflow,
         allow_delete: true,
       })
-      render(<ProviderDetail collection={collection} onHide={mockOnHide} onRefreshData={mockOnRefreshData} />)
+      render(
+        <ProviderDetail
+          collection={collection}
+          onHide={mockOnHide}
+          onRefreshData={mockOnRefreshData}
+        />,
+      )
 
       await waitFor(() => {
         expect(screen.getByText('query')).toBeInTheDocument()
@@ -481,7 +615,13 @@ describe('Tool Provider Detail Flow Integration', () => {
         type: CollectionType.workflow,
         allow_delete: true,
       })
-      render(<ProviderDetail collection={collection} onHide={mockOnHide} onRefreshData={mockOnRefreshData} />)
+      render(
+        <ProviderDetail
+          collection={collection}
+          onHide={mockOnHide}
+          onRefreshData={mockOnRefreshData}
+        />,
+      )
 
       await waitFor(() => {
         expect(screen.getByText('Edit')).toBeInTheDocument()
@@ -508,7 +648,13 @@ describe('Tool Provider Detail Flow Integration', () => {
   describe('Drawer Interaction', () => {
     it('calls onHide when closing the drawer', async () => {
       const collection = makeCollection()
-      render(<ProviderDetail collection={collection} onHide={mockOnHide} onRefreshData={mockOnRefreshData} />)
+      render(
+        <ProviderDetail
+          collection={collection}
+          onHide={mockOnHide}
+          onRefreshData={mockOnRefreshData}
+        />,
+      )
 
       await waitFor(() => {
         expect(screen.getByRole('dialog')).toBeInTheDocument()

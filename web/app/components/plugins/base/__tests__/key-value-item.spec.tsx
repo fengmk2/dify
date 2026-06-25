@@ -1,5 +1,5 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import KeyValueItem from '../key-value-item'
 
 vi.mock('../../../base/icons/src/vender/line/files', () => ({
@@ -7,12 +7,10 @@ vi.mock('../../../base/icons/src/vender/line/files', () => ({
 }))
 
 vi.mock('@/app/components/base/action-button', () => ({
-  default: ({
-    children,
-    onClick,
-    ...props
-  }: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
-    <button data-testid="action-button" onClick={onClick} {...props}>{children}</button>
+  default: ({ children, onClick, ...props }: React.ButtonHTMLAttributes<HTMLButtonElement>) => (
+    <button data-testid="action-button" onClick={onClick} {...props}>
+      {children}
+    </button>
   ),
 }))
 

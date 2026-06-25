@@ -1,7 +1,7 @@
 import { RadioGroup } from '@langgenius/dify-ui/radio-group'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 import RadioCard from '../index'
 
 function renderSelectableCard({
@@ -59,7 +59,9 @@ describe('RadioCard', () => {
     expect(radio).toHaveAttribute('aria-checked', 'true')
     expect(screen.getByText('Config')).toBeInTheDocument()
     expect(radio.parentElement).toHaveClass('has-[[data-checked]]:border-[1.5px]')
-    expect(radio.parentElement).toHaveClass('has-[[data-checked]]:bg-components-option-card-option-selected-bg')
+    expect(radio.parentElement).toHaveClass(
+      'has-[[data-checked]]:bg-components-option-card-option-selected-bg',
+    )
   })
 
   it('should apply custom className to the card root and config wrapper', () => {

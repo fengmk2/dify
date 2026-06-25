@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import SegmentIndexTag from '../segment-index-tag'
 
 describe('SegmentIndexTag', () => {
@@ -59,9 +59,7 @@ describe('SegmentIndexTag', () => {
     })
 
     it('should apply custom className', () => {
-      const { container } = render(
-        <SegmentIndexTag positionId={1} className="custom-class" />,
-      )
+      const { container } = render(<SegmentIndexTag positionId={1} className="custom-class" />)
 
       const wrapper = container.firstChild as HTMLElement
       expect(wrapper).toHaveClass('custom-class')

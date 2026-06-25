@@ -13,11 +13,9 @@ type DatasetInfoProps = {
   expand: boolean
 }
 
-const DatasetInfo = ({
-  expand,
-}: DatasetInfoProps) => {
+const DatasetInfo = ({ expand }: DatasetInfoProps) => {
   const { t } = useTranslation()
-  const dataset = useDatasetDetailContextWithSelector(state => state.dataset) as DataSet
+  const dataset = useDatasetDetailContextWithSelector((state) => state.dataset) as DataSet
   const iconInfo = dataset.icon_info || {
     icon: '📙',
     icon_type: 'emoji',
@@ -35,7 +33,11 @@ const DatasetInfo = ({
       )}
       aria-label={!expand ? dataset.name : undefined}
     >
-      <div className={cn(expand ? 'flex w-full items-start gap-2' : 'flex items-center justify-center')}>
+      <div
+        className={cn(
+          expand ? 'flex w-full items-start gap-2' : 'flex items-center justify-center',
+        )}
+      >
         <div className="flex shrink-0 items-center">
           <AppIcon
             size="medium"
@@ -62,8 +64,15 @@ const DatasetInfo = ({
                 )}
                 {!!(!isExternalProvider && dataset.doc_form && dataset.indexing_technique) && (
                   <>
-                    <span className="shrink-0 truncate">{t(`chunkingMode.${DOC_FORM_TEXT[dataset.doc_form]}`, { ns: 'dataset' })}</span>
-                    <span className="min-w-0 truncate">{formatIndexingTechniqueAndMethod(dataset.indexing_technique, dataset.retrieval_model_dict?.search_method)}</span>
+                    <span className="shrink-0 truncate">
+                      {t(`chunkingMode.${DOC_FORM_TEXT[dataset.doc_form]}`, { ns: 'dataset' })}
+                    </span>
+                    <span className="min-w-0 truncate">
+                      {formatIndexingTechniqueAndMethod(
+                        dataset.indexing_technique,
+                        dataset.retrieval_model_dict?.search_method,
+                      )}
+                    </span>
                   </>
                 )}
               </div>

@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { renderWithSystemFeatures } from '@/__tests__/utils/mock-system-features'
 import { RoleRouteGuard } from '../role-route-guard'
 
@@ -9,7 +9,9 @@ const mocks = vi.hoisted(() => ({
   redirect: vi.fn((url: string) => {
     throw new Error(`NEXT_REDIRECT:${url}`)
   }),
-  currentWorkspaceQueryOptions: vi.fn(() => ({ queryKey: ['console', 'workspaces', 'current', 'post'] })),
+  currentWorkspaceQueryOptions: vi.fn(() => ({
+    queryKey: ['console', 'workspaces', 'current', 'post'],
+  })),
   systemFeaturesQueryKey: vi.fn(() => ['console', 'systemFeatures', 'get']),
 }))
 
@@ -48,19 +50,14 @@ vi.mock('@/service/client', () => ({
 const mockUseQuery = vi.mocked(useQuery)
 
 function renderGuard(children: ReactNode) {
-  return renderWithSystemFeatures(
-    <RoleRouteGuard>
-      {children}
-    </RoleRouteGuard>,
-    {
-      systemFeatures: {
-        enable_app_deploy: true,
-      },
+  return renderWithSystemFeatures(<RoleRouteGuard>{children}</RoleRouteGuard>, {
+    systemFeatures: {
+      enable_app_deploy: true,
     },
-  )
+  })
 }
 
-const setCurrentWorkspaceQuery = (overrides: { role?: string, isPending?: boolean } = {}) => {
+const setCurrentWorkspaceQuery = (overrides: { role?: string; isPending?: boolean } = {}) => {
   mockUseQuery.mockReturnValue({
     data: overrides.role,
     isPending: overrides.isPending ?? false,
@@ -74,7 +71,17 @@ describe('RoleRouteGuard', () => {
     setCurrentWorkspaceQuery()
   })
 
-  it.each(['/', '/apps', '/app/app-1', '/deployments/create', '/snippets', '/explore/apps', '/tools', '/integrations', '/datasets'])('should allow %s without workspace role checks', (pathname) => {
+  it.each([
+    '/',
+    '/apps',
+    '/app/app-1',
+    '/deployments/create',
+    '/snippets',
+    '/explore/apps',
+    '/tools',
+    '/integrations',
+    '/datasets',
+  ])('should allow %s without workspace role checks', (pathname) => {
     mockPathname = pathname
 
     renderGuard(<div>content</div>)
@@ -88,16 +95,18 @@ describe('RoleRouteGuard', () => {
   it('should redirect deployments route when app deploy is disabled', () => {
     mockPathname = '/deployments/create'
 
-    expect(() => renderWithSystemFeatures(
-      <RoleRouteGuard>
-        <div>content</div>
-      </RoleRouteGuard>,
-      {
-        systemFeatures: {
-          enable_app_deploy: false,
+    expect(() =>
+      renderWithSystemFeatures(
+        <RoleRouteGuard>
+          <div>content</div>
+        </RoleRouteGuard>,
+        {
+          systemFeatures: {
+            enable_app_deploy: false,
+          },
         },
-      },
-    )).toThrow('NEXT_REDIRECT:/apps')
+      ),
+    ).toThrow('NEXT_REDIRECT:/apps')
 
     expect(mocks.redirect).toHaveBeenCalledWith('/apps')
     expect(mockUseQuery).not.toHaveBeenCalled()

@@ -1,5 +1,9 @@
-import type { Mock } from 'vitest'
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '@langgenius/dify-ui/dropdown-menu'
+import type { Mock } from 'vite-plus/test'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '@langgenius/dify-ui/dropdown-menu'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { openZendeskWindow } from '@/app/components/base/zendesk/utils'
 import { Plan } from '@/app/components/billing/type'
@@ -9,16 +13,17 @@ import { useModalContext } from '@/context/modal-context'
 import { useProviderContext } from '@/context/provider-context'
 import SupportMenu from '../support-menu'
 
-const { mockConfig, mockOpenZendeskWindow, mockMailToSupport, mockSetShowPricingModal } = vi.hoisted(() => ({
-  mockConfig: {
-    isCloudEdition: true,
-    supportEmailAddress: '',
-    zendeskWidgetKey: 'zendesk-key',
-  },
-  mockOpenZendeskWindow: vi.fn(),
-  mockMailToSupport: vi.fn(),
-  mockSetShowPricingModal: vi.fn(),
-}))
+const { mockConfig, mockOpenZendeskWindow, mockMailToSupport, mockSetShowPricingModal } =
+  vi.hoisted(() => ({
+    mockConfig: {
+      isCloudEdition: true,
+      supportEmailAddress: '',
+      zendeskWidgetKey: 'zendesk-key',
+    },
+    mockOpenZendeskWindow: vi.fn(),
+    mockMailToSupport: vi.fn(),
+    mockSetShowPricingModal: vi.fn(),
+  }))
 
 vi.mock('@/app/components/base/zendesk/utils', () => ({
   openZendeskWindow: mockOpenZendeskWindow,
@@ -78,7 +83,7 @@ describe('SupportMenu', () => {
 
   const renderSupportMenu = (onContactUsClick = vi.fn()) => {
     return render(
-      <DropdownMenu open={true} onOpenChange={() => { }}>
+      <DropdownMenu open={true} onOpenChange={() => {}}>
         <DropdownMenuTrigger>open</DropdownMenuTrigger>
         <DropdownMenuContent>
           <SupportMenu onContactUsClick={onContactUsClick} />
@@ -94,8 +99,15 @@ describe('SupportMenu', () => {
     expect(screen.getByText('common.userProfile.contactUs')).toBeInTheDocument()
     expect(screen.getByText('common.userProfile.forum')).toBeInTheDocument()
     expect(screen.getByText('common.userProfile.community')).toBeInTheDocument()
-    expect(screen.getByText('common.userProfile.contactUs').compareDocumentPosition(screen.getByText('common.userProfile.forum'))).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
-    expect(screen.getByRole('menuitem', { name: 'common.userProfile.forum' })).toHaveClass('mx-0', 'px-3')
+    expect(
+      screen
+        .getByText('common.userProfile.contactUs')
+        .compareDocumentPosition(screen.getByText('common.userProfile.forum')),
+    ).toBe(Node.DOCUMENT_POSITION_FOLLOWING)
+    expect(screen.getByRole('menuitem', { name: 'common.userProfile.forum' })).toHaveClass(
+      'mx-0',
+      'px-3',
+    )
 
     fireEvent.click(screen.getByRole('menuitem', { name: 'common.userProfile.contactUs' }))
 
@@ -113,10 +125,17 @@ describe('SupportMenu', () => {
     renderSupportMenu(onContactUsClick)
 
     expect(screen.getByText('common.userProfile.contactUs')).toHaveClass('text-text-disabled')
-    expect(screen.getByText('billing.upgradeBtn.encourageShort')).toHaveClass('system-xs-semibold-uppercase', 'text-saas-dify-blue-accessible')
+    expect(screen.getByText('billing.upgradeBtn.encourageShort')).toHaveClass(
+      'system-xs-semibold-uppercase',
+      'text-saas-dify-blue-accessible',
+    )
     expect(screen.queryByText('common.userProfile.emailSupport')).not.toBeInTheDocument()
 
-    fireEvent.click(screen.getByRole('menuitem', { name: 'common.userProfile.contactUs billing.upgradeBtn.encourageShort' }))
+    fireEvent.click(
+      screen.getByRole('menuitem', {
+        name: 'common.userProfile.contactUs billing.upgradeBtn.encourageShort',
+      }),
+    )
 
     expect(mockSetShowPricingModal).not.toHaveBeenCalled()
     expect(onContactUsClick).not.toHaveBeenCalled()
@@ -172,7 +191,12 @@ describe('SupportMenu', () => {
     expect(screen.queryByText('common.userProfile.contactUs')).not.toBeInTheDocument()
     expect(screen.getByText('common.userProfile.emailSupport')).toBeInTheDocument()
     expect(screen.queryByText('billing.upgradeBtn.encourageShort')).not.toBeInTheDocument()
-    expect(mailToSupport).toHaveBeenCalledWith('user@example.com', Plan.sandbox, '1.0.0', 'support@example.com')
+    expect(mailToSupport).toHaveBeenCalledWith(
+      'user@example.com',
+      Plan.sandbox,
+      '1.0.0',
+      'support@example.com',
+    )
   })
 
   it('hides dedicated support channels for non-Cloud sandbox plan without support email', () => {
@@ -197,7 +221,9 @@ describe('SupportMenu', () => {
     expect(screen.queryByText('common.userProfile.contactUs')).not.toBeInTheDocument()
     expect(screen.getByText('common.userProfile.emailSupport')).toBeInTheDocument()
     expect(mailToSupport).toHaveBeenCalledWith('user@example.com', Plan.team, '1.0.0', '')
-    expect(screen.getByRole('menuitem', { name: 'common.userProfile.emailSupport' })).toHaveAttribute('href', 'mailto:support@example.com')
+    expect(
+      screen.getByRole('menuitem', { name: 'common.userProfile.emailSupport' }),
+    ).toHaveAttribute('href', 'mailto:support@example.com')
   })
 
   it('has correct forum and community links', () => {

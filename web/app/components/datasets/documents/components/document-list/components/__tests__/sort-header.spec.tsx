@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 import SortHeader from '../sort-header'
 
 describe('SortHeader', () => {
@@ -40,9 +40,7 @@ describe('SortHeader', () => {
 
   describe('active state', () => {
     it('should have tertiary text color when active', () => {
-      const { container } = render(
-        <SortHeader {...defaultProps} currentSortField="created_at" />,
-      )
+      const { container } = render(<SortHeader {...defaultProps} currentSortField="created_at" />)
       const icon = container.querySelector('button span')
       expect(icon).toHaveClass('text-text-tertiary')
     })

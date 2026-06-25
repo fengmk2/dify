@@ -28,16 +28,17 @@ export type AccessControlStore = {
 export type AccessControlStoreApi = StoreApi<AccessControlStore>
 
 export function createAccessControlStore(initialDraft: AccessControlDraft) {
-  return createStore<AccessControlStore>(set => ({
+  return createStore<AccessControlStore>((set) => ({
     appId: initialDraft.appId ?? '',
     specificGroups: initialDraft.specificGroups ?? [],
-    setSpecificGroups: specificGroups => set({ specificGroups }),
+    setSpecificGroups: (specificGroups) => set({ specificGroups }),
     specificMembers: initialDraft.specificMembers ?? [],
-    setSpecificMembers: specificMembers => set({ specificMembers }),
+    setSpecificMembers: (specificMembers) => set({ specificMembers }),
     currentMenu: initialDraft.currentMenu,
-    setCurrentMenu: currentMenu => set({ currentMenu }),
+    setCurrentMenu: (currentMenu) => set({ currentMenu }),
     selectedGroupsForBreadcrumb: initialDraft.selectedGroupsForBreadcrumb ?? [],
-    setSelectedGroupsForBreadcrumb: selectedGroupsForBreadcrumb => set({ selectedGroupsForBreadcrumb }),
+    setSelectedGroupsForBreadcrumb: (selectedGroupsForBreadcrumb) =>
+      set({ selectedGroupsForBreadcrumb }),
   }))
 }
 

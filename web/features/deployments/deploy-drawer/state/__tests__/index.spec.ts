@@ -14,7 +14,7 @@ import {
   RuntimeInstanceStatus,
 } from '@dify/contracts/enterprise/types.gen'
 import { atom, createStore } from 'jotai'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 
 type QueryResult = {
   data?: {
@@ -62,16 +62,18 @@ const mockRollbackMutation = vi.hoisted<{ current: MutationResult }>(() => ({
 }))
 
 vi.mock('jotai-tanstack-query', () => ({
-  atomWithQuery: (createOptions: (get: Getter) => unknown) => atom((get) => {
-    createOptions(get)
-    return mockDeploymentOptionsQuery.current
-  }),
-  atomWithMutation: (createOptions: () => MutationOptions) => atom(() => {
-    const options = createOptions()
-    return options.mutationKey?.[0] === 'rollback'
-      ? mockRollbackMutation.current
-      : mockPromoteMutation.current
-  }),
+  atomWithQuery: (createOptions: (get: Getter) => unknown) =>
+    atom((get) => {
+      createOptions(get)
+      return mockDeploymentOptionsQuery.current
+    }),
+  atomWithMutation: (createOptions: () => MutationOptions) =>
+    atom(() => {
+      const options = createOptions()
+      return options.mutationKey?.[0] === 'rollback'
+        ? mockRollbackMutation.current
+        : mockPromoteMutation.current
+    }),
 }))
 
 vi.mock('@/service/client', () => ({
@@ -79,7 +81,7 @@ vi.mock('@/service/client', () => ({
     enterprise: {
       releaseService: {
         computeDeploymentOptions: {
-          queryOptions: ({ enabled, input }: { enabled: boolean, input: unknown }) => ({
+          queryOptions: ({ enabled, input }: { enabled: boolean; input: unknown }) => ({
             enabled,
             input,
             queryKey: ['computeDeploymentOptions', input],
@@ -288,7 +290,11 @@ describe('deploy drawer state', () => {
       envVarSlots: [envVarSlot()],
     })
 
-    store.set(state.selectDeployBindingAtom, 'langgenius/openai:PLUGIN_CATEGORY_MODEL', 'credential-1')
+    store.set(
+      state.selectDeployBindingAtom,
+      'langgenius/openai:PLUGIN_CATEGORY_MODEL',
+      'credential-1',
+    )
     store.set(state.setDeployEnvVarAtom, 'API_KEY', {
       value: 'secret',
       valueSource: EnvVarValueSource.ENV_VAR_VALUE_SOURCE_LITERAL,
@@ -388,9 +394,11 @@ describe('deploy drawer state', () => {
   it('should submit a promote deployment with selected credentials and env vars', async () => {
     const state = await loadState()
     const store = createStore()
-    mockPromoteMutate.mockImplementation((_variables: unknown, options?: { onSuccess?: () => void }) => {
-      options?.onSuccess?.()
-    })
+    mockPromoteMutate.mockImplementation(
+      (_variables: unknown, options?: { onSuccess?: () => void }) => {
+        options?.onSuccess?.()
+      },
+    )
     store.set(state.deployReadyFormConfigAtom, deployConfig())
     setQueryOptions({
       credentialSlots: [

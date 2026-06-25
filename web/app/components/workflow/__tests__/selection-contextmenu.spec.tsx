@@ -170,14 +170,14 @@ describe('SelectionContextmenu', () => {
     await waitFor(() => {
       expect(screen.getByRole('menuitem', { name: /common.copy/ })).toBeInTheDocument()
     })
-    expect(screen.queryByRole('menuitem', { name: /Create Snippet|snippet\.createDialogTitle/ })).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('menuitem', { name: /Create Snippet|snippet\.createDialogTitle/ }),
+    ).not.toBeInTheDocument()
     expect(screen.queryByTestId('create-snippet-dialog')).not.toBeInTheDocument()
   })
 
   it('should stay hidden when only one node is selected', async () => {
-    const nodes = [
-      createNode({ id: 'n1', selected: true, width: 80, height: 40 }),
-    ]
+    const nodes = [createNode({ id: 'n1', selected: true, width: 80, height: 40 })]
 
     const { store } = renderSelectionMenu({ nodes })
 
@@ -212,8 +212,8 @@ describe('SelectionContextmenu', () => {
 
     fireEvent.click(screen.getByTestId('selection-contextmenu-item-left'))
 
-    expect(latestNodes.find(node => node.id === 'n1')?.position.x).toBe(20)
-    expect(latestNodes.find(node => node.id === 'n2')?.position.x).toBe(20)
+    expect(latestNodes.find((node) => node.id === 'n1')?.position.x).toBe(20)
+    expect(latestNodes.find((node) => node.id === 'n2')?.position.x).toBe(20)
     expect(store.getState().contextMenuTarget).toBeUndefined()
     expect(store.getState().helpLineHorizontal).toBeUndefined()
     expect(store.getState().helpLineVertical).toBeUndefined()
@@ -245,7 +245,7 @@ describe('SelectionContextmenu', () => {
 
     fireEvent.click(screen.getByTestId('selection-contextmenu-item-distributeHorizontal'))
 
-    expect(latestNodes.find(node => node.id === 'n2')?.position.x).toBe(150)
+    expect(latestNodes.find((node) => node.id === 'n2')?.position.x).toBe(150)
   })
 
   it('should ignore child nodes when the selected container is aligned', async () => {
@@ -284,9 +284,9 @@ describe('SelectionContextmenu', () => {
 
     fireEvent.click(screen.getByTestId('selection-contextmenu-item-left'))
 
-    expect(latestNodes.find(node => node.id === 'container')?.position.x).toBe(40)
-    expect(latestNodes.find(node => node.id === 'other')?.position.x).toBe(40)
-    expect(latestNodes.find(node => node.id === 'child')?.position.x).toBe(210)
+    expect(latestNodes.find((node) => node.id === 'container')?.position.x).toBe(40)
+    expect(latestNodes.find((node) => node.id === 'other')?.position.x).toBe(40)
+    expect(latestNodes.find((node) => node.id === 'child')?.position.x).toBe(210)
   })
 
   it('should cancel when align bounds cannot be resolved', () => {
@@ -322,8 +322,8 @@ describe('SelectionContextmenu', () => {
     fireEvent.click(screen.getByTestId('selection-contextmenu-item-left'))
 
     expect(store.getState().contextMenuTarget).toBeUndefined()
-    expect(latestNodes.find(node => node.id === 'n1')?.position.x).toBe(0)
-    expect(latestNodes.find(node => node.id === 'n2')?.position.x).toBe(80)
+    expect(latestNodes.find((node) => node.id === 'n1')?.position.x).toBe(0)
+    expect(latestNodes.find((node) => node.id === 'n2')?.position.x).toBe(80)
   })
 
   it('should cancel when alignable nodes shrink to one item', () => {
@@ -335,7 +335,13 @@ describe('SelectionContextmenu', () => {
         height: 20,
         data: { _children: [{ nodeId: 'child', nodeType: 'code' as never }] },
       }),
-      createNode({ id: 'child', selected: true, position: { x: 80, y: 20 }, width: 40, height: 20 }),
+      createNode({
+        id: 'child',
+        selected: true,
+        position: { x: 80, y: 20 },
+        width: 40,
+        height: 20,
+      }),
     ]
 
     const { store } = renderSelectionMenu({ nodes })
@@ -347,7 +353,7 @@ describe('SelectionContextmenu', () => {
     fireEvent.click(screen.getByTestId('selection-contextmenu-item-left'))
 
     expect(store.getState().contextMenuTarget).toBeUndefined()
-    expect(latestNodes.find(node => node.id === 'container')?.position.x).toBe(0)
-    expect(latestNodes.find(node => node.id === 'child')?.position.x).toBe(80)
+    expect(latestNodes.find((node) => node.id === 'container')?.position.x).toBe(0)
+    expect(latestNodes.find((node) => node.id === 'child')?.position.x).toBe(80)
   })
 })

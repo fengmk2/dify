@@ -1,7 +1,10 @@
 'use client'
 
 import type { ToolSettingTarget } from '../types'
-import type { AgentProviderTool, AgentToolAction } from '@/features/agent-v2/agent-composer/form-state'
+import type {
+  AgentProviderTool,
+  AgentToolAction,
+} from '@/features/agent-v2/agent-composer/form-state'
 import { Button } from '@langgenius/dify-ui/button'
 import { cn } from '@langgenius/dify-ui/cn'
 import {
@@ -18,9 +21,7 @@ import {
 import { StatusDot } from '@langgenius/dify-ui/status-dot'
 import { useCallback, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  AuthCategory,
-} from '@/app/components/plugins/plugin-auth'
+import { AuthCategory } from '@/app/components/plugins/plugin-auth'
 import ApiKeyModal from '@/app/components/plugins/plugin-auth/authorize/api-key-modal'
 import AuthorizedInNode from '@/app/components/plugins/plugin-auth/authorized-in-node'
 import { useInvalidPluginCredentialInfoHook } from '@/app/components/plugins/plugin-auth/hooks/use-credential'
@@ -39,13 +40,7 @@ function ProviderIcon({
   iconClassName: string
 }) {
   if (icon) {
-    return (
-      <BlockIcon
-        className="shrink-0"
-        type={BlockEnum.Tool}
-        toolIcon={icon}
-      />
-    )
+    return <BlockIcon className="shrink-0" type={BlockEnum.Tool} toolIcon={icon} />
   }
 
   return (
@@ -64,11 +59,14 @@ function UnauthorizedCredentialStatus({
 }) {
   const { t } = useTranslation()
   const [isApiKeyModalOpen, setIsApiKeyModalOpen] = useState(false)
-  const pluginPayload = useMemo(() => ({
-    provider: tool.id,
-    category: AuthCategory.tool,
-    providerType: tool.providerType ?? CollectionType.builtIn,
-  }), [tool.id, tool.providerType])
+  const pluginPayload = useMemo(
+    () => ({
+      provider: tool.id,
+      category: AuthCategory.tool,
+      providerType: tool.providerType ?? CollectionType.builtIn,
+    }),
+    [tool.id, tool.providerType],
+  )
   const invalidPluginCredentialInfo = useInvalidPluginCredentialInfoHook(pluginPayload)
   const handleApiKeyModalOpen = useCallback(() => {
     setIsApiKeyModalOpen(true)
@@ -83,12 +81,7 @@ function UnauthorizedCredentialStatus({
 
   return (
     <>
-      <Button
-        variant="secondary"
-        size="small"
-        className="shrink-0"
-        onClick={handleApiKeyModalOpen}
-      >
+      <Button variant="secondary" size="small" className="shrink-0" onClick={handleApiKeyModalOpen}>
         {t('notAuthorized', { ns: 'tools' })}
         <StatusDot className="ml-2" status="warning" />
       </Button>
@@ -110,29 +103,28 @@ function CredentialStatus({
   tool: AgentProviderTool
   onCredentialChange: (credentialId?: string) => void
 }) {
-  const canSwitchCredential = (tool.providerType ?? CollectionType.builtIn) === CollectionType.builtIn && tool.allowDelete
-  const handleAuthorizationItemClick = useCallback((id: string) => {
-    onCredentialChange(id === '__workspace_default__' ? undefined : id || undefined)
-  }, [onCredentialChange])
-  const handleDefaultCredentialChange = useCallback((id?: string) => {
-    if (!tool.credentialId && id)
-      onCredentialChange(id)
-  }, [onCredentialChange, tool.credentialId])
+  const canSwitchCredential =
+    (tool.providerType ?? CollectionType.builtIn) === CollectionType.builtIn && tool.allowDelete
+  const handleAuthorizationItemClick = useCallback(
+    (id: string) => {
+      onCredentialChange(id === '__workspace_default__' ? undefined : id || undefined)
+    },
+    [onCredentialChange],
+  )
+  const handleDefaultCredentialChange = useCallback(
+    (id?: string) => {
+      if (!tool.credentialId && id) onCredentialChange(id)
+    },
+    [onCredentialChange, tool.credentialId],
+  )
 
-  if (tool.credentialVariant === 'none')
-    return null
+  if (tool.credentialVariant === 'none') return null
 
   if (tool.credentialVariant === 'unauthorized') {
-    return (
-      <UnauthorizedCredentialStatus
-        tool={tool}
-        onCredentialChange={onCredentialChange}
-      />
-    )
+    return <UnauthorizedCredentialStatus tool={tool} onCredentialChange={onCredentialChange} />
   }
 
-  if (!canSwitchCredential)
-    return null
+  if (!canSwitchCredential) return null
 
   return (
     <div className="shrink-0">
@@ -232,9 +224,7 @@ export function AgentProviderToolItem({
       className="overflow-hidden rounded-lg border-[0.5px] border-components-panel-border bg-components-panel-on-panel-item-bg p-1 shadow-xs shadow-shadow-shadow-3"
     >
       <div className="flex min-h-7 items-center gap-1 rounded-lg py-0.5 pr-0.5 pl-1">
-        <CollapsibleTrigger
-          className="group min-h-0 min-w-0 flex-1 justify-start gap-2 rounded-md px-0 pr-1 text-left hover:not-data-disabled:bg-transparent hover:not-data-disabled:text-text-secondary data-panel-open:text-text-secondary"
-        >
+        <CollapsibleTrigger className="group min-h-0 min-w-0 flex-1 justify-start gap-2 rounded-md px-0 pr-1 text-left hover:not-data-disabled:bg-transparent hover:not-data-disabled:text-text-secondary data-panel-open:text-text-secondary">
           <ProviderIcon icon={icon} iconClassName={tool.iconClassName} />
           <span className="flex min-w-0 items-center">
             <span className="min-w-0 truncate system-sm-medium text-text-primary">
@@ -255,7 +245,9 @@ export function AgentProviderToolItem({
                 aria-label={t('agentDetail.configure.tools.moreActions', { name: tool.name })}
                 className="flex size-6 shrink-0 items-center justify-center rounded-md text-text-tertiary hover:bg-state-base-hover hover:text-text-secondary focus-visible:ring-2 focus-visible:ring-state-accent-solid focus-visible:outline-hidden data-popup-open:bg-state-base-hover"
               >
-                <span className="sr-only">{t('agentDetail.configure.tools.moreActions', { name: tool.name })}</span>
+                <span className="sr-only">
+                  {t('agentDetail.configure.tools.moreActions', { name: tool.name })}
+                </span>
                 <span aria-hidden className="i-ri-more-fill size-4" />
               </DropdownMenuTrigger>
               <DropdownMenuContent placement="bottom-end" sideOffset={4} popupClassName="w-44">
@@ -276,7 +268,7 @@ export function AgentProviderToolItem({
 
       <CollapsiblePanel>
         <div className="flex flex-col">
-          {tool.actions.map(action => (
+          {tool.actions.map((action) => (
             <ProviderToolActionItem
               key={action.id}
               action={action}

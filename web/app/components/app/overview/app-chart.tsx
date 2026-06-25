@@ -57,7 +57,7 @@ type IBizChartProps = {
 
 type IChartProps = {
   className?: string
-  basicInfo: { title: string, explanation: string, timePeriod: string }
+  basicInfo: { title: string; explanation: string; timePeriod: string }
   valueKey?: string
   isAvg?: boolean
   unit?: string
@@ -95,7 +95,9 @@ const Chart: React.FC<IChartProps> = ({
   const tokenSummary = getTokenSummary(statistics)
 
   return (
-    <div className={`flex h-[316px] w-full flex-col overflow-hidden rounded-xl border-[0.5px] border-components-panel-border bg-components-panel-on-panel-item-bg ${className ?? ''}`}>
+    <div
+      className={`flex h-[316px] w-full flex-col overflow-hidden rounded-xl border-[0.5px] border-components-panel-border bg-components-panel-on-panel-item-bg ${className ?? ''}`}
+    >
       <div className="flex h-11 shrink-0 items-center px-6 pt-6 pb-1">
         <Basic name={title} type={timePeriod} hoverTip={explanation} />
       </div>
@@ -103,24 +105,23 @@ const Chart: React.FC<IChartProps> = ({
         <Basic
           isExtraInLine={CHART_TYPE_CONFIG[chartType].showTokens}
           name={summaryValue}
-          type={!CHART_TYPE_CONFIG[chartType].showTokens
-            ? ''
-            : (
-                <span>
-                  {t('analysis.tokenUsage.consumed', { ns: 'appOverview' })}
-                  {' '}
-                  Tokens
-                  <span className="text-sm">
-                    <span className="ml-1 text-text-tertiary">(</span>
-                    <span className="text-orange-400">
-                      ~
-                      {tokenSummary}
-                    </span>
-                    <span className="text-text-tertiary">)</span>
-                  </span>
+          type={
+            !CHART_TYPE_CONFIG[chartType].showTokens ? (
+              ''
+            ) : (
+              <span>
+                {t('analysis.tokenUsage.consumed', { ns: 'appOverview' })} Tokens
+                <span className="text-sm">
+                  <span className="ml-1 text-text-tertiary">(</span>
+                  <span className="text-orange-400">~{tokenSummary}</span>
+                  <span className="text-text-tertiary">)</span>
                 </span>
-              )}
-          textStyle={{ main: `text-3xl! font-normal! ${summaryValue === '0' || summaryValue === '0 ms' ? 'text-text-quaternary!' : ''}` }}
+              </span>
+            )
+          }
+          textStyle={{
+            main: `text-3xl! font-normal! ${summaryValue === '0' || summaryValue === '0 ms' ? 'text-text-quaternary!' : ''}`,
+          }}
         />
       </div>
       <ReactECharts option={options} style={{ height: 240, width: '100%' }} />
@@ -132,7 +133,10 @@ type ChartResponse = {
   data: ChartRow[]
 }
 
-type UseChartData = (id: string, query?: PeriodParams['query']) => {
+type UseChartData = (
+  id: string,
+  query?: PeriodParams['query'],
+) => {
   data?: ChartResponse
   isLoading: boolean
 }
@@ -166,8 +170,7 @@ const createBizChartComponent = ({
     const { t } = useTranslation()
     const { data: response, isLoading } = useChartData(id, period.query)
 
-    if (isLoading || !response)
-      return <Loading />
+    if (isLoading || !response) return <Loading />
 
     const noDataFlag = !response.data || response.data.length === 0
     const fallbackKey = emptyValueKey ?? valueKey

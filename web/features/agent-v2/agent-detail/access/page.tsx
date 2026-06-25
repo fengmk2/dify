@@ -45,25 +45,25 @@ type AccessSurfaceCardProps = {
 const getAgentWebAppUrl = (agent?: AgentAppDetailWithSite) => {
   const site = agent?.site as AgentWebAppSite | null | undefined
   const token = site?.access_token ?? site?.code
-  if (!token)
-    return ''
+  if (!token) return ''
 
-  const baseUrl = site?.app_base_url || (typeof window === 'undefined' ? '' : window.location.origin)
+  const baseUrl =
+    site?.app_base_url || (typeof window === 'undefined' ? '' : window.location.origin)
   return `${baseUrl.replace(/\/$/, '')}/agent/${token}`
 }
 
-export function AgentAccessPage({
-  agentId,
-}: AgentAccessPageProps) {
+export function AgentAccessPage({ agentId }: AgentAccessPageProps) {
   const { t } = useTranslation('agentV2')
   const docLink = useDocLink()
-  const agentQuery = useQuery(consoleQuery.agent.byAgentId.get.queryOptions({
-    input: {
-      params: {
-        agent_id: agentId,
+  const agentQuery = useQuery(
+    consoleQuery.agent.byAgentId.get.queryOptions({
+      input: {
+        params: {
+          agent_id: agentId,
+        },
       },
-    },
-  }))
+    }),
+  )
   const [isWebAppEnabled, setIsWebAppEnabled] = useState(true)
   const [isServiceApiEnabled, setIsServiceApiEnabled] = useState(true)
   const webAppUrl = getAgentWebAppUrl(agentQuery.data)
@@ -78,9 +78,7 @@ export function AgentAccessPage({
     >
       <header className="h-15.5 shrink-0 px-6 pt-3 pb-2">
         <div className="min-w-0">
-          <h2 className="system-xl-semibold text-text-primary">
-            {t('agentDetail.access.title')}
-          </h2>
+          <h2 className="system-xl-semibold text-text-primary">{t('agentDetail.access.title')}</h2>
           <p className="mt-1 flex min-w-0 flex-wrap items-center gap-x-0.5 system-xs-regular text-text-tertiary">
             <span>{t('agentDetail.access.description')}</span>
             <a
@@ -121,20 +119,42 @@ export function AgentAccessPage({
                 size="medium"
                 nativeButton={false}
                 className="gap-1.5 px-3"
-                render={<a href={webAppUrl} target="_blank" rel="noreferrer" aria-label={t('agentDetail.access.webApp.actions.launch')} />}
+                render={
+                  <a
+                    href={webAppUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={t('agentDetail.access.webApp.actions.launch')}
+                  />
+                }
               >
                 <span aria-hidden className="i-ri-external-link-line size-4" />
                 {t('agentDetail.access.webApp.actions.launch')}
               </Button>
-              <Button variant="secondary" size="medium" className="gap-1.5 px-3" onClick={handleUnavailableAction}>
+              <Button
+                variant="secondary"
+                size="medium"
+                className="gap-1.5 px-3"
+                onClick={handleUnavailableAction}
+              >
                 <span aria-hidden className="i-ri-window-line size-4" />
                 {t('agentDetail.access.webApp.actions.embedded')}
               </Button>
-              <Button variant="secondary" size="medium" className="gap-1.5 px-3" onClick={handleUnavailableAction}>
+              <Button
+                variant="secondary"
+                size="medium"
+                className="gap-1.5 px-3"
+                onClick={handleUnavailableAction}
+              >
                 <span aria-hidden className="i-ri-paint-brush-line size-4" />
                 {t('agentDetail.access.webApp.actions.customize')}
               </Button>
-              <Button variant="secondary" size="medium" className="gap-1.5 px-3" onClick={handleUnavailableAction}>
+              <Button
+                variant="secondary"
+                size="medium"
+                className="gap-1.5 px-3"
+                onClick={handleUnavailableAction}
+              >
                 <span aria-hidden className="i-ri-equalizer-line size-4" />
                 {t('agentDetail.access.webApp.actions.settings')}
               </Button>
@@ -151,7 +171,12 @@ export function AgentAccessPage({
               copyLabel={t('agentDetail.access.copyServiceEndpoint')}
               onUnavailableAction={handleUnavailableAction}
             >
-              <Button variant="secondary" size="medium" className="gap-1.5 px-3" onClick={handleUnavailableAction}>
+              <Button
+                variant="secondary"
+                size="medium"
+                className="gap-1.5 px-3"
+                onClick={handleUnavailableAction}
+              >
                 <span aria-hidden className="i-ri-key-2-line size-4" />
                 {t('agentDetail.access.serviceApi.actions.apiKey')}
                 <span className="rounded-md bg-components-badge-bg-gray-soft px-1.5 code-xs-regular text-text-tertiary">
@@ -163,7 +188,14 @@ export function AgentAccessPage({
                 size="medium"
                 nativeButton={false}
                 className="gap-1.5 px-3"
-                render={<a href={docLink('/use-dify/publish/developing-with-apis')} target="_blank" rel="noreferrer" aria-label={t('agentDetail.access.serviceApi.actions.apiReference')} />}
+                render={
+                  <a
+                    href={docLink('/use-dify/publish/developing-with-apis')}
+                    target="_blank"
+                    rel="noreferrer"
+                    aria-label={t('agentDetail.access.serviceApi.actions.apiReference')}
+                  />
+                }
               >
                 <span aria-hidden className="i-ri-book-open-line size-4" />
                 {t('agentDetail.access.serviceApi.actions.apiReference')}
@@ -218,23 +250,31 @@ function AccessSurfaceCard({
       <div className="px-4 pt-4 pb-4">
         <div className="flex min-w-0 items-center gap-3">
           <div className="flex min-w-0 flex-1 items-center gap-2">
-            <span className={cn('flex size-6 shrink-0 items-center justify-center rounded-lg', iconClassName)}>
+            <span
+              className={cn(
+                'flex size-6 shrink-0 items-center justify-center rounded-lg',
+                iconClassName,
+              )}
+            >
               <span aria-hidden className={cn(icon, 'size-4')} />
             </span>
-            <h3 className="truncate system-md-semibold text-text-secondary">
-              {title}
-            </h3>
+            <h3 className="truncate system-md-semibold text-text-secondary">{title}</h3>
             {badge}
           </div>
 
           <div className="flex shrink-0 items-center gap-3">
-            <span className={cn(
-              'inline-flex items-center gap-1 system-xs-semibold-uppercase',
-              enabled ? 'text-util-colors-green-green-700' : 'text-text-tertiary',
-            )}
+            <span
+              className={cn(
+                'inline-flex items-center gap-1 system-xs-semibold-uppercase',
+                enabled ? 'text-util-colors-green-green-700' : 'text-text-tertiary',
+              )}
             >
               <StatusDot status={enabled ? 'success' : 'disabled'} size="small" />
-              {t(enabled ? 'agentDetail.access.status.inService' : 'agentDetail.access.status.outOfService')}
+              {t(
+                enabled
+                  ? 'agentDetail.access.status.inService'
+                  : 'agentDetail.access.status.outOfService',
+              )}
             </span>
             <Switch
               size="md"
@@ -246,11 +286,12 @@ function AccessSurfaceCard({
         </div>
 
         <div className="mt-3">
-          <div className="system-xs-medium text-text-tertiary">
-            {endpointLabel}
-          </div>
+          <div className="system-xs-medium text-text-tertiary">{endpointLabel}</div>
           <div className="mt-1 flex h-8 min-w-0 items-center rounded-lg bg-components-input-bg-normal px-2">
-            <span className="min-w-0 flex-1 truncate system-sm-regular text-text-secondary" translate="no">
+            <span
+              className="min-w-0 flex-1 truncate system-sm-regular text-text-secondary"
+              translate="no"
+            >
               {endpoint}
             </span>
             <Button

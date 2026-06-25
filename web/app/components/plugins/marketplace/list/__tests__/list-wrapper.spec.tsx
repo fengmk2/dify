@@ -1,7 +1,7 @@
 import type { MarketplaceCollection } from '../../types'
 import type { Plugin } from '@/app/components/plugins/types'
 import { render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import ListWrapper from '../list-wrapper'
 
 const mockMarketplaceData = vi.hoisted(() => ({
@@ -16,10 +16,12 @@ const mockMarketplaceData = vi.hoisted(() => ({
 
 vi.mock('#i18n', () => ({
   useTranslation: () => ({
-    t: (key: string, options?: { ns?: string, num?: number }) =>
+    t: (key: string, options?: { ns?: string; num?: number }) =>
       key === 'marketplace.pluginsResult' && options?.ns === 'plugin'
         ? `${options.num} plugins found`
-        : options?.ns ? `${options.ns}.${key}` : key,
+        : options?.ns
+          ? `${options.ns}.${key}`
+          : key,
   }),
 }))
 
@@ -28,7 +30,11 @@ vi.mock('../../state', () => ({
 }))
 
 vi.mock('@/app/components/base/loading', () => ({
-  default: ({ className }: { className?: string }) => <div data-testid="loading" className={className}>loading</div>,
+  default: ({ className }: { className?: string }) => (
+    <div data-testid="loading" className={className}>
+      loading
+    </div>
+  ),
 }))
 
 vi.mock('../../sort-dropdown', () => ({
@@ -36,7 +42,9 @@ vi.mock('../../sort-dropdown', () => ({
 }))
 
 vi.mock('../index', () => ({
-  default: ({ plugins }: { plugins?: Plugin[] }) => <div data-testid="list">{plugins?.length ?? 'collections'}</div>,
+  default: ({ plugins }: { plugins?: Plugin[] }) => (
+    <div data-testid="list">{plugins?.length ?? 'collections'}</div>
+  ),
 }))
 
 describe('ListWrapper', () => {

@@ -10,9 +10,7 @@ import {
   deploymentStatusDotTextClassName,
 } from '../../shared/ui/deployment-status-style'
 
-export function DeployedToBadge({ item }: {
-  item: ReleaseDeployment
-}) {
+export function DeployedToBadge({ item }: { item: ReleaseDeployment }) {
   const { t } = useTranslation('deployments')
   const status = item.status
   const statusLabel = t(`versions.deployedStatus.${status}`)

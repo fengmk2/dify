@@ -1,8 +1,5 @@
-import { describe, expect, it, vi } from 'vitest'
-import {
-  FormTypeEnum,
-  ModelTypeEnum,
-} from '../declarations'
+import { describe, expect, it, vi } from 'vite-plus/test'
+import { FormTypeEnum, ModelTypeEnum } from '../declarations'
 import {
   genModelNameFormSchema,
   genModelTypeFormSchema,

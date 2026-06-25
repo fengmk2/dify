@@ -1,5 +1,5 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 
 // Capture the onOpenChange callback to simulate hover interactions
 let capturedOnOpenChange: ((open: boolean) => void) | null = null
@@ -10,16 +10,19 @@ vi.mock('@floating-ui/react', () => ({
   shift: vi.fn(),
   offset: vi.fn(),
   FloatingFocusManager: ({ children }: { children: React.ReactNode }) => (
-    <div data-testid="floating-focus-manager">
-      {children}
-    </div>
+    <div data-testid="floating-focus-manager">{children}</div>
   ),
   useFloating: ({ onOpenChange }: { onOpenChange?: (open: boolean) => void } = {}) => {
     capturedOnOpenChange = onOpenChange ?? null
     return {
       refs: { setReference: vi.fn(), setFloating: vi.fn() },
       floatingStyles: {},
-      context: { open: false, onOpenChange: vi.fn(), refs: { domReference: { current: null } }, nodeId: undefined },
+      context: {
+        open: false,
+        onOpenChange: vi.fn(),
+        refs: { domReference: { current: null } },
+        nodeId: undefined,
+      },
     }
   },
   useHover: () => ({}),
@@ -32,8 +35,10 @@ vi.mock('@floating-ui/react', () => ({
 }))
 
 vi.mock('@/app/components/base/action-button', () => {
-  const comp = ({ children, onClick }: { children: React.ReactNode, onClick: () => void }) => (
-    <button data-testid="action-button" onClick={onClick}>{children}</button>
+  const comp = ({ children, onClick }: { children: React.ReactNode; onClick: () => void }) => (
+    <button data-testid="action-button" onClick={onClick}>
+      {children}
+    </button>
   )
   return {
     default: comp,
@@ -45,7 +50,7 @@ const { EditSlice } = await import('../edit-slice')
 
 // Helper to find divider span (zero-width space)
 const findDividerSpan = (container: HTMLElement) =>
-  Array.from(container.querySelectorAll('span')).find(s => s.textContent?.includes('\u200B'))
+  Array.from(container.querySelectorAll('span')).find((s) => s.textContent?.includes('\u200B'))
 
 describe('EditSlice', () => {
   const defaultProps = {
@@ -157,7 +162,8 @@ describe('EditSlice', () => {
     act(() => {
       capturedOnOpenChange?.(true)
     })
-    const floatingSpan = screen.getByTestId('floating-focus-manager').firstElementChild as HTMLElement
+    const floatingSpan = screen.getByTestId('floating-focus-manager')
+      .firstElementChild as HTMLElement
     fireEvent.mouseEnter(floatingSpan)
 
     await waitFor(() => {
@@ -173,7 +179,8 @@ describe('EditSlice', () => {
     act(() => {
       capturedOnOpenChange?.(true)
     })
-    const floatingSpan = screen.getByTestId('floating-focus-manager').firstElementChild as HTMLElement
+    const floatingSpan = screen.getByTestId('floating-focus-manager')
+      .firstElementChild as HTMLElement
     fireEvent.mouseEnter(floatingSpan)
 
     await waitFor(() => {
@@ -184,7 +191,9 @@ describe('EditSlice', () => {
 
     await waitFor(() => {
       expect(screen.getByText('S1').parentElement).not.toHaveClass('bg-state-destructive-solid!')
-      expect(screen.getByText('Sample text content')).not.toHaveClass('bg-state-destructive-hover-alt!')
+      expect(screen.getByText('Sample text content')).not.toHaveClass(
+        'bg-state-destructive-hover-alt!',
+      )
     })
   })
 })

@@ -43,25 +43,28 @@ export function EnvironmentStrip({ appInstanceId, rows, releaseRows }: Environme
         )}
       </div>
 
-      {!hasRuntimeRows
-        ? <EnvironmentEmptyState appInstanceId={appInstanceId} canDeploy={hasRelease} />
-        : (
-            <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,360px),1fr))] gap-3">
-              {previewRows.map(row => (
-                <EnvironmentTile
-                  key={row.environment.id}
-                  appInstanceId={appInstanceId}
-                  row={row}
-                  releaseRows={releaseRows}
-                />
-              ))}
-            </div>
-          )}
+      {!hasRuntimeRows ? (
+        <EnvironmentEmptyState appInstanceId={appInstanceId} canDeploy={hasRelease} />
+      ) : (
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,360px),1fr))] gap-3">
+          {previewRows.map((row) => (
+            <EnvironmentTile
+              key={row.environment.id}
+              appInstanceId={appInstanceId}
+              row={row}
+              releaseRows={releaseRows}
+            />
+          ))}
+        </div>
+      )}
     </section>
   )
 }
 
-function EnvironmentEmptyState({ appInstanceId, canDeploy }: {
+function EnvironmentEmptyState({
+  appInstanceId,
+  canDeploy,
+}: {
   appInstanceId: string
   canDeploy: boolean
 }) {
@@ -73,22 +76,26 @@ function EnvironmentEmptyState({ appInstanceId, canDeploy }: {
       variant="section"
       icon="i-ri-server-line"
       title={t('overview.strip.emptyTitle')}
-      description={canDeploy ? t('overview.strip.emptyDeployableDescription') : t('overview.strip.emptyDescription')}
+      description={
+        canDeploy
+          ? t('overview.strip.emptyDeployableDescription')
+          : t('overview.strip.emptyDescription')
+      }
       className="min-h-44"
-      action={canDeploy
-        ? (
-            <Button
-              type="button"
-              variant="primary"
-              size="medium"
-              className="gap-1.5"
-              onClick={() => openDeployDrawer({ appInstanceId })}
-            >
-              <span className="i-ri-rocket-line size-4 shrink-0" aria-hidden="true" />
-              {t('overview.strip.deployToNewEnvironment')}
-            </Button>
-          )
-        : undefined}
+      action={
+        canDeploy ? (
+          <Button
+            type="button"
+            variant="primary"
+            size="medium"
+            className="gap-1.5"
+            onClick={() => openDeployDrawer({ appInstanceId })}
+          >
+            <span className="i-ri-rocket-line size-4 shrink-0" aria-hidden="true" />
+            {t('overview.strip.deployToNewEnvironment')}
+          </Button>
+        ) : undefined
+      }
     />
   )
 }
@@ -98,7 +105,7 @@ const SKELETON_KEYS = ['a', 'b', 'c']
 function CardSkeletons() {
   return (
     <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,360px),1fr))] gap-3">
-      {SKELETON_KEYS.map(key => (
+      {SKELETON_KEYS.map((key) => (
         <EnvironmentTileSkeleton key={key} />
       ))}
     </div>
@@ -109,7 +116,10 @@ function EnvironmentTileSkeleton() {
   return (
     <article
       data-slot="deployment-overview-environment-tile-skeleton"
-      className={cn(OVERVIEW_CARD_CLASS_NAME, 'flex min-h-28 min-w-0 flex-col justify-between gap-4')}
+      className={cn(
+        OVERVIEW_CARD_CLASS_NAME,
+        'flex min-h-28 min-w-0 flex-col justify-between gap-4',
+      )}
     >
       <div className="flex min-w-0 items-center justify-between gap-3">
         <div className="flex min-w-0 flex-1 items-center gap-3">

@@ -40,8 +40,8 @@
   left: 0;
   width: 100%;
   padding: 8px 20px 8px 40px;
-  background: #FFFAEB;
-  border-top: 0.5px solid #FEF0C7;
+  background: #fffaeb;
+  border-top: 0.5px solid #fef0c7;
   border-radius: 12px;
   font-size: 12px;
   line-height: 18px;
@@ -61,7 +61,7 @@
 }
 
 .indexItem .warningTip .click {
-  color: #155EEF;
+  color: #155eef;
   cursor: pointer;
 }
 
@@ -120,12 +120,12 @@
   left: 20px;
   width: 32px;
   height: 32px;
-  background: #EEF4FF center no-repeat;
+  background: #eef4ff center no-repeat;
   border-radius: 8px;
 }
 
 .typeIcon.auto {
-  background-color: #F5F3FF;
+  background-color: #f5f3ff;
   background-image: url(../assets/zap-fast.svg);
 }
 
@@ -134,7 +134,7 @@
 }
 
 .typeIcon.qualified {
-  background-color: #FFF6ED;
+  background-color: #fff6ed;
   background-image: url(../assets/star-07.svg);
 }
 
@@ -151,8 +151,10 @@
 
 .radioItem:hover {
   background-color: #ffffff;
-  border-color: #B2CCFF;
-  box-shadow: 0px 12px 16px -4px rgba(16, 24, 40, 0.08), 0px 4px 6px -2px rgba(16, 24, 40, 0.03);
+  border-color: #b2ccff;
+  box-shadow:
+    0px 12px 16px -4px rgba(16, 24, 40, 0.08),
+    0px 4px 6px -2px rgba(16, 24, 40, 0.03);
 }
 
 .radioItem:hover .radio {
@@ -161,21 +163,25 @@
 
 .radioItem.active {
   border-width: 1.5px;
-  border-color: #528BFF;
-  box-shadow: 0px 1px 3px rgba(16, 24, 40, 0.1), 0px 1px 2px rgba(16, 24, 40, 0.06);
+  border-color: #528bff;
+  box-shadow:
+    0px 1px 3px rgba(16, 24, 40, 0.1),
+    0px 1px 2px rgba(16, 24, 40, 0.06);
 }
 
 .radioItem.active .radio {
   top: 25.5px;
   right: 19.5px;
   border-width: 5px;
-  border-color: #155EEF;
+  border-color: #155eef;
 }
 
 .radioItem.active:hover {
   border-width: 1.5px;
-  border-color: #528BFF;
-  box-shadow: 0px 1px 3px rgba(16, 24, 40, 0.1), 0px 1px 2px rgba(16, 24, 40, 0.06);
+  border-color: #528bff;
+  box-shadow:
+    0px 1px 3px rgba(16, 24, 40, 0.1),
+    0px 1px 2px rgba(16, 24, 40, 0.06);
 }
 
 .radioItem.active .typeIcon {
@@ -214,17 +220,17 @@
   align-items: center;
   padding: 0 6px;
   margin-left: 4px;
-  border: 1px solid #E0EAFF;
+  border: 1px solid #e0eaff;
   border-radius: 6px;
   font-weight: 500;
   font-size: 12px;
   line-height: 20px;
-  color: #444CE7;
+  color: #444ce7;
 }
 
 .typeFormBody {
   @apply px-16;
-  border-top: 1px solid #F2F4F7;
+  border-top: 1px solid #f2f4f7;
 }
 
 .formRow {
@@ -334,7 +340,7 @@
 }
 
 .calculating {
-  color: #98A2B3;
+  color: #98a2b3;
   font-size: 12px;
   line-height: 18px;
 }
@@ -343,13 +349,13 @@
   @apply flex flex-col items-center shrink-0;
   padding-top: 108px;
   width: 524px;
-  border-left: 0.5px solid #F2F4F7;
+  border-left: 0.5px solid #f2f4f7;
 }
 
 .tipCard {
   @apply flex flex-col items-start p-6;
   width: 320px;
-  background-color: #F9FAFB;
+  background-color: #f9fafb;
   box-shadow: 0px 1px 2px rgba(16, 24, 40, 0.05);
   border-radius: 12px;
 }
@@ -357,7 +363,7 @@
 .tipCard .icon {
   width: 32px;
   height: 32px;
-  border: 1px solid #EAECF0;
+  border: 1px solid #eaecf0;
   border-radius: 6px;
   background: center no-repeat url(../assets/book-open-01.svg);
   background-size: 16px;
@@ -395,7 +401,7 @@
   font-size: 12px;
   line-height: 18px;
   background: rgba(255, 255, 255, 0.9);
-  border-bottom: 0.5px solid #EAECF0;
+  border-bottom: 0.5px solid #eaecf0;
   backdrop-filter: blur(4px);
   animation: fix 0.5s;
 }

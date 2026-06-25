@@ -29,22 +29,13 @@ const config: KnipConfig = {
     '!**/test-utils.{ts,tsx}!',
     '!vitest.setup.ts!',
   ],
-  ignore: [
-    'public/**',
-  ],
+  ignore: ['public/**'],
   ignoreFiles: [
     'features/agent-v2/agent-detail/configure/components/orchestrate/memory.tsx',
     'features/agent-v2/agent-detail/configure/components/orchestrate/prompt-editor/option-menu.tsx',
   ],
-  ignoreBinaries: [
-    'only-allow',
-    'pbcopy',
-    'which',
-  ],
-  ignoreDependencies: [
-    '@iconify-json/*',
-    '@storybook/addon-onboarding',
-  ],
+  ignoreBinaries: ['only-allow', 'pbcopy', 'which'],
+  ignoreDependencies: ['@iconify-json/*', '@storybook/addon-onboarding'],
   /// keep-sorted
   rules: {
     // TODO: fix these warnings

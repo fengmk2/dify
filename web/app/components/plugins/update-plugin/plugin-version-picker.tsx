@@ -2,11 +2,7 @@
 import type { Placement } from '@langgenius/dify-ui/popover'
 import type { FC } from 'react'
 import { cn } from '@langgenius/dify-ui/cn'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@langgenius/dify-ui/popover'
+import { Popover, PopoverContent, PopoverTrigger } from '@langgenius/dify-ui/popover'
 import * as React from 'react'
 import { useCallback } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -54,23 +50,28 @@ const PluginVersionPicker: FC<Props> = ({
 
   const { data: res } = useVersionListOfPlugin(pluginID)
 
-  const handleSelect = useCallback(({ version, unique_identifier, isDowngrade }: {
-    version: string
-    unique_identifier: string
-    isDowngrade: boolean
-  }) => {
-    if (currentVersion === version)
-      return
-    onSelect({ version, unique_identifier, isDowngrade })
-    onShowChange(false)
-  }, [currentVersion, onSelect, onShowChange])
+  const handleSelect = useCallback(
+    ({
+      version,
+      unique_identifier,
+      isDowngrade,
+    }: {
+      version: string
+      unique_identifier: string
+      isDowngrade: boolean
+    }) => {
+      if (currentVersion === version) return
+      onSelect({ version, unique_identifier, isDowngrade })
+      onShowChange(false)
+    },
+    [currentVersion, onSelect, onShowChange],
+  )
 
   return (
     <Popover
       open={isShow}
       onOpenChange={(open) => {
-        if (!disabled)
-          onShowChange(open)
+        if (!disabled) onShowChange(open)
       }}
     >
       <PopoverTrigger
@@ -90,23 +91,32 @@ const PluginVersionPicker: FC<Props> = ({
           {t('detailPanel.switchVersion', { ns: 'plugin' })}
         </div>
         <div className="relative max-h-[224px] overflow-y-auto">
-          {res?.data.versions.map(version => (
+          {res?.data.versions.map((version) => (
             <div
               key={version.unique_identifier}
               className={cn(
                 'flex cursor-pointer items-center rounded-lg px-2 py-1 hover:bg-state-base-hover',
-                currentVersion === version.version && 'cursor-default opacity-30 hover:bg-transparent',
+                currentVersion === version.version &&
+                  'cursor-default opacity-30 hover:bg-transparent',
               )}
-              onClick={() => handleSelect({
-                version: version.version,
-                unique_identifier: version.unique_identifier,
-                isDowngrade: isEarlierThanVersion(version.version, currentVersion),
-              })}
+              onClick={() =>
+                handleSelect({
+                  version: version.version,
+                  unique_identifier: version.unique_identifier,
+                  isDowngrade: isEarlierThanVersion(version.version, currentVersion),
+                })
+              }
             >
               <div className="flex min-h-5 min-w-0 grow items-center gap-1 px-1">
-                <div className="min-w-0 grow truncate system-sm-medium text-text-secondary">{version.version}</div>
-                {currentVersion === version.version && <Badge className="shrink-0" variant="dimm" text="CURRENT" />}
-                <div className="shrink-0 system-xs-regular text-text-tertiary">{formatDate(version.created_at, format!)}</div>
+                <div className="min-w-0 grow truncate system-sm-medium text-text-secondary">
+                  {version.version}
+                </div>
+                {currentVersion === version.version && (
+                  <Badge className="shrink-0" variant="dimm" text="CURRENT" />
+                )}
+                <div className="shrink-0 system-xs-regular text-text-tertiary">
+                  {formatDate(version.created_at, format!)}
+                </div>
               </div>
             </div>
           ))}

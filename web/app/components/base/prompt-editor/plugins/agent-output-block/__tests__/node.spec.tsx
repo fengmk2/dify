@@ -1,14 +1,6 @@
-import type {
-  Klass,
-  LexicalEditor,
-  LexicalNode,
-} from 'lexical'
+import type { Klass, LexicalEditor, LexicalNode } from 'lexical'
 import { createEditor } from 'lexical'
-import {
-  $createAgentOutputBlockNode,
-  $isAgentOutputBlockNode,
-  AgentOutputBlockNode,
-} from '../node'
+import { $createAgentOutputBlockNode, $isAgentOutputBlockNode, AgentOutputBlockNode } from '../node'
 import {
   extractAgentOutputNames,
   getAgentOutputToken,
@@ -77,18 +69,21 @@ describe('AgentOutputBlockNode', () => {
   })
 
   it('should extract output names from bracketed and legacy tokens', () => {
-    expect([...extractAgentOutputNames('A [§output:summary:summary§] B §output:qna_report.pdf:qna_report.pdf§')]).toEqual([
-      'summary',
-      'qna_report.pdf',
-    ])
+    expect([
+      ...extractAgentOutputNames(
+        'A [§output:summary:summary§] B §output:qna_report.pdf:qna_report.pdf§',
+      ),
+    ]).toEqual(['summary', 'qna_report.pdf'])
   })
 
   it('should replace only matching output token names', () => {
-    expect(replaceAgentOutputName(
-      'Use [§output:summary:summary§] and §output:other:other§',
-      'summary',
-      'final_summary',
-    )).toBe('Use [§output:final_summary:final_summary§] and §output:other:other§')
+    expect(
+      replaceAgentOutputName(
+        'Use [§output:summary:summary§] and §output:other:other§',
+        'summary',
+        'final_summary',
+      ),
+    ).toBe('Use [§output:final_summary:final_summary§] and §output:other:other§')
   })
 
   it('should create node with helper and support type guard checks', () => {

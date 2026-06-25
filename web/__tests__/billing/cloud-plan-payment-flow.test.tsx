@@ -60,11 +60,7 @@ vi.mock('@/next/navigation', () => ({
 const setupAppContext = (overrides: Record<string, unknown> = {}) => {
   mockAppCtx = {
     isCurrentWorkspaceManager: true,
-    workspacePermissionKeys: [
-      'billing.view',
-      'billing.manage',
-      'billing.subscription.manage',
-    ],
+    workspacePermissionKeys: ['billing.view', 'billing.manage', 'billing.subscription.manage'],
     ...overrides,
   }
 }
@@ -85,12 +81,7 @@ const renderCloudPlanItem = ({
   return render(
     <>
       <ToastHost timeout={0} />
-      <CloudPlanItem
-        currentPlan={currentPlan}
-        plan={plan}
-        planRange={planRange}
-        canPay={canPay}
-      />
+      <CloudPlanItem currentPlan={currentPlan} plan={plan} planRange={planRange} canPay={canPay} />
     </>,
   )
 }

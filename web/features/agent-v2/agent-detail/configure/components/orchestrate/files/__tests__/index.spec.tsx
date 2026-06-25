@@ -1,7 +1,7 @@
 import type { AgentSoulConfigFormState } from '@/features/agent-v2/agent-composer/form-state'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor, within } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { defaultAgentSoulConfigFormState } from '@/features/agent-v2/agent-composer/form-state'
 import { AgentComposerProvider } from '@/features/agent-v2/agent-composer/provider'
 import { AgentDriveApiContextProvider } from '../../drive-context'
@@ -160,7 +160,9 @@ function renderWorkflowAgentFiles(initialDraft: AgentSoulConfigFormState = agent
 
   return render(
     <QueryClientProvider client={queryClient}>
-      <AgentDriveApiContextProvider value={{ agentId: 'agent-1', workflow: { appId: 'app-1', nodeId: 'node-1' } }}>
+      <AgentDriveApiContextProvider
+        value={{ agentId: 'agent-1', workflow: { appId: 'app-1', nodeId: 'node-1' } }}
+      >
         <AgentComposerProvider initialDraft={initialDraft}>
           <AgentFiles />
         </AgentComposerProvider>
@@ -308,14 +310,18 @@ describe('AgentFiles', () => {
   it('should open the shared detail dialog with the full file tree when the file row is clicked', async () => {
     renderAgentFiles()
 
-    fireEvent.click(screen.getByRole('button', {
-      name: 'brief.md',
-    }))
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: 'brief.md',
+      }),
+    )
 
     const dialog = screen.getByRole('dialog')
 
     expect(dialog).toBeInTheDocument()
-    expect(within(dialog).getByText('agent-roster-skill-detail-dialog-preview-image.png')).toBeInTheDocument()
+    expect(
+      within(dialog).getByText('agent-roster-skill-detail-dialog-preview-image.png'),
+    ).toBeInTheDocument()
     expect(within(dialog).getAllByText('brief.md')).toHaveLength(2)
     expect(mocks.agentFilePreviewQueryOptions).toHaveBeenCalledWith({
       input: {
@@ -327,7 +333,9 @@ describe('AgentFiles', () => {
         },
       },
     })
-    expect(await within(dialog).findByText('Preview content for files/brief.md')).toBeInTheDocument()
+    expect(
+      await within(dialog).findByText('Preview content for files/brief.md'),
+    ).toBeInTheDocument()
   })
 
   it('should preview the clicked file when SKILL.md also exists', async () => {
@@ -348,9 +356,11 @@ describe('AgentFiles', () => {
     }))
     renderAgentFiles(agentSkillFilesDraft)
 
-    fireEvent.click(screen.getByRole('button', {
-      name: 'run.py',
-    }))
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: 'run.py',
+      }),
+    )
 
     const dialog = screen.getByRole('dialog')
 
@@ -385,15 +395,19 @@ describe('AgentFiles', () => {
     }))
     renderAgentFiles(agentSkillFilesDraft)
 
-    fireEvent.click(screen.getByRole('button', {
-      name: 'run.py',
-    }))
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: 'run.py',
+      }),
+    )
 
     const dialog = screen.getByRole('dialog')
     const skillFile = within(dialog).getByRole('button', { name: 'SKILL.md' })
     fireEvent.click(skillFile)
 
-    expect(await within(dialog).findByText('Preview content for files/SKILL.md')).toBeInTheDocument()
+    expect(
+      await within(dialog).findByText('Preview content for files/SKILL.md'),
+    ).toBeInTheDocument()
 
     const scriptFile = within(dialog).getAllByRole('button', { name: 'run.py' }).at(-1)
     expect(scriptFile).toBeDefined()
@@ -425,9 +439,11 @@ describe('AgentFiles', () => {
     }))
     renderAgentFiles()
 
-    fireEvent.click(screen.getByRole('button', {
-      name: 'agent-roster-skill-detail-dialog-preview-image.png',
-    }))
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: 'agent-roster-skill-detail-dialog-preview-image.png',
+      }),
+    )
 
     expect(screen.getByRole('dialog')).toBeInTheDocument()
     expect(mocks.agentFileDownloadQueryOptions).toHaveBeenCalledWith({
@@ -455,13 +471,17 @@ describe('AgentFiles', () => {
     }))
     renderAgentFiles()
 
-    fireEvent.click(screen.getByRole('button', {
-      name: 'brief.md',
-    }))
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: 'brief.md',
+      }),
+    )
 
     const link = await screen.findByRole('link', { name: 'common.operation.download' })
 
-    expect(screen.getByText('agentV2.agentDetail.configure.files.preview.unsupported')).toBeInTheDocument()
+    expect(
+      screen.getByText('agentV2.agentDetail.configure.files.preview.unsupported'),
+    ).toBeInTheDocument()
     expect(link).toHaveAttribute('href', 'https://signed.example/files/brief.md')
     expect(screen.queryByText('Preview content for files/brief.md')).not.toBeInTheDocument()
   })
@@ -479,9 +499,11 @@ describe('AgentFiles', () => {
     }))
     renderWorkflowAgentFiles()
 
-    fireEvent.click(screen.getByRole('button', {
-      name: 'brief.md',
-    }))
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: 'brief.md',
+      }),
+    )
 
     expect(mocks.workflowAgentFilePreviewQueryOptions).toHaveBeenCalledWith({
       input: {
@@ -560,7 +582,9 @@ describe('AgentFiles', () => {
         files: [new File(['# Uploaded'], 'uploaded.md', { type: 'text/markdown' })],
       },
     })
-    fireEvent.click(screen.getByRole('button', { name: 'agentV2.agentDetail.configure.files.upload.action' }))
+    fireEvent.click(
+      screen.getByRole('button', { name: 'agentV2.agentDetail.configure.files.upload.action' }),
+    )
 
     await waitFor(() => {
       expect(mocks.agentFileCommitMutationFn).toHaveBeenCalledWith(
@@ -627,7 +651,9 @@ describe('AgentFiles', () => {
         files: [new File(['# Uploaded'], 'uploaded.md', { type: 'text/markdown' })],
       },
     })
-    fireEvent.click(screen.getByRole('button', { name: 'agentV2.agentDetail.configure.files.upload.action' }))
+    fireEvent.click(
+      screen.getByRole('button', { name: 'agentV2.agentDetail.configure.files.upload.action' }),
+    )
 
     await waitFor(() => {
       expect(mocks.workflowAgentFileCommitMutationFn).toHaveBeenCalledWith(
@@ -676,9 +702,11 @@ describe('AgentFiles', () => {
     })
     renderAgentFiles()
 
-    fireEvent.click(screen.getByRole('button', {
-      name: /agentV2\.agentDetail\.configure\.files\.remove.*agent-roster-skill-detail-dialog-preview-image\.png/,
-    }))
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: /agentV2\.agentDetail\.configure\.files\.remove.*agent-roster-skill-detail-dialog-preview-image\.png/,
+      }),
+    )
 
     await waitFor(() => {
       expect(mocks.agentFileDeleteMutationFn).toHaveBeenCalledWith(
@@ -694,7 +722,11 @@ describe('AgentFiles', () => {
       )
     })
     await waitFor(() => {
-      expect(screen.queryByRole('button', { name: 'agent-roster-skill-detail-dialog-preview-image.png' })).not.toBeInTheDocument()
+      expect(
+        screen.queryByRole('button', {
+          name: 'agent-roster-skill-detail-dialog-preview-image.png',
+        }),
+      ).not.toBeInTheDocument()
     })
     expect(screen.getByRole('button', { name: 'brief.md' })).toBeInTheDocument()
   })
@@ -726,9 +758,11 @@ describe('AgentFiles', () => {
     })
     renderWorkflowAgentFiles()
 
-    fireEvent.click(screen.getByRole('button', {
-      name: /agentV2\.agentDetail\.configure\.files\.remove.*agent-roster-skill-detail-dialog-preview-image\.png/,
-    }))
+    fireEvent.click(
+      screen.getByRole('button', {
+        name: /agentV2\.agentDetail\.configure\.files\.remove.*agent-roster-skill-detail-dialog-preview-image\.png/,
+      }),
+    )
 
     await waitFor(() => {
       expect(mocks.workflowAgentFileDeleteMutationFn).toHaveBeenCalledWith(
@@ -745,7 +779,11 @@ describe('AgentFiles', () => {
       )
     })
     await waitFor(() => {
-      expect(screen.queryByRole('button', { name: 'agent-roster-skill-detail-dialog-preview-image.png' })).not.toBeInTheDocument()
+      expect(
+        screen.queryByRole('button', {
+          name: 'agent-roster-skill-detail-dialog-preview-image.png',
+        }),
+      ).not.toBeInTheDocument()
     })
     expect(screen.getByRole('button', { name: 'brief.md' })).toBeInTheDocument()
   })
@@ -764,12 +802,18 @@ describe('AgentFiles', () => {
   it('should hide add and remove actions when readonly', () => {
     renderReadonlyAgentFiles()
 
-    expect(screen.getByRole('button', {
-      name: 'agent-roster-skill-detail-dialog-preview-image.png',
-    })).toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: 'agentV2.agentDetail.configure.files.add' })).not.toBeInTheDocument()
-    expect(screen.queryByRole('button', {
-      name: /agentV2\.agentDetail\.configure\.files\.remove.*agent-roster-skill-detail-dialog-preview-image\.png/,
-    })).not.toBeInTheDocument()
+    expect(
+      screen.getByRole('button', {
+        name: 'agent-roster-skill-detail-dialog-preview-image.png',
+      }),
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: 'agentV2.agentDetail.configure.files.add' }),
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', {
+        name: /agentV2\.agentDetail\.configure\.files\.remove.*agent-roster-skill-detail-dialog-preview-image\.png/,
+      }),
+    ).not.toBeInTheDocument()
   })
 })

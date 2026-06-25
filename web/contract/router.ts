@@ -26,7 +26,10 @@ import {
   learnDifyAppsContract,
 } from './console/explore'
 import { fileUploadContract } from './console/files'
-import { changePreferredProviderTypeContract, modelProvidersModelsContract } from './console/model-providers'
+import {
+  changePreferredProviderTypeContract,
+  modelProvidersModelsContract,
+} from './console/model-providers'
 import { notificationContract, notificationDismissContract } from './console/notification'
 import { pluginCheckInstalledContract, pluginLatestVersionsContract } from './console/plugins'
 import {
@@ -81,7 +84,12 @@ import {
   triggerSubscriptionUpdateContract,
   triggerSubscriptionVerifyContract,
 } from './console/trigger'
-import { trialAppDatasetsContract, trialAppInfoContract, trialAppParametersContract, trialAppWorkflowsContract } from './console/try-app'
+import {
+  trialAppDatasetsContract,
+  trialAppInfoContract,
+  trialAppParametersContract,
+  trialAppWorkflowsContract,
+} from './console/try-app'
 import {
   workflowDraftEnvironmentVariablesContract,
   workflowDraftUpdateConversationVariablesContract,
@@ -90,7 +98,13 @@ import {
 } from './console/workflow'
 import { workflowCommentContracts } from './console/workflow-comment'
 import { workspacesGetContract, workspaceSwitchContract } from './console/workspaces'
-import { collectionPluginsContract, collectionsContract, downloadPluginContract, searchAdvancedContract, templateDetailContract } from './marketplace'
+import {
+  collectionPluginsContract,
+  collectionsContract,
+  downloadPluginContract,
+  searchAdvancedContract,
+  templateDetailContract,
+} from './marketplace'
 
 export const marketplaceRouterContract = {
   collections: collectionsContract,

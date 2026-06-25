@@ -1,7 +1,7 @@
 import type { Props as CreateContentProps } from '../create-content'
 import { Popover } from '@langgenius/dify-ui/popover'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 import { DataType } from '../../types'
 import { CreateContent } from '../create-content'
 
@@ -173,14 +173,18 @@ describe('CreateContent', () => {
       const handleSave = vi.fn()
       renderCreateContent({ onSave: handleSave, hasBack: true })
 
-      expect(screen.getByRole('button', { name: /dataset\.metadata\.createMetadata\.back/ })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /dataset\.metadata\.createMetadata\.back/ }),
+      ).toBeInTheDocument()
     })
 
     it('should not show back button when hasBack is false', () => {
       const handleSave = vi.fn()
       renderCreateContent({ onSave: handleSave, hasBack: false })
 
-      expect(screen.queryByRole('button', { name: /dataset\.metadata\.createMetadata\.back/ })).not.toBeInTheDocument()
+      expect(
+        screen.queryByRole('button', { name: /dataset\.metadata\.createMetadata\.back/ }),
+      ).not.toBeInTheDocument()
     })
 
     it('should call onBack when back button is clicked', () => {
@@ -188,7 +192,9 @@ describe('CreateContent', () => {
       const handleBack = vi.fn()
       renderCreateContent({ onSave: handleSave, hasBack: true, onBack: handleBack })
 
-      fireEvent.click(screen.getByRole('button', { name: /dataset\.metadata\.createMetadata\.back/ }))
+      fireEvent.click(
+        screen.getByRole('button', { name: /dataset\.metadata\.createMetadata\.back/ }),
+      )
 
       expect(handleBack).toHaveBeenCalled()
     })

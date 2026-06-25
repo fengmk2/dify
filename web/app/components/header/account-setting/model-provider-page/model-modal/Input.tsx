@@ -33,8 +33,7 @@ const Input: FC<InputProps> = ({
       onChange(`${min}`)
       return
     }
-    if (!isNaN(maxNum) && Number.parseFloat(v) > maxNum)
-      onChange(`${max}`)
+    if (!isNaN(maxNum) && Number.parseFloat(v) > maxNum) onChange(`${max}`)
   }
 
   return (
@@ -52,8 +51,8 @@ const Input: FC<InputProps> = ({
           ${className || ''}
         `}
         placeholder={placeholder || ''}
-        onChange={e => onChange(e.target.value)}
-        onBlur={e => toLimit(e.target.value)}
+        onChange={(e) => onChange(e.target.value)}
+        onBlur={(e) => toLimit(e.target.value)}
         onFocus={onFocus}
         value={value}
         disabled={disabled}

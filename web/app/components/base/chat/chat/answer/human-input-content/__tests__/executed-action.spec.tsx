@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import ExecutedAction from '../executed-action'
 
 describe('ExecutedAction', () => {
@@ -18,6 +18,8 @@ describe('ExecutedAction', () => {
     expect(trans).toHaveAttribute('data-i18n-key', 'nodes.humanInput.userActions.triggered')
 
     // Check for the trigger icon class
-    expect(screen.getByTestId('executed-action').querySelector('.i-custom-vender-workflow-trigger-all')).toBeInTheDocument()
+    expect(
+      screen.getByTestId('executed-action').querySelector('.i-custom-vender-workflow-trigger-all'),
+    ).toBeInTheDocument()
   })
 })

@@ -11,7 +11,8 @@ import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const DEFAULT_DOCS_JSON_URL = 'https://raw.githubusercontent.com/langgenius/dify-docs/refs/heads/main/docs.json'
+const DEFAULT_DOCS_JSON_URL =
+  'https://raw.githubusercontent.com/langgenius/dify-docs/refs/heads/main/docs.json'
 const DOCS_JSON_URL = process.env.DOCS_JSON_URL || DEFAULT_DOCS_JSON_URL
 const OUTPUT_PATH = path.resolve(__dirname, '../types/doc-paths.ts')
 
@@ -62,10 +63,12 @@ type DocsJson = {
   [key: string]: unknown
 }
 
-const OPENAPI_BASE_URL = (process.env.DOCS_OPENAPI_BASE_URL || new URL('.', DOCS_JSON_URL).toString()).replace(/\/?$/, '/')
+const OPENAPI_BASE_URL = (
+  process.env.DOCS_OPENAPI_BASE_URL || new URL('.', DOCS_JSON_URL).toString()
+).replace(/\/?$/, '/')
 const DOCS_PRODUCTS = ['cloud', 'self-host'] as const
 
-type DocsProduct = typeof DOCS_PRODUCTS[number]
+type DocsProduct = (typeof DOCS_PRODUCTS)[number]
 type ProductAvailability = Record<string, Set<DocsProduct>>
 
 function isDocsProduct(segment: string): segment is DocsProduct {
@@ -78,11 +81,7 @@ function isDocsProduct(segment: string): segment is DocsProduct {
  * e.g., "获取知识库列表" -> "获取知识库列表"
  */
 function summaryToSlug(summary: string): string {
-  return summary
-    .toLowerCase()
-    .replace(/\s+/g, '-')
-    .replace(/-+/g, '-')
-    .replace(/^-|-$/g, '')
+  return summary.toLowerCase().replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '')
 }
 
 /**
@@ -97,44 +96,36 @@ function getFirstPathSegment(apiPath: string): string {
 /**
  * Recursively extract OpenAPI file paths from navigation structure
  */
-function extractOpenAPIPaths(item: NavItem | undefined, paths: Set<string> = new Set()): Set<string> {
-  if (!item)
-    return paths
+function extractOpenAPIPaths(
+  item: NavItem | undefined,
+  paths: Set<string> = new Set(),
+): Set<string> {
+  if (!item) return paths
 
   if (Array.isArray(item)) {
-    for (const el of item)
-      extractOpenAPIPaths(el, paths)
+    for (const el of item) extractOpenAPIPaths(el, paths)
 
     return paths
   }
 
   if (typeof item === 'object') {
-    if (item.openapi && typeof item.openapi === 'string')
-      paths.add(item.openapi)
+    if (item.openapi && typeof item.openapi === 'string') paths.add(item.openapi)
 
-    if (item.pages)
-      extractOpenAPIPaths(item.pages, paths)
+    if (item.pages) extractOpenAPIPaths(item.pages, paths)
 
-    if (item.groups)
-      extractOpenAPIPaths(item.groups, paths)
+    if (item.groups) extractOpenAPIPaths(item.groups, paths)
 
-    if (item.dropdowns)
-      extractOpenAPIPaths(item.dropdowns, paths)
+    if (item.dropdowns) extractOpenAPIPaths(item.dropdowns, paths)
 
-    if (item.languages)
-      extractOpenAPIPaths(item.languages, paths)
+    if (item.languages) extractOpenAPIPaths(item.languages, paths)
 
-    if (item.products)
-      extractOpenAPIPaths(item.products, paths)
+    if (item.products) extractOpenAPIPaths(item.products, paths)
 
-    if (item.tabs)
-      extractOpenAPIPaths(item.tabs, paths)
+    if (item.tabs) extractOpenAPIPaths(item.tabs, paths)
 
-    if (item.menu)
-      extractOpenAPIPaths(item.menu, paths)
+    if (item.menu) extractOpenAPIPaths(item.menu, paths)
 
-    if (item.versions)
-      extractOpenAPIPaths(item.versions, paths)
+    if (item.versions) extractOpenAPIPaths(item.versions, paths)
   }
 
   return paths
@@ -153,11 +144,10 @@ async function fetchOpenAPIAndExtractPaths(openapiPath: string): Promise<Endpoin
     return new Map()
   }
 
-  const spec = await response.json() as OpenAPISpec
+  const spec = (await response.json()) as OpenAPISpec
   const pathMap: EndpointPathMap = new Map()
 
-  if (!spec.paths)
-    return pathMap
+  if (!spec.paths) return pathMap
 
   const httpMethods = ['get', 'post', 'put', 'patch', 'delete'] as const
 
@@ -168,8 +158,7 @@ async function fetchOpenAPIAndExtractPaths(openapiPath: string): Promise<Endpoin
         // Try to get tag from operation, fallback to path segment
         const tag = operation.tags?.[0]
         const segment = tag ? summaryToSlug(tag) : getFirstPathSegment(apiPath)
-        if (!segment)
-          continue
+        if (!segment) continue
 
         const slug = summaryToSlug(operation.summary)
         // Skip empty slugs
@@ -188,12 +177,10 @@ async function fetchOpenAPIAndExtractPaths(openapiPath: string): Promise<Endpoin
  * Recursively extract all page paths from navigation structure
  */
 function extractPaths(item: NavItem | undefined, paths: Set<string> = new Set()): Set<string> {
-  if (!item)
-    return paths
+  if (!item) return paths
 
   if (Array.isArray(item)) {
-    for (const el of item)
-      extractPaths(el, paths)
+    for (const el of item) extractPaths(el, paths)
 
     return paths
   }
@@ -205,33 +192,25 @@ function extractPaths(item: NavItem | undefined, paths: Set<string> = new Set())
 
   if (typeof item === 'object') {
     // Handle pages array
-    if (item.pages)
-      extractPaths(item.pages, paths)
+    if (item.pages) extractPaths(item.pages, paths)
 
     // Handle groups array
-    if (item.groups)
-      extractPaths(item.groups, paths)
+    if (item.groups) extractPaths(item.groups, paths)
 
     // Handle dropdowns
-    if (item.dropdowns)
-      extractPaths(item.dropdowns, paths)
+    if (item.dropdowns) extractPaths(item.dropdowns, paths)
 
     // Handle languages
-    if (item.languages)
-      extractPaths(item.languages, paths)
+    if (item.languages) extractPaths(item.languages, paths)
 
-    if (item.products)
-      extractPaths(item.products, paths)
+    if (item.products) extractPaths(item.products, paths)
 
-    if (item.tabs)
-      extractPaths(item.tabs, paths)
+    if (item.tabs) extractPaths(item.tabs, paths)
 
-    if (item.menu)
-      extractPaths(item.menu, paths)
+    if (item.menu) extractPaths(item.menu, paths)
 
     // Handle versions in navigation
-    if (item.versions)
-      extractPaths(item.versions, paths)
+    if (item.versions) extractPaths(item.versions, paths)
   }
 
   return paths
@@ -240,21 +219,20 @@ function extractPaths(item: NavItem | undefined, paths: Set<string> = new Set())
 function addPathToGroup(groups: Record<string, Set<string>>, pathWithoutLang: string): void {
   const parts = pathWithoutLang.split('/')
   const section = parts[0]
-  if (!section)
-    return
+  if (!section) return
 
-  if (!groups[section])
-    groups[section] = new Set()
+  if (!groups[section]) groups[section] = new Set()
 
   groups[section]!.add(pathWithoutLang)
 }
 
-function getProductPathInfo(pathWithoutLang: string): { product: DocsProduct, pathWithoutProduct: string } | undefined {
+function getProductPathInfo(
+  pathWithoutLang: string,
+): { product: DocsProduct; pathWithoutProduct: string } | undefined {
   const parts = pathWithoutLang.split('/')
   const [product, ...rest] = parts
 
-  if (!product || !isDocsProduct(product) || rest.length === 0)
-    return undefined
+  if (!product || !isDocsProduct(product) || rest.length === 0) return undefined
 
   return {
     product,
@@ -265,19 +243,20 @@ function getProductPathInfo(pathWithoutLang: string): { product: DocsProduct, pa
 /**
  * Group paths by their prefix structure
  */
-function groupPathsBySection(paths: Set<string>): { groups: Record<string, Set<string>>, productAvailability: ProductAvailability } {
+function groupPathsBySection(paths: Set<string>): {
+  groups: Record<string, Set<string>>
+  productAvailability: ProductAvailability
+} {
   const groups: Record<string, Set<string>> = {}
   const productAvailability: ProductAvailability = {}
 
   for (const fullPath of paths) {
     // Remove language prefix (en/, zh/, ja/)
     const withoutLang = fullPath.replace(/^(en|zh|ja)\//, '')
-    if (!withoutLang || withoutLang === fullPath)
-      continue
+    if (!withoutLang || withoutLang === fullPath) continue
 
     // Skip non-doc paths (like .json files for OpenAPI)
-    if (withoutLang.endsWith('.json') || withoutLang === 'None')
-      continue
+    if (withoutLang.endsWith('.json') || withoutLang === 'None') continue
 
     addPathToGroup(groups, withoutLang)
 
@@ -288,8 +267,7 @@ function groupPathsBySection(paths: Set<string>): { groups: Record<string, Set<s
 
       addPathToGroup(groups, productlessPath)
 
-      if (!productAvailability[normalizedPath])
-        productAvailability[normalizedPath] = new Set()
+      if (!productAvailability[normalizedPath]) productAvailability[normalizedPath] = new Set()
 
       productAvailability[normalizedPath]!.add(productPathInfo.product)
     }
@@ -307,7 +285,7 @@ function groupPathsBySection(paths: Set<string>): { groups: Record<string, Set<s
 function sectionToTypeName(section: string): string {
   return section
     .split('-')
-    .map(part => part.charAt(0).toUpperCase() + part.slice(1))
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
     .join('')
 }
 
@@ -318,7 +296,7 @@ function generateTypeDefinitions(
   groups: Record<string, Set<string>>,
   productAvailability: ProductAvailability,
   apiReferencePaths: string[],
-  apiPathTranslations: Record<string, { zh?: string, ja?: string }>,
+  apiPathTranslations: Record<string, { zh?: string; ja?: string }>,
 ): string {
   const lines: string[] = [
     '// GENERATE BY script',
@@ -328,8 +306,8 @@ function generateTypeDefinitions(
     `// Generated at: ${new Date().toISOString()}`,
     '',
     '// Language prefixes',
-    'export type DocLanguage = \'en\' | \'zh\' | \'ja\'',
-    'export type DocsProduct = \'cloud\' | \'self-host\'',
+    "export type DocLanguage = 'en' | 'zh' | 'ja'",
+    "export type DocsProduct = 'cloud' | 'self-host'",
     '',
   ]
 
@@ -354,7 +332,9 @@ function generateTypeDefinitions(
     if (section === 'use-dify') {
       lines.push('// UseDify node paths (without prefix)')
       // eslint-disable-next-line no-template-curly-in-string
-      lines.push('type ExtractNodesPath<T> = T extends `/use-dify/nodes/${infer Path}` ? Path : never')
+      lines.push(
+        'type ExtractNodesPath<T> = T extends `/use-dify/nodes/${infer Path}` ? Path : never',
+      )
       lines.push('export type UseDifyNodesPath = ExtractNodesPath<UseDifyPath>')
       lines.push('')
     }
@@ -363,7 +343,9 @@ function generateTypeDefinitions(
   // Generate API reference type (English paths only)
   if (apiReferencePaths.length > 0) {
     const sortedPaths = [...apiReferencePaths].sort()
-    lines.push('// API Reference paths (English, use apiReferencePathTranslations for other languages)')
+    lines.push(
+      '// API Reference paths (English, use apiReferencePathTranslations for other languages)',
+    )
     lines.push('type ApiReferencePath =')
     for (const p of sortedPaths) {
       lines.push(`  | '${p}'`)
@@ -392,25 +374,26 @@ function generateTypeDefinitions(
   lines.push('// Product availability for productless docs paths')
   lines.push('export const docPathProductAvailability: Record<string, readonly DocsProduct[]> = {')
   for (const path of Object.keys(productAvailability).sort()) {
-    const products = [...productAvailability[path]!].sort((a, b) => DOCS_PRODUCTS.indexOf(a) - DOCS_PRODUCTS.indexOf(b))
-    lines.push(`  '${path}': [${products.map(product => `'${product}'`).join(', ')}],`)
+    const products = [...productAvailability[path]!].sort(
+      (a, b) => DOCS_PRODUCTS.indexOf(a) - DOCS_PRODUCTS.indexOf(b),
+    )
+    lines.push(`  '${path}': [${products.map((product) => `'${product}'`).join(', ')}],`)
   }
   lines.push('}')
   lines.push('')
 
   // Generate API reference path translations map
   lines.push('// API Reference path translations (English -> other languages)')
-  lines.push('export const apiReferencePathTranslations: Record<string, { zh?: string; ja?: string }> = {')
+  lines.push(
+    'export const apiReferencePathTranslations: Record<string, { zh?: string; ja?: string }> = {',
+  )
   const sortedEnPaths = Object.keys(apiPathTranslations).sort()
   for (const enPath of sortedEnPaths) {
     const translations = apiPathTranslations[enPath]
     const parts: string[] = []
-    if (translations!.zh)
-      parts.push(`zh: '${translations!.zh}'`)
-    if (translations!.ja)
-      parts.push(`ja: '${translations!.ja}'`)
-    if (parts.length > 0)
-      lines.push(`  '${enPath}': { ${parts.join(', ')} },`)
+    if (translations!.zh) parts.push(`zh: '${translations!.zh}'`)
+    if (translations!.ja) parts.push(`ja: '${translations!.ja}'`)
+    if (parts.length > 0) lines.push(`  '${enPath}': { ${parts.join(', ')} },`)
   }
   lines.push('}')
   lines.push('')
@@ -425,7 +408,7 @@ async function main(): Promise<void> {
   if (!response.ok)
     throw new Error(`Failed to fetch docs.json: ${response.status} ${response.statusText}`)
 
-  const docsJson = await response.json() as DocsJson
+  const docsJson = (await response.json()) as DocsJson
   console.log('Successfully fetched docs.json')
 
   // Extract paths from navigation
@@ -449,8 +432,7 @@ async function main(): Promise<void> {
   for (const openapiPath of openApiPaths) {
     // Determine language from path
     const langMatch = /^(en|zh|ja)\//.exec(openapiPath)
-    if (!langMatch)
-      continue
+    if (!langMatch) continue
 
     const lang = langMatch[1]
     // Get file name without language prefix (e.g., "api-reference/openapi_knowledge.json")
@@ -463,7 +445,7 @@ async function main(): Promise<void> {
 
   // Build English paths and mapping to other languages
   const enApiPaths: string[] = []
-  const apiPathTranslations: Record<string, { zh?: string, ja?: string }> = {}
+  const apiPathTranslations: Record<string, { zh?: string; ja?: string }> = {}
 
   // Iterate through English endpoint maps
   for (const [fileKey, enPathMap] of endpointMapsByLang.en!) {
@@ -478,10 +460,8 @@ async function main(): Promise<void> {
 
       if (zhPath || jaPath) {
         apiPathTranslations[enPath] = {}
-        if (zhPath)
-          apiPathTranslations[enPath].zh = zhPath
-        if (jaPath)
-          apiPathTranslations[enPath].ja = jaPath
+        if (zhPath) apiPathTranslations[enPath].zh = zhPath
+        if (jaPath) apiPathTranslations[enPath].ja = jaPath
       }
     }
   }
@@ -500,7 +480,12 @@ async function main(): Promise<void> {
   console.log(`Found ${Object.keys(productAvailability).length} product-aware paths`)
 
   // Generate TypeScript
-  const tsContent = generateTypeDefinitions(groups, productAvailability, uniqueEnApiPaths, apiPathTranslations)
+  const tsContent = generateTypeDefinitions(
+    groups,
+    productAvailability,
+    uniqueEnApiPaths,
+    apiPathTranslations,
+  )
 
   // Write to file
   await writeFile(OUTPUT_PATH, tsContent, 'utf-8')

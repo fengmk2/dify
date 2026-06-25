@@ -231,7 +231,15 @@ export type PluginInfoFromMarketPlace = {
 }
 
 export type Plugin = {
-  type: 'plugin' | 'bundle' | 'model' | 'extension' | 'tool' | 'agent_strategy' | 'datasource' | 'trigger'
+  type:
+    | 'plugin'
+    | 'bundle'
+    | 'model'
+    | 'extension'
+    | 'tool'
+    | 'agent_strategy'
+    | 'datasource'
+    | 'trigger'
   org: string
   author?: string
   name: string
@@ -570,7 +578,7 @@ const AgentFeature = {
   HISTORY_MESSAGES: 'history-messages',
 } as const
 
-type AgentFeature = typeof AgentFeature[keyof typeof AgentFeature]
+type AgentFeature = (typeof AgentFeature)[keyof typeof AgentFeature]
 
 type Identity = {
   author: string

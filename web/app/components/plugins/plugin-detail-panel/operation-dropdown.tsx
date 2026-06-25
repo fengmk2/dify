@@ -55,21 +55,31 @@ const OperationDropdown: FC<Props> = ({
   const { t } = useTranslation()
   const { data: enable_marketplace } = useSuspenseQuery({
     ...systemFeaturesQueryOptions(),
-    select: s => s.enable_marketplace,
+    select: (s) => s.enable_marketplace,
   })
   const showInfo = source === PluginSource.github
   const showCheckVersionAction = showCheckVersion && source === PluginSource.github
-  const showMarketplaceDetail = (source === PluginSource.marketplace || source === PluginSource.github) && enable_marketplace
+  const showMarketplaceDetail =
+    (source === PluginSource.marketplace || source === PluginSource.github) && enable_marketplace
   const showRemoveAction = showRemove
   const showSeparator = showRemoveAction && (showMarketplaceDetail || !!onViewReadme)
 
-  if (!showInfo && !showCheckVersionAction && !showMarketplaceDetail && !onViewReadme && !showRemoveAction)
+  if (
+    !showInfo &&
+    !showCheckVersionAction &&
+    !showMarketplaceDetail &&
+    !onViewReadme &&
+    !showRemoveAction
+  )
     return null
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger
-        className={cn('action-btn data-popup-open:bg-state-base-hover', triggerSize === 'xs' ? 'action-btn-xs' : 'action-btn-m')}
+        className={cn(
+          'action-btn data-popup-open:bg-state-base-hover',
+          triggerSize === 'xs' ? 'action-btn-xs' : 'action-btn-m',
+        )}
       >
         <span className="i-ri-more-fill size-4" />
       </DropdownMenuTrigger>
@@ -81,43 +91,50 @@ const OperationDropdown: FC<Props> = ({
       >
         {showInfo && (
           <DropdownMenuItem className={operationMenuItemClassName} onClick={onInfo}>
-            <span className={operationMenuLabelClassName}>{t('detailPanel.operation.info', { ns: 'plugin' })}</span>
+            <span className={operationMenuLabelClassName}>
+              {t('detailPanel.operation.info', { ns: 'plugin' })}
+            </span>
           </DropdownMenuItem>
         )}
         {showCheckVersionAction && (
           <DropdownMenuItem className={operationMenuItemClassName} onClick={onCheckVersion}>
-            <span className={operationMenuLabelClassName}>{t('detailPanel.operation.checkUpdate', { ns: 'plugin' })}</span>
+            <span className={operationMenuLabelClassName}>
+              {t('detailPanel.operation.checkUpdate', { ns: 'plugin' })}
+            </span>
           </DropdownMenuItem>
         )}
         {showMarketplaceDetail && (
           <DropdownMenuItem
             className={operationMenuItemClassName}
-            render={(
+            render={
               <a
                 href={detailUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={t('detailPanel.operation.viewDetail', { ns: 'plugin' })}
               />
-            )}
+            }
           >
-            <span className={operationMenuLabelClassName}>{t('detailPanel.operation.viewDetail', { ns: 'plugin' })}</span>
+            <span className={operationMenuLabelClassName}>
+              {t('detailPanel.operation.viewDetail', { ns: 'plugin' })}
+            </span>
             <span className="i-ri-arrow-right-up-line size-3.5 shrink-0 text-text-tertiary" />
           </DropdownMenuItem>
         )}
         {onViewReadme && (
           <DropdownMenuItem className={operationMenuItemClassName} onClick={onViewReadme}>
-            <span className={operationMenuLabelClassName}>{t('detailPanel.operation.viewReadme', { ns: 'plugin' })}</span>
+            <span className={operationMenuLabelClassName}>
+              {t('detailPanel.operation.viewReadme', { ns: 'plugin' })}
+            </span>
           </DropdownMenuItem>
         )}
-        {showSeparator && (
-          <DropdownMenuSeparator className="my-0" />
-        )}
+        {showSeparator && <DropdownMenuSeparator className="my-0" />}
         {showRemoveAction && (
           <DropdownMenuItem
             className={cn(
               operationMenuItemClassName,
-              destructiveRemove && 'data-highlighted:bg-state-destructive-hover data-highlighted:text-text-destructive',
+              destructiveRemove &&
+                'data-highlighted:bg-state-destructive-hover data-highlighted:text-text-destructive',
             )}
             onClick={onRemove}
           >

@@ -37,7 +37,7 @@ const {
   mockHandlePaneContextmenuCancel: vi.fn(),
   mockWorkflowStoreSetState: vi.fn(),
   mockSetOpenInlineAgentPanelNodeId: vi.fn(),
-  mockGenerateNewNode: vi.fn(({ type, data }: { type: string, data: Record<string, unknown> }) => ({
+  mockGenerateNewNode: vi.fn(({ type, data }: { type: string; data: Record<string, unknown> }) => ({
     newNode: {
       id: 'generated-node',
       type,
@@ -49,22 +49,25 @@ const {
     },
   })),
   mockGetNodeCustomTypeByNodeDataType: vi.fn((type: string) => `${type}-custom`),
-  mockGetNodesWithSameDefaultDataType: vi.fn((
-    nodes: Array<{ data: { agent_node_kind?: string, type?: BlockEnum, version?: string } }>,
-    type: BlockEnum,
-    defaultValue: { agent_node_kind?: string, type?: BlockEnum, version?: string },
-  ) => {
-    const dataType = defaultValue.type ?? type
-    if (dataType !== type && defaultValue.version) {
-      return nodes.filter(node =>
-        node.data.type === dataType
-        && node.data.version === defaultValue.version
-        && node.data.agent_node_kind === defaultValue.agent_node_kind,
-      )
-    }
+  mockGetNodesWithSameDefaultDataType: vi.fn(
+    (
+      nodes: Array<{ data: { agent_node_kind?: string; type?: BlockEnum; version?: string } }>,
+      type: BlockEnum,
+      defaultValue: { agent_node_kind?: string; type?: BlockEnum; version?: string },
+    ) => {
+      const dataType = defaultValue.type ?? type
+      if (dataType !== type && defaultValue.version) {
+        return nodes.filter(
+          (node) =>
+            node.data.type === dataType &&
+            node.data.version === defaultValue.version &&
+            node.data.agent_node_kind === defaultValue.agent_node_kind,
+        )
+      }
 
-    return nodes.filter(node => node.data.type === dataType)
-  }),
+      return nodes.filter((node) => node.data.type === dataType)
+    },
+  ),
   mockCreateInlineAgentBinding: vi.fn(),
   mockHandleSyncWorkflowDraft: vi.fn(),
   mockSaveStateToHistory: vi.fn(),
@@ -76,24 +79,21 @@ let mockIsChatMode = false
 let mockFlowType: FlowType = FlowType.appFlow
 
 const mockAvailableNextBlocks = [BlockEnum.Answer, BlockEnum.Code]
-const mockNodesMetaDataMap: Partial<Record<BlockEnum, { defaultValue: Record<string, unknown> }>> = {
-  [BlockEnum.Answer]: {
-    defaultValue: {
-      title: 'Answer',
-      desc: '',
-      type: BlockEnum.Answer,
+const mockNodesMetaDataMap: Partial<Record<BlockEnum, { defaultValue: Record<string, unknown> }>> =
+  {
+    [BlockEnum.Answer]: {
+      defaultValue: {
+        title: 'Answer',
+        desc: '',
+        type: BlockEnum.Answer,
+      },
     },
-  },
-}
+  }
 
 vi.mock('@/app/components/workflow/block-selector', () => ({
   default: (props: BlockSelectorMockProps) => {
     latestBlockSelectorProps = props
-    return (
-      <div data-testid="block-selector">
-        {props.trigger(props.open)}
-      </div>
-    )
+    return <div data-testid="block-selector">{props.trigger(props.open)}</div>
   },
 }))
 
@@ -119,7 +119,11 @@ vi.mock('../../hooks-store', () => ({
 }))
 
 vi.mock('../../store', () => ({
-  useStore: (selector: (state: { mousePosition: { pageX: number, pageY: number, elementX: number, elementY: number } }) => unknown) =>
+  useStore: (
+    selector: (state: {
+      mousePosition: { pageX: number; pageY: number; elementX: number; elementY: number }
+    }) => unknown,
+  ) =>
     selector({
       mousePosition: {
         pageX: 120,
@@ -177,17 +181,24 @@ describe('AddBlock', () => {
     mockNodesReadOnly = false
     mockIsChatMode = false
     mockFlowType = FlowType.appFlow
-    mockCreateInlineAgentBinding.mockImplementation((_nodeId: string, options?: { onSuccess?: (binding: {
-      binding_type: 'inline_agent'
-      agent_id: string
-      current_snapshot_id: string
-    }) => void }) => {
-      options?.onSuccess?.({
-        binding_type: 'inline_agent',
-        agent_id: 'inline-agent-1',
-        current_snapshot_id: 'snapshot-1',
-      })
-    })
+    mockCreateInlineAgentBinding.mockImplementation(
+      (
+        _nodeId: string,
+        options?: {
+          onSuccess?: (binding: {
+            binding_type: 'inline_agent'
+            agent_id: string
+            current_snapshot_id: string
+          }) => void
+        },
+      ) => {
+        options?.onSuccess?.({
+          binding_type: 'inline_agent',
+          agent_id: 'inline-agent-1',
+          current_snapshot_id: 'snapshot-1',
+        })
+      },
+    )
   })
 
   // Rendering and selector configuration.
@@ -228,19 +239,19 @@ describe('AddBlock', () => {
       expect(latestBlockSelectorProps?.showStartTab).toBe(false)
     })
 
-    it.each([
-      BlockEnum.Start,
-      BlockEnum.TriggerWebhook,
-    ])('should keep the normal default tab when a %s node already exists', async (type) => {
-      renderWithReactFlow([
-        createNode({ id: 'entry-node', position: { x: 0, y: 0 }, data: { type } }),
-      ])
+    it.each([BlockEnum.Start, BlockEnum.TriggerWebhook])(
+      'should keep the normal default tab when a %s node already exists',
+      async (type) => {
+        renderWithReactFlow([
+          createNode({ id: 'entry-node', position: { x: 0, y: 0 }, data: { type } }),
+        ])
 
-      await waitFor(() => expect(latestBlockSelectorProps).not.toBeNull())
+        await waitFor(() => expect(latestBlockSelectorProps).not.toBeNull())
 
-      expect(latestBlockSelectorProps?.showStartTab).toBe(true)
-      expect(latestBlockSelectorProps?.defaultActiveTab).toBeUndefined()
-    })
+        expect(latestBlockSelectorProps?.showStartTab).toBe(true)
+        expect(latestBlockSelectorProps?.defaultActiveTab).toBeUndefined()
+      },
+    )
   })
 
   // User interactions that bridge selector state and workflow state.
@@ -310,8 +321,16 @@ describe('AddBlock', () => {
         },
       }
       renderWithReactFlow([
-        createNode({ id: 'old-agent', position: { x: 0, y: 0 }, data: { type: BlockEnum.Agent, version: '2' } }),
-        createNode({ id: 'agent-v2', position: { x: 80, y: 0 }, data: { agent_node_kind: 'dify_agent', type: BlockEnum.Agent, version: '2' } }),
+        createNode({
+          id: 'old-agent',
+          position: { x: 0, y: 0 },
+          data: { type: BlockEnum.Agent, version: '2' },
+        }),
+        createNode({
+          id: 'agent-v2',
+          position: { x: 80, y: 0 },
+          data: { agent_node_kind: 'dify_agent', type: BlockEnum.Agent, version: '2' },
+        }),
       ])
 
       await waitFor(() => expect(latestBlockSelectorProps).not.toBeNull())
@@ -375,9 +394,12 @@ describe('AddBlock', () => {
       expect(mockWorkflowStoreSetState).toHaveBeenCalledWith({
         candidateNode: undefined,
       })
-      expect(mockCreateInlineAgentBinding).toHaveBeenCalledWith('generated-node', expect.objectContaining({
-        onSuccess: expect.any(Function),
-      }))
+      expect(mockCreateInlineAgentBinding).toHaveBeenCalledWith(
+        'generated-node',
+        expect.objectContaining({
+          onSuccess: expect.any(Function),
+        }),
+      )
       expect(mockSetOpenInlineAgentPanelNodeId).toHaveBeenCalledWith('generated-node')
       expect(mockHandleSyncWorkflowDraft).toHaveBeenCalledWith(true, true)
       expect(mockSaveStateToHistory).toHaveBeenCalledWith('NodeAdd', { nodeId: 'generated-node' })

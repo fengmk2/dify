@@ -8,9 +8,7 @@ import { useCallback, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import BillingPage from '@/app/components/billing/billing-page'
 import CustomPage from '@/app/components/custom/custom-page'
-import {
-  ACCOUNT_SETTING_TAB,
-} from '@/app/components/header/account-setting/constants'
+import { ACCOUNT_SETTING_TAB } from '@/app/components/header/account-setting/constants'
 import MenuDialog from '@/app/components/header/account-setting/menu-dialog'
 import { useAppContext } from '@/context/app-context'
 import { useProviderContext } from '@/context/provider-context'
@@ -56,14 +54,21 @@ export default function AccountSetting({
   const { data: systemFeatures } = useSuspenseQuery(systemFeaturesQueryOptions())
   const { workspacePermissionKeys } = useAppContext()
   const isRbacEnabled = systemFeatures.rbac_enabled
-  const canManageWorkspaceRoles = isRbacEnabled && hasPermission(workspacePermissionKeys, 'workspace.role.manage')
-  const canViewBilling = enableBilling && hasPermission(workspacePermissionKeys, BillingPermission.View)
+  const canManageWorkspaceRoles =
+    isRbacEnabled && hasPermission(workspacePermissionKeys, 'workspace.role.manage')
+  const canViewBilling =
+    enableBilling && hasPermission(workspacePermissionKeys, BillingPermission.View)
   // Keep legacy `language` deep links opening Preferences during the tab rename migration.
-  const normalizedActiveTab = activeTab === ACCOUNT_SETTING_TAB.LANGUAGE ? ACCOUNT_SETTING_TAB.PREFERENCES : activeTab
+  const normalizedActiveTab =
+    activeTab === ACCOUNT_SETTING_TAB.LANGUAGE ? ACCOUNT_SETTING_TAB.PREFERENCES : activeTab
   const activeMenu = (() => {
     if (normalizedActiveTab === ACCOUNT_SETTING_TAB.BILLING && !canViewBilling)
       return ACCOUNT_SETTING_TAB.PREFERENCES
-    if ((normalizedActiveTab === ACCOUNT_SETTING_TAB.ROLES_AND_PERMISSIONS || normalizedActiveTab === ACCOUNT_SETTING_TAB.PERMISSION_SET) && !canManageWorkspaceRoles)
+    if (
+      (normalizedActiveTab === ACCOUNT_SETTING_TAB.ROLES_AND_PERMISSIONS ||
+        normalizedActiveTab === ACCOUNT_SETTING_TAB.PERMISSION_SET) &&
+      !canManageWorkspaceRoles
+    )
       return ACCOUNT_SETTING_TAB.MEMBERS
     return normalizedActiveTab
   })()
@@ -128,7 +133,7 @@ export default function AccountSetting({
       activeIcon: <span className={cn('i-ri-equalizer-2-fill', iconClassName)} />,
     },
   ]
-  const activeItem = settingItems.find(item => item.key === activeMenu)
+  const activeItem = settingItems.find((item) => item.key === activeMenu)
 
   const visibleSettingItems: GroupItem[] = (() => {
     const visibleTabs: AccountSettingTab[] = []
@@ -140,20 +145,18 @@ export default function AccountSetting({
       visibleTabs.push(ACCOUNT_SETTING_TAB.PERMISSION_SET)
     }
 
-    if (canViewBilling)
-      visibleTabs.push(ACCOUNT_SETTING_TAB.BILLING)
+    if (canViewBilling) visibleTabs.push(ACCOUNT_SETTING_TAB.BILLING)
 
-    if (enableReplaceWebAppLogo || enableBilling)
-      visibleTabs.push(ACCOUNT_SETTING_TAB.CUSTOM)
+    if (enableReplaceWebAppLogo || enableBilling) visibleTabs.push(ACCOUNT_SETTING_TAB.CUSTOM)
 
     return visibleTabs
-      .map(tab => settingItems.find(item => item.key === tab))
+      .map((tab) => settingItems.find((item) => item.key === tab))
       .filter((item): item is GroupItem => Boolean(item))
   })()
 
   const media = useBreakpoints()
   const isMobile = media === MediaType.mobile
-  const preferenceItem = settingItems.find(item => item.key === ACCOUNT_SETTING_TAB.PREFERENCES)
+  const preferenceItem = settingItems.find((item) => item.key === ACCOUNT_SETTING_TAB.PREFERENCES)
 
   const menuItems = [
     {
@@ -169,12 +172,14 @@ export default function AccountSetting({
 
   const [searchValue, setSearchValue] = useState<string>('')
 
-  const handleTabChange = useCallback((tab: AccountSettingTab) => {
-    if (tab === ACCOUNT_SETTING_TAB.PROVIDER)
-      resetModelProviderListExpanded()
+  const handleTabChange = useCallback(
+    (tab: AccountSettingTab) => {
+      if (tab === ACCOUNT_SETTING_TAB.PROVIDER) resetModelProviderListExpanded()
 
-    onTabChangeAction(tab)
-  }, [onTabChangeAction, resetModelProviderListExpanded])
+      onTabChangeAction(tab)
+    },
+    [onTabChangeAction, resetModelProviderListExpanded],
+  )
 
   const handleClose = useCallback(() => {
     resetModelProviderListExpanded()
@@ -182,47 +187,51 @@ export default function AccountSetting({
   }, [onCancelAction, resetModelProviderListExpanded])
 
   return (
-    <MenuDialog
-      show
-      onClose={handleClose}
-    >
+    <MenuDialog show onClose={handleClose}>
       <div className="flex h-screen w-full max-w-full pl-0 sm:pl-[232px]">
         <div className="flex w-[44px] shrink-0 flex-col pr-6 pl-4 sm:w-[224px]">
-          <div className="mt-6 mb-8 flex h-[38px] items-center px-3 title-2xl-semi-bold whitespace-nowrap text-text-primary">{t('settings.settings', { ns: 'common' })}</div>
+          <div className="mt-6 mb-8 flex h-[38px] items-center px-3 title-2xl-semi-bold whitespace-nowrap text-text-primary">
+            {t('settings.settings', { ns: 'common' })}
+          </div>
           <div className="w-full">
-            {
-              menuItems.map(menuItem => (
-                <div key={menuItem.key} className={cn(menuItem.key === 'workspace-group' ? 'mb-2' : 'mt-2')}>
-                  {menuItem.name && !isMobile && (
-                    <div className="flex h-7 items-center px-3 system-xs-medium-uppercase text-text-tertiary">
-                      {menuItem.name}
-                    </div>
-                  )}
-                  <div className={cn(menuItem.key === 'user-group' && 'border-t border-divider-subtle pt-3')}>
-                    {
-                      menuItem.items.map(item => (
-                        <button
-                          type="button"
-                          key={item.key}
-                          className={cn(
-                            'mb-0.5 flex h-8 w-full items-center rounded-lg px-3 text-left text-sm',
-                            activeMenu === item.key ? 'bg-state-base-active system-sm-semibold text-components-menu-item-text-active' : 'system-sm-medium text-components-menu-item-text',
-                          )}
-                          aria-label={item.name}
-                          title={item.name}
-                          onClick={() => {
-                            handleTabChange(item.key)
-                          }}
-                        >
-                          {activeMenu === item.key ? item.activeIcon : item.icon}
-                          {!isMobile && <div className="truncate">{item.name}</div>}
-                        </button>
-                      ))
-                    }
+            {menuItems.map((menuItem) => (
+              <div
+                key={menuItem.key}
+                className={cn(menuItem.key === 'workspace-group' ? 'mb-2' : 'mt-2')}
+              >
+                {menuItem.name && !isMobile && (
+                  <div className="flex h-7 items-center px-3 system-xs-medium-uppercase text-text-tertiary">
+                    {menuItem.name}
                   </div>
+                )}
+                <div
+                  className={cn(
+                    menuItem.key === 'user-group' && 'border-t border-divider-subtle pt-3',
+                  )}
+                >
+                  {menuItem.items.map((item) => (
+                    <button
+                      type="button"
+                      key={item.key}
+                      className={cn(
+                        'mb-0.5 flex h-8 w-full items-center rounded-lg px-3 text-left text-sm',
+                        activeMenu === item.key
+                          ? 'bg-state-base-active system-sm-semibold text-components-menu-item-text-active'
+                          : 'system-sm-medium text-components-menu-item-text',
+                      )}
+                      aria-label={item.name}
+                      title={item.name}
+                      onClick={() => {
+                        handleTabChange(item.key)
+                      }}
+                    >
+                      {activeMenu === item.key ? item.activeIcon : item.icon}
+                      {!isMobile && <div className="truncate">{item.name}</div>}
+                    </button>
+                  ))}
                 </div>
-              ))
-            }
+              </div>
+            ))}
           </div>
         </div>
         <div className="relative flex min-h-0 w-[824px]">
@@ -250,19 +259,20 @@ export default function AccountSetting({
               <div className="min-w-0 flex-1 title-2xl-semi-bold text-text-primary">
                 {activeItem?.title ?? activeItem?.name}
                 {activeItem?.description && (
-                  <div className="mt-1 system-sm-regular wrap-break-word whitespace-normal text-text-tertiary">{activeItem?.description}</div>
+                  <div className="mt-1 system-sm-regular wrap-break-word whitespace-normal text-text-tertiary">
+                    {activeItem?.description}
+                  </div>
                 )}
               </div>
             </div>
             <div className="px-4 pt-6 sm:px-8">
               {activeMenu === ACCOUNT_SETTING_TAB.PROVIDER && (
-                <ModelProviderPage
-                  searchText={searchValue}
-                  onSearchTextChange={setSearchValue}
-                />
+                <ModelProviderPage searchText={searchValue} onSearchTextChange={setSearchValue} />
               )}
               {activeMenu === ACCOUNT_SETTING_TAB.MEMBERS && <MembersPage />}
-              {activeMenu === ACCOUNT_SETTING_TAB.ROLES_AND_PERMISSIONS && <PermissionsPage containerRef={scrollContainerRef} />}
+              {activeMenu === ACCOUNT_SETTING_TAB.ROLES_AND_PERMISSIONS && (
+                <PermissionsPage containerRef={scrollContainerRef} />
+              )}
               {activeMenu === ACCOUNT_SETTING_TAB.PERMISSION_SET && <AccessRulesPage />}
               {activeMenu === ACCOUNT_SETTING_TAB.BILLING && <BillingPage />}
               {activeMenu === ACCOUNT_SETTING_TAB.DATA_SOURCE && <DataSourcePage />}

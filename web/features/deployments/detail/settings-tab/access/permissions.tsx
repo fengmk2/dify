@@ -1,14 +1,7 @@
 'use client'
 
-import type {
-  AccessPolicy,
-  Environment,
-  Subject,
-} from '@dify/contracts/enterprise/types.gen'
-import type {
-  AccessPermissionKind,
-  SelectableAccessSubject,
-} from './access-policy'
+import type { AccessPolicy, Environment, Subject } from '@dify/contracts/enterprise/types.gen'
+import type { AccessPermissionKind, SelectableAccessSubject } from './access-policy'
 import type { AccessSubjectSelectionValue } from '@/app/components/app/app-access-control/access-subject-selector/types'
 import { toast } from '@langgenius/dify-ui/toast'
 import { useMutation } from '@tanstack/react-query'
@@ -25,10 +18,7 @@ import {
   selectedSubjectsFromPolicy,
   subjectsFromAccessControlSelection,
 } from './access-policy'
-import {
-  DeploymentAccessControlDialog,
-  PermissionSummaryButton,
-} from './permission-row-components'
+import { DeploymentAccessControlDialog, PermissionSummaryButton } from './permission-row-components'
 
 type AccessPermissionDraft = {
   fingerprint: string
@@ -53,24 +43,26 @@ export function EnvironmentPermissionRow({
 }: EnvironmentPermissionRowProps) {
   const { t } = useTranslation('deployments')
   const environmentId = environment.id
-  const setEnvironmentAccessPolicy = useMutation(consoleQuery.enterprise.accessService.updateAccessPolicy.mutationOptions())
+  const setEnvironmentAccessPolicy = useMutation(
+    consoleQuery.enterprise.accessService.updateAccessPolicy.mutationOptions(),
+  )
   const policy = summaryPolicy
   const policyKind = accessModeToPermissionKey(policy?.mode)
   const policyFingerprint = policy
-    ? `${policy.mode}:${policy.subjects.map(subject => `${subject.subjectType}:${subject.subjectId}`).join(',')}`
+    ? `${policy.mode}:${policy.subjects.map((subject) => `${subject.subjectType}:${subject.subjectId}`).join(',')}`
     : 'no-policy'
   const [draft, setDraft] = useState<AccessPermissionDraft>()
   const subjectLabelCandidates = [
     ...(draft?.subjects ?? []),
-    ...resolvedSubjects
-      .flatMap((subject) => {
-        const normalizedSubject = normalizeResolvedSubject(subject)
-        return normalizedSubject ? [normalizedSubject] : []
-      }),
+    ...resolvedSubjects.flatMap((subject) => {
+      const normalizedSubject = normalizeResolvedSubject(subject)
+      return normalizedSubject ? [normalizedSubject] : []
+    }),
   ]
   const hasDraft = draft?.fingerprint === policyFingerprint
   const permissionKind = hasDraft && draft ? draft.kind : policyKind
-  const policySelectedSubjects = policyKind === 'specific' ? selectedSubjectsFromPolicy(policy, subjectLabelCandidates) : []
+  const policySelectedSubjects =
+    policyKind === 'specific' ? selectedSubjectsFromPolicy(policy, subjectLabelCandidates) : []
   const subjects = hasDraft && draft ? draft.subjects : policySelectedSubjects
   const subjectSelection = accessControlSelectionFromSubjects(subjects)
   const isSaving = setEnvironmentAccessPolicy.isPending
@@ -84,8 +76,7 @@ export function EnvironmentPermissionRow({
       onSuccess?: () => void
     },
   ) => {
-    if (nextKind === 'specific' && nextSubjects.length === 0)
-      return false
+    if (nextKind === 'specific' && nextSubjects.length === 0) return false
 
     setEnvironmentAccessPolicy.mutate(
       {
@@ -117,7 +108,8 @@ export function EnvironmentPermissionRow({
       onSuccess?: () => void
     },
   ) => {
-    const normalizedSubjects = nextKind === 'specific' ? subjectsFromAccessControlSelection(nextSelection) : []
+    const normalizedSubjects =
+      nextKind === 'specific' ? subjectsFromAccessControlSelection(nextSelection) : []
     persistPolicy(nextKind, normalizedSubjects, {
       onSuccess: () => {
         setDraft({
@@ -133,9 +125,7 @@ export function EnvironmentPermissionRow({
   return (
     <div className="flex min-w-0 flex-col gap-2 border-b border-divider-subtle py-4 first:pt-0 last:border-b-0 last:pb-0">
       <div className="flex min-w-0 items-center">
-        <span className="min-w-0 truncate system-sm-regular text-text-primary">
-          {envName}
-        </span>
+        <span className="min-w-0 truncate system-sm-regular text-text-primary">{envName}</span>
       </div>
       <EnvironmentPermissionEditor
         permissionKind={permissionKind}
@@ -173,7 +163,10 @@ function EnvironmentPermissionEditor({
 }) {
   const [dialogOpen, setDialogOpen] = useState(false)
 
-  const handleSubmit = (nextKind: AccessPermissionKind, nextSelection: AccessSubjectSelectionValue) => {
+  const handleSubmit = (
+    nextKind: AccessPermissionKind,
+    nextSelection: AccessSubjectSelectionValue,
+  ) => {
     onSubmit(nextKind, nextSelection, {
       onSuccess: () => setDialogOpen(false),
     })

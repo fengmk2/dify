@@ -61,27 +61,37 @@ export const setReleaseHistoryCurrentPageAtom = atom(null, (_get, set, page: num
   set(releaseHistoryCurrentPageAtom, Math.max(page, 0))
 })
 
-export const adjustReleaseHistoryPageAfterDeleteAtom = atom(null, (get, set, remainingRowsOnPage: number) => {
-  const currentPage = get(releaseHistoryCurrentPageAtom)
-  if (remainingRowsOnPage === 1 && currentPage > 0)
-    set(releaseHistoryCurrentPageAtom, currentPage - 1)
-})
+export const adjustReleaseHistoryPageAfterDeleteAtom = atom(
+  null,
+  (get, set, remainingRowsOnPage: number) => {
+    const currentPage = get(releaseHistoryCurrentPageAtom)
+    if (remainingRowsOnPage === 1 && currentPage > 0)
+      set(releaseHistoryCurrentPageAtom, currentPage - 1)
+  },
+)
 
-export const setDeployReleaseMenuOpenAtom = atom(null, (get, set, {
-  releaseId,
-  open,
-}: {
-  releaseId: string
-  open: boolean
-}) => {
-  if (open) {
-    set(deployReleaseMenuOpenReleaseIdAtom, releaseId)
-    return
-  }
+export const setDeployReleaseMenuOpenAtom = atom(
+  null,
+  (
+    get,
+    set,
+    {
+      releaseId,
+      open,
+    }: {
+      releaseId: string
+      open: boolean
+    },
+  ) => {
+    if (open) {
+      set(deployReleaseMenuOpenReleaseIdAtom, releaseId)
+      return
+    }
 
-  if (get(deployReleaseMenuOpenReleaseIdAtom) === releaseId)
-    set(deployReleaseMenuOpenReleaseIdAtom, undefined)
-})
+    if (get(deployReleaseMenuOpenReleaseIdAtom) === releaseId)
+      set(deployReleaseMenuOpenReleaseIdAtom, undefined)
+  },
+)
 
 export const versionsTabLocalAtoms = [
   releaseHistoryCurrentPageAtom,

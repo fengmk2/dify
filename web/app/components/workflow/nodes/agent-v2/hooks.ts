@@ -21,94 +21,99 @@ type CreateInlineAgentBindingOptions = {
 }
 
 export function useAgentRosterDetail(agentId?: string) {
-  return useQuery(consoleQuery.agent.byAgentId.get.queryOptions({
-    input: agentId
-      ? {
-          params: {
-            agent_id: agentId,
-          },
-        }
-      : skipToken,
-  }))
+  return useQuery(
+    consoleQuery.agent.byAgentId.get.queryOptions({
+      input: agentId
+        ? {
+            params: {
+              agent_id: agentId,
+            },
+          }
+        : skipToken,
+    }),
+  )
 }
 
 export function useWorkflowInlineAgentDetail(nodeId?: string, agentId?: string | null) {
-  const configsMap = useHooksStore(state => state.configsMap)
+  const configsMap = useHooksStore((state) => state.configsMap)
 
-  return useQuery(consoleQuery.apps.byAppId.workflows.draft.nodes.byNodeId.agentComposer.get.queryOptions({
-    input: configsMap?.flowId && configsMap.flowType === FlowType.appFlow && nodeId && agentId
-      ? {
-          params: {
-            app_id: configsMap.flowId,
-            node_id: nodeId,
-          },
-        }
-      : skipToken,
-  }))
+  return useQuery(
+    consoleQuery.apps.byAppId.workflows.draft.nodes.byNodeId.agentComposer.get.queryOptions({
+      input:
+        configsMap?.flowId && configsMap.flowType === FlowType.appFlow && nodeId && agentId
+          ? {
+              params: {
+                app_id: configsMap.flowId,
+                node_id: nodeId,
+              },
+            }
+          : skipToken,
+    }),
+  )
 }
 
 export function useCreateInlineAgentBinding() {
   const { t } = useTranslation('agentV2')
-  const configsMap = useHooksStore(state => state.configsMap)
+  const configsMap = useHooksStore((state) => state.configsMap)
   const { data: defaultModel } = useDefaultModel(ModelTypeEnum.textGeneration)
-  const {
-    isPending,
-    mutate,
-  } = useMutation(
+  const { isPending, mutate } = useMutation(
     consoleQuery.apps.byAppId.workflows.draft.nodes.byNodeId.agentComposer.put.mutationOptions(),
   )
 
-  const createInlineAgentBinding = useCallback((nodeId: string, options?: CreateInlineAgentBindingOptions) => {
-    if (!configsMap?.flowId || configsMap.flowType !== FlowType.appFlow) {
-      toast.error(t('roster.nodeSelector.createInlineFailed'))
-      options?.onError?.()
-      return
-    }
+  const createInlineAgentBinding = useCallback(
+    (nodeId: string, options?: CreateInlineAgentBindingOptions) => {
+      if (!configsMap?.flowId || configsMap.flowType !== FlowType.appFlow) {
+        toast.error(t('roster.nodeSelector.createInlineFailed'))
+        options?.onError?.()
+        return
+      }
 
-    mutate(
-      {
-        params: {
-          app_id: configsMap.flowId,
-          node_id: nodeId,
-        },
-        body: {
-          variant: 'workflow',
-          save_strategy: 'node_job_only',
-          binding: {
-            binding_type: 'inline_agent',
+      mutate(
+        {
+          params: {
+            app_id: configsMap.flowId,
+            node_id: nodeId,
           },
-          soul_lock: {
-            locked: false,
+          body: {
+            variant: 'workflow',
+            save_strategy: 'node_job_only',
+            binding: {
+              binding_type: 'inline_agent',
+            },
+            soul_lock: {
+              locked: false,
+            },
+            agent_soul: getDefaultAgentSoul(defaultModel),
           },
-          agent_soul: getDefaultAgentSoul(defaultModel),
         },
-      },
-      {
-        onSuccess: (composerState) => {
-          const binding = composerState.binding
+        {
+          onSuccess: (composerState) => {
+            const binding = composerState.binding
 
-          if (
-            binding?.binding_type !== 'inline_agent'
-            || !binding.agent_id
-            || !binding.current_snapshot_id
-          ) {
-            toast.error(t('roster.nodeSelector.createInlineFailed'))
+            if (
+              binding?.binding_type !== 'inline_agent' ||
+              !binding.agent_id ||
+              !binding.current_snapshot_id
+            ) {
+              toast.error(t('roster.nodeSelector.createInlineFailed'))
+              options?.onError?.()
+              return
+            }
+
+            options?.onSuccess?.({
+              binding_type: 'inline_agent',
+              agent_id: binding.agent_id,
+              current_snapshot_id: binding.current_snapshot_id,
+            })
+          },
+          onError: () => {
             options?.onError?.()
-            return
-          }
-
-          options?.onSuccess?.({
-            binding_type: 'inline_agent',
-            agent_id: binding.agent_id,
-            current_snapshot_id: binding.current_snapshot_id,
-          })
+          },
         },
-        onError: () => {
-          options?.onError?.()
-        },
-      },
-    )
-  }, [configsMap?.flowId, configsMap?.flowType, defaultModel, mutate, t])
+      )
+    },
+    [configsMap?.flowId, configsMap?.flowType, defaultModel, mutate, t],
+  )
 
   return {
     createInlineAgentBinding,

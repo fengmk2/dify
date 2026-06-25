@@ -15,9 +15,7 @@ import {
   setReleaseHistoryCurrentPageAtom,
 } from './state'
 
-export function ReleaseHistoryTable({ appInstanceId }: {
-  appInstanceId: string
-}) {
+export function ReleaseHistoryTable({ appInstanceId }: { appInstanceId: string }) {
   const { t } = useTranslation('deployments')
   const currentPage = useAtomValue(releaseHistoryCurrentPageAtom)
   const setCurrentPage = useSetAtom(setReleaseHistoryCurrentPageAtom)
@@ -26,24 +24,15 @@ export function ReleaseHistoryTable({ appInstanceId }: {
   const isLoading = releaseHistoryQuery.isLoading
   const hasError = releaseHistoryQuery.isError
 
-  if (isLoading)
-    return <ReleaseHistoryTableSkeleton />
+  if (isLoading) return <ReleaseHistoryTableSkeleton />
 
   if (hasError) {
-    return (
-      <DeploymentStateMessage variant="list">
-        {t('common.loadFailed')}
-      </DeploymentStateMessage>
-    )
+    return <DeploymentStateMessage variant="list">{t('common.loadFailed')}</DeploymentStateMessage>
   }
 
   const releaseHistory = releaseHistoryQuery.data
   if (!releaseHistory) {
-    return (
-      <DeploymentStateMessage variant="list">
-        {t('common.loadFailed')}
-      </DeploymentStateMessage>
-    )
+    return <DeploymentStateMessage variant="list">{t('common.loadFailed')}</DeploymentStateMessage>
   }
 
   const releaseRows = releaseHistory.releaseSummaries.map(releaseRowFromSummary)
@@ -76,7 +65,7 @@ export function ReleaseHistoryTable({ appInstanceId }: {
           className="border-y border-divider-subtle"
           page={currentPage + 1}
           totalPages={totalReleasePages}
-          onPageChange={page => setCurrentPage(page - 1)}
+          onPageChange={(page) => setCurrentPage(page - 1)}
         />
       )}
     </div>

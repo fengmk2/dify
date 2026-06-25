@@ -1,6 +1,6 @@
 import type { SimpleDetail } from '../store'
 import { act, renderHook } from '@testing-library/react'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it } from 'vite-plus/test'
 import { usePluginStore } from '../store'
 
 // Factory function to create mock SimpleDetail
@@ -287,7 +287,9 @@ describe('usePluginStore', () => {
         declaration: {
           trigger: {
             subscription_schema: [],
-            subscription_constructor: mockConstructor as unknown as NonNullable<SimpleDetail['declaration']['trigger']>['subscription_constructor'],
+            subscription_constructor: mockConstructor as unknown as NonNullable<
+              SimpleDetail['declaration']['trigger']
+            >['subscription_constructor'],
           },
         },
       })

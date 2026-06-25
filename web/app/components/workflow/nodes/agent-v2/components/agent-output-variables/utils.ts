@@ -1,14 +1,17 @@
-import type { DeclaredOutputConfig, DeclaredOutputType } from '@dify/contracts/api/console/apps/types.gen'
+import type {
+  DeclaredOutputConfig,
+  DeclaredOutputType,
+} from '@dify/contracts/api/console/apps/types.gen'
 import type { TFunction } from 'i18next'
 import { defaultAgentV2DeclaredOutputs } from '../../output-variables'
 
-export type OutputTypeOptionValue
-  = DeclaredOutputType
-    | 'array[boolean]'
-    | 'array[file]'
-    | 'array[number]'
-    | 'array[object]'
-    | 'array[string]'
+export type OutputTypeOptionValue =
+  | DeclaredOutputType
+  | 'array[boolean]'
+  | 'array[file]'
+  | 'array[number]'
+  | 'array[object]'
+  | 'array[string]'
 
 export type OutputTypeOption = {
   label: string
@@ -52,14 +55,13 @@ export const OUTPUT_TYPE_OPTIONS: OutputTypeOption[] = [
 ]
 
 export function getOutputTypeOptionValue(output: DeclaredOutputConfig): OutputTypeOptionValue {
-  if (output.type !== 'array')
-    return output.type
+  if (output.type !== 'array') return output.type
 
   return `array[${output.array_item?.type || 'object'}]` as OutputTypeOptionValue
 }
 
 export function getOutputTypeOption(value: OutputTypeOptionValue) {
-  return OUTPUT_TYPE_OPTIONS.find(option => option.value === value) || OUTPUT_TYPE_OPTIONS[0]!
+  return OUTPUT_TYPE_OPTIONS.find((option) => option.value === value) || OUTPUT_TYPE_OPTIONS[0]!
 }
 
 export function createDraft(output?: DeclaredOutputConfig): OutputDraft {
@@ -90,8 +92,7 @@ export function createOutputFromDraft(draft: OutputDraft): DeclaredOutputConfig 
     required: draft.required,
   }
 
-  if (draft.description.trim())
-    output.description = draft.description.trim()
+  if (draft.description.trim()) output.description = draft.description.trim()
 
   if (option.type === 'array') {
     output.array_item = {
@@ -118,8 +119,7 @@ export function createOutputFromDraft(draft: OutputDraft): DeclaredOutputConfig 
 
 export function getDefaultValueErrorKey(draft: OutputDraft) {
   const trimmed = draft.defaultValue.trim()
-  if (!trimmed)
-    return null
+  if (!trimmed) return null
 
   const option = getOutputTypeOption(draft.type)
   if (option.type === 'file' || option.arrayItemType === 'file')
@@ -134,12 +134,14 @@ export function getDefaultValueErrorKey(draft: OutputDraft) {
   if (option.type === 'object' || option.type === 'array') {
     try {
       const parsed = JSON.parse(trimmed)
-      if (option.type === 'object' && (!parsed || Array.isArray(parsed) || typeof parsed !== 'object'))
+      if (
+        option.type === 'object' &&
+        (!parsed || Array.isArray(parsed) || typeof parsed !== 'object')
+      )
         return 'nodes.agent.outputVars.defaultValueObjectInvalid'
       if (option.type === 'array' && !Array.isArray(parsed))
         return 'nodes.agent.outputVars.defaultValueArrayInvalid'
-    }
-    catch {
+    } catch {
       return option.type === 'object'
         ? 'nodes.agent.outputVars.defaultValueObjectInvalid'
         : 'nodes.agent.outputVars.defaultValueArrayInvalid'
@@ -150,20 +152,18 @@ export function getDefaultValueErrorKey(draft: OutputDraft) {
 }
 
 export function isDefaultOutput(output: DeclaredOutputConfig) {
-  return defaultAgentV2DeclaredOutputs.some(defaultOutput =>
-    defaultOutput.name === output.name
-    && defaultOutput.type === output.type
-    && getOutputTypeOptionValue(defaultOutput) === getOutputTypeOptionValue(output),
+  return defaultAgentV2DeclaredOutputs.some(
+    (defaultOutput) =>
+      defaultOutput.name === output.name &&
+      defaultOutput.type === output.type &&
+      getOutputTypeOptionValue(defaultOutput) === getOutputTypeOptionValue(output),
   )
 }
 
 export function getOutputDescription(output: DeclaredOutputConfig, t: TFunction) {
-  if (output.name === 'text')
-    return t('nodes.agent.outputVars.text', { ns: 'workflow' })
-  if (output.name === 'files')
-    return t('nodes.agent.outputVars.files.title', { ns: 'workflow' })
-  if (output.name === 'json')
-    return t('nodes.agent.outputVars.json', { ns: 'workflow' })
+  if (output.name === 'text') return t('nodes.agent.outputVars.text', { ns: 'workflow' })
+  if (output.name === 'files') return t('nodes.agent.outputVars.files.title', { ns: 'workflow' })
+  if (output.name === 'json') return t('nodes.agent.outputVars.json', { ns: 'workflow' })
   return output.description || ''
 }
 
@@ -173,10 +173,8 @@ export function getOutputDisplayType(output: DeclaredOutputConfig) {
 
 function getOutputDefaultValue(output: DeclaredOutputConfig) {
   const defaultValue = output.failure_strategy?.default_value
-  if (defaultValue == null)
-    return ''
-  if (typeof defaultValue === 'string')
-    return defaultValue
+  if (defaultValue == null) return ''
+  if (typeof defaultValue === 'string') return defaultValue
   return JSON.stringify(defaultValue)
 }
 
@@ -186,13 +184,11 @@ function coerceDefaultValue(value: string, option: OutputTypeOption): unknown {
     const parsed = Number(trimmed)
     return Number.isNaN(parsed) ? trimmed : parsed
   }
-  if (option.type === 'boolean')
-    return trimmed === 'true'
+  if (option.type === 'boolean') return trimmed === 'true'
   if (option.type === 'object' || option.type === 'array') {
     try {
       return JSON.parse(trimmed)
-    }
-    catch {
+    } catch {
       return trimmed
     }
   }

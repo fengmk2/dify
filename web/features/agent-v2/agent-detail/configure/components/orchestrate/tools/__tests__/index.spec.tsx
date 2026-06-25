@@ -3,7 +3,7 @@ import type { AgentSoulConfigFormState } from '@/features/agent-v2/agent-compose
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { CollectionType } from '@/app/components/tools/types'
 import { defaultAgentSoulConfigFormState } from '@/features/agent-v2/agent-composer/form-state'
 import { AgentComposerProvider } from '@/features/agent-v2/agent-composer/provider'
@@ -15,15 +15,11 @@ const toolProviderState = vi.hoisted(() => ({
 }))
 
 vi.mock('@/app/components/workflow/block-selector/tool-picker', () => ({
-  ToolPickerContent: () => (
-    <div>
-      Mock tool picker
-    </div>
-  ),
+  ToolPickerContent: () => <div>Mock tool picker</div>,
 }))
 
 vi.mock('@/app/components/workflow/block-icon', () => ({
-  default: ({ toolIcon }: { toolIcon?: string | { content: string, background: string } }) => (
+  default: ({ toolIcon }: { toolIcon?: string | { content: string; background: string } }) => (
     <span aria-hidden data-testid="tool-icon">
       {typeof toolIcon === 'string' ? toolIcon : toolIcon?.content}
     </span>
@@ -31,9 +27,13 @@ vi.mock('@/app/components/workflow/block-icon', () => ({
 }))
 
 vi.mock('@/app/components/header/account-setting/model-provider-page/model-modal/Form', () => ({
-  default: ({ formSchemas }: { formSchemas: Array<{ label?: Record<string, string>, variable?: string }> }) => (
+  default: ({
+    formSchemas,
+  }: {
+    formSchemas: Array<{ label?: Record<string, string>; variable?: string }>
+  }) => (
     <div data-testid="tool-setting-form">
-      {formSchemas.map(schema => (
+      {formSchemas.map((schema) => (
         <div key={schema.variable}>{schema.label?.en_US}</div>
       ))}
     </div>
@@ -265,13 +265,17 @@ describe('AgentTools', () => {
       const user = userEvent.setup()
       renderAgentTools()
 
-      await user.click(screen.getByRole('button', {
-        name: 'DuckDuckGo',
-      }))
+      await user.click(
+        screen.getByRole('button', {
+          name: 'DuckDuckGo',
+        }),
+      )
 
-      await user.click(screen.getByRole('button', {
-        name: 'agentV2.agentDetail.configure.tools.removeAction:{"name":"DuckDuckGo Image Search"}',
-      }))
+      await user.click(
+        screen.getByRole('button', {
+          name: 'agentV2.agentDetail.configure.tools.removeAction:{"name":"DuckDuckGo Image Search"}',
+        }),
+      )
 
       expect(screen.queryByText('DuckDuckGo Image Search')).not.toBeInTheDocument()
       expect(screen.getByText('DuckDuckGo Search')).toBeInTheDocument()
@@ -282,12 +286,16 @@ describe('AgentTools', () => {
       const user = userEvent.setup()
       renderAgentTools()
 
-      await user.click(screen.getByRole('button', {
-        name: 'agentV2.agentDetail.configure.tools.moreActions:{"name":"DuckDuckGo"}',
-      }))
-      await user.click(screen.getByRole('menuitem', {
-        name: /agentV2\.agentDetail\.configure\.tools\.removeProvider/,
-      }))
+      await user.click(
+        screen.getByRole('button', {
+          name: 'agentV2.agentDetail.configure.tools.moreActions:{"name":"DuckDuckGo"}',
+        }),
+      )
+      await user.click(
+        screen.getByRole('menuitem', {
+          name: /agentV2\.agentDetail\.configure\.tools\.removeProvider/,
+        }),
+      )
 
       expect(screen.queryByText('DuckDuckGo')).not.toBeInTheDocument()
       expect(screen.queryByText('DuckDuckGo Search')).not.toBeInTheDocument()
@@ -298,46 +306,66 @@ describe('AgentTools', () => {
       const user = userEvent.setup()
       renderAgentTools()
 
-      await user.click(screen.getByRole('button', {
-        name: 'agentV2.agentDetail.configure.tools.add',
-      }))
-      await user.click(screen.getByRole('button', {
-        name: /agentV2\.agentDetail\.configure\.tools\.addMenu\.tool\.label/,
-      }))
+      await user.click(
+        screen.getByRole('button', {
+          name: 'agentV2.agentDetail.configure.tools.add',
+        }),
+      )
+      await user.click(
+        screen.getByRole('button', {
+          name: /agentV2\.agentDetail\.configure\.tools\.addMenu\.tool\.label/,
+        }),
+      )
 
       expect(screen.getByText('Mock tool picker')).toBeInTheDocument()
-      expect(screen.getByRole('button', {
-        name: 'agentV2.agentDetail.configure.tools.add',
-      })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', {
+          name: 'agentV2.agentDetail.configure.tools.add',
+        }),
+      ).toBeInTheDocument()
     })
 
     it('should hide add, edit, and remove actions when readonly', async () => {
       const user = userEvent.setup()
       renderReadonlyAgentTools()
 
-      expect(screen.queryByRole('button', {
-        name: 'agentV2.agentDetail.configure.tools.add',
-      })).not.toBeInTheDocument()
-      expect(screen.queryByRole('button', {
-        name: 'agentV2.agentDetail.configure.tools.moreActions:{"name":"DuckDuckGo"}',
-      })).not.toBeInTheDocument()
+      expect(
+        screen.queryByRole('button', {
+          name: 'agentV2.agentDetail.configure.tools.add',
+        }),
+      ).not.toBeInTheDocument()
+      expect(
+        screen.queryByRole('button', {
+          name: 'agentV2.agentDetail.configure.tools.moreActions:{"name":"DuckDuckGo"}',
+        }),
+      ).not.toBeInTheDocument()
 
-      await user.click(screen.getByRole('button', {
-        name: 'DuckDuckGo',
-      }))
+      await user.click(
+        screen.getByRole('button', {
+          name: 'DuckDuckGo',
+        }),
+      )
 
-      expect(screen.queryByRole('button', {
-        name: 'agentV2.agentDetail.configure.tools.editAction:{"name":"DuckDuckGo Search"}',
-      })).not.toBeInTheDocument()
-      expect(screen.queryByRole('button', {
-        name: 'agentV2.agentDetail.configure.tools.removeAction:{"name":"DuckDuckGo Image Search"}',
-      })).not.toBeInTheDocument()
-      expect(screen.queryByRole('button', {
-        name: 'agentV2.agentDetail.configure.tools.editAction:{"name":"Lark CLI"}',
-      })).not.toBeInTheDocument()
-      expect(screen.queryByRole('button', {
-        name: 'agentV2.agentDetail.configure.tools.removeAction:{"name":"Lark CLI"}',
-      })).not.toBeInTheDocument()
+      expect(
+        screen.queryByRole('button', {
+          name: 'agentV2.agentDetail.configure.tools.editAction:{"name":"DuckDuckGo Search"}',
+        }),
+      ).not.toBeInTheDocument()
+      expect(
+        screen.queryByRole('button', {
+          name: 'agentV2.agentDetail.configure.tools.removeAction:{"name":"DuckDuckGo Image Search"}',
+        }),
+      ).not.toBeInTheDocument()
+      expect(
+        screen.queryByRole('button', {
+          name: 'agentV2.agentDetail.configure.tools.editAction:{"name":"Lark CLI"}',
+        }),
+      ).not.toBeInTheDocument()
+      expect(
+        screen.queryByRole('button', {
+          name: 'agentV2.agentDetail.configure.tools.removeAction:{"name":"Lark CLI"}',
+        }),
+      ).not.toBeInTheDocument()
     })
 
     it('should keep CLI tool row actions out of layout until hover or focus', () => {
@@ -352,10 +380,7 @@ describe('AgentTools', () => {
       const actionGroup = editButton.parentElement
 
       expect(actionGroup).toHaveClass('hidden')
-      expect(actionGroup).toHaveClass(
-        'group-focus-within:flex',
-        'group-hover:flex',
-      )
+      expect(actionGroup).toHaveClass('group-focus-within:flex', 'group-hover:flex')
       expect(removeButton).toHaveClass(
         'hover:bg-state-destructive-hover',
         'hover:text-text-destructive',
@@ -373,14 +398,18 @@ describe('AgentTools', () => {
       toolProviderState.builtInTools = [googleProvider]
       renderAgentTools(reflectedAgentToolsDraft)
 
-      expect(screen.getByRole('button', {
-        name: 'Google Tools',
-      })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', {
+          name: 'Google Tools',
+        }),
+      ).toBeInTheDocument()
       expect(screen.getByText('https://example.com/google.svg')).toBeInTheDocument()
 
-      await user.click(screen.getByRole('button', {
-        name: 'Google Tools',
-      }))
+      await user.click(
+        screen.getByRole('button', {
+          name: 'Google Tools',
+        }),
+      )
 
       expect(screen.getByText('Google Search')).toBeInTheDocument()
     })
@@ -389,9 +418,11 @@ describe('AgentTools', () => {
       toolProviderState.builtInTools = [duckDuckGoProvider]
       renderAgentTools(reflectedUnauthorizedNoCredentialDraft)
 
-      expect(screen.getByRole('button', {
-        name: 'DuckDuckGo',
-      })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', {
+          name: 'DuckDuckGo',
+        }),
+      ).toBeInTheDocument()
       expect(screen.queryByText('tools.notAuthorized')).not.toBeInTheDocument()
     })
 
@@ -400,12 +431,16 @@ describe('AgentTools', () => {
       toolProviderState.builtInTools = [duckDuckGoProvider]
       const { baseElement } = renderAgentTools()
 
-      await user.click(screen.getByRole('button', {
-        name: 'DuckDuckGo',
-      }))
-      await user.click(screen.getByRole('button', {
-        name: 'agentV2.agentDetail.configure.tools.editAction:{"name":"DuckDuckGo Search"}',
-      }))
+      await user.click(
+        screen.getByRole('button', {
+          name: 'DuckDuckGo',
+        }),
+      )
+      await user.click(
+        screen.getByRole('button', {
+          name: 'agentV2.agentDetail.configure.tools.editAction:{"name":"DuckDuckGo Search"}',
+        }),
+      )
 
       expect(baseElement.querySelector('[style*="duckduckgo.svg"]')).toBeInTheDocument()
       expect(screen.getByTestId('tool-setting-form')).toBeInTheDocument()

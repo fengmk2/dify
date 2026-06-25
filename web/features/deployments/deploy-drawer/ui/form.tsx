@@ -11,11 +11,30 @@ import { ScopeProvider } from 'jotai-scope'
 import { useTranslation } from 'react-i18next'
 import { EnvVarBindingsPanel } from '../../components/env-var-bindings'
 import { isAvailableDeploymentTarget } from '../../shared/domain/runtime-status'
-import { canAttemptDeployAtom, canSubmitDeployAtom, closeDeployDrawerAtom, deployBindingSlotsAtom, deployEnvVarSlotsAtom, deployEnvVarValuesAtom, deployFormAppInstanceIdAtom, deployHasBindingOptionsErrorAtom, deployHasSelectedEnvironmentAtom, deployIsBindingOptionsLoadingAtom, deployReadyFormConfigAtom, deployReadyFormLocalAtoms, deployReleaseSubmissionAtom, deploySelectedBindingsAtom, deployShowValidationErrorsAtom, deployTargetReleaseIdAtom, isDeployReleaseSubmittingAtom, releaseDeploymentViewQueryAtom, selectDeployBindingAtom, setDeployEnvVarAtom, showDeployValidationErrorsAtom } from '../state'
 import {
-  currentReleaseIdForEnvironment,
-  selectableDeployReleases,
-} from '../state/release-options'
+  canAttemptDeployAtom,
+  canSubmitDeployAtom,
+  closeDeployDrawerAtom,
+  deployBindingSlotsAtom,
+  deployEnvVarSlotsAtom,
+  deployEnvVarValuesAtom,
+  deployFormAppInstanceIdAtom,
+  deployHasBindingOptionsErrorAtom,
+  deployHasSelectedEnvironmentAtom,
+  deployIsBindingOptionsLoadingAtom,
+  deployReadyFormConfigAtom,
+  deployReadyFormLocalAtoms,
+  deployReleaseSubmissionAtom,
+  deploySelectedBindingsAtom,
+  deployShowValidationErrorsAtom,
+  deployTargetReleaseIdAtom,
+  isDeployReleaseSubmittingAtom,
+  releaseDeploymentViewQueryAtom,
+  selectDeployBindingAtom,
+  setDeployEnvVarAtom,
+  showDeployValidationErrorsAtom,
+} from '../state'
+import { currentReleaseIdForEnvironment, selectableDeployReleases } from '../state/release-options'
 import {
   BindingOptionsPanel,
   DEPLOY_DRAWER_BINDING_LIST_CLASS_NAME,
@@ -70,8 +89,7 @@ function DeployEnvVarBindingsSection() {
   const showValidationErrors = useAtomValue(deployShowValidationErrorsAtom)
   const setDeployEnvVar = useSetAtom(setDeployEnvVarAtom)
 
-  if (isBindingOptionsLoading || hasBindingOptionsError)
-    return null
+  if (isBindingOptionsLoading || hasBindingOptionsError) return null
 
   return (
     <EnvVarBindingsPanel
@@ -88,7 +106,7 @@ function DeployEnvVarBindingsSection() {
         number: t('deployDrawer.envVarType.number'),
         secret: t('deployDrawer.envVarType.secret'),
       }}
-      sourceAriaLabel={key => t('deployDrawer.envVarSource.ariaLabel', { key })}
+      sourceAriaLabel={(key) => t('deployDrawer.envVarSource.ariaLabel', { key })}
       defaultSourcePriority="lastDeployment"
       envVarCountLabel={t('deployDrawer.envVarCount', { count: envVarSlots.length })}
       missingRequiredLabel={t('deployDrawer.missingRequiredEnvVar')}
@@ -103,8 +121,7 @@ function DeployBindingsSection() {
   const targetReleaseId = useAtomValue(deployTargetReleaseIdAtom)
   const hasSelectedEnvironment = useAtomValue(deployHasSelectedEnvironmentAtom)
 
-  if (!targetReleaseId || !hasSelectedEnvironment)
-    return null
+  if (!targetReleaseId || !hasSelectedEnvironment) return null
 
   return (
     <>
@@ -139,8 +156,7 @@ function DeployFooter() {
   function handleDeploy() {
     showValidationErrors()
 
-    if (!canDeploy)
-      return
+    if (!canDeploy) return
 
     submitDeployRelease({
       deployFailedMessage: t('deployDrawer.deployFailed'),
@@ -173,19 +189,16 @@ function deployReadyFormStoreKey({
     lockedEnvId ?? 'any',
     presetReleaseId ?? 'new',
     defaultReleaseId ?? 'none',
-    environments.map(env => env.id).join(','),
-    releases.map(release => release.id).join(','),
-    runtimeRows.map(row => `${row.environment.id}:${row.currentRelease?.id ?? 'none'}`).join(','),
+    environments.map((env) => env.id).join(','),
+    releases.map((release) => release.id).join(','),
+    runtimeRows.map((row) => `${row.environment.id}:${row.currentRelease?.id ?? 'none'}`).join(','),
   ].join('|')
 }
 
 function DeployReadyForm(config: DeployReadyFormProps) {
   return (
     <ScopeProvider
-      atoms={[
-        [deployReadyFormConfigAtom, config],
-        ...deployReadyFormLocalAtoms,
-      ]}
+      atoms={[[deployReadyFormConfigAtom, config], ...deployReadyFormLocalAtoms]}
       name="DeployReadyForm"
     >
       <div className="flex min-h-0 flex-1 flex-col">
@@ -197,11 +210,7 @@ function DeployReadyForm(config: DeployReadyFormProps) {
   )
 }
 
-function DeployFormContent({
-  appInstanceId,
-  lockedEnvId,
-  presetReleaseId,
-}: DeployFormProps) {
+function DeployFormContent({ appInstanceId, lockedEnvId, presetReleaseId }: DeployFormProps) {
   const { t } = useTranslation('deployments')
   const releaseDeploymentViewQuery = useAtomValue(releaseDeploymentViewQueryAtom)
 
@@ -211,25 +220,21 @@ function DeployFormContent({
 
   if (releaseDeploymentViewQuery.isError) {
     return (
-      <div className="p-4 system-sm-regular text-text-destructive">
-        {t('common.loadFailed')}
-      </div>
+      <div className="p-4 system-sm-regular text-text-destructive">{t('common.loadFailed')}</div>
     )
   }
 
   const deploymentView = releaseDeploymentViewQuery.data
   if (!deploymentView) {
     return (
-      <div className="p-4 system-sm-regular text-text-destructive">
-        {t('common.loadFailed')}
-      </div>
+      <div className="p-4 system-sm-regular text-text-destructive">{t('common.loadFailed')}</div>
     )
   }
 
   const runtimeRows = deploymentView.environmentDeployments
   const environments = runtimeRows
-    .filter(row => lockedEnvId || isAvailableDeploymentTarget(row))
-    .map(row => row.environment)
+    .filter((row) => lockedEnvId || isAvailableDeploymentTarget(row))
+    .map((row) => row.environment)
   const releaseRows = deploymentView.releases
   const currentReleaseId = currentReleaseIdForEnvironment(runtimeRows, lockedEnvId)
   const releases = selectableDeployReleases({
@@ -239,9 +244,10 @@ function DeployFormContent({
     presetReleaseId,
   })
   const defaultReleaseId = releases[0]?.id
-  const releaseEmptyLabel = lockedEnvId && !presetReleaseId && currentReleaseId
-    ? t('deployDrawer.noOtherReleaseAvailable')
-    : undefined
+  const releaseEmptyLabel =
+    lockedEnvId && !presetReleaseId && currentReleaseId
+      ? t('deployDrawer.noOtherReleaseAvailable')
+      : undefined
   const readyFormConfig = {
     appInstanceId,
     environments,
@@ -254,21 +260,14 @@ function DeployFormContent({
   }
   const formKey = deployReadyFormStoreKey(readyFormConfig)
 
-  return (
-    <DeployReadyForm
-      key={formKey}
-      {...readyFormConfig}
-    />
-  )
+  return <DeployReadyForm key={formKey} {...readyFormConfig} />
 }
 
 export function DeployForm(props: DeployFormProps) {
   return (
     <ScopeProvider
       key={props.appInstanceId}
-      atoms={[
-        [deployFormAppInstanceIdAtom, props.appInstanceId],
-      ]}
+      atoms={[[deployFormAppInstanceIdAtom, props.appInstanceId]]}
       name="DeployForm"
     >
       <DeployFormContent {...props} />

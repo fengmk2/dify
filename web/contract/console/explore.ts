@@ -87,12 +87,14 @@ export const exploreInstalledAppPinContract = base
     path: '/installed-apps/{id}',
     method: 'PATCH',
   })
-  .input(type<{
-    params: { id: string }
-    body: {
-      is_pinned: boolean
-    }
-  }>())
+  .input(
+    type<{
+      params: { id: string }
+      body: {
+        is_pinned: boolean
+      }
+    }>(),
+  )
   .output(type<InstalledAppMutationResponse>())
 
 export const exploreInstalledAppAccessModeContract = base
@@ -116,11 +118,13 @@ export const exploreInstalledAppParametersContract = base
     path: '/installed-apps/{appId}/parameters',
     method: 'GET',
   })
-  .input(type<{
-    params: {
-      appId: string
-    }
-  }>())
+  .input(
+    type<{
+      params: {
+        appId: string
+      }
+    }>(),
+  )
   .output(type<ChatConfig>())
 
 export const exploreInstalledAppMetaContract = base
@@ -128,11 +132,13 @@ export const exploreInstalledAppMetaContract = base
     path: '/installed-apps/{appId}/meta',
     method: 'GET',
   })
-  .input(type<{
-    params: {
-      appId: string
-    }
-  }>())
+  .input(
+    type<{
+      params: {
+        appId: string
+      }
+    }>(),
+  )
   .output(type<AppMeta>())
 
 export const exploreBannersContract = base

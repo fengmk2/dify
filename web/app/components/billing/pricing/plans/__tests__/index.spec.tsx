@@ -1,4 +1,4 @@
-import type { Mock } from 'vitest'
+import type { Mock } from 'vite-plus/test'
 import type { UsagePlanInfo } from '../../../type'
 import { render, screen } from '@testing-library/react'
 import * as React from 'react'
@@ -9,23 +9,15 @@ import Plans from '../index'
 import selfHostedPlanItem from '../self-hosted-plan-item'
 
 vi.mock('../cloud-plan-item', () => ({
-  default: vi.fn(props => (
+  default: vi.fn((props) => (
     <div data-testid={`cloud-plan-${props.plan}`} data-current-plan={props.currentPlan}>
-      Cloud
-      {' '}
-      {props.plan}
+      Cloud {props.plan}
     </div>
   )),
 }))
 
 vi.mock('../self-hosted-plan-item', () => ({
-  default: vi.fn(props => (
-    <div data-testid={`self-plan-${props.plan}`}>
-      Self
-      {' '}
-      {props.plan}
-    </div>
-  )),
+  default: vi.fn((props) => <div data-testid={`self-plan-${props.plan}`}>Self {props.plan}</div>),
 }))
 
 const buildPlan = (type: Plan) => {

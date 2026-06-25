@@ -1,7 +1,7 @@
 import type { Plugin } from '../types'
 import { fireEvent, render, screen } from '@testing-library/react'
 import { ThemeProvider } from 'next-themes'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import ProviderCard from '../provider-card'
 import { PluginCategoryEnum } from '../types'
 
@@ -16,7 +16,9 @@ vi.mock('@/hooks/use-i18n', () => ({
 vi.mock('@/app/components/plugins/install-plugin/install-from-marketplace', () => ({
   default: ({ onClose }: { onClose: () => void }) => (
     <div data-testid="install-modal">
-      <button data-testid="close-install-modal" onClick={onClose}>close</button>
+      <button data-testid="close-install-modal" onClick={onClose}>
+        close
+      </button>
     </div>
   ),
 }))
@@ -39,7 +41,9 @@ vi.mock('../card/base/description', () => ({
 }))
 
 vi.mock('../card/base/download-count', () => ({
-  default: ({ downloadCount }: { downloadCount: number }) => <div data-testid="download-count">{downloadCount}</div>,
+  default: ({ downloadCount }: { downloadCount: number }) => (
+    <div data-testid="download-count">{downloadCount}</div>
+  ),
 }))
 
 vi.mock('../card/base/title', () => ({
@@ -75,11 +79,12 @@ describe('ProviderCard', () => {
     vi.clearAllMocks()
   })
 
-  const renderProviderCard = () => render(
-    <ThemeProvider forcedTheme="light">
-      <ProviderCard payload={payload} />
-    </ThemeProvider>,
-  )
+  const renderProviderCard = () =>
+    render(
+      <ThemeProvider forcedTheme="light">
+        <ProviderCard payload={payload} />
+      </ThemeProvider>,
+    )
 
   it('renders provider information, tags, and detail link', () => {
     renderProviderCard()
@@ -90,10 +95,9 @@ describe('ProviderCard', () => {
     expect(screen.getByTestId('description')).toHaveTextContent('Provider description')
     expect(screen.getByText('search')).toBeInTheDocument()
     expect(screen.getByText('rag')).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: /plugin.detailPanel.operation.detail/i })).toHaveAttribute(
-      'href',
-      '/marketplace/dify/provider-one?language=en-US&theme=system',
-    )
+    expect(
+      screen.getByRole('link', { name: /plugin.detailPanel.operation.detail/i }),
+    ).toHaveAttribute('href', '/marketplace/dify/provider-one?language=en-US&theme=system')
   })
 
   it('opens and closes the install modal', () => {

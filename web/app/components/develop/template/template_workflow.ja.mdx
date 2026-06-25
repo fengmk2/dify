@@ -9,12 +9,16 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
   ### ベース URL
   <CodeGroup title="コード" targetCode={props.appDetail.api_base_url} />
 
-  ### 認証
+### 認証
 
-  サービス API は `API-Key` 認証を使用します。
-  <i>**API キーの漏洩を防ぐため、API キーはクライアント側で共有または保存せず、サーバー側で保存することを強くお勧めします。**</i>
+サービス API は `API-Key` 認証を使用します。
 
-  すべての API リクエストにおいて、以下のように `Authorization`HTTP ヘッダーに API キーを含めてください：
+<i>
+  **API キーの漏洩を防ぐため、API
+  キーはクライアント側で共有または保存せず、サーバー側で保存することを強くお勧めします。**
+</i>
+
+すべての API リクエストにおいて、以下のように `Authorization`HTTP ヘッダーに API キーを含めてください：
 
   <CodeGroup title="コード" targetCode='Authorization: Bearer {API_KEY}' />
 </div>
@@ -50,7 +54,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
             - `local_file`: ファイルをアップロード。
           - `url` ファイルのURL。（転送方法が `remote_url` の場合のみ）。
           - `upload_file_id` アップロードされたファイルID。（転送方法が `local_file` の場合のみ）。
-          
+
       - `response_mode` (string) 必須
         応答の返却モードを指定します。サポートされているモード：
         - `streaming` ストリーミングモード（推奨）、SSE（[Server-Sent Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events)）を通じてタイプライターのような出力を実装します。
@@ -632,6 +636,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
           print("ファイルのアップロードに失敗し、ワークフローを実行できません")
       ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -943,6 +948,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -985,6 +991,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1016,6 +1023,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     - 404, フォームが存在しない、または現在のアプリに属していない
     - 412, `human_input_form_submitted`, 既に送信済み
     - 412, `human_input_form_expired`, 期限切れ
+
   </Col>
   <Col sticky>
     <CodeGroup
@@ -1049,6 +1057,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1080,6 +1089,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     - 404, フォームが存在しない、または現在のアプリに属していない
     - 412, `human_input_form_submitted`, 既に送信済み
     - 412, `human_input_form_expired`, 期限切れ
+
   </Col>
   <Col sticky>
     <CodeGroup
@@ -1101,6 +1111,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     {}
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1130,6 +1141,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     Server-Sent Events ストリーム（`text/event-stream`）。
     主なイベントは `workflow_paused`、`node_started`、`node_finished`、`human_input_form_filled`、`human_input_form_timeout`、`workflow_finished` です。
     呼び出し時点でワークフローがすでに完了している場合、このエンドポイントは完了イベントを 1 件だけ即座に返します。
+
   </Col>
   <Col sticky>
     <CodeGroup
@@ -1177,6 +1189,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     data: {"event":"workflow_finished","workflow_run_id":"5d7ef348-e1c1-4f6d-bb9b-62cc2fb2ef3c","task_id":"1784c3dd-20eb-4919-bd5d-a8d800b74ada","data":{"id":"5d7ef348-e1c1-4f6d-bb9b-62cc2fb2ef3c","workflow_id":"e46514f1-c008-41ff-94b0-4f33d4b97d36","status":"succeeded","outputs":{"output":"field 1 filled!"},"error":null,"elapsed_time":0.364935,"total_tokens":0,"total_steps":5,"created_by":{"id":"7932d34c-dcf4-4fba-b770-f2a9de88c0a0","user":"abc-123"},"created_at":1776087877,"finished_at":1776087877,"exceptions_count":0,"files":[]}}
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1194,35 +1207,39 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
   ワークフローでサポートされている任意の形式をサポートします。
   アップロードされたファイルは、現在のエンドユーザーのみが使用できます。
 
-  ### リクエストボディ
-  このインターフェースは`multipart/form-data`リクエストを必要とします。
-  - `file` (File) 必須
-    アップロードするファイル。
-  - `user` (string) 必須
-    ユーザー識別子、開発者のルールで定義され、アプリケーション内で一意でなければなりません。サービス API は WebApp によって作成された会話を共有しません。
+### リクエストボディ
 
-  ### 応答
-  アップロードが成功すると、サーバーはファイルの ID と関連情報を返します。
-  - `id` (uuid) ID
-  - `name` (string) ファイル名
-  - `size` (int) ファイルサイズ（バイト）
-  - `extension` (string) ファイル拡張子
-  - `mime_type` (string) ファイルの MIME タイプ
-  - `created_by` (uuid) エンドユーザーID
-  - `created_at` (timestamp) 作成タイムスタンプ、例：1705395332
+このインターフェースは`multipart/form-data`リクエストを必要とします。
 
-  ### エラー
-  - 400, `no_file_uploaded`, ファイルが提供されていません
-  - 400, `too_many_files`, 現在は 1 つのファイルのみ受け付けています
-  - 400, `unsupported_preview`, ファイルはプレビューをサポートしていません
-  - 400, `unsupported_estimate`, ファイルは推定をサポートしていません
-  - 413, `file_too_large`, ファイルが大きすぎます
-  - 415, `unsupported_file_type`, サポートされていない拡張子、現在はドキュメントファイルのみ受け付けています
-  - 503, `s3_connection_failed`, S3 サービスに接続できません
-  - 503, `s3_permission_denied`, S3 にファイルをアップロードする権限がありません
-  - 503, `s3_file_too_large`, ファイルが S3 のサイズ制限を超えています
-  - 500, 内部サーバーエラー
+- `file` (File) 必須
+  アップロードするファイル。
+- `user` (string) 必須
+  ユーザー識別子、開発者のルールで定義され、アプリケーション内で一意でなければなりません。サービス API は WebApp によって作成された会話を共有しません。
 
+### 応答
+
+アップロードが成功すると、サーバーはファイルの ID と関連情報を返します。
+
+- `id` (uuid) ID
+- `name` (string) ファイル名
+- `size` (int) ファイルサイズ（バイト）
+- `extension` (string) ファイル拡張子
+- `mime_type` (string) ファイルの MIME タイプ
+- `created_by` (uuid) エンドユーザーID
+- `created_at` (timestamp) 作成タイムスタンプ、例：1705395332
+
+### エラー
+
+- 400, `no_file_uploaded`, ファイルが提供されていません
+- 400, `too_many_files`, 現在は 1 つのファイルのみ受け付けています
+- 400, `unsupported_preview`, ファイルはプレビューをサポートしていません
+- 400, `unsupported_estimate`, ファイルは推定をサポートしていません
+- 413, `file_too_large`, ファイルが大きすぎます
+- 415, `unsupported_file_type`, サポートされていない拡張子、現在はドキュメントファイルのみ受け付けています
+- 503, `s3_connection_failed`, S3 サービスに接続できません
+- 503, `s3_permission_denied`, S3 にファイルをアップロードする権限がありません
+- 503, `s3_file_too_large`, ファイルが S3 のサイズ制限を超えています
+- 500, 内部サーバーエラー
 
   </Col>
   <Col sticky>
@@ -1237,8 +1254,8 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
 --form 'user=abc-123'`}
   />
 
+### 応答例
 
-  ### 応答例
   <CodeGroup title="応答">
     ```json {{ title: '応答' }}
     {
@@ -1318,6 +1335,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -1356,44 +1374,26 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     </Properties>
 
     ### 応答
-  - `page` (int) 現在のページ
-  - `limit` (int) 返されたアイテムの数、入力がシステム制限を超える場合、システム制限量を返します
-  - `total` (int) 合計アイテム数
-  - `has_more` (bool) 次のページがあるかどうか
-  - `data` (array[object]) ログリスト
-    - `id` (string) ID
-    - `workflow_run` (object) ワークフロー実行
-      - `id` (string) ID
-      - `version` (string) バージョン
-      - `status` (string) 実行のステータス、`running` / `succeeded` / `failed` / `stopped`
-      - `error` (string) オプションのエラー理由
-      - `elapsed_time` (float) 使用される総秒数
-      - `total_tokens` (int) 使用されるトークン数
-      - `total_steps` (int) デフォルト 0
-      - `created_at` (timestamp) 開始時間
-      - `finished_at` (timestamp) 終了時間
-    - `created_from` (string) 作成元
-    - `created_by_role` (string) 作成者の役割
-    - `created_by_account` (string) オプションの作成者アカウント
-    - `created_by_end_user` (object) エンドユーザーによって作成
-      - `id` (string) ID
-      - `type` (string) タイプ
-      - `is_anonymous` (bool) 匿名かどうか
-      - `session_id` (string) セッション ID
-    - `created_at` (timestamp) 作成時間
-  </Col>
+
+- `page` (int) 現在のページ
+- `limit` (int) 返されたアイテムの数、入力がシステム制限を超える場合、システム制限量を返します
+- `total` (int) 合計アイテム数
+- `has_more` (bool) 次のページがあるかどうか
+- `data` (array[object]) ログリスト - `id` (string) ID - `workflow_run` (object) ワークフロー実行 - `id` (string) ID - `version` (string) バージョン - `status` (string) 実行のステータス、`running` / `succeeded` / `failed` / `stopped` - `error` (string) オプションのエラー理由 - `elapsed_time` (float) 使用される総秒数 - `total_tokens` (int) 使用されるトークン数 - `total_steps` (int) デフォルト 0 - `created_at` (timestamp) 開始時間 - `finished_at` (timestamp) 終了時間 - `created_from` (string) 作成元 - `created_by_role` (string) 作成者の役割 - `created_by_account` (string) オプションの作成者アカウント - `created_by_end_user` (object) エンドユーザーによって作成 - `id` (string) ID - `type` (string) タイプ - `is_anonymous` (bool) 匿名かどうか - `session_id` (string) セッション ID - `created_at` (timestamp) 作成時間
+
+    </Col>
   <Col sticky>
 
-    <CodeGroup
-      title="リクエスト"
-      tag="GET"
-      label="/workflows/logs"
-      targetCode={`curl -X GET '${props.appDetail.api_base_url}/workflows/logs'\\
- --header 'Authorization: Bearer {api_key}'`}
-    />
-    ### 応答例
-    <CodeGroup title="応答">
-    ```json {{ title: '応答' }}
+      <CodeGroup
+        title="リクエスト"
+        tag="GET"
+        label="/workflows/logs"
+        targetCode={`curl -X GET '${props.appDetail.api_base_url}/workflows/logs'\\
+
+  --header 'Authorization: Bearer {api_key}'`}
+  /> ### 応答例
+  <CodeGroup title="応答">
+  `json {{ title: '応答' }}
     {
         "page": 1,
         "limit": 1,
@@ -1426,10 +1426,12 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
             }
         ]
     }
-    ```
-    </CodeGroup>
-  </Col>
+    `
+  </CodeGroup>
+
+    </Col>
 </Row>
+
 ---
 
 <Heading
@@ -1442,13 +1444,14 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
   <Col>
   このアプリケーションの基本情報を取得するために使用されます
 
-  ### Response
-  - `name` (string) アプリケーションの名前
-  - `description` (string) アプリケーションの説明
-  - `tags` (array[string]) アプリケーションのタグ
-  - `mode` (string) アプリケーションのモード
-  - `author_name` (string) 作者の名前
-  </Col>
+### Response
+
+- `name` (string) アプリケーションの名前
+- `description` (string) アプリケーションの説明
+- `tags` (array[string]) アプリケーションのタグ
+- `mode` (string) アプリケーションのモード
+- `author_name` (string) 作者の名前
+    </Col>
   <Col>
     <CodeGroup
       title="Request"
@@ -1578,6 +1581,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ———
@@ -1630,6 +1634,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ___

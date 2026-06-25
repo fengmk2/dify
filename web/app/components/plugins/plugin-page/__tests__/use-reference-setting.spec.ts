@@ -1,11 +1,17 @@
 // Import mocks for assertions
 import { toast } from '@langgenius/dify-ui/toast'
 import { waitFor } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { renderHookWithSystemFeatures as renderHook } from '@/__tests__/utils/mock-system-features'
 import { useAppContext } from '@/context/app-context'
 
-import { useInvalidateReferenceSettings, useMutationPluginPermissionSettings, useMutationReferenceSettings, usePluginAutoUpgradeSettings, usePluginPermissionSettings } from '@/service/use-plugins'
+import {
+  useInvalidateReferenceSettings,
+  useMutationPluginPermissionSettings,
+  useMutationReferenceSettings,
+  usePluginAutoUpgradeSettings,
+  usePluginPermissionSettings,
+} from '@/service/use-plugins'
 import { PermissionType, PluginCategoryEnum } from '../../types'
 import useReferenceSetting, { useCanInstallPluginFromMarketplace } from '../use-reference-setting'
 
@@ -281,8 +287,7 @@ describe('useReferenceSetting Hook', () => {
       renderHook(() => useReferenceSetting(PluginCategoryEnum.tool))
 
       // Trigger the onSuccess callback
-      if (onSuccessCallback)
-        onSuccessCallback()
+      if (onSuccessCallback) onSuccessCallback()
 
       await waitFor(() => {
         expect(mockInvalidate).toHaveBeenCalled()

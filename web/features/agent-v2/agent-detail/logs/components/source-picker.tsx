@@ -1,4 +1,7 @@
-import type { AgentLogSourceGroupResponse, AgentLogSourceResponse } from '@dify/contracts/api/console/agent/types.gen'
+import type {
+  AgentLogSourceGroupResponse,
+  AgentLogSourceResponse,
+} from '@dify/contracts/api/console/agent/types.gen'
 import type { TFunction } from 'i18next'
 import type { ReactNode } from 'react'
 import { Button } from '@langgenius/dify-ui/button'
@@ -24,14 +27,9 @@ import { LogSourceIcon } from './source-icon'
 
 export type SourceFilterValue = AgentLogSourceResponse['id'][]
 
-const getSourceGroupLabel = (
-  group: AgentLogSourceGroupResponse,
-  t: TFunction<'agentV2'>,
-) => {
-  if (group.type === 'webapp')
-    return t('agentDetail.logs.filters.source.webapp')
-  if (group.type === 'workflow')
-    return t('agentDetail.logs.filters.source.workflow')
+const getSourceGroupLabel = (group: AgentLogSourceGroupResponse, t: TFunction<'agentV2'>) => {
+  if (group.type === 'webapp') return t('agentDetail.logs.filters.source.webapp')
+  if (group.type === 'workflow') return t('agentDetail.logs.filters.source.workflow')
   return group.label
 }
 
@@ -55,8 +53,8 @@ export function AgentLogSourcePicker({
   const { t } = useTranslation('agentV2')
   const { t: tCommon } = useTranslation('common')
   const [inputValue, setInputValue] = useState('')
-  const sources = groups.flatMap(group => group.sources ?? [])
-  const selectedSources = sources.filter(source => value.includes(source.id))
+  const sources = groups.flatMap((group) => group.sources ?? [])
+  const selectedSources = sources.filter((source) => value.includes(source.id))
 
   return (
     <Combobox<AgentLogSourceResponse, true>
@@ -66,7 +64,7 @@ export function AgentLogSourcePicker({
       itemToStringLabel={getSourceLabel}
       onValueChange={(nextSources) => {
         setInputValue('')
-        onChange(nextSources.map(source => source.id))
+        onChange(nextSources.map((source) => source.id))
       }}
       inputValue={inputValue}
       onInputValueChange={setInputValue}
@@ -77,10 +75,8 @@ export function AgentLogSourcePicker({
       >
         <ComboboxValue placeholder={t('agentDetail.logs.filters.source.all')}>
           {(selectedValue: AgentLogSourceResponse[]) => {
-            if (selectedValue.length === 0)
-              return t('agentDetail.logs.filters.source.all')
-            if (selectedValue.length === 1)
-              return selectedValue[0]!.app_name
+            if (selectedValue.length === 0) return t('agentDetail.logs.filters.source.all')
+            if (selectedValue.length === 1) return selectedValue[0]!.app_name
             return tCommon('dynamicSelect.selected', { count: selectedValue.length })
           }}
         </ComboboxValue>
@@ -88,7 +84,10 @@ export function AgentLogSourcePicker({
       <ComboboxContent popupClassName="w-80 p-0">
         <div className="p-2 pb-1">
           <ComboboxInputGroup className="h-8 min-h-8 px-2">
-            <span aria-hidden className="mr-0.5 i-ri-search-line size-4 shrink-0 text-components-input-text-placeholder" />
+            <span
+              aria-hidden
+              className="mr-0.5 i-ri-search-line size-4 shrink-0 text-components-input-text-placeholder"
+            />
             <ComboboxInput
               aria-label={t('agentDetail.logs.filters.source.searchLabel')}
               placeholder={t('agentDetail.logs.filters.source.searchPlaceholder')}
@@ -97,9 +96,7 @@ export function AgentLogSourcePicker({
           </ComboboxInputGroup>
         </div>
         {isLoading && (
-          <SourcePickerStatus>
-            {t('agentDetail.logs.filters.source.loading')}
-          </SourcePickerStatus>
+          <SourcePickerStatus>{t('agentDetail.logs.filters.source.loading')}</SourcePickerStatus>
         )}
         {isError && (
           <SourcePickerStatus className="flex items-center justify-center gap-2">
@@ -112,7 +109,7 @@ export function AgentLogSourcePicker({
         {!isLoading && !isError && (
           <>
             <ComboboxList className="max-h-69 p-2 pt-1">
-              {groups.map(group => (
+              {groups.map((group) => (
                 <ComboboxGroup key={group.type} items={group.sources ?? []}>
                   <ComboboxGroupLabel className="px-1 pt-2 pb-1">
                     {getSourceGroupLabel(group, t)}
@@ -127,9 +124,7 @@ export function AgentLogSourcePicker({
                         <ComboboxItemText className="flex min-w-0 items-center gap-2 px-0 system-sm-regular">
                           <SourceCheckbox checked={value.includes(source.id)} />
                           <LogSourceIcon source={source} />
-                          <span className="min-w-0 flex-1 truncate">
-                            {source.app_name}
-                          </span>
+                          <span className="min-w-0 flex-1 truncate">{source.app_name}</span>
                         </ComboboxItemText>
                       </ComboboxItem>
                     )}
@@ -147,13 +142,7 @@ export function AgentLogSourcePicker({
   )
 }
 
-function SourcePickerStatus({
-  children,
-  className,
-}: {
-  children: ReactNode
-  className?: string
-}) {
+function SourcePickerStatus({ children, className }: { children: ReactNode; className?: string }) {
   return (
     <div className={cn('px-3 py-3 text-center system-xs-regular text-text-tertiary', className)}>
       {children}
@@ -161,11 +150,7 @@ function SourcePickerStatus({
   )
 }
 
-function SourceCheckbox({
-  checked,
-}: {
-  checked: boolean
-}) {
+function SourceCheckbox({ checked }: { checked: boolean }) {
   return (
     <span
       aria-hidden

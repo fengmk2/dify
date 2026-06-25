@@ -1,11 +1,14 @@
 import type { CrawlResultItem as CrawlResultItemType } from '@/models/datasets'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import CrawledResultItem from '../crawled-result-item'
 
 describe('CrawledResultItem', () => {
   const defaultProps = {
-    payload: { title: 'Example Page', source_url: 'https://example.com/page' } as CrawlResultItemType,
+    payload: {
+      title: 'Example Page',
+      source_url: 'https://example.com/page',
+    } as CrawlResultItemType,
     isChecked: false,
     isPreview: false,
     onCheckChange: vi.fn(),

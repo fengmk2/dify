@@ -16,44 +16,44 @@ const suggestedQuestionsGetMock = vi.hoisted(() => vi.fn())
 const stopPostMock = vi.hoisted(() => vi.fn())
 
 vi.mock('@/next/dynamic', () => ({
-  default: () => function MockChat(props: {
-    onSend: (message: string) => void
-    onStopResponding: () => void
-  }) {
-    return (
-      <div>
-        <button type="button" onClick={() => props.onSend('hello')}>
-          send
-        </button>
-        <button type="button" onClick={props.onStopResponding}>
-          stop
-        </button>
-      </div>
-    )
-  },
+  default: () =>
+    function MockChat(props: { onSend: (message: string) => void; onStopResponding: () => void }) {
+      return (
+        <div>
+          <button type="button" onClick={() => props.onSend('hello')}>
+            send
+          </button>
+          <button type="button" onClick={props.onStopResponding}>
+            stop
+          </button>
+        </div>
+      )
+    },
 }))
 
 vi.mock('@/app/components/base/chat/chat/hooks', () => ({
-  useChat: useChatMock.mockImplementation((
-    _config: unknown,
-    _formSettings: unknown,
-    chatList: unknown[],
-    stopCallback: (taskId: string) => void,
-  ) => {
-    stopCallbackRef.current = stopCallback
+  useChat: useChatMock.mockImplementation(
+    (
+      _config: unknown,
+      _formSettings: unknown,
+      chatList: unknown[],
+      stopCallback: (taskId: string) => void,
+    ) => {
+      stopCallbackRef.current = stopCallback
 
-    return {
-      chatList,
-      setTargetMessageId: vi.fn(),
-      isResponding: false,
-      handleSend: handleSendMock,
-      suggestedQuestions: [],
-      handleStop: () => stopCallback('task-1'),
-      handleAnnotationAdded: vi.fn(),
-      handleAnnotationEdited: vi.fn(),
-      handleAnnotationRemoved: vi.fn(),
-    }
-  }),
+      return {
+        chatList,
+        setTargetMessageId: vi.fn(),
+        isResponding: false,
+        handleSend: handleSendMock,
+        suggestedQuestions: [],
+        handleStop: () => stopCallback('task-1'),
+        handleAnnotationAdded: vi.fn(),
+        handleAnnotationEdited: vi.fn(),
+        handleAnnotationRemoved: vi.fn(),
+      }
+    },
+  ),
 }))
 
 vi.mock('@/context/app-context', () => ({
@@ -210,7 +210,9 @@ describe('AgentPreviewChat', () => {
 
     await waitFor(() => expect(handleSendMock).toHaveBeenCalledTimes(1))
     expect(saveDraftBeforeRun).toHaveBeenCalledTimes(1)
-    expect(saveDraftBeforeRun.mock.invocationCallOrder[0]).toBeLessThan(handleSendMock.mock.invocationCallOrder[0]!)
+    expect(saveDraftBeforeRun.mock.invocationCallOrder[0]).toBeLessThan(
+      handleSendMock.mock.invocationCallOrder[0]!,
+    )
     expect(handleSendMock).toHaveBeenCalledWith(
       'agent/agent-1/chat-messages',
       expect.not.objectContaining({

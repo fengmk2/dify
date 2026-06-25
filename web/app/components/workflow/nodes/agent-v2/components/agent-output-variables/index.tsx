@@ -32,9 +32,13 @@ function OutputRow({
       <div className="flex h-6 items-center gap-x-1 pr-0.5 pl-1">
         <div className="flex min-w-0 grow items-center gap-x-1">
           <span className="flex h-5 min-w-0 items-center px-1">
-            <span className="truncate code-sm-semibold leading-4 text-text-primary">{output.name}</span>
+            <span className="truncate code-sm-semibold leading-4 text-text-primary">
+              {output.name}
+            </span>
           </span>
-          <span className="flex h-5 shrink-0 items-center px-1 system-xs-medium text-text-tertiary">{getOutputDisplayType(output)}</span>
+          <span className="flex h-5 shrink-0 items-center px-1 system-xs-medium text-text-tertiary">
+            {getOutputDisplayType(output)}
+          </span>
           {output.required && (
             <span className="flex h-3 shrink-0 items-center px-1 system-2xs-medium-uppercase text-text-warning">
               {t('nodes.agent.outputVars.requiredLabel', { ns: 'workflow' })}
@@ -63,17 +67,12 @@ function OutputRow({
         )}
       </div>
       {description && (
-        <div className="truncate px-2 pb-1 system-xs-regular text-text-tertiary">
-          {description}
-        </div>
+        <div className="truncate px-2 pb-1 system-xs-regular text-text-tertiary">{description}</div>
       )}
     </div>
   )
 }
-export function AgentOutputVariables({
-  outputs,
-  onChange,
-}: AgentOutputVariablesProps) {
+export function AgentOutputVariables({ outputs, onChange }: AgentOutputVariablesProps) {
   const { t } = useTranslation()
   const [editingState, setEditingState] = useState<EditingState | null>(null)
   function handleNewOutput() {
@@ -87,9 +86,8 @@ export function AgentOutputVariables({
   }
   function handleConfirm(output: DeclaredOutputConfig, index?: number) {
     if (typeof index === 'number') {
-      onChange(outputs.map((item, outputIndex) => outputIndex === index ? output : item))
-    }
-    else {
+      onChange(outputs.map((item, outputIndex) => (outputIndex === index ? output : item)))
+    } else {
       onChange([...outputs, output])
     }
     setEditingState(null)
@@ -98,52 +96,48 @@ export function AgentOutputVariables({
     <OutputVars>
       <div className="pb-2">
         <div className="flex flex-col">
-          {outputs.map((output, index) => (
-            editingState?.index === index
-              ? (
-                  <OutputEditCard
-                    key={`${output.name}-editing`}
-                    existingOutputs={outputs}
-                    state={editingState}
-                    onCancel={() => setEditingState(null)}
-                    onConfirm={handleConfirm}
-                  />
-                )
-              : (
-                  <OutputRow
-                    key={`${output.name}-${getOutputTypeOptionValue(output)}`}
-                    output={output}
-                    editable={!isDefaultOutput(output)}
-                    onDelete={() => handleDeleteOutput(index)}
-                    onEdit={() => handleEditOutput(index)}
-                  />
-                )
-          ))}
+          {outputs.map((output, index) =>
+            editingState?.index === index ? (
+              <OutputEditCard
+                key={`${output.name}-editing`}
+                existingOutputs={outputs}
+                state={editingState}
+                onCancel={() => setEditingState(null)}
+                onConfirm={handleConfirm}
+              />
+            ) : (
+              <OutputRow
+                key={`${output.name}-${getOutputTypeOptionValue(output)}`}
+                output={output}
+                editable={!isDefaultOutput(output)}
+                onDelete={() => handleDeleteOutput(index)}
+                onEdit={() => handleEditOutput(index)}
+              />
+            ),
+          )}
           <div className="py-1">
             <Divider type="horizontal" className="h-px bg-divider-subtle" />
           </div>
-          {editingState && editingState.index == null
-            ? (
-                <OutputEditCard
-                  existingOutputs={outputs}
-                  state={editingState}
-                  onCancel={() => setEditingState(null)}
-                  onConfirm={handleConfirm}
-                />
-              )
-            : (
-                <div className="pt-1">
-                  <Button
-                    size="small"
-                    variant="tertiary"
-                    className="h-6 w-full gap-x-1 rounded-md bg-components-input-bg-normal text-text-secondary hover:bg-state-base-hover"
-                    onClick={handleNewOutput}
-                  >
-                    <span aria-hidden="true" className="i-ri-add-line size-3.5" />
-                    {t('nodes.agent.outputVars.newOutput', { ns: 'workflow' })}
-                  </Button>
-                </div>
-              )}
+          {editingState && editingState.index == null ? (
+            <OutputEditCard
+              existingOutputs={outputs}
+              state={editingState}
+              onCancel={() => setEditingState(null)}
+              onConfirm={handleConfirm}
+            />
+          ) : (
+            <div className="pt-1">
+              <Button
+                size="small"
+                variant="tertiary"
+                className="h-6 w-full gap-x-1 rounded-md bg-components-input-bg-normal text-text-secondary hover:bg-state-base-hover"
+                onClick={handleNewOutput}
+              >
+                <span aria-hidden="true" className="i-ri-add-line size-3.5" />
+                {t('nodes.agent.outputVars.newOutput', { ns: 'workflow' })}
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     </OutputVars>

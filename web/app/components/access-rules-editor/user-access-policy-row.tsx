@@ -50,22 +50,29 @@ function UserAccessPolicyRow({
   const defaultAccessPolicyName = t('accessRule.defaultPermission', { ns: 'permission' })
   const accountEmail = setting.account.email || setting.account.account_name
 
-  const handlePolicyChange = useCallback((nextPolicyId: string | null) => {
-    if (isPolicySelectDisabled || !nextPolicyId || nextPolicyId === selectedPolicyId)
-      return
+  const handlePolicyChange = useCallback(
+    (nextPolicyId: string | null) => {
+      if (isPolicySelectDisabled || !nextPolicyId || nextPolicyId === selectedPolicyId) return
 
-    onChange?.(accountId, [nextPolicyId])
-  }, [accountId, isPolicySelectDisabled, onChange, selectedPolicyId])
+      onChange?.(accountId, [nextPolicyId])
+    },
+    [accountId, isPolicySelectDisabled, onChange, selectedPolicyId],
+  )
 
   const handleRemove = useCallback(() => {
-    if (isRemoveDisabled || !selectedAccessPolicyId)
-      return
+    if (isRemoveDisabled || !selectedAccessPolicyId) return
 
     onRemove?.(accountId, selectedAccessPolicyId)
   }, [accountId, isRemoveDisabled, onRemove, selectedAccessPolicyId])
 
   return (
-    <div className={cn('grid min-h-19 items-center gap-4 px-6 py-4', ACCESS_RULE_TABLE_GRID, className)}>
+    <div
+      className={cn(
+        'grid min-h-19 items-center gap-4 px-6 py-4',
+        ACCESS_RULE_TABLE_GRID,
+        className,
+      )}
+    >
       <div className="flex min-w-0 items-center gap-3">
         <Avatar
           avatar={setting.account.avatar ?? null}
@@ -84,17 +91,15 @@ function UserAccessPolicyRow({
               </span>
             )}
           </div>
-          <p className="truncate system-xs-regular text-text-tertiary">
-            {accountEmail}
-          </p>
+          <p className="truncate system-xs-regular text-text-tertiary">{accountEmail}</p>
         </div>
       </div>
-      <Select
-        value={selectedPolicyId}
-        onValueChange={handlePolicyChange}
-      >
+      <Select value={selectedPolicyId} onValueChange={handlePolicyChange}>
         <SelectTrigger
-          aria-label={t('accessRule.exceptionPermissionFor', { ns: 'permission', name: setting.account.account_name })}
+          aria-label={t('accessRule.exceptionPermissionFor', {
+            ns: 'permission',
+            name: setting.account.account_name,
+          })}
           size="small"
           disabled={isPolicySelectDisabled}
           className="w-36"
@@ -110,7 +115,7 @@ function UserAccessPolicyRow({
             <SelectItemText>{defaultAccessPolicyName}</SelectItemText>
             <SelectItemIndicator />
           </SelectItem>
-          {policyOptions.map(policy => (
+          {policyOptions.map((policy) => (
             <SelectItem key={policy.id} value={policy.id}>
               <SelectItemText>{policy.name}</SelectItemText>
               <SelectItemIndicator />

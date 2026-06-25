@@ -11,9 +11,7 @@ const LoadingError: FC = () => {
   const { t } = useTranslation()
   return (
     <div className="flex items-center space-x-2">
-      <CheckboxSkeleton
-        className="shrink-0"
-      />
+      <CheckboxSkeleton className="shrink-0" />
       <div className="hover-bg-components-panel-on-panel-item-bg relative grow rounded-xl border-[0.5px] border-components-panel-border bg-components-panel-on-panel-item-bg p-4 pb-3 shadow-xs">
         <div className="flex">
           <div

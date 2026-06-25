@@ -1,6 +1,6 @@
 import type { DataSourceCredential } from '@/types/pipeline'
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 import Trigger from '../trigger'
 
 vi.mock('@/app/components/datasets/common/credential-icon', () => ({
@@ -11,7 +11,9 @@ describe('CredentialSelectorTrigger', () => {
   it('should render credential name when provided', () => {
     render(
       <Trigger
-        currentCredential={{ id: 'cred-1', name: 'Account A', avatar_url: '' } as DataSourceCredential}
+        currentCredential={
+          { id: 'cred-1', name: 'Account A', avatar_url: '' } as DataSourceCredential
+        }
         isOpen={false}
       />,
     )

@@ -1,6 +1,6 @@
 import type { CreateExternalAPIReq, FormSchema } from '../../declarations'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import Form from '../Form'
 
 // Mock context for i18n doc link
@@ -71,7 +71,10 @@ describe('Form', () => {
       render(<Form {...defaultProps} />)
       const docLink = screen.getByText('dataset.externalAPIPanelDocumentation')
       expect(docLink).toBeInTheDocument()
-      expect(docLink.closest('a')).toHaveAttribute('href', expect.stringContaining('docs.example.com'))
+      expect(docLink.closest('a')).toHaveAttribute(
+        'href',
+        expect.stringContaining('docs.example.com'),
+      )
     })
 
     it('should render password type input for secret fields', () => {
@@ -100,7 +103,9 @@ describe('Form', () => {
     })
 
     it('should apply fieldLabelClassName to labels', () => {
-      const { container } = render(<Form {...defaultProps} fieldLabelClassName="custom-label-class" />)
+      const { container } = render(
+        <Form {...defaultProps} fieldLabelClassName="custom-label-class" />,
+      )
       const labels = container.querySelectorAll('label.custom-label-class')
       expect(labels.length).toBe(3)
     })

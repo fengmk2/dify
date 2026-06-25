@@ -1,6 +1,6 @@
 import type { Getter } from 'jotai'
 import { atom, createStore } from 'jotai'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 
 type QueryOptions = {
   enabled?: boolean
@@ -29,45 +29,47 @@ const mockQueryResults = vi.hoisted(() => ({
 }))
 
 vi.mock('jotai-tanstack-query', () => ({
-  atomWithInfiniteQuery: (createOptions: (get: Getter) => InfiniteQueryOptions) => atom((get) => {
-    const options = createOptions(get)
-    const queryName = String(options.queryKey?.[0] ?? 'unknown')
-    const queryResult = mockQueryResults.current.get(queryName)
+  atomWithInfiniteQuery: (createOptions: (get: Getter) => InfiniteQueryOptions) =>
+    atom((get) => {
+      const options = createOptions(get)
+      const queryName = String(options.queryKey?.[0] ?? 'unknown')
+      const queryResult = mockQueryResults.current.get(queryName)
 
-    return {
-      ...options,
-      data: { pages: [{ data: [] }] },
-      hasNextPage: false,
-      isFetching: false,
-      isFetchingNextPage: false,
-      isLoading: false,
-      isPlaceholderData: false,
-      isSuccess: Boolean(queryResult?.data),
-      fetchNextPage: vi.fn(),
-      ...queryResult,
-    }
-  }),
-  atomWithMutation: () => atom(() => ({
-    isPending: false,
-    mutateAsync: vi.fn(),
-  })),
-  atomWithQuery: (createOptions: (get: Getter) => QueryOptions) => atom((get) => {
-    const options = createOptions(get)
-    const queryName = String(options.queryKey?.[0] ?? 'unknown')
-    const queryResult = options.enabled === false
-      ? undefined
-      : mockQueryResults.current.get(queryName)
+      return {
+        ...options,
+        data: { pages: [{ data: [] }] },
+        hasNextPage: false,
+        isFetching: false,
+        isFetchingNextPage: false,
+        isLoading: false,
+        isPlaceholderData: false,
+        isSuccess: Boolean(queryResult?.data),
+        fetchNextPage: vi.fn(),
+        ...queryResult,
+      }
+    }),
+  atomWithMutation: () =>
+    atom(() => ({
+      isPending: false,
+      mutateAsync: vi.fn(),
+    })),
+  atomWithQuery: (createOptions: (get: Getter) => QueryOptions) =>
+    atom((get) => {
+      const options = createOptions(get)
+      const queryName = String(options.queryKey?.[0] ?? 'unknown')
+      const queryResult =
+        options.enabled === false ? undefined : mockQueryResults.current.get(queryName)
 
-    return {
-      ...options,
-      data: undefined,
-      isError: false,
-      isFetching: false,
-      isLoading: false,
-      isSuccess: false,
-      ...queryResult,
-    }
-  }),
+      return {
+        ...options,
+        data: undefined,
+        isError: false,
+        isFetching: false,
+        isLoading: false,
+        isSuccess: false,
+        ...queryResult,
+      }
+    }),
 }))
 
 vi.mock('@/service/client', () => ({
@@ -124,11 +126,7 @@ async function loadState() {
 }
 
 function workflowDsl() {
-  return [
-    'app:',
-    '  mode: workflow',
-    '  name: Imported guide',
-  ].join('\n')
+  return ['app:', '  mode: workflow', '  name: Imported guide'].join('\n')
 }
 
 describe('create deployment guide state', () => {

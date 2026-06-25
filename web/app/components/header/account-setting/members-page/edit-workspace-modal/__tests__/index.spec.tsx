@@ -2,7 +2,7 @@ import type { AppContextValue } from '@/context/app-context'
 import type { ICurrentWorkspace } from '@/models/common'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { vi } from 'vitest'
+import { vi } from 'vite-plus/test'
 import { useAppContext } from '@/context/app-context'
 import { updateWorkspaceInfo } from '@/service/common'
 import EditWorkspaceModal from '../index'
@@ -44,11 +44,12 @@ describe('EditWorkspaceModal', () => {
     vi.unstubAllGlobals()
   })
 
-  const renderModal = () => render(
-    <>
-      <EditWorkspaceModal onCancel={mockOnCancel} />
-    </>,
-  )
+  const renderModal = () =>
+    render(
+      <>
+        <EditWorkspaceModal onCancel={mockOnCancel} />
+      </>,
+    )
 
   it('should show current workspace name in the input', async () => {
     renderModal()
@@ -77,7 +78,11 @@ describe('EditWorkspaceModal', () => {
   it('should submit update when confirming as owner', async () => {
     const user = userEvent.setup()
     const mockAssign = vi.fn()
-    vi.stubGlobal('location', { ...window.location, assign: mockAssign, origin: 'http://localhost' })
+    vi.stubGlobal('location', {
+      ...window.location,
+      assign: mockAssign,
+      origin: 'http://localhost',
+    })
     vi.mocked(updateWorkspaceInfo).mockResolvedValue({} as ICurrentWorkspace)
 
     renderModal()
@@ -111,9 +116,11 @@ describe('EditWorkspaceModal', () => {
     await user.click(getSaveButton())
 
     await waitFor(() => {
-      expect(mockNotify).toHaveBeenCalledWith(expect.objectContaining({
-        type: 'error',
-      }))
+      expect(mockNotify).toHaveBeenCalledWith(
+        expect.objectContaining({
+          type: 'error',
+        }),
+      )
     })
   })
 

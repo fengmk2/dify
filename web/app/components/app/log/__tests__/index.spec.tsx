@@ -48,7 +48,16 @@ vi.mock('../filter', () => ({
     9: { value: 0 },
   },
   default: ({ setQueryParams }: { setQueryParams: (next: Record<string, string>) => void }) => (
-    <button onClick={() => setQueryParams({ period: '9', annotation_status: 'all', sort_by: '-created_at', keyword: 'hello' })}>
+    <button
+      onClick={() =>
+        setQueryParams({
+          period: '9',
+          annotation_status: 'all',
+          sort_by: '-created_at',
+          keyword: 'hello',
+        })
+      }
+    >
       filter-controls
     </button>
   ),
@@ -96,19 +105,26 @@ describe('Logs', () => {
   it('should request chat conversations and show a loading state before data arrives', () => {
     render(
       <Logs
-        appDetail={{
-          id: 'app-1',
-          mode: AppModeEnum.CHAT,
-        } as any}
+        appDetail={
+          {
+            id: 'app-1',
+            mode: AppModeEnum.CHAT,
+          } as any
+        }
       />,
     )
 
-    expect(mockUseChatConversations).toHaveBeenCalledWith(expect.objectContaining({
-      appId: 'app-1',
-    }))
+    expect(mockUseChatConversations).toHaveBeenCalledWith(
+      expect.objectContaining({
+        appId: 'app-1',
+      }),
+    )
     expect(screen.getByRole('heading', { name: 'title' })).toBeInTheDocument()
     expect(screen.getByText('description')).toBeInTheDocument()
-    expect(screen.getByRole('link', { name: 'operation.learnMore' })).toHaveAttribute('href', 'https://docs.example.com/use-dify/monitor/logs')
+    expect(screen.getByRole('link', { name: 'operation.learnMore' })).toHaveAttribute(
+      'href',
+      'https://docs.example.com/use-dify/monitor/logs',
+    )
     expect(screen.getByText('loading-logs')).toBeInTheDocument()
   })
 
@@ -120,16 +136,20 @@ describe('Logs', () => {
 
     render(
       <Logs
-        appDetail={{
-          id: 'app-2',
-          mode: AppModeEnum.COMPLETION,
-        } as any}
+        appDetail={
+          {
+            id: 'app-2',
+            mode: AppModeEnum.COMPLETION,
+          } as any
+        }
       />,
     )
 
-    expect(mockUseCompletionConversations).toHaveBeenCalledWith(expect.objectContaining({
-      appId: 'app-2',
-    }))
+    expect(mockUseCompletionConversations).toHaveBeenCalledWith(
+      expect.objectContaining({
+        appId: 'app-2',
+      }),
+    )
     expect(screen.getByText('empty-logs')).toBeInTheDocument()
   })
 
@@ -141,10 +161,12 @@ describe('Logs', () => {
 
     render(
       <Logs
-        appDetail={{
-          id: 'app-3',
-          mode: AppModeEnum.CHAT,
-        } as any}
+        appDetail={
+          {
+            id: 'app-3',
+            mode: AppModeEnum.CHAT,
+          } as any
+        }
       />,
     )
 

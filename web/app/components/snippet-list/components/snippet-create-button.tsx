@@ -1,11 +1,7 @@
 'use client'
 
 import { Button } from '@langgenius/dify-ui/button'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@langgenius/dify-ui/popover'
+import { Popover, PopoverContent, PopoverTrigger } from '@langgenius/dify-ui/popover'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import CreateSnippetDialog from '@/app/components/snippets/create-snippet-dialog'
@@ -25,20 +21,19 @@ const SnippetCreateButton = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const isSubmitting = isCreatingSnippet || createSnippetMutation.isPending
 
-  if (!canCreateAndModifySnippet)
-    return null
+  if (!canCreateAndModifySnippet) return null
 
   return (
     <>
       <Popover open={isMenuOpen} onOpenChange={setIsMenuOpen}>
         <PopoverTrigger
-          render={(
+          render={
             <Button disabled={isSubmitting}>
               <span aria-hidden className="mr-0.5 i-ri-add-line size-4" />
               <span>{t('create')}</span>
               <span aria-hidden className="ml-0.5 i-ri-arrow-down-s-line size-4" />
             </Button>
-          )}
+          }
         />
         <PopoverContent
           placement="bottom-end"
@@ -56,7 +51,10 @@ const SnippetCreateButton = () => {
               setIsCreateDialogOpen(true)
             }}
           >
-            <span aria-hidden className="mr-2 i-custom-vender-line-files-file-plus-01 size-4 shrink-0" />
+            <span
+              aria-hidden
+              className="mr-2 i-custom-vender-line-files-file-plus-01 size-4 shrink-0"
+            />
             <span>{t('createFromBlank')}</span>
           </button>
           <button
@@ -67,7 +65,10 @@ const SnippetCreateButton = () => {
               setIsImportDialogOpen(true)
             }}
           >
-            <span aria-hidden className="mr-2 i-custom-vender-line-files-file-arrow-01 size-4 shrink-0" />
+            <span
+              aria-hidden
+              className="mr-2 i-custom-vender-line-files-file-arrow-01 size-4 shrink-0"
+            />
             <span>{t('importDSLFile')}</span>
           </button>
         </PopoverContent>

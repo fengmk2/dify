@@ -21,13 +21,7 @@ const VALUE_LIMIT = {
   max: maxTopK,
 }
 
-const TopKItem: FC<Props> = ({
-  className,
-  value,
-  enable,
-  onChange,
-  disabled = false,
-}) => {
+const TopKItem: FC<Props> = ({ className, value, enable, onChange, disabled = false }) => {
   const { t } = useTranslation()
   const handleParamChange = (key: string, value: number) => {
     let notOutRangeValue = Number.parseInt(value.toFixed(0))

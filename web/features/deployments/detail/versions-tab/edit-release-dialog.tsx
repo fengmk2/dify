@@ -47,8 +47,7 @@ function EditReleaseForm({
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    if (!canSave)
-      return
+    if (!canSave) return
 
     onSubmit({
       name: normalizedName,
@@ -59,7 +58,10 @@ function EditReleaseForm({
   return (
     <form className="flex flex-col gap-4" noValidate autoComplete="off" onSubmit={handleSubmit}>
       <div className="flex flex-col gap-2">
-        <label className="system-xs-medium-uppercase text-text-tertiary" htmlFor="release-edit-name">
+        <label
+          className="system-xs-medium-uppercase text-text-tertiary"
+          htmlFor="release-edit-name"
+        >
           {t('versions.releaseNameLabel')}
         </label>
         <Input
@@ -70,18 +72,25 @@ function EditReleaseForm({
           autoComplete="off"
           aria-invalid={nameRequired || undefined}
           aria-describedby={nameRequired ? 'release-edit-name-error' : undefined}
-          onChange={event => setName(event.target.value)}
+          onChange={(event) => setName(event.target.value)}
           className="h-8"
         />
         {nameRequired && (
-          <div id="release-edit-name-error" role="alert" className="system-xs-regular text-text-destructive">
+          <div
+            id="release-edit-name-error"
+            role="alert"
+            className="system-xs-regular text-text-destructive"
+          >
             {t('versions.releaseNameRequired')}
           </div>
         )}
       </div>
       <div className="flex flex-col gap-2">
         <div className="flex items-center gap-1.5">
-          <label className="system-xs-medium-uppercase text-text-tertiary" htmlFor="release-edit-description">
+          <label
+            className="system-xs-medium-uppercase text-text-tertiary"
+            htmlFor="release-edit-description"
+          >
             {t('versions.releaseDescriptionLabel')}
           </label>
           <span className="system-xs-regular text-text-quaternary">{t('versions.optional')}</span>
@@ -96,20 +105,10 @@ function EditReleaseForm({
         />
       </div>
       <div className="flex justify-end gap-2 pt-2">
-        <Button
-          type="button"
-          variant="secondary"
-          disabled={isSaving}
-          onClick={onClose}
-        >
+        <Button type="button" variant="secondary" disabled={isSaving} onClick={onClose}>
           {t('versions.cancelEdit')}
         </Button>
-        <Button
-          type="submit"
-          variant="primary"
-          disabled={!canSave}
-          loading={isSaving}
-        >
+        <Button type="submit" variant="primary" disabled={!canSave} loading={isSaving}>
           {t('versions.saveEdit')}
         </Button>
       </div>
@@ -127,12 +126,13 @@ export function EditReleaseDialog({
   onOpenChange: (open: boolean) => void
 }) {
   const { t } = useTranslation('deployments')
-  const updateRelease = useMutation(consoleQuery.enterprise.releaseService.updateRelease.mutationOptions())
+  const updateRelease = useMutation(
+    consoleQuery.enterprise.releaseService.updateRelease.mutationOptions(),
+  )
   const formKey = `${release.id}-${release.displayName}-${release.description}`
 
   function handleOpenChange(nextOpen: boolean) {
-    if (!nextOpen && updateRelease.isPending)
-      return
+    if (!nextOpen && updateRelease.isPending) return
     onOpenChange(nextOpen)
   }
 

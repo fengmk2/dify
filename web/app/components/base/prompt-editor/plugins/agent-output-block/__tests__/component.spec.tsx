@@ -7,15 +7,16 @@ import { $getNodeByKey } from 'lexical'
 import AgentOutputBlockComponent from '../component'
 import { $createAgentOutputBlockNode } from '../node'
 
-const { mockEditorFocus, mockEditorUpdate, mockGetRootText, mockNodeReplace, mockSelectNext } = vi.hoisted(() => ({
-  mockEditorFocus: vi.fn(),
-  mockEditorUpdate: vi.fn((callback: () => void) => callback()),
-  mockGetRootText: {
-    value: '[§output:summary:summary§]',
-  },
-  mockNodeReplace: vi.fn(),
-  mockSelectNext: vi.fn(),
-}))
+const { mockEditorFocus, mockEditorUpdate, mockGetRootText, mockNodeReplace, mockSelectNext } =
+  vi.hoisted(() => ({
+    mockEditorFocus: vi.fn(),
+    mockEditorUpdate: vi.fn((callback: () => void) => callback()),
+    mockGetRootText: {
+      value: '[§output:summary:summary§]',
+    },
+    mockNodeReplace: vi.fn(),
+    mockSelectNext: vi.fn(),
+  }))
 
 vi.mock('@lexical/react/LexicalComposerContext')
 vi.mock('@langgenius/dify-ui/select', () => ({
@@ -28,7 +29,9 @@ vi.mock('@langgenius/dify-ui/select', () => ({
   }) => (
     <div>
       {children}
-      <button type="button" onClick={() => onValueChange('file')}>Select file</button>
+      <button type="button" onClick={() => onValueChange('file')}>
+        Select file
+      </button>
     </div>
   ),
   SelectContent: ({ children }: { children: ReactNode }) => <div>{children}</div>,
@@ -54,9 +57,11 @@ vi.mock('lexical', async (importOriginal) => {
     ...actual,
     $getNodeByKey: vi.fn(),
     $getRoot: vi.fn(() => ({
-      getChildren: () => [{
-        getTextContent: () => mockGetRootText.value,
-      }],
+      getChildren: () => [
+        {
+          getTextContent: () => mockGetRootText.value,
+        },
+      ],
     })),
   }
 })
@@ -138,13 +143,16 @@ describe('AgentOutputBlockComponent', () => {
     expect(mockNodeReplace).toHaveBeenCalledTimes(1)
     expect(mockSelectNext).not.toHaveBeenCalled()
     expect(mockEditorFocus).not.toHaveBeenCalled()
-    expect(onChange).toHaveBeenCalledWith(expect.arrayContaining([
-      expect.objectContaining({
-        name: 'summary',
-        type: 'string',
-        required: false,
-      }),
-    ]), '[§output:summary:summary§]')
+    expect(onChange).toHaveBeenCalledWith(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: 'summary',
+          type: 'string',
+          required: false,
+        }),
+      ]),
+      '[§output:summary:summary§]',
+    )
   })
 
   it('moves the editor selection after the output block when committing with Enter', async () => {
@@ -241,12 +249,15 @@ describe('AgentOutputBlockComponent', () => {
       ]),
       onChange,
     )
-    expect(onChange).toHaveBeenCalledWith(expect.arrayContaining([
-      expect.objectContaining({
-        name: 'qna_report.pdf',
-        type: 'file',
-      }),
-    ]), '[§output:qna_report.pdf:qna_report.pdf§]')
+    expect(onChange).toHaveBeenCalledWith(
+      expect.arrayContaining([
+        expect.objectContaining({
+          name: 'qna_report.pdf',
+          type: 'file',
+        }),
+      ]),
+      '[§output:qna_report.pdf:qna_report.pdf§]',
+    )
   })
 
   it('keeps dotted output names as the selected type when the extension is not whitelisted', () => {
@@ -299,7 +310,9 @@ describe('AgentOutputBlockComponent', () => {
     )
 
     const input = screen.getByRole('textbox', { name: 'workflow.nodes.agent.outputVars.nameLabel' })
-    const typeTrigger = screen.getByRole('button', { name: 'workflow.nodes.agent.outputVars.typeLabel' })
+    const typeTrigger = screen.getByRole('button', {
+      name: 'workflow.nodes.agent.outputVars.typeLabel',
+    })
 
     fireEvent.change(input, { target: { value: 'summary' } })
     fireEvent.mouseDown(typeTrigger)
@@ -361,8 +374,12 @@ describe('AgentOutputBlockComponent', () => {
       />,
     )
 
-    expect(screen.queryByRole('textbox', { name: 'workflow.nodes.agent.outputVars.nameLabel' })).not.toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: 'workflow.nodes.agent.outputVars.typeLabel' })).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('textbox', { name: 'workflow.nodes.agent.outputVars.nameLabel' }),
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: 'workflow.nodes.agent.outputVars.typeLabel' }),
+    ).not.toBeInTheDocument()
     expect(screen.getByText('qna_report_pdf')).toBeInTheDocument()
     expect(screen.getByText('file')).toBeInTheDocument()
   })

@@ -7,7 +7,11 @@ import { useTranslation } from 'react-i18next'
 import { SkeletonRectangle } from '@/app/components/base/skeleton'
 import Link from '@/next/link'
 import { DeploymentStatusBadge } from '../../shared/ui/deployment-status-badge'
-import { OVERVIEW_CARD_CLASS_NAME, OVERVIEW_ICON_CLASS_NAME, OVERVIEW_INTERACTIVE_CARD_CLASS_NAME } from './card-styles'
+import {
+  OVERVIEW_CARD_CLASS_NAME,
+  OVERVIEW_ICON_CLASS_NAME,
+  OVERVIEW_INTERACTIVE_CARD_CLASS_NAME,
+} from './card-styles'
 
 type AccessStatusSectionProps = {
   appInstanceId: string
@@ -55,12 +59,10 @@ export function AccessStatusSection({ appInstanceId, accessChannels }: AccessSta
 
   return (
     <section className="flex min-w-0 flex-col gap-3">
-      <h3 className="system-sm-semibold text-text-primary">
-        {t('overview.accessStatus')}
-      </h3>
+      <h3 className="system-sm-semibold text-text-primary">{t('overview.accessStatus')}</h3>
 
       <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))] gap-3">
-        {items.map(item => (
+        {items.map((item) => (
           <Link
             key={item.key}
             href={item.href}
@@ -69,17 +71,12 @@ export function AccessStatusSection({ appInstanceId, accessChannels }: AccessSta
               'group flex min-h-18 min-w-0 items-start gap-3',
             )}
           >
-            <span
-              aria-hidden
-              className={OVERVIEW_ICON_CLASS_NAME}
-            >
+            <span aria-hidden className={OVERVIEW_ICON_CLASS_NAME}>
               <span className={cn('size-4', item.icon)} />
             </span>
             <span className="flex min-w-0 flex-1 flex-col gap-1">
               <span className="flex min-w-0 items-center justify-between gap-3">
-                <span className="truncate system-sm-medium text-text-primary">
-                  {item.label}
-                </span>
+                <span className="truncate system-sm-medium text-text-primary">{item.label}</span>
                 <span className="flex shrink-0 items-center gap-2">
                   <StatusBadge enabled={item.enabled} />
                   <span
@@ -88,9 +85,7 @@ export function AccessStatusSection({ appInstanceId, accessChannels }: AccessSta
                   />
                 </span>
               </span>
-              <span className="truncate text-xs text-text-tertiary">
-                {item.meta}
-              </span>
+              <span className="truncate text-xs text-text-tertiary">{item.meta}</span>
             </span>
           </Link>
         ))}
@@ -111,9 +106,7 @@ export function ApiTokenSummarySection({
 
   return (
     <section className="flex min-w-0 flex-col gap-3">
-      <h3 className="system-sm-semibold text-text-primary">
-        {t('overview.api')}
-      </h3>
+      <h3 className="system-sm-semibold text-text-primary">{t('overview.api')}</h3>
 
       <Link
         href={`/deployments/${appInstanceId}/api-tokens`}
@@ -138,37 +131,37 @@ export function ApiTokenSummarySection({
               />
             </span>
           </span>
-          {apiEnabled
-            ? (
-                <span className="flex min-w-0 flex-wrap gap-2">
-                  <span className="inline-flex h-6 min-w-0 items-center rounded-md bg-background-section-burn px-2 system-xs-medium text-text-secondary">
-                    {t('overview.apiKeysCount', { count: apiKeyCount })}
-                  </span>
-                  {/* "deployed environments" = envs with a runtime deployment, not envs-with-keys */}
-                  <span className="inline-flex h-6 min-w-0 items-center rounded-md bg-background-section-burn px-2 system-xs-medium text-text-secondary">
-                    {t('overview.apiTokenSummary.environments', { count: deployedEnvironmentCount })}
-                  </span>
-                </span>
-              )
-            : (
-                <span className="truncate text-xs text-text-tertiary">
-                  {t('overview.accessMeta.apiTokens')}
-                </span>
-              )}
+          {apiEnabled ? (
+            <span className="flex min-w-0 flex-wrap gap-2">
+              <span className="inline-flex h-6 min-w-0 items-center rounded-md bg-background-section-burn px-2 system-xs-medium text-text-secondary">
+                {t('overview.apiKeysCount', { count: apiKeyCount })}
+              </span>
+              {/* "deployed environments" = envs with a runtime deployment, not envs-with-keys */}
+              <span className="inline-flex h-6 min-w-0 items-center rounded-md bg-background-section-burn px-2 system-xs-medium text-text-secondary">
+                {t('overview.apiTokenSummary.environments', { count: deployedEnvironmentCount })}
+              </span>
+            </span>
+          ) : (
+            <span className="truncate text-xs text-text-tertiary">
+              {t('overview.accessMeta.apiTokens')}
+            </span>
+          )}
         </span>
       </Link>
     </section>
   )
 }
 
-function StatusBadge({ enabled }: {
-  enabled: boolean
-}) {
+function StatusBadge({ enabled }: { enabled: boolean }) {
   const { t } = useTranslation('deployments')
 
   return (
     <DeploymentStatusBadge
-      status={enabled ? RuntimeInstanceStatus.RUNTIME_INSTANCE_STATUS_READY : RuntimeInstanceStatus.RUNTIME_INSTANCE_STATUS_UNDEPLOYED}
+      status={
+        enabled
+          ? RuntimeInstanceStatus.RUNTIME_INSTANCE_STATUS_READY
+          : RuntimeInstanceStatus.RUNTIME_INSTANCE_STATUS_UNDEPLOYED
+      }
       label={enabled ? t('overview.enabled') : t('overview.disabled')}
     />
   )
@@ -179,9 +172,7 @@ export function ApiTokenSummarySectionSkeleton() {
 
   return (
     <section className="flex min-w-0 flex-col gap-3">
-      <h3 className="system-sm-semibold text-text-primary">
-        {t('overview.api')}
-      </h3>
+      <h3 className="system-sm-semibold text-text-primary">{t('overview.api')}</h3>
       <ApiTokenSummaryCardSkeleton />
     </section>
   )
@@ -213,12 +204,10 @@ export function AccessStatusSectionSkeleton() {
 
   return (
     <section className="flex min-w-0 flex-col gap-3">
-      <h3 className="system-sm-semibold text-text-primary">
-        {t('overview.accessStatus')}
-      </h3>
+      <h3 className="system-sm-semibold text-text-primary">{t('overview.accessStatus')}</h3>
 
       <div className="grid grid-cols-[repeat(auto-fit,minmax(min(100%,220px),1fr))] gap-3">
-        {ACCESS_STATUS_SKELETON_KEYS.map(key => (
+        {ACCESS_STATUS_SKELETON_KEYS.map((key) => (
           <div
             key={key}
             data-slot="deployment-overview-access-card-skeleton"

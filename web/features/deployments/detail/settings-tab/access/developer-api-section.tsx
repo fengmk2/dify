@@ -1,10 +1,6 @@
 'use client'
 
-import type {
-  AccessChannels,
-  ApiKey,
-  Environment,
-} from '@dify/contracts/enterprise/types.gen'
+import type { AccessChannels, ApiKey, Environment } from '@dify/contracts/enterprise/types.gen'
 import type { ReactNode } from 'react'
 import { Button } from '@langgenius/dify-ui/button'
 import { Switch, SwitchSkeleton } from '@langgenius/dify-ui/switch'
@@ -46,14 +42,21 @@ function useDeveloperApiSettings() {
   }
 }
 
-function DeveloperApiSwitch({ appInstanceId, checked, accessChannels, disabled }: {
+function DeveloperApiSwitch({
+  appInstanceId,
+  checked,
+  accessChannels,
+  disabled,
+}: {
   appInstanceId: string
   checked: boolean
   accessChannels?: AccessChannels
   disabled?: boolean
 }) {
   const { t } = useTranslation('deployments')
-  const toggleDeveloperAPI = useMutation(consoleQuery.enterprise.accessService.updateAccessChannels.mutationOptions())
+  const toggleDeveloperAPI = useMutation(
+    consoleQuery.enterprise.accessService.updateAccessChannels.mutationOptions(),
+  )
 
   return (
     <Switch
@@ -75,19 +78,11 @@ function DeveloperApiSwitch({ appInstanceId, checked, accessChannels, disabled }
   )
 }
 
-export function DeveloperApiHeaderSwitch({ appInstanceId }: {
-  appInstanceId: string
-}) {
+export function DeveloperApiHeaderSwitch({ appInstanceId }: { appInstanceId: string }) {
   const { t } = useTranslation('deployments')
-  const {
-    apiEnabled,
-    accessChannels,
-    isLoading,
-    isError,
-  } = useDeveloperApiSettings()
+  const { apiEnabled, accessChannels, isLoading, isError } = useDeveloperApiSettings()
 
-  if (isLoading)
-    return <SwitchSkeleton />
+  if (isLoading) return <SwitchSkeleton />
 
   return (
     <div className="flex items-center gap-2">
@@ -104,7 +99,11 @@ export function DeveloperApiHeaderSwitch({ appInstanceId }: {
   )
 }
 
-function ApiKeyListSection({ apiKeys, environments, action }: {
+function ApiKeyListSection({
+  apiKeys,
+  environments,
+  action,
+}: {
   apiKeys: ApiKey[]
   environments: Environment[]
   action?: ReactNode
@@ -124,15 +123,15 @@ function ApiKeyListSection({ apiKeys, environments, action }: {
           </div>
         )}
       </div>
-      <ApiKeyList
-        apiKeys={apiKeys}
-        environments={environments}
-      />
+      <ApiKeyList apiKeys={apiKeys} environments={environments} />
     </div>
   )
 }
 
-function DeveloperApiEndpoint({ appInstanceId, apiUrl }: {
+function DeveloperApiEndpoint({
+  appInstanceId,
+  apiUrl,
+}: {
   appInstanceId: string
   apiUrl: string
 }) {
@@ -141,16 +140,8 @@ function DeveloperApiEndpoint({ appInstanceId, apiUrl }: {
 
   return (
     <div className="flex min-w-0 flex-col gap-2 sm:flex-row sm:items-center">
-      <CopyPill
-        label={t('access.api.endpoint')}
-        value={apiUrl}
-        className="min-w-0 flex-1"
-      />
-      <Button
-        variant="secondary"
-        className="shrink-0 gap-1.5"
-        onClick={() => setApiDocsOpen(true)}
-      >
+      <CopyPill label={t('access.api.endpoint')} value={apiUrl} className="min-w-0 flex-1" />
+      <Button variant="secondary" className="shrink-0 gap-1.5" onClick={() => setApiDocsOpen(true)}>
         <span className="i-ri-file-list-3-line size-3.5" />
         {t('access.api.docs')}
       </Button>
@@ -164,31 +155,21 @@ function DeveloperApiEndpoint({ appInstanceId, apiUrl }: {
   )
 }
 
-export function DeveloperApiSection({
-  appInstanceId,
-}: {
-  appInstanceId: string
-}) {
+export function DeveloperApiSection({ appInstanceId }: { appInstanceId: string }) {
   const { t } = useTranslation('deployments')
   const [createdApiToken, setCreatedApiToken] = useState<CreatedApiToken>()
-  const {
-    apiEnabled,
-    apiUrl,
-    apiKeys,
-    environments,
-    isLoading,
-    isError,
-  } = useDeveloperApiSettings()
-  const visibleCreatedApiToken = createdApiToken?.appInstanceId === appInstanceId
-    ? createdApiToken.token
-    : undefined
-  const hasSelectableEnvironment = environments.some(environment => Boolean(environment.id))
+  const { apiEnabled, apiUrl, apiKeys, environments, isLoading, isError } =
+    useDeveloperApiSettings()
+  const visibleCreatedApiToken =
+    createdApiToken?.appInstanceId === appInstanceId ? createdApiToken.token : undefined
+  const hasSelectableEnvironment = environments.some((environment) => Boolean(environment.id))
 
-  if (isLoading)
-    return <DeveloperApiSkeleton />
+  if (isLoading) return <DeveloperApiSkeleton />
 
   if (isError)
-    return <DeploymentStateMessage variant="section">{t('common.loadFailed')}</DeploymentStateMessage>
+    return (
+      <DeploymentStateMessage variant="section">{t('common.loadFailed')}</DeploymentStateMessage>
+    )
 
   if (!apiEnabled) {
     return (
@@ -203,54 +184,38 @@ export function DeveloperApiSection({
 
   return (
     <div className="flex flex-col gap-4">
-      {apiUrl && (
-        <DeveloperApiEndpoint
+      {apiUrl && <DeveloperApiEndpoint appInstanceId={appInstanceId} apiUrl={apiUrl} />}
+      {hasSelectableEnvironment ? (
+        <ApiKeyGenerateMenu
           appInstanceId={appInstanceId}
-          apiUrl={apiUrl}
-        />
-      )}
-      {hasSelectableEnvironment
-        ? (
-            <ApiKeyGenerateMenu
-              appInstanceId={appInstanceId}
-              environments={environments}
-              triggerVariant="primary"
-              onCreatedToken={token => setCreatedApiToken({ appInstanceId, token })}
-            >
-              {({ trigger }) => apiKeys.length === 0
-                ? (
-                    <DeploymentEmptyState
-                      variant="section"
-                      icon="i-ri-key-2-line"
-                      title={t('access.api.noKeysTitle')}
-                      description={t('access.api.noKeys')}
-                      action={trigger}
-                    />
-                  )
-                : (
-                    <ApiKeyListSection
-                      apiKeys={apiKeys}
-                      environments={environments}
-                      action={trigger}
-                    />
-                  )}
-            </ApiKeyGenerateMenu>
-          )
-        : apiKeys.length === 0
-          ? (
+          environments={environments}
+          triggerVariant="primary"
+          onCreatedToken={(token) => setCreatedApiToken({ appInstanceId, token })}
+        >
+          {({ trigger }) =>
+            apiKeys.length === 0 ? (
               <DeploymentEmptyState
                 variant="section"
-                icon="i-ri-rocket-line"
-                title={t('access.api.emptyTitle')}
-                description={t('access.api.empty')}
+                icon="i-ri-key-2-line"
+                title={t('access.api.noKeysTitle')}
+                description={t('access.api.noKeys')}
+                action={trigger}
               />
+            ) : (
+              <ApiKeyListSection apiKeys={apiKeys} environments={environments} action={trigger} />
             )
-          : (
-              <ApiKeyListSection
-                apiKeys={apiKeys}
-                environments={environments}
-              />
-            )}
+          }
+        </ApiKeyGenerateMenu>
+      ) : apiKeys.length === 0 ? (
+        <DeploymentEmptyState
+          variant="section"
+          icon="i-ri-rocket-line"
+          title={t('access.api.emptyTitle')}
+          description={t('access.api.empty')}
+        />
+      ) : (
+        <ApiKeyListSection apiKeys={apiKeys} environments={environments} />
+      )}
       {visibleCreatedApiToken && (
         <CreatedApiTokenDialog
           token={visibleCreatedApiToken}

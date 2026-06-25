@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import Label from '../label'
 
 describe('Label', () => {
@@ -12,7 +12,13 @@ describe('Label', () => {
     it('should render text with correct styling', () => {
       render(<Label text="My Label" />)
       const labelElement = screen.getByText('My Label')
-      expect(labelElement).toHaveClass('system-xs-medium', 'w-[136px]', 'shrink-0', 'truncate', 'text-text-tertiary')
+      expect(labelElement).toHaveClass(
+        'system-xs-medium',
+        'w-[136px]',
+        'shrink-0',
+        'truncate',
+        'text-text-tertiary',
+      )
     })
 
     it('should not have deleted styling by default', () => {

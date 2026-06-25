@@ -1,7 +1,7 @@
 import type { PackageDependency } from '../../../../types'
 import type { VersionProps } from '@/app/components/plugins/types'
 import { render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { PluginCategoryEnum } from '../../../../types'
 import PackageItem from '../package-item'
 
@@ -9,7 +9,8 @@ const mockPluginManifestToCardPluginProps = vi.fn()
 const mockLoadedItem = vi.fn()
 
 vi.mock('../../../utils', () => ({
-  pluginManifestToCardPluginProps: (manifest: unknown) => mockPluginManifestToCardPluginProps(manifest),
+  pluginManifestToCardPluginProps: (manifest: unknown) =>
+    mockPluginManifestToCardPluginProps(manifest),
 }))
 
 vi.mock('../../../base/loading-error', () => ({
@@ -111,14 +112,16 @@ describe('PackageItem', () => {
     )
 
     expect(screen.getByTestId('loaded-item')).toBeInTheDocument()
-    expect(mockLoadedItem).toHaveBeenCalledWith(expect.objectContaining({
-      checked: true,
-      isFromMarketPlace: true,
-      versionInfo,
-      payload: expect.objectContaining({
-        plugin_id: 'plugin-1',
-        from: 'package',
+    expect(mockLoadedItem).toHaveBeenCalledWith(
+      expect.objectContaining({
+        checked: true,
+        isFromMarketPlace: true,
+        versionInfo,
+        payload: expect.objectContaining({
+          plugin_id: 'plugin-1',
+          from: 'package',
+        }),
       }),
-    }))
+    )
   })
 })

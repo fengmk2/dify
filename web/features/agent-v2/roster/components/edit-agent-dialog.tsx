@@ -1,9 +1,18 @@
 'use client'
 
-import type { AgentAppPartial, AgentAppUpdatePayload } from '@dify/contracts/api/console/agent/types.gen'
+import type {
+  AgentAppPartial,
+  AgentAppUpdatePayload,
+} from '@dify/contracts/api/console/agent/types.gen'
 import type { AgentFormValues, AgentIconSelection } from './agent-form'
 import { Button } from '@langgenius/dify-ui/button'
-import { Dialog, DialogCloseButton, DialogContent, DialogDescription, DialogTitle } from '@langgenius/dify-ui/dialog'
+import {
+  Dialog,
+  DialogCloseButton,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from '@langgenius/dify-ui/dialog'
 import { Form } from '@langgenius/dify-ui/form'
 import { toast } from '@langgenius/dify-ui/toast'
 import { useMutation } from '@tanstack/react-query'
@@ -34,12 +43,7 @@ const applyIconPayload = (body: AgentAppUpdatePayload, icon: AgentIconSelection)
   body.icon_background = undefined
 }
 
-export function EditAgentDialog({
-  agent,
-  formKey,
-  open,
-  onOpenChange,
-}: EditAgentDialogProps) {
+export function EditAgentDialog({ agent, formKey, open, onOpenChange }: EditAgentDialogProps) {
   const { t } = useTranslation('agentV2')
   const { t: tCommon } = useTranslation('common')
   const [renderedFormKey, setRenderedFormKey] = useState(formKey)
@@ -47,7 +51,9 @@ export function EditAgentDialog({
   const [description, setDescription] = useState(agent.description ?? '')
   const [role, setRole] = useState(agent.role ?? '')
   const [iconPickerOpen, setIconPickerOpen] = useState(false)
-  const [agentIcon, setAgentIcon] = useState<AgentIconSelection>(() => createAgentIconSelection(agent))
+  const [agentIcon, setAgentIcon] = useState<AgentIconSelection>(() =>
+    createAgentIconSelection(agent),
+  )
   const updateAgentMutation = useMutation(consoleQuery.agent.byAgentId.put.mutationOptions())
 
   if (formKey !== renderedFormKey) {
@@ -65,8 +71,7 @@ export function EditAgentDialog({
       setDescription(agent.description ?? '')
       setRole(agent.role ?? '')
       setAgentIcon(createAgentIconSelection(agent))
-    }
-    else {
+    } else {
       setIconPickerOpen(false)
     }
     onOpenChange(nextOpen)
@@ -76,17 +81,17 @@ export function EditAgentDialog({
     const trimmedName = formValues.name?.trim() ?? ''
     const trimmedDescription = formValues.description?.trim() ?? ''
     const trimmedRole = formValues.role?.trim() ?? ''
-    const hasIconChanges = getAgentIconKey(agentIcon) !== getAgentIconKey(createAgentIconSelection(agent))
-    const hasFormChanges = trimmedName !== agent.name.trim()
-      || trimmedDescription !== (agent.description?.trim() ?? '')
-      || trimmedRole !== (agent.role?.trim() ?? '')
-      || hasIconChanges
+    const hasIconChanges =
+      getAgentIconKey(agentIcon) !== getAgentIconKey(createAgentIconSelection(agent))
+    const hasFormChanges =
+      trimmedName !== agent.name.trim() ||
+      trimmedDescription !== (agent.description?.trim() ?? '') ||
+      trimmedRole !== (agent.role?.trim() ?? '') ||
+      hasIconChanges
 
-    if (updateAgentMutation.isPending)
-      return
+    if (updateAgentMutation.isPending) return
 
-    if (!hasFormChanges)
-      return
+    if (!hasFormChanges) return
 
     const body: AgentAppUpdatePayload = {
       name: trimmedName,
@@ -98,27 +103,32 @@ export function EditAgentDialog({
 
     applyIconPayload(body, agentIcon)
 
-    updateAgentMutation.mutate({
-      params: {
-        agent_id: agent.id,
+    updateAgentMutation.mutate(
+      {
+        params: {
+          agent_id: agent.id,
+        },
+        body,
       },
-      body,
-    }, {
-      onSuccess: () => {
-        toast.success(t('roster.updateSuccess'))
-        handleOpenChange(false)
+      {
+        onSuccess: () => {
+          toast.success(t('roster.updateSuccess'))
+          handleOpenChange(false)
+        },
       },
-    })
+    )
   }
 
   const trimmedName = name.trim()
   const trimmedDescription = description.trim()
   const trimmedRole = role.trim()
-  const hasIconChanges = getAgentIconKey(agentIcon) !== getAgentIconKey(createAgentIconSelection(agent))
-  const hasChanges = trimmedName !== agent.name.trim()
-    || trimmedDescription !== (agent.description?.trim() ?? '')
-    || trimmedRole !== (agent.role?.trim() ?? '')
-    || hasIconChanges
+  const hasIconChanges =
+    getAgentIconKey(agentIcon) !== getAgentIconKey(createAgentIconSelection(agent))
+  const hasChanges =
+    trimmedName !== agent.name.trim() ||
+    trimmedDescription !== (agent.description?.trim() ?? '') ||
+    trimmedRole !== (agent.role?.trim() ?? '') ||
+    hasIconChanges
 
   return (
     <>
@@ -150,7 +160,12 @@ export function EditAgentDialog({
               onRoleChange={setRole}
             />
             <div className="flex shrink-0 justify-end gap-2 px-6 pt-5 pb-6">
-              <Button type="button" className="min-w-18" onClick={() => handleOpenChange(false)} disabled={updateAgentMutation.isPending}>
+              <Button
+                type="button"
+                className="min-w-18"
+                onClick={() => handleOpenChange(false)}
+                disabled={updateAgentMutation.isPending}
+              >
                 {tCommon('operation.cancel')}
               </Button>
               <Button
@@ -168,9 +183,11 @@ export function EditAgentDialog({
       </Dialog>
       <AppIconPicker
         open={iconPickerOpen}
-        initialEmoji={agentIcon.type === 'emoji'
-          ? { icon: agentIcon.icon, background: agentIcon.background }
-          : undefined}
+        initialEmoji={
+          agentIcon.type === 'emoji'
+            ? { icon: agentIcon.icon, background: agentIcon.background }
+            : undefined
+        }
         onOpenChange={setIconPickerOpen}
         onSelect={setAgentIcon}
       />

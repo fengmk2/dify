@@ -13,12 +13,7 @@ import {
   DrawerViewport,
 } from '@langgenius/dify-ui/drawer'
 import { FieldLabel, FieldRoot } from '@langgenius/dify-ui/field'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTitle,
-  PopoverTrigger,
-} from '@langgenius/dify-ui/popover'
+import { Popover, PopoverContent, PopoverTitle, PopoverTrigger } from '@langgenius/dify-ui/popover'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import AppIcon from '@/app/components/base/app-icon'
@@ -40,8 +35,7 @@ type AgentRosterDisplayData = {
 }
 
 const getAppIconType = (iconType?: string | null): AppIconType | null => {
-  if (iconType === 'emoji' || iconType === 'image' || iconType === 'link')
-    return iconType
+  if (iconType === 'emoji' || iconType === 'image' || iconType === 'link') return iconType
 
   return null
 }
@@ -69,13 +63,14 @@ function AgentRosterAvatar({
   )
 }
 
-function InlineSetupAvatar({
-  className,
-}: {
-  className?: string
-}) {
+function InlineSetupAvatar({ className }: { className?: string }) {
   return (
-    <span className={cn('flex size-8 shrink-0 items-center justify-center rounded-full bg-background-default-burn', className)}>
+    <span
+      className={cn(
+        'flex size-8 shrink-0 items-center justify-center rounded-full bg-background-default-burn',
+        className,
+      )}
+    >
       <span aria-hidden className="i-custom-vender-agent-v2-robot-3 size-5 text-text-tertiary" />
     </span>
   )
@@ -106,8 +101,12 @@ function AgentRosterDrawer({
 }) {
   const { t } = useTranslation()
   const isSetup = mode === 'setup'
-  const title = isInlineSetup ? t(`${i18nPrefix}.roster.inlineSetup.name`, { ns: 'workflow' }) : agent.name
-  const description = isSetup ? t(`${i18nPrefix}.roster.inlineSetup.description`, { ns: 'workflow' }) : agent.role
+  const title = isInlineSetup
+    ? t(`${i18nPrefix}.roster.inlineSetup.name`, { ns: 'workflow' })
+    : agent.name
+  const description = isSetup
+    ? t(`${i18nPrefix}.roster.inlineSetup.description`, { ns: 'workflow' })
+    : agent.role
 
   return (
     <Drawer
@@ -116,8 +115,7 @@ function AgentRosterDrawer({
       disablePointerDismissal
       swipeDirection="right"
       onOpenChange={(nextOpen) => {
-        if (!nextOpen)
-          onClose()
+        if (!nextOpen) onClose()
       }}
     >
       <DrawerPortal container={portalContainerRef}>
@@ -141,19 +139,47 @@ function AgentRosterDrawer({
                 )}
               >
                 <div className="flex min-w-0 items-start justify-between">
-                  <div className={cn('flex min-w-0 flex-1', isSetup ? 'min-w-px items-center gap-2' : 'h-10 items-center gap-2 px-0.5 py-0.5')}>
-                    {isInlineSetup
-                      ? <InlineSetupAvatar className="size-9" />
-                      : <AgentRosterAvatar agent={agent} size="md" className="size-9" />}
-                    <div className={cn('flex min-w-0 flex-1 flex-col', isSetup ? '' : 'gap-0.5 py-px')}>
+                  <div
+                    className={cn(
+                      'flex min-w-0 flex-1',
+                      isSetup
+                        ? 'min-w-px items-center gap-2'
+                        : 'h-10 items-center gap-2 px-0.5 py-0.5',
+                    )}
+                  >
+                    {isInlineSetup ? (
+                      <InlineSetupAvatar className="size-9" />
+                    ) : (
+                      <AgentRosterAvatar agent={agent} size="md" className="size-9" />
+                    )}
+                    <div
+                      className={cn('flex min-w-0 flex-1 flex-col', isSetup ? '' : 'gap-0.5 py-px')}
+                    >
                       <div className="flex min-w-0 items-center gap-1">
-                        <DrawerTitle className={cn('truncate', isSetup ? 'system-xl-semibold text-text-primary' : 'system-sm-medium text-text-secondary')}>
+                        <DrawerTitle
+                          className={cn(
+                            'truncate',
+                            isSetup
+                              ? 'system-xl-semibold text-text-primary'
+                              : 'system-sm-medium text-text-secondary',
+                          )}
+                        >
                           {title}
                         </DrawerTitle>
-                        {!isSetup && showAccessIcon && <span aria-hidden className="i-ri-lock-line size-3 shrink-0 text-text-tertiary" />}
+                        {!isSetup && showAccessIcon && (
+                          <span
+                            aria-hidden
+                            className="i-ri-lock-line size-3 shrink-0 text-text-tertiary"
+                          />
+                        )}
                       </div>
                       {description && (
-                        <p className={cn(isSetup ? 'min-w-full' : 'truncate', 'system-xs-regular text-text-tertiary')}>
+                        <p
+                          className={cn(
+                            isSetup ? 'min-w-full' : 'truncate',
+                            'system-xs-regular text-text-tertiary',
+                          )}
+                        >
                           {description}
                         </p>
                       )}
@@ -204,7 +230,10 @@ function AgentRosterDrawer({
               </header>
               <div
                 role="region"
-                aria-label={t(`${i18nPrefix}.roster.panelLabel`, { ns: 'workflow', name: agent.name })}
+                aria-label={t(`${i18nPrefix}.roster.panelLabel`, {
+                  ns: 'workflow',
+                  name: agent.name,
+                })}
                 className="min-h-0 flex-1 overflow-hidden bg-components-panel-bg"
               >
                 {children ?? <div className="h-full min-h-80 bg-components-panel-bg" />}
@@ -259,21 +288,19 @@ export function AgentRosterField({
     ns: 'workflow',
     field: t(`${i18nPrefix}.roster.label`, { ns: 'workflow' }),
   })
-  const agentContent = agent
-    ? (
-        <>
-          {isInlineSetup ? <InlineSetupAvatar /> : <AgentRosterAvatar agent={agent} />}
-          <span className="flex min-w-0 flex-1 flex-col gap-0.5 py-px">
-            <span className="truncate system-sm-medium text-text-secondary">
-              {isInlineSetup ? inlineSetupName : agent.name}
-            </span>
-            <span className="truncate system-xs-regular text-text-tertiary">
-              {isInlineSetup ? inlineSetupType : agent.role}
-            </span>
-          </span>
-        </>
-      )
-    : null
+  const agentContent = agent ? (
+    <>
+      {isInlineSetup ? <InlineSetupAvatar /> : <AgentRosterAvatar agent={agent} />}
+      <span className="flex min-w-0 flex-1 flex-col gap-0.5 py-px">
+        <span className="truncate system-sm-medium text-text-secondary">
+          {isInlineSetup ? inlineSetupName : agent.name}
+        </span>
+        <span className="truncate system-xs-regular text-text-tertiary">
+          {isInlineSetup ? inlineSetupType : agent.role}
+        </span>
+      </span>
+    </>
+  ) : null
   const loadingContent = (
     <>
       <span aria-hidden className="size-8 shrink-0 rounded-lg bg-text-quaternary/20" />
@@ -293,20 +320,23 @@ export function AgentRosterField({
         <Popover
           open={isPending ? false : isSelectorOpen}
           onOpenChange={(open) => {
-            if (!isPending)
-              setIsSelectorOpen(open)
+            if (!isPending) setIsSelectorOpen(open)
           }}
         >
           <PopoverTrigger
-            render={(
+            render={
               <button
                 type="button"
                 disabled={isPending}
-                className={cn('flex h-6 shrink-0 cursor-pointer items-center justify-center rounded-md px-1.5 py-1 system-xs-medium text-text-tertiary hover:bg-state-base-hover hover:text-text-secondary focus-visible:ring-2 focus-visible:ring-state-accent-solid focus-visible:outline-hidden', isPending && 'cursor-not-allowed opacity-50 hover:bg-transparent hover:text-text-tertiary')}
+                className={cn(
+                  'flex h-6 shrink-0 cursor-pointer items-center justify-center rounded-md px-1.5 py-1 system-xs-medium text-text-tertiary hover:bg-state-base-hover hover:text-text-secondary focus-visible:ring-2 focus-visible:ring-state-accent-solid focus-visible:outline-hidden',
+                  isPending &&
+                    'cursor-not-allowed opacity-50 hover:bg-transparent hover:text-text-tertiary',
+                )}
               >
                 {t(`${i18nPrefix}.roster.change`, { ns: 'workflow' })}
               </button>
-            )}
+            }
           />
           <PopoverContent
             placement="bottom-end"
@@ -323,69 +353,71 @@ export function AgentRosterField({
                 setIsSelectorOpen(false)
                 onChange(nextAgent)
               }}
-              onStartFromScratch={onStartFromScratch
-                ? () => {
-                    setIsSelectorOpen(false)
-                    onStartFromScratch()
-                  }
-                : undefined}
+              onStartFromScratch={
+                onStartFromScratch
+                  ? () => {
+                      setIsSelectorOpen(false)
+                      onStartFromScratch()
+                    }
+                  : undefined
+              }
             />
           </PopoverContent>
         </Popover>
       </div>
-      {agent
-        ? (
-            canOpenPanel
-              ? (
-                  <>
-                    <button
-                      type="button"
-                      aria-label={t(`${i18nPrefix}.roster.openPanel`, { ns: 'workflow', name: isInlineSetup ? inlineSetupName : agent.name })}
-                      aria-busy={isLoading || undefined}
-                      className="flex h-13 w-full min-w-0 cursor-pointer items-center gap-2 rounded-[10px] border-[0.5px] border-components-panel-border bg-components-panel-on-panel-item-bg py-2 pr-4 pl-2 text-left shadow-xs shadow-shadow-shadow-3 hover:bg-components-panel-on-panel-item-bg-hover focus-visible:ring-2 focus-visible:ring-state-accent-solid focus-visible:outline-hidden"
-                      onClick={() => setPanelOpen(true)}
-                    >
-                      {isLoading ? loadingContent : agentContent}
-                      <span className="flex shrink-0 items-center text-text-tertiary">
-                        <span aria-hidden className="i-ri-arrow-right-line size-4" />
-                      </span>
-                    </button>
-                    <AgentRosterDrawer
-                      agent={agent}
-                      isInlineSetup={isInlineSetup}
-                      mode={panelMode}
-                      open={panelOpen}
-                      portalContainerRef={portalContainerRef}
-                      showAccessIcon={!isInlineSetup}
-                      showDetailActions={showPanelDetailActions}
-                      onClose={() => setPanelOpen(false)}
-                    >
-                      {panelBody}
-                    </AgentRosterDrawer>
-                  </>
-                )
-              : (
-                  <div className="flex h-13 w-full min-w-0 items-center gap-2 rounded-[10px] border-[0.5px] border-components-panel-border bg-components-panel-on-panel-item-bg py-2 pr-4 pl-2 text-left shadow-xs shadow-shadow-shadow-3">
-                    {agentContent}
-                  </div>
-                )
-          )
-        : isPending || agentId
-          ? (
-              <div aria-busy="true" className="flex h-13 w-full min-w-0 items-center gap-2 rounded-[10px] border-[0.5px] border-components-panel-border bg-components-panel-on-panel-item-bg py-2 pr-4 pl-2 text-left shadow-xs shadow-shadow-shadow-3">
-                {loadingContent}
-              </div>
-            )
-          : (
-              <div className="flex h-13 w-full min-w-0 items-center gap-2 rounded-[10px] border-[0.5px] border-state-destructive-border bg-components-panel-on-panel-item-bg py-2 pr-4 pl-2 text-left shadow-xs shadow-shadow-shadow-3">
-                <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-state-destructive-hover text-text-destructive">
-                  <span aria-hidden className="i-ri-error-warning-line size-4" />
-                </span>
-                <span className="min-w-0 flex-1 truncate system-sm-medium text-text-destructive">
-                  {rosterRequiredMessage}
-                </span>
-              </div>
-            )}
+      {agent ? (
+        canOpenPanel ? (
+          <>
+            <button
+              type="button"
+              aria-label={t(`${i18nPrefix}.roster.openPanel`, {
+                ns: 'workflow',
+                name: isInlineSetup ? inlineSetupName : agent.name,
+              })}
+              aria-busy={isLoading || undefined}
+              className="flex h-13 w-full min-w-0 cursor-pointer items-center gap-2 rounded-[10px] border-[0.5px] border-components-panel-border bg-components-panel-on-panel-item-bg py-2 pr-4 pl-2 text-left shadow-xs shadow-shadow-shadow-3 hover:bg-components-panel-on-panel-item-bg-hover focus-visible:ring-2 focus-visible:ring-state-accent-solid focus-visible:outline-hidden"
+              onClick={() => setPanelOpen(true)}
+            >
+              {isLoading ? loadingContent : agentContent}
+              <span className="flex shrink-0 items-center text-text-tertiary">
+                <span aria-hidden className="i-ri-arrow-right-line size-4" />
+              </span>
+            </button>
+            <AgentRosterDrawer
+              agent={agent}
+              isInlineSetup={isInlineSetup}
+              mode={panelMode}
+              open={panelOpen}
+              portalContainerRef={portalContainerRef}
+              showAccessIcon={!isInlineSetup}
+              showDetailActions={showPanelDetailActions}
+              onClose={() => setPanelOpen(false)}
+            >
+              {panelBody}
+            </AgentRosterDrawer>
+          </>
+        ) : (
+          <div className="flex h-13 w-full min-w-0 items-center gap-2 rounded-[10px] border-[0.5px] border-components-panel-border bg-components-panel-on-panel-item-bg py-2 pr-4 pl-2 text-left shadow-xs shadow-shadow-shadow-3">
+            {agentContent}
+          </div>
+        )
+      ) : isPending || agentId ? (
+        <div
+          aria-busy="true"
+          className="flex h-13 w-full min-w-0 items-center gap-2 rounded-[10px] border-[0.5px] border-components-panel-border bg-components-panel-on-panel-item-bg py-2 pr-4 pl-2 text-left shadow-xs shadow-shadow-shadow-3"
+        >
+          {loadingContent}
+        </div>
+      ) : (
+        <div className="flex h-13 w-full min-w-0 items-center gap-2 rounded-[10px] border-[0.5px] border-state-destructive-border bg-components-panel-on-panel-item-bg py-2 pr-4 pl-2 text-left shadow-xs shadow-shadow-shadow-3">
+          <span className="flex size-8 shrink-0 items-center justify-center rounded-lg bg-state-destructive-hover text-text-destructive">
+            <span aria-hidden className="i-ri-error-warning-line size-4" />
+          </span>
+          <span className="min-w-0 flex-1 truncate system-sm-medium text-text-destructive">
+            {rosterRequiredMessage}
+          </span>
+        </div>
+      )}
     </FieldRoot>
   )
 }

@@ -4,13 +4,8 @@ import type { ReactNode } from 'react'
 import type { AgentOrchestrateAddActionOptions } from '../add-actions-context'
 import type { AgentDriveApiContext } from '../drive-context'
 import type { AgentFileNode } from '@/features/agent-v2/agent-composer/form-state'
-import {
-  Dialog,
-  DialogTrigger,
-} from '@langgenius/dify-ui/dialog'
-import {
-  FileTreeGuide,
-} from '@langgenius/dify-ui/file-tree'
+import { Dialog, DialogTrigger } from '@langgenius/dify-ui/dialog'
+import { FileTreeGuide } from '@langgenius/dify-ui/file-tree'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useCallback, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -29,12 +24,10 @@ const getAgentFilePreviewKey = (file: AgentFileNode) => file.driveKey ?? file.id
 
 const findAgentFileNode = (files: AgentFileNode[], fileId: string): AgentFileNode | undefined => {
   for (const file of files) {
-    if (file.id === fileId)
-      return file
+    if (file.id === fileId) return file
 
     const child = file.children ? findAgentFileNode(file.children, fileId) : undefined
-    if (child)
-      return child
+    if (child) return child
   }
 }
 
@@ -91,7 +84,8 @@ function AgentFileItem({
   const previewQuery = apiContext.workflow ? workflowPreviewQuery : agentPreviewQuery
   const selectedPreviewFile = selectedFile ?? file
   const isImagePreviewFile = selectedPreviewFile.icon === 'image'
-  const shouldDownloadPreviewFile = isPreviewOpen && !!previewFileId && (isImagePreviewFile || !!previewQuery.data?.binary)
+  const shouldDownloadPreviewFile =
+    isPreviewOpen && !!previewFileId && (isImagePreviewFile || !!previewQuery.data?.binary)
   const agentDownloadQuery = useQuery({
     ...consoleQuery.agent.byAgentId.drive.files.download.get.queryOptions({
       input: {
@@ -123,31 +117,31 @@ function AgentFileItem({
   const handleRemove = useCallback(() => {
     onRemove(file.id)
   }, [file.id, onRemove])
-  const handlePreviewOpenChange = useCallback((open: boolean) => {
-    if (open)
-      setSelectedFileId(file.id)
-    setIsPreviewOpen(open)
-  }, [file.id])
+  const handlePreviewOpenChange = useCallback(
+    (open: boolean) => {
+      if (open) setSelectedFileId(file.id)
+      setIsPreviewOpen(open)
+    },
+    [file.id],
+  )
 
   return (
     <li className="group/file-row relative min-w-0">
       <Dialog open={isPreviewOpen} onOpenChange={handlePreviewOpenChange}>
         <DialogTrigger
-          render={(
+          render={
             <button
               type="button"
               data-selected={selected || undefined}
               aria-current={selected ? 'true' : undefined}
               className="group/file-tree-row relative flex h-6 w-full min-w-0 cursor-pointer items-center rounded-md pr-7 pl-2 text-left outline-hidden select-none hover:bg-state-base-hover focus-visible:bg-state-base-hover focus-visible:ring-2 focus-visible:ring-state-accent-solid focus-visible:ring-inset data-[selected]:bg-state-base-active"
             />
-          )}
+          }
         >
           {Array.from({ length: Math.max(depth - 1, 0) }, (_, index) => (
             <FileTreeGuide key={index} />
           ))}
-          <div className="flex min-w-0 flex-[1_0_0] items-center py-0.5">
-            {children}
-          </div>
+          <div className="flex min-w-0 flex-[1_0_0] items-center py-0.5">{children}</div>
         </DialogTrigger>
         <AgentSkillDetailDialog
           skillName={file.name}
@@ -165,7 +159,7 @@ function AgentFileItem({
               isImage: isImagePreviewFile,
               isLoading: previewQuery.isPending,
             },
-            onSelectFile: selectedFile => setSelectedFileId(selectedFile.id),
+            onSelectFile: (selectedFile) => setSelectedFileId(selectedFile.id),
             selectedFileId: selectedFileId ?? file.id,
             sections: [],
           }}
@@ -194,53 +188,67 @@ export function AgentFiles() {
   const promptAddCallbackRef = useRef<AgentOrchestrateAddActionOptions['onAdded']>(undefined)
   const apiContext = useAgentDriveApiContext()
   const { query: driveFilesQuery, files } = useAgentDriveFiles({ prefix: FILES_DRIVE_PREFIX })
-  const { mutate: deleteAgentFile } = useMutation(consoleQuery.agent.byAgentId.files.delete.mutationOptions())
-  const { mutate: deleteWorkflowAgentFile } = useMutation(consoleQuery.apps.byAppId.agent.files.delete.mutationOptions())
-  const removeFile = useCallback((fileId: string) => {
-    const file = findAgentFileNode(files, fileId)
-    const driveKey = file?.driveKey
+  const { mutate: deleteAgentFile } = useMutation(
+    consoleQuery.agent.byAgentId.files.delete.mutationOptions(),
+  )
+  const { mutate: deleteWorkflowAgentFile } = useMutation(
+    consoleQuery.apps.byAppId.agent.files.delete.mutationOptions(),
+  )
+  const removeFile = useCallback(
+    (fileId: string) => {
+      const file = findAgentFileNode(files, fileId)
+      const driveKey = file?.driveKey
 
-    if (!driveKey)
-      return
+      if (!driveKey) return
 
-    const onSuccess = () => {
-      void driveFilesQuery.refetch()
-    }
-    if (apiContext.workflow) {
-      deleteWorkflowAgentFile({
-        params: {
-          app_id: apiContext.workflow.appId,
+      const onSuccess = () => {
+        void driveFilesQuery.refetch()
+      }
+      if (apiContext.workflow) {
+        deleteWorkflowAgentFile(
+          {
+            params: {
+              app_id: apiContext.workflow.appId,
+            },
+            query: {
+              key: driveKey,
+              node_id: apiContext.workflow.nodeId,
+            },
+          },
+          { onSuccess },
+        )
+        return
+      }
+
+      deleteAgentFile(
+        {
+          params: {
+            agent_id: apiContext.agentId,
+          },
+          query: {
+            key: driveKey,
+          },
         },
-        query: {
-          key: driveKey,
-          node_id: apiContext.workflow.nodeId,
-        },
-      }, { onSuccess })
-      return
-    }
-
-    deleteAgentFile({
-      params: {
-        agent_id: apiContext.agentId,
-      },
-      query: {
-        key: driveKey,
-      },
-    }, { onSuccess })
-  }, [apiContext, deleteAgentFile, deleteWorkflowAgentFile, driveFilesQuery, files])
+        { onSuccess },
+      )
+    },
+    [apiContext, deleteAgentFile, deleteWorkflowAgentFile, driveFilesQuery, files],
+  )
   const handleOpenUpload = useCallback((options?: AgentOrchestrateAddActionOptions) => {
     promptAddCallbackRef.current = options?.onAdded
     setIsUploadOpen(true)
   }, [])
   useRegisterAgentOrchestrateAddAction('files', handleOpenUpload)
-  const handleUploaded = useCallback((file: AgentFileNode) => {
-    void driveFilesQuery.refetch()
-    promptAddCallbackRef.current?.(file)
-    promptAddCallbackRef.current = undefined
-  }, [driveFilesQuery])
-  const handleUploadOpenChange = useCallback((open: boolean) => {
-    if (!open)
+  const handleUploaded = useCallback(
+    (file: AgentFileNode) => {
+      void driveFilesQuery.refetch()
+      promptAddCallbackRef.current?.(file)
       promptAddCallbackRef.current = undefined
+    },
+    [driveFilesQuery],
+  )
+  const handleUploadOpenChange = useCallback((open: boolean) => {
+    if (!open) promptAddCallbackRef.current = undefined
     setIsUploadOpen(open)
   }, [])
 
@@ -253,41 +261,39 @@ export function AgentFiles() {
         tipAriaLabel={filesTip}
         rootClassName="border-b border-divider-subtle pt-4"
         panelContentClassName="pb-4"
-        actions={(
+        actions={
           <ConfigureSectionAddButton
             ariaLabel={t('agentDetail.configure.files.add')}
             onClick={() => handleOpenUpload()}
           />
-        )}
+        }
       >
-        {files.length === 0
-          ? (
-              <ConfigureSectionEmpty
-                title={t('agentDetail.configure.files.empty.title')}
-                description={t('agentDetail.configure.files.empty.description')}
-              />
-            )
-          : (
-              <AgentFileTree
-                id={filesTreeId}
+        {files.length === 0 ? (
+          <ConfigureSectionEmpty
+            title={t('agentDetail.configure.files.empty.title')}
+            description={t('agentDetail.configure.files.empty.description')}
+          />
+        ) : (
+          <AgentFileTree
+            id={filesTreeId}
+            files={files}
+            treeLabel={t('agentDetail.configure.files.treeLabel')}
+            className="rounded-lg border-[0.5px] border-components-panel-border bg-components-panel-on-panel-item-bg p-1 shadow-xs shadow-shadow-shadow-3"
+            scrollAreaClassName="max-h-[250px] flex-none"
+            renderFile={({ depth, file, selected, children }) => (
+              <AgentFileItem
+                depth={depth}
+                file={file}
                 files={files}
-                treeLabel={t('agentDetail.configure.files.treeLabel')}
-                className="rounded-lg border-[0.5px] border-components-panel-border bg-components-panel-on-panel-item-bg p-1 shadow-xs shadow-shadow-shadow-3"
-                scrollAreaClassName="max-h-[250px] flex-none"
-                renderFile={({ depth, file, selected, children }) => (
-                  <AgentFileItem
-                    depth={depth}
-                    file={file}
-                    files={files}
-                    apiContext={apiContext}
-                    selected={selected}
-                    onRemove={removeFile}
-                  >
-                    {children}
-                  </AgentFileItem>
-                )}
-              />
+                apiContext={apiContext}
+                selected={selected}
+                onRemove={removeFile}
+              >
+                {children}
+              </AgentFileItem>
             )}
+          />
+        )}
       </ConfigureSection>
       <AgentFileUploadDialog
         apiContext={apiContext}

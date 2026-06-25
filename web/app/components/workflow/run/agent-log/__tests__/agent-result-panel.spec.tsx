@@ -10,7 +10,9 @@ import {
 } from '@/context/app-context'
 import AgentResultPanel from '../agent-result-panel'
 
-const createLogItem = (overrides: Partial<AgentLogItemWithChildren> = {}): AgentLogItemWithChildren => ({
+const createLogItem = (
+  overrides: Partial<AgentLogItemWithChildren> = {},
+): AgentLogItemWithChildren => ({
   message_id: 'message-1',
   label: 'Planner',
   children: [],
@@ -40,7 +42,7 @@ const createAppContextValue = (): AppContextValue => {
     isValidatingCurrentWorkspace: false,
     workspacePermissionKeys: [],
   }
-  const useSelector: AppContextValue['useSelector'] = selector => selector(value)
+  const useSelector: AppContextValue['useSelector'] = (selector) => selector(value)
   value = {
     ...base,
     useSelector,

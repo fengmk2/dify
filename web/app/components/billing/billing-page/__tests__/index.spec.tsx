@@ -69,13 +69,17 @@ describe('Billing', () => {
   it('hides the billing action when subscription management permission is missing or billing is disabled', () => {
     workspacePermissionKeys = []
     render(<Billing />)
-    expect(screen.queryByRole('button', { name: /billing\.viewBillingTitle/ })).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: /billing\.viewBillingTitle/ }),
+    ).not.toBeInTheDocument()
 
     vi.clearAllMocks()
     workspacePermissionKeys = ['billing.subscription.manage']
     enableBilling = false
     render(<Billing />)
-    expect(screen.queryByRole('button', { name: /billing\.viewBillingTitle/ })).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: /billing\.viewBillingTitle/ }),
+    ).not.toBeInTheDocument()
   })
 
   it('opens the billing window with the immediate url when the button is clicked', async () => {

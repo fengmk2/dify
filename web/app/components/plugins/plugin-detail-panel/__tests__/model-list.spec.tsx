@@ -1,6 +1,6 @@
 import type { PluginDetail } from '@/app/components/plugins/types'
 import { render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import ModelList from '../model-list'
 
 const mockModels = [

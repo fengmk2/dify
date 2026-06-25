@@ -1,4 +1,4 @@
-import type { Mock } from 'vitest'
+import type { Mock } from 'vite-plus/test'
 import { render, screen, waitFor } from '@testing-library/react'
 import { useAppContext } from '@/context/app-context'
 import { MediaType } from '@/hooks/use-breakpoints'
@@ -57,21 +57,21 @@ describe('Explore', () => {
 
   describe('Rendering', () => {
     it('should render children', () => {
-      render((
+      render(
         <Explore>
           <div>child</div>
-        </Explore>
-      ))
+        </Explore>,
+      )
 
       expect(screen.getByText('child')).toBeInTheDocument()
     })
 
     it('should not render the legacy explore sidebar on desktop', () => {
-      render((
+      render(
         <Explore>
           <div>child</div>
-        </Explore>
-      ))
+        </Explore>,
+      )
 
       expect(screen.queryByText('explore.sidebar.title')).not.toBeInTheDocument()
     })
@@ -79,11 +79,11 @@ describe('Explore', () => {
     it('should keep the legacy explore sidebar on mobile', () => {
       mockMediaType = MediaType.mobile
 
-      render((
+      render(
         <Explore>
           <div>child</div>
-        </Explore>
-      ))
+        </Explore>,
+      )
 
       expect(screen.getByRole('link', { name: 'explore.sidebar.title' })).toBeInTheDocument()
     })
@@ -95,11 +95,11 @@ describe('Explore', () => {
         isCurrentWorkspaceDatasetOperator: true,
       })
 
-      render((
+      render(
         <Explore>
           <div>child</div>
-        </Explore>
-      ))
+        </Explore>,
+      )
 
       await waitFor(() => {
         expect(mockReplace).not.toHaveBeenCalled()
@@ -107,11 +107,11 @@ describe('Explore', () => {
     })
 
     it('should not redirect non dataset operators', () => {
-      render((
+      render(
         <Explore>
           <div>child</div>
-        </Explore>
-      ))
+        </Explore>,
+      )
 
       expect(mockReplace).not.toHaveBeenCalled()
     })

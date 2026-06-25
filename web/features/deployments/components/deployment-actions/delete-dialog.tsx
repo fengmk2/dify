@@ -27,7 +27,9 @@ function DeleteDeploymentDialogContent() {
   const appInstanceId = useAtomValue(deploymentActionAppInstanceIdAtom)
   const setOpen = useSetAtom(deleteDeploymentDialogOpenAtom)
   const instanceQuery = useAtomValue(deploymentActionAppInstanceQueryAtom)
-  const deleteInstance = useMutation(consoleQuery.enterprise.appInstanceService.deleteAppInstance.mutationOptions())
+  const deleteInstance = useMutation(
+    consoleQuery.enterprise.appInstanceService.deleteAppInstance.mutationOptions(),
+  )
   const displayName = instanceQuery.data?.appInstance.displayName || appInstanceId
 
   function handleDelete() {
@@ -66,10 +68,7 @@ function DeleteDeploymentDialogContent() {
         <AlertDialogCancelButton variant="secondary" disabled={deleteInstance.isPending}>
           {t('createModal.cancel')}
         </AlertDialogCancelButton>
-        <AlertDialogConfirmButton
-          loading={deleteInstance.isPending}
-          onClick={handleDelete}
-        >
+        <AlertDialogConfirmButton loading={deleteInstance.isPending} onClick={handleDelete}>
           {t('settings.delete')}
         </AlertDialogConfirmButton>
       </AlertDialogActions>

@@ -9,11 +9,13 @@ const isNotFoundError = (error: unknown) => {
 
 export const fetchSnippetDraftWorkflow = async (snippetId: string) => {
   try {
-    return await get<SnippetWorkflow>(`/snippets/${snippetId}/workflows/draft`, {}, { silent: true })
-  }
-  catch (error) {
-    if (isNotFoundError(error))
-      return undefined
+    return await get<SnippetWorkflow>(
+      `/snippets/${snippetId}/workflows/draft`,
+      {},
+      { silent: true },
+    )
+  } catch (error) {
+    if (isNotFoundError(error)) return undefined
 
     throw error
   }
@@ -62,13 +64,10 @@ export const useSnippetPublishedWorkflow = (
     queryFn: async (context) => {
       try {
         const publishedWorkflow = await queryOptions.queryFn(context)
-        if (publishedWorkflow)
-          onSuccess?.(publishedWorkflow)
+        if (publishedWorkflow) onSuccess?.(publishedWorkflow)
         return publishedWorkflow
-      }
-      catch (error) {
-        if (isNotFoundError(error))
-          return undefined
+      } catch (error) {
+        if (isNotFoundError(error)) return undefined
 
         throw error
       }

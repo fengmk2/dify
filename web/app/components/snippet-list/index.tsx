@@ -21,9 +21,15 @@ import SnippetCreateButton from './components/snippet-create-button'
 import { SNIPPET_LIST_SEARCH_DEBOUNCE_MS } from './constants'
 import { useSnippetsQueryState } from './hooks/use-snippets-query-state'
 
-const TagManagementModal = dynamic(() => import('@/features/tag-management/components/tag-management-modal').then(mod => mod.TagManagementModal), {
-  ssr: false,
-})
+const TagManagementModal = dynamic(
+  () =>
+    import('@/features/tag-management/components/tag-management-modal').then(
+      (mod) => mod.TagManagementModal,
+    ),
+  {
+    ssr: false,
+  },
+)
 
 const SNIPPET_CARD_SKELETON_KEYS = ['first', 'second', 'third', 'fourth', 'fifth', 'sixth']
 
@@ -34,7 +40,7 @@ type SnippetCardSkeletonProps = {
 const SnippetCardSkeleton = ({ count }: SnippetCardSkeletonProps) => {
   return (
     <>
-      {SNIPPET_CARD_SKELETON_KEYS.slice(0, count).map(key => (
+      {SNIPPET_CARD_SKELETON_KEYS.slice(0, count).map((key) => (
         <div
           key={key}
           className="col-span-1 h-55 animate-pulse rounded-xl bg-background-default-lighter"
@@ -46,8 +52,12 @@ const SnippetCardSkeleton = ({ count }: SnippetCardSkeletonProps) => {
 
 const SnippetList = () => {
   const { t } = useTranslation()
-  const isLoadingCurrentWorkspace = useAppContextWithSelector(state => state.isLoadingCurrentWorkspace)
-  const workspacePermissionKeys = useAppContextWithSelector(state => state.workspacePermissionKeys)
+  const isLoadingCurrentWorkspace = useAppContextWithSelector(
+    (state) => state.isLoadingCurrentWorkspace,
+  )
+  const workspacePermissionKeys = useAppContextWithSelector(
+    (state) => state.workspacePermissionKeys,
+  )
   // eslint-disable-next-line react/use-state -- custom URL query hook, not React.useState
   const {
     query: { tagIDs, keywords, creatorIDs },
@@ -62,13 +72,16 @@ const SnippetList = () => {
 
   useDocumentTitle(t('tabs.snippets', { ns: 'workflow' }))
 
-  const snippetListQuery = useMemo(() => ({
-    page: 1,
-    limit: 30,
-    keyword: debouncedKeywords,
-    ...(tagIDs.length ? { tag_ids: tagIDs } : {}),
-    ...(creatorIDs.length ? { creator_ids: creatorIDs } : {}),
-  }), [creatorIDs, debouncedKeywords, tagIDs])
+  const snippetListQuery = useMemo(
+    () => ({
+      page: 1,
+      limit: 30,
+      keyword: debouncedKeywords,
+      ...(tagIDs.length ? { tag_ids: tagIDs } : {}),
+      ...(creatorIDs.length ? { creator_ids: creatorIDs } : {}),
+    }),
+    [creatorIDs, debouncedKeywords, tagIDs],
+  )
   const canQuerySnippetList = canAccessSnippets(workspacePermissionKeys)
 
   const {
@@ -85,15 +98,13 @@ const SnippetList = () => {
   })
 
   useEffect(() => {
-    if (!canQuerySnippetList)
-      return
+    if (!canQuerySnippetList) return
 
     const hasMore = hasNextPage ?? true
     let observer: IntersectionObserver | undefined
 
     if (error) {
-      if (observer)
-        observer.disconnect()
+      if (observer) observer.disconnect()
       return
     }
 
@@ -101,29 +112,43 @@ const SnippetList = () => {
       const containerHeight = containerRef.current.clientHeight
       const dynamicMargin = Math.max(100, Math.min(containerHeight * 0.2, 200))
 
-      observer = new IntersectionObserver((entries) => {
-        if (entries[0]!.isIntersecting && !isLoading && !isFetchingNextPage && !error && hasMore)
-          fetchNextPage()
-      }, {
-        root: containerRef.current,
-        rootMargin: `${dynamicMargin}px`,
-        threshold: 0.1,
-      })
+      observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0]!.isIntersecting && !isLoading && !isFetchingNextPage && !error && hasMore)
+            fetchNextPage()
+        },
+        {
+          root: containerRef.current,
+          rootMargin: `${dynamicMargin}px`,
+          threshold: 0.1,
+        },
+      )
       observer.observe(anchorRef.current)
     }
 
     return () => observer?.disconnect()
   }, [canQuerySnippetList, error, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading])
 
-  const pages = useMemo(() => canQuerySnippetList ? data?.pages ?? [] : [], [canQuerySnippetList, data?.pages])
-  const snippets = useMemo<SnippetListItem[]>(() => pages.flatMap(({ data: pageSnippets }) => pageSnippets), [pages])
+  const pages = useMemo(
+    () => (canQuerySnippetList ? (data?.pages ?? []) : []),
+    [canQuerySnippetList, data?.pages],
+  )
+  const snippets = useMemo<SnippetListItem[]>(
+    () => pages.flatMap(({ data: pageSnippets }) => pageSnippets),
+    [pages],
+  )
   const hasAnySnippet = (pages[0]?.total ?? 0) > 0
-  const showSkeleton = isLoadingCurrentWorkspace || (canQuerySnippetList && (isLoading || (isFetching && pages.length === 0)))
+  const showSkeleton =
+    isLoadingCurrentWorkspace ||
+    (canQuerySnippetList && (isLoading || (isFetching && pages.length === 0)))
 
   return (
-    <div ref={containerRef} className="relative flex h-0 shrink-0 grow flex-col overflow-y-auto bg-background-body">
+    <div
+      ref={containerRef}
+      className="relative flex h-0 shrink-0 grow flex-col overflow-y-auto bg-background-body"
+    >
       <StudioListHeader
-        title={(
+        title={
           <>
             <Link
               href="/apps"
@@ -136,21 +161,26 @@ const SnippetList = () => {
               {t('tabs.snippets', { ns: 'workflow' })}
             </h1>
           </>
-        )}
+        }
       >
         <div className="flex flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
-            <CreatorsFilter
-              value={creatorIDs}
-              onChange={setCreatorIDs}
+            <CreatorsFilter value={creatorIDs} onChange={setCreatorIDs} />
+            <TagFilter
+              type="snippet"
+              value={tagIDs}
+              onChange={setTagIDs}
+              onOpenTagManagement={() => setShowTagManagementModal(true)}
             />
-            <TagFilter type="snippet" value={tagIDs} onChange={setTagIDs} onOpenTagManagement={() => setShowTagManagementModal(true)} />
             <div className="relative w-50">
-              <span aria-hidden className="pointer-events-none absolute top-1/2 left-2 i-ri-search-line size-4 -translate-y-1/2 text-components-input-text-placeholder" />
+              <span
+                aria-hidden
+                className="pointer-events-none absolute top-1/2 left-2 i-ri-search-line size-4 -translate-y-1/2 text-components-input-text-placeholder"
+              />
               <Input
                 className={cn('pl-6.5', keywords && 'pr-6.5')}
                 value={keywords}
-                onChange={e => setKeywords(e.target.value)}
+                onChange={(e) => setKeywords(e.target.value)}
                 placeholder={t('tabs.searchSnippets', { ns: 'workflow' })}
               />
               {!!keywords && (
@@ -168,29 +198,32 @@ const SnippetList = () => {
           <SnippetCreateButton />
         </div>
       </StudioListHeader>
-      <div className={cn(
-        'relative grid grow grid-cols-1 content-start gap-4 px-8 pt-2 2k:grid-cols-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5',
-        !hasAnySnippet && 'overflow-hidden',
-      )}
-      >
-        {showSkeleton
-          ? <SnippetCardSkeleton count={6} />
-          : hasAnySnippet
-            ? snippets.map(snippet => (
-                <SnippetCard
-                  key={snippet.id}
-                  snippet={snippet}
-                  onOpenTagManagement={() => setShowTagManagementModal(true)}
-                  onRefresh={refetch}
-                  onTagsChange={refetch}
-                />
-              ))
-            : <Empty message={t('tabs.noSnippetsFound', { ns: 'workflow' })} />}
-        {isFetchingNextPage && (
-          <SnippetCardSkeleton count={3} />
+      <div
+        className={cn(
+          'relative grid grow grid-cols-1 content-start gap-4 px-8 pt-2 2k:grid-cols-6 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-4 2xl:grid-cols-5',
+          !hasAnySnippet && 'overflow-hidden',
         )}
+      >
+        {showSkeleton ? (
+          <SnippetCardSkeleton count={6} />
+        ) : hasAnySnippet ? (
+          snippets.map((snippet) => (
+            <SnippetCard
+              key={snippet.id}
+              snippet={snippet}
+              onOpenTagManagement={() => setShowTagManagementModal(true)}
+              onRefresh={refetch}
+              onTagsChange={refetch}
+            />
+          ))
+        ) : (
+          <Empty message={t('tabs.noSnippetsFound', { ns: 'workflow' })} />
+        )}
+        {isFetchingNextPage && <SnippetCardSkeleton count={3} />}
       </div>
-      <div ref={anchorRef} className="h-0"> </div>
+      <div ref={anchorRef} className="h-0">
+        {' '}
+      </div>
       <TagManagementModal
         type="snippet"
         show={showTagManagementModal}

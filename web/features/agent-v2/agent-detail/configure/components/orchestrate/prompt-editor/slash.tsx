@@ -6,7 +6,12 @@ import type { AgentProviderToolDefaultValue } from '../tools/types'
 import type { Tool } from '@/app/components/tools/types'
 import type { ToolTypeEnum, ToolValue } from '@/app/components/workflow/block-selector/types'
 import type { ToolWithProvider } from '@/app/components/workflow/types'
-import type { AgentFileNode, AgentKnowledgeRetrievalItem, AgentSkill, AgentTool } from '@/features/agent-v2/agent-composer/form-state'
+import type {
+  AgentFileNode,
+  AgentKnowledgeRetrievalItem,
+  AgentSkill,
+  AgentTool,
+} from '@/features/agent-v2/agent-composer/form-state'
 import { cn } from '@langgenius/dify-ui/cn'
 import { FileTreeIcon } from '@langgenius/dify-ui/file-tree'
 import { useMemo, useState } from 'react'
@@ -49,25 +54,24 @@ type AgentPromptSlashMenuProps = {
   onSelect: (token: string) => void
 }
 
-const createReferenceToken = (kind: string, id: string, label?: string) => (
+const createReferenceToken = (kind: string, id: string, label?: string) =>
   `[§${kind}:${id}${label ? `:${label}` : ''}§]`
-)
 
-const createDriveReferenceToken = (kind: 'skill' | 'file', driveKey: string, label: string) => (
+const createDriveReferenceToken = (kind: 'skill' | 'file', driveKey: string, label: string) =>
   createReferenceToken(kind, encodeURIComponent(driveKey), label)
-)
 
-const isPromptReferenceItem = (item: AgentOrchestrateAddedItem): item is AgentFileNode | AgentSkill => (
-  'id' in item && 'name' in item
-)
+const isPromptReferenceItem = (
+  item: AgentOrchestrateAddedItem,
+): item is AgentFileNode | AgentSkill => 'id' in item && 'name' in item
 
-const isCliToolItem = (item: AgentOrchestrateAddedItem): item is Extract<AgentTool, { kind: 'cli' }> => (
-  'kind' in item && item.kind === 'cli'
-)
+const isCliToolItem = (
+  item: AgentOrchestrateAddedItem,
+): item is Extract<AgentTool, { kind: 'cli' }> => 'kind' in item && item.kind === 'cli'
 
-const isKnowledgeRetrievalItem = (item: AgentOrchestrateAddedItem): item is AgentKnowledgeRetrievalItem => (
+const isKnowledgeRetrievalItem = (
+  item: AgentOrchestrateAddedItem,
+): item is AgentKnowledgeRetrievalItem =>
   'queryMode' in item || 'customQuery' in item || 'selectedDatasets' in item || 'nameKey' in item
-)
 
 export function AgentPromptSlashMenu({
   view,
@@ -86,12 +90,16 @@ export function AgentPromptSlashMenu({
   onSelect,
 }: AgentPromptSlashMenuProps) {
   const { t } = useTranslation('agentV2')
-  const title = categories.find(category => category.key === view)?.label
+  const title = categories.find((category) => category.key === view)?.label
   const handleAddFromFooter = () => {
     if (view === 'skills') {
       onAddSkill?.({
         onAdded: (item) => {
-          if (isPromptReferenceItem(item) && 'skillMdKey' in item && typeof item.skillMdKey === 'string')
+          if (
+            isPromptReferenceItem(item) &&
+            'skillMdKey' in item &&
+            typeof item.skillMdKey === 'string'
+          )
             onSelect(createDriveReferenceToken('skill', item.skillMdKey, item.name))
         },
       })
@@ -101,7 +109,11 @@ export function AgentPromptSlashMenu({
     if (view === 'files') {
       onAddFile?.({
         onAdded: (item) => {
-          if (isPromptReferenceItem(item) && 'driveKey' in item && typeof item.driveKey === 'string')
+          if (
+            isPromptReferenceItem(item) &&
+            'driveKey' in item &&
+            typeof item.driveKey === 'string'
+          )
             onSelect(createDriveReferenceToken('file', item.driveKey, item.name))
         },
       })
@@ -122,16 +134,24 @@ export function AgentPromptSlashMenu({
     return (
       <AgentPromptSlashPanel className="w-[200px]">
         <div className="flex flex-col gap-px p-1">
-          {categories.map(category => (
+          {categories.map((category) => (
             <button
               key={category.key}
               type="button"
               className="flex h-6 w-full items-center gap-1 rounded-md pr-2 pl-3 text-left hover:bg-state-base-hover focus-visible:bg-state-base-hover focus-visible:outline-hidden"
               onClick={() => onOpenCategory(category.key)}
             >
-              <span aria-hidden className={`${category.icon} size-4 shrink-0 text-text-secondary`} />
-              <span className="min-w-0 flex-1 truncate system-sm-regular text-text-secondary">{category.label}</span>
-              <span aria-hidden className="i-ri-arrow-right-s-line size-3.5 shrink-0 text-text-tertiary" />
+              <span
+                aria-hidden
+                className={`${category.icon} size-4 shrink-0 text-text-secondary`}
+              />
+              <span className="min-w-0 flex-1 truncate system-sm-regular text-text-secondary">
+                {category.label}
+              </span>
+              <span
+                aria-hidden
+                className="i-ri-arrow-right-s-line size-3.5 shrink-0 text-text-tertiary"
+              />
             </button>
           ))}
         </div>
@@ -150,12 +170,8 @@ export function AgentPromptSlashMenu({
           <span aria-hidden className="i-ri-arrow-left-line size-4 shrink-0" />
           <span className="min-w-0 flex-1 truncate system-xs-medium-uppercase">{title}</span>
         </button>
-        {view === 'skills' && (
-          <AgentPromptSkillRows skills={skills} onSelect={onSelect} />
-        )}
-        {view === 'files' && (
-          <AgentPromptFileRows files={files} onSelect={onSelect} />
-        )}
+        {view === 'skills' && <AgentPromptSkillRows skills={skills} onSelect={onSelect} />}
+        {view === 'files' && <AgentPromptFileRows files={files} onSelect={onSelect} />}
         {view === 'tools' && (
           <AgentPromptToolRows
             configuredTools={tools}
@@ -167,35 +183,33 @@ export function AgentPromptSlashMenu({
           <AgentPromptKnowledgeRows retrievals={retrievals} onSelect={onSelect} />
         )}
       </div>
-      {view === 'tools'
-        ? (
-            <AgentPromptToolFooter
-              onAddCliTool={() => {
-                onAddCliTool?.({
-                  onAdded: (item) => {
-                    if (isCliToolItem(item))
-                      onSelect(createReferenceToken('cli_tool', item.id, item.name))
-                  },
-                })
-              }}
-            />
-          )
-        : (
-            <div className="border-t border-divider-subtle p-1">
-              <button
-                type="button"
-                className="flex h-6 w-full items-center gap-1 rounded-md pr-2 pl-3 text-left hover:bg-state-base-hover focus-visible:bg-state-base-hover focus-visible:outline-hidden"
-                onClick={handleAddFromFooter}
-              >
-                <span aria-hidden className="i-ri-add-line size-4 shrink-0 text-text-secondary" />
-                <span className="system-sm-regular text-text-secondary">
-                  {view === 'skills' && t('agentDetail.configure.skills.add')}
-                  {view === 'files' && t('agentDetail.configure.files.add')}
-                  {view === 'knowledge' && t('agentDetail.configure.knowledgeRetrieval.add')}
-                </span>
-              </button>
-            </div>
-          )}
+      {view === 'tools' ? (
+        <AgentPromptToolFooter
+          onAddCliTool={() => {
+            onAddCliTool?.({
+              onAdded: (item) => {
+                if (isCliToolItem(item))
+                  onSelect(createReferenceToken('cli_tool', item.id, item.name))
+              },
+            })
+          }}
+        />
+      ) : (
+        <div className="border-t border-divider-subtle p-1">
+          <button
+            type="button"
+            className="flex h-6 w-full items-center gap-1 rounded-md pr-2 pl-3 text-left hover:bg-state-base-hover focus-visible:bg-state-base-hover focus-visible:outline-hidden"
+            onClick={handleAddFromFooter}
+          >
+            <span aria-hidden className="i-ri-add-line size-4 shrink-0 text-text-secondary" />
+            <span className="system-sm-regular text-text-secondary">
+              {view === 'skills' && t('agentDetail.configure.skills.add')}
+              {view === 'files' && t('agentDetail.configure.files.add')}
+              {view === 'knowledge' && t('agentDetail.configure.knowledgeRetrieval.add')}
+            </span>
+          </button>
+        </div>
+      )}
     </AgentPromptSlashPanel>
   )
 }
@@ -208,7 +222,9 @@ function AgentPromptSlashPanel({
   children: ReactNode
 }) {
   return (
-    <div className={`${className} isolate overflow-hidden rounded-xl border-[0.5px] border-components-panel-border bg-components-panel-bg-blur shadow-lg backdrop-blur-[5px]`}>
+    <div
+      className={`${className} isolate overflow-hidden rounded-xl border-[0.5px] border-components-panel-border bg-components-panel-bg-blur shadow-lg backdrop-blur-[5px]`}
+    >
       {children}
     </div>
   )
@@ -223,12 +239,15 @@ function AgentPromptSkillRows({
 }) {
   return (
     <>
-      {skills.map(skill => (
+      {skills.map((skill) => (
         <AgentPromptSubmenuRow
           key={skill.id}
           icon="i-ri-box-3-line"
           label={skill.name}
-          onClick={() => skill.skillMdKey && onSelect(createDriveReferenceToken('skill', skill.skillMdKey, skill.name))}
+          onClick={() =>
+            skill.skillMdKey &&
+            onSelect(createDriveReferenceToken('skill', skill.skillMdKey, skill.name))
+          }
         />
       ))}
     </>
@@ -246,14 +265,16 @@ function AgentPromptFileRows({
 }) {
   return (
     <>
-      {files.map(file => (
+      {files.map((file) => (
         <div key={file.id}>
           <AgentPromptSubmenuRow
             icon={<FileTreeIcon type={file.children?.length ? 'folder' : file.icon} />}
             label={file.name}
             depth={depth}
             hasChildren={!!file.children?.length}
-            onClick={() => file.driveKey && onSelect(createDriveReferenceToken('file', file.driveKey, file.name))}
+            onClick={() =>
+              file.driveKey && onSelect(createDriveReferenceToken('file', file.driveKey, file.name))
+            }
           />
           {!!file.children?.length && (
             <AgentPromptFileRows files={file.children} depth={depth + 1} onSelect={onSelect} />
@@ -281,23 +302,21 @@ function AgentPromptToolRows({
   const { data: customTools = [] } = useAllCustomTools()
   const { data: workflowTools = [] } = useAllWorkflowTools()
   const { data: mcpTools = [] } = useAllMCPTools()
-  const configuredCliTools = configuredTools.filter(tool => tool.kind === 'cli')
+  const configuredCliTools = configuredTools.filter((tool) => tool.kind === 'cli')
   const availableProviders = useMemo(() => {
-    if (activeTab === 'all')
-      return [...builtInTools, ...workflowTools, ...customTools, ...mcpTools]
-    if (activeTab === ToolTabEnum.BuiltIn)
-      return builtInTools
-    if (activeTab === ToolTabEnum.Workflow)
-      return workflowTools
-    if (activeTab === ToolTabEnum.Custom)
-      return customTools
-    if (activeTab === ToolTabEnum.MCP)
-      return mcpTools
+    if (activeTab === 'all') return [...builtInTools, ...workflowTools, ...customTools, ...mcpTools]
+    if (activeTab === ToolTabEnum.BuiltIn) return builtInTools
+    if (activeTab === ToolTabEnum.Workflow) return workflowTools
+    if (activeTab === ToolTabEnum.Custom) return customTools
+    if (activeTab === ToolTabEnum.MCP) return mcpTools
 
     return []
   }, [activeTab, builtInTools, customTools, mcpTools, workflowTools])
 
-  const selectedTools = useMemo(() => configuredTools.flatMap(toSelectedToolValue), [configuredTools])
+  const selectedTools = useMemo(
+    () => configuredTools.flatMap(toSelectedToolValue),
+    [configuredTools],
+  )
   const tabs = [
     { key: 'all' as const, label: t('agentDetail.configure.tools.toolTabs.all') },
     { key: ToolTabEnum.BuiltIn, label: t('agentDetail.configure.tools.toolTabs.plugins') },
@@ -314,17 +333,15 @@ function AgentPromptToolRows({
   const toggleProvider = (providerId: string) => {
     setExpandedProviderIds((currentIds) => {
       const nextIds = new Set(currentIds)
-      if (nextIds.has(providerId))
-        nextIds.delete(providerId)
-      else
-        nextIds.add(providerId)
+      if (nextIds.has(providerId)) nextIds.delete(providerId)
+      else nextIds.add(providerId)
 
       return nextIds
     })
   }
 
   const handleSelectProvider = (provider: ToolWithProvider) => {
-    selectTools(provider.tools.map(tool => toToolDefaultValue(provider, tool, language)))
+    selectTools(provider.tools.map((tool) => toToolDefaultValue(provider, tool, language)))
     onSelect(createReferenceToken('tool', `${provider.id}/*`, getProviderLabel(provider, language)))
   }
 
@@ -337,7 +354,7 @@ function AgentPromptToolRows({
   return (
     <div>
       <div className="flex gap-1 px-2 py-1">
-        {tabs.map(tab => (
+        {tabs.map((tab) => (
           <button
             key={tab.key}
             type="button"
@@ -353,36 +370,39 @@ function AgentPromptToolRows({
       </div>
       <div className="max-h-[464px] overflow-y-auto px-1 pb-1">
         {activeTab === 'cli'
-          ? configuredCliTools.map(tool => (
+          ? configuredCliTools.map((tool) => (
               <AgentPromptCliToolRow
                 key={tool.id}
                 tool={tool}
                 onClick={() => onSelect(createReferenceToken('cli_tool', tool.id, tool.name))}
               />
             ))
-          : availableProviders.filter(provider => provider.tools.length > 0).map(provider => (
-              <div key={provider.id}>
-                <AgentPromptProviderToolRow
-                  provider={provider}
-                  typeLabel={getProviderTypeLabel(provider, t)}
-                  selectedTools={selectedTools}
-                  language={language}
-                  isExpanded={expandedProviderIds.has(provider.id)}
-                  onClick={() => handleSelectProvider(provider)}
-                  onToggle={() => toggleProvider(provider.id)}
-                />
-                {expandedProviderIds.has(provider.id) && provider.tools.map(tool => (
-                  <AgentPromptProviderToolActionRow
-                    key={tool.name}
+          : availableProviders
+              .filter((provider) => provider.tools.length > 0)
+              .map((provider) => (
+                <div key={provider.id}>
+                  <AgentPromptProviderToolRow
                     provider={provider}
-                    tool={tool}
-                    language={language}
+                    typeLabel={getProviderTypeLabel(provider, t)}
                     selectedTools={selectedTools}
-                    onClick={() => handleSelectTool(provider, tool)}
+                    language={language}
+                    isExpanded={expandedProviderIds.has(provider.id)}
+                    onClick={() => handleSelectProvider(provider)}
+                    onToggle={() => toggleProvider(provider.id)}
                   />
-                ))}
-              </div>
-            ))}
+                  {expandedProviderIds.has(provider.id) &&
+                    provider.tools.map((tool) => (
+                      <AgentPromptProviderToolActionRow
+                        key={tool.name}
+                        provider={provider}
+                        tool={tool}
+                        language={language}
+                        selectedTools={selectedTools}
+                        onClick={() => handleSelectTool(provider, tool)}
+                      />
+                    ))}
+                </div>
+              ))}
       </div>
     </div>
   )
@@ -391,22 +411,22 @@ function AgentPromptToolRows({
 type ToolPromptTab = ToolTypeEnum | 'all' | 'cli'
 
 function getLocalizedText(text: Record<string, string> | undefined | null, language: string) {
-  if (!text)
-    return ''
+  if (!text) return ''
 
-  return text[language]
-    ?? text['en-US']
-    ?? text.en_US
-    ?? text.zh_Hans
-    ?? Object.values(text).find(Boolean)
-    ?? ''
+  return (
+    text[language] ??
+    text['en-US'] ??
+    text.en_US ??
+    text.zh_Hans ??
+    Object.values(text).find(Boolean) ??
+    ''
+  )
 }
 
 function toSelectedToolValue(tool: AgentTool): ToolValue[] {
-  if (tool.kind !== 'provider')
-    return []
+  if (tool.kind !== 'provider') return []
 
-  return tool.actions.map(action => ({
+  return tool.actions.map((action) => ({
     provider_name: tool.id,
     tool_name: action.toolName,
     tool_label: action.name,
@@ -451,9 +471,11 @@ function toToolDefaultValue(
 }
 
 function isToolSelected(selectedTools: ToolValue[], provider: ToolWithProvider, tool: Tool) {
-  return selectedTools.some(selectedTool =>
-    (selectedTool.provider_name === provider.name || selectedTool.provider_name === provider.id)
-    && selectedTool.tool_name === tool.name,
+  return selectedTools.some(
+    (selectedTool) =>
+      (selectedTool.provider_name === provider.name ||
+        selectedTool.provider_name === provider.id) &&
+      selectedTool.tool_name === tool.name,
   )
 }
 
@@ -469,8 +491,7 @@ function getProviderTypeLabel(
     return t('agentDetail.configure.tools.toolTabs.workflow')
   if (provider.type === CollectionType.custom)
     return t('agentDetail.configure.tools.toolTabs.custom')
-  if (provider.type === CollectionType.mcp)
-    return t('agentDetail.configure.tools.toolTabs.mcp')
+  if (provider.type === CollectionType.mcp) return t('agentDetail.configure.tools.toolTabs.mcp')
 
   return t('agentDetail.configure.tools.toolTabs.plugins')
 }
@@ -492,7 +513,9 @@ function AgentPromptProviderToolRow({
   onClick: () => void
   onToggle: () => void
 }) {
-  const selectedToolsCount = provider.tools.filter(tool => isToolSelected(selectedTools, provider, tool)).length
+  const selectedToolsCount = provider.tools.filter((tool) =>
+    isToolSelected(selectedTools, provider, tool),
+  ).length
   const providerLabel = getProviderLabel(provider, language)
 
   return (
@@ -505,7 +528,9 @@ function AgentPromptProviderToolRow({
         <span className="flex size-5 shrink-0 items-center justify-center overflow-hidden rounded-md border-[0.5px] border-effects-icon-border bg-background-default-dodge">
           <AgentPromptProviderIcon provider={provider} />
         </span>
-        <span className="min-w-0 flex-1 truncate system-sm-regular text-text-secondary">{providerLabel}</span>
+        <span className="min-w-0 flex-1 truncate system-sm-regular text-text-secondary">
+          {providerLabel}
+        </span>
         {selectedToolsCount > 0 && selectedToolsCount < provider.tools.length && (
           <span className="shrink-0 rounded-[5px] border border-divider-deep bg-components-badge-bg-dimm px-1 py-0.5 system-2xs-medium-uppercase text-text-tertiary">
             {selectedToolsCount}
@@ -519,21 +544,25 @@ function AgentPromptProviderToolRow({
         className="flex size-7 shrink-0 items-center justify-center rounded-r-md text-text-tertiary hover:bg-state-base-hover-subtle focus-visible:bg-state-base-hover-subtle focus-visible:outline-hidden"
         onClick={onToggle}
       >
-        <span aria-hidden className={`${isExpanded ? 'i-ri-arrow-down-s-line' : 'i-ri-arrow-right-s-line'} size-4`} />
+        <span
+          aria-hidden
+          className={`${isExpanded ? 'i-ri-arrow-down-s-line' : 'i-ri-arrow-right-s-line'} size-4`}
+        />
       </button>
     </div>
   )
 }
 
-function AgentPromptProviderIcon({
-  provider,
-}: {
-  provider: ToolWithProvider
-}) {
+function AgentPromptProviderIcon({ provider }: { provider: ToolWithProvider }) {
   if (typeof provider.icon === 'string') {
-    return provider.icon.startsWith('/') || provider.icon.startsWith('http')
-      ? <img src={provider.icon} alt="" className="size-full object-cover" />
-      : <span aria-hidden className="i-custom-public-other-default-tool-icon size-3.5 text-text-tertiary" />
+    return provider.icon.startsWith('/') || provider.icon.startsWith('http') ? (
+      <img src={provider.icon} alt="" className="size-full object-cover" />
+    ) : (
+      <span
+        aria-hidden
+        className="i-custom-public-other-default-tool-icon size-3.5 text-text-tertiary"
+      />
+    )
   }
 
   return (
@@ -547,11 +576,7 @@ function AgentPromptProviderIcon({
   )
 }
 
-function AgentPromptToolFooter({
-  onAddCliTool,
-}: {
-  onAddCliTool?: () => void
-}) {
+function AgentPromptToolFooter({ onAddCliTool }: { onAddCliTool?: () => void }) {
   const { t } = useTranslation()
 
   return (
@@ -563,7 +588,9 @@ function AgentPromptToolFooter({
         className="flex h-7 w-full items-center gap-1.5 rounded-md px-2 text-left hover:bg-state-base-hover focus-visible:bg-state-base-hover focus-visible:outline-hidden"
       >
         <span aria-hidden className="i-ri-store-2-line size-4 shrink-0 text-text-secondary" />
-        <span className="system-sm-regular text-text-secondary">{t('findMoreInMarketplace', { ns: 'plugin' })}</span>
+        <span className="system-sm-regular text-text-secondary">
+          {t('findMoreInMarketplace', { ns: 'plugin' })}
+        </span>
       </a>
       <button
         type="button"
@@ -571,7 +598,9 @@ function AgentPromptToolFooter({
         onClick={onAddCliTool}
       >
         <span aria-hidden className="i-ri-add-line size-4 shrink-0 text-text-secondary" />
-        <span className="system-sm-regular text-text-secondary">{t('agentDetail.configure.tools.cliDialog.title', { ns: 'agentV2' })}</span>
+        <span className="system-sm-regular text-text-secondary">
+          {t('agentDetail.configure.tools.cliDialog.title', { ns: 'agentV2' })}
+        </span>
       </button>
     </div>
   )
@@ -603,7 +632,9 @@ function AgentPromptProviderToolActionRow({
         <span className="min-w-0 flex-1 truncate system-sm-regular text-text-secondary">
           {getLocalizedText(tool.label, language) || tool.name}
         </span>
-        {selected && <span aria-hidden className="i-ri-check-line size-3.5 shrink-0 text-text-tertiary" />}
+        {selected && (
+          <span aria-hidden className="i-ri-check-line size-3.5 shrink-0 text-text-tertiary" />
+        )}
       </span>
     </button>
   )
@@ -628,7 +659,9 @@ function AgentPromptCliToolRow({
         <span className="flex size-5 shrink-0 items-center justify-center rounded-md border-[0.5px] border-effects-icon-border bg-background-default-dodge">
           <span aria-hidden className="i-ri-terminal-box-line size-3.5 text-text-tertiary" />
         </span>
-        <span className="min-w-0 flex-1 truncate system-sm-regular text-text-secondary">{tool.name}</span>
+        <span className="min-w-0 flex-1 truncate system-sm-regular text-text-secondary">
+          {tool.name}
+        </span>
         <span className="shrink-0 system-xs-regular text-text-quaternary">
           {t('agentDetail.configure.tools.toolTabs.cli')}
         </span>
@@ -648,12 +681,20 @@ function AgentPromptKnowledgeRows({
 
   return (
     <>
-      {retrievals.map(retrieval => (
+      {retrievals.map((retrieval) => (
         <AgentPromptSubmenuRow
           key={retrieval.id}
           icon="i-ri-book-open-line"
           label={getKnowledgeRetrievalName(retrieval, t)}
-          onClick={() => onSelect(createReferenceToken('knowledge', retrieval.id, getKnowledgeRetrievalName(retrieval, t)))}
+          onClick={() =>
+            onSelect(
+              createReferenceToken(
+                'knowledge',
+                retrieval.id,
+                getKnowledgeRetrievalName(retrieval, t),
+              ),
+            )
+          }
         />
       ))}
     </>
@@ -689,11 +730,20 @@ function AgentPromptSubmenuRow({
       onClick={onClick}
     >
       <span className={`flex min-w-0 flex-1 items-center gap-1 ${indent} pr-2`}>
-        {typeof icon === 'string' && <span aria-hidden className={`${icon} size-4 shrink-0 text-text-secondary`} />}
+        {typeof icon === 'string' && (
+          <span aria-hidden className={`${icon} size-4 shrink-0 text-text-secondary`} />
+        )}
         {typeof icon !== 'string' && icon}
-        <span className="min-w-0 flex-1 truncate system-sm-regular text-text-secondary">{label}</span>
+        <span className="min-w-0 flex-1 truncate system-sm-regular text-text-secondary">
+          {label}
+        </span>
       </span>
-      {hasChildren && <span aria-hidden className="mr-1.5 i-ri-arrow-right-s-line size-4 shrink-0 text-text-tertiary" />}
+      {hasChildren && (
+        <span
+          aria-hidden
+          className="mr-1.5 i-ri-arrow-right-s-line size-4 shrink-0 text-text-tertiary"
+        />
+      )}
     </button>
   )
 }

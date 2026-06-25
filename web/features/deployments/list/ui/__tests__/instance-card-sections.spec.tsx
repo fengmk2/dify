@@ -1,7 +1,7 @@
 import type { Release } from '@dify/contracts/enterprise/types.gen'
 import { ReleaseSource } from '@dify/contracts/enterprise/types.gen'
 import { act, fireEvent, render, screen } from '@testing-library/react'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { ReleaseMetaTooltip } from '../instance-card-sections'
 
 function createRelease(overrides: Partial<Release> = {}): Release {
@@ -27,8 +27,7 @@ function closestWithClass(element: HTMLElement, className: string) {
   let current: HTMLElement | null = element
 
   while (current) {
-    if (current.classList.contains(className))
-      return current
+    if (current.classList.contains(className)) return current
     current = current.parentElement
   }
 
@@ -47,9 +46,7 @@ describe('ReleaseMetaTooltip', () => {
   it('should use compact typography for the release metadata preview', async () => {
     render(
       <ReleaseMetaTooltip release={createRelease()} deployed>
-        <a href="/deployments/app-instance-1/releases">
-          Initial release · 14 days ago
-        </a>
+        <a href="/deployments/app-instance-1/releases">Initial release · 14 days ago</a>
       </ReleaseMetaTooltip>,
     )
 

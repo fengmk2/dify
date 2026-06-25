@@ -31,7 +31,10 @@ export function ReleaseSourceSection() {
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-wrap items-center justify-between gap-3">
-        <label id="release-source-mode-label" className="system-xs-medium-uppercase text-text-tertiary">
+        <label
+          id="release-source-mode-label"
+          className="system-xs-medium-uppercase text-text-tertiary"
+        >
           {t('versions.releaseSourceLabel')}
         </label>
         {isDeploymentDslImportEnabled && (
@@ -40,8 +43,7 @@ export function ReleaseSourceSection() {
             value={[releaseSourceMode]}
             onValueChange={(value) => {
               const nextMode = selectedReleaseSourceMode(value)
-              if (!nextMode || nextMode === releaseSourceMode)
-                return
+              if (!nextMode || nextMode === releaseSourceMode) return
 
               selectReleaseSourceMode(nextMode)
             }}
@@ -60,9 +62,7 @@ export function ReleaseSourceSection() {
       </div>
 
       <div className="min-h-12">
-        {releaseSourceMode === 'sourceApp'
-          ? <SourceAppField />
-          : <DslFileField />}
+        {releaseSourceMode === 'sourceApp' ? <SourceAppField /> : <DslFileField />}
       </div>
     </div>
   )
@@ -75,11 +75,7 @@ function SourceAppField() {
 
   return (
     <div className="flex min-h-12 items-center">
-      <SourceAppPicker
-        value={sourceApp}
-        onChange={updateSourceApp}
-        disabled={sourceAppLocked}
-      />
+      <SourceAppPicker value={sourceApp} onChange={updateSourceApp} disabled={sourceAppLocked} />
     </div>
   )
 }
@@ -119,8 +115,7 @@ function DslUnsupportedModeError() {
   const { t } = useTranslation('deployments')
   const hasUnsupportedDslMode = useAtomValue(createReleaseHasUnsupportedDslModeAtom)
 
-  if (!hasUnsupportedDslMode)
-    return null
+  if (!hasUnsupportedDslMode) return null
 
   return (
     <div role="alert" className="system-xs-regular text-util-colors-red-red-600">

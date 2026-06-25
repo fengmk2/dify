@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import ParagraphListSkeleton from '../paragraph-list-skeleton'
 
 describe('ParagraphListSkeleton', () => {

@@ -2319,8 +2319,8 @@ export const zGetAgentByAgentIdChatMessagesByMessageIdSuggestedQuestionsPath = z
 /**
  * Suggested questions retrieved successfully
  */
-export const zGetAgentByAgentIdChatMessagesByMessageIdSuggestedQuestionsResponse
-  = zSuggestedQuestionsResponse
+export const zGetAgentByAgentIdChatMessagesByMessageIdSuggestedQuestionsResponse =
+  zSuggestedQuestionsResponse
 
 export const zPostAgentByAgentIdChatMessagesByTaskIdStopPath = z.object({
   agent_id: z.uuid(),
@@ -2390,8 +2390,8 @@ export const zPostAgentByAgentIdDebugConversationRefreshPath = z.object({
 /**
  * Agent debug conversation refreshed
  */
-export const zPostAgentByAgentIdDebugConversationRefreshResponse
-  = zAgentDebugConversationRefreshResponse
+export const zPostAgentByAgentIdDebugConversationRefreshResponse =
+  zAgentDebugConversationRefreshResponse
 
 export const zGetAgentByAgentIdDriveFilesPath = z.object({
   agent_id: z.uuid(),
@@ -2449,8 +2449,8 @@ export const zGetAgentByAgentIdDriveSkillsBySkillPathInspectPath = z.object({
 /**
  * Drive skill inspect view
  */
-export const zGetAgentByAgentIdDriveSkillsBySkillPathInspectResponse
-  = zAgentDriveSkillInspectResponse
+export const zGetAgentByAgentIdDriveSkillsBySkillPathInspectResponse =
+  zAgentDriveSkillInspectResponse
 
 export const zPostAgentByAgentIdFeaturesBody = zAgentAppFeaturesPayload
 
@@ -2687,5 +2687,5 @@ export const zPostAgentByAgentIdVersionsByVersionIdRestorePath = z.object({
 /**
  * Agent version restored
  */
-export const zPostAgentByAgentIdVersionsByVersionIdRestoreResponse
-  = zAgentConfigSnapshotRestoreResponse
+export const zPostAgentByAgentIdVersionsByVersionIdRestoreResponse =
+  zAgentConfigSnapshotRestoreResponse

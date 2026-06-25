@@ -1,16 +1,15 @@
 import { execFileSync } from 'node:child_process'
 import { fileURLToPath } from 'node:url'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 
 const SCRIPT = fileURLToPath(new URL('./release-naming.mjs', import.meta.url))
 
-function run(args: string[]): { code: number, stdout: string, stderr: string } {
+function run(args: string[]): { code: number; stdout: string; stderr: string } {
   try {
     const stdout = execFileSync('node', [SCRIPT, ...args], { encoding: 'utf8' })
     return { code: 0, stdout, stderr: '' }
-  }
-  catch (e) {
-    const err = e as { status?: number, stdout?: string, stderr?: string }
+  } catch (e) {
+    const err = e as { status?: number; stdout?: string; stderr?: string }
     return { code: err.status ?? 1, stdout: err.stdout ?? '', stderr: err.stderr ?? '' }
   }
 }

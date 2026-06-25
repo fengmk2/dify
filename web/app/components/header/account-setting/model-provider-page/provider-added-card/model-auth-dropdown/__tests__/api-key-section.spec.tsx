@@ -4,9 +4,10 @@ import { CustomConfigurationStatusEnum, PreferredProviderTypeEnum } from '../../
 import ApiKeySection from '../api-key-section'
 
 vi.mock('@/context/app-context', () => ({
-  useSelector: <T,>(selector: (state: { workspacePermissionKeys: string[] }) => T): T => selector({
-    workspacePermissionKeys: ['credential.use', 'credential.create', 'credential.manage'],
-  }),
+  useSelector: <T,>(selector: (state: { workspacePermissionKeys: string[] }) => T): T =>
+    selector({
+      workspacePermissionKeys: ['credential.use', 'credential.create', 'credential.manage'],
+    }),
 }))
 
 const createCredential = (overrides: Partial<Credential> = {}): Credential => ({
@@ -15,17 +16,18 @@ const createCredential = (overrides: Partial<Credential> = {}): Credential => ({
   ...overrides,
 })
 
-const createProvider = (overrides: Partial<ModelProvider> = {}): ModelProvider => ({
-  provider: 'test-provider',
-  allow_custom_token: true,
-  custom_configuration: {
-    status: CustomConfigurationStatusEnum.active,
-    available_credentials: [],
-  },
-  system_configuration: { enabled: true, current_quota_type: 'trial', quota_configurations: [] },
-  preferred_provider_type: PreferredProviderTypeEnum.system,
-  ...overrides,
-} as unknown as ModelProvider)
+const createProvider = (overrides: Partial<ModelProvider> = {}): ModelProvider =>
+  ({
+    provider: 'test-provider',
+    allow_custom_token: true,
+    custom_configuration: {
+      status: CustomConfigurationStatusEnum.active,
+      available_credentials: [],
+    },
+    system_configuration: { enabled: true, current_quota_type: 'trial', quota_configurations: [] },
+    preferred_provider_type: PreferredProviderTypeEnum.system,
+    ...overrides,
+  }) as unknown as ModelProvider
 
 describe('ApiKeySection', () => {
   const handlers = {

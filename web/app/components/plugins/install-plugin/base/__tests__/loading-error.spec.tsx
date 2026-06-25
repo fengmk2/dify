@@ -1,13 +1,15 @@
 import { render, screen } from '@testing-library/react'
 import * as React from 'react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 
 vi.mock('@/app/components/plugins/card/base/placeholder', () => ({
   LoadingPlaceholder: () => <div data-testid="loading-placeholder" />,
 }))
 
 vi.mock('../../../../base/icons/src/vender/other', () => ({
-  Group: ({ className }: { className: string }) => <span data-testid="group-icon" className={className} />,
+  Group: ({ className }: { className: string }) => (
+    <span data-testid="group-icon" className={className} />
+  ),
 }))
 
 describe('LoadingError', () => {

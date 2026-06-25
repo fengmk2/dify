@@ -30,8 +30,7 @@ export function UndeployDeploymentDialog({
   const { t } = useTranslation('deployments')
 
   function handleOpenChange(nextOpen: boolean) {
-    if (isRequesting)
-      return
+    if (isRequesting) return
 
     onOpenChange(nextOpen)
   }
@@ -51,11 +50,7 @@ export function UndeployDeploymentDialog({
           <AlertDialogCancelButton variant="secondary" disabled={isRequesting}>
             {t('deployDrawer.cancel')}
           </AlertDialogCancelButton>
-          <AlertDialogConfirmButton
-            loading={isRequesting}
-            disabled={disabled}
-            onClick={onConfirm}
-          >
+          <AlertDialogConfirmButton loading={isRequesting} disabled={disabled} onClick={onConfirm}>
             {t('deployTab.confirmUndeploy')}
           </AlertDialogConfirmButton>
         </AlertDialogActions>

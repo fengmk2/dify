@@ -38,16 +38,11 @@ function VersionTimelineDot({
   )
 }
 
-function VersionMetadata({
-  version,
-}: {
-  version: AgentConfigSnapshotSummaryResponse
-}) {
+function VersionMetadata({ version }: { version: AgentConfigSnapshotSummaryResponse }) {
   const { t } = useTranslation('agentV2')
   const { formatTime } = useTimestamp()
 
-  if (version.created_at == null && !version.created_by)
-    return null
+  if (version.created_at == null && !version.created_by) return null
 
   return (
     <p className="truncate system-xs-regular text-text-tertiary">
@@ -76,7 +71,9 @@ function VersionItem({
   const { t } = useTranslation('agentV2')
   const { t: tWorkflow } = useTranslation('workflow')
   const isActive = version.id === activeVersionId
-  const label = version.version_note || t('agentDetail.versionHistory.versionName', { version: version.version })
+  const label =
+    version.version_note ||
+    t('agentDetail.versionHistory.versionName', { version: version.version })
 
   return (
     <button
@@ -91,7 +88,12 @@ function VersionItem({
       <VersionTimelineDot isActive={isActive} isFirst={isFirst} isLast={isLast} />
       <div className="min-w-0 flex-1 py-0.5">
         <div className="flex min-w-0 items-center gap-1">
-          <p className={cn('truncate system-sm-semibold', isActive ? 'text-text-accent' : 'text-text-secondary')}>
+          <p
+            className={cn(
+              'truncate system-sm-semibold',
+              isActive ? 'text-text-accent' : 'text-text-secondary',
+            )}
+          >
             {label}
           </p>
           {isLatest && (
@@ -134,7 +136,12 @@ function CurrentDraftItem({
     >
       <VersionTimelineDot isActive={isActive} isFirst isLast={isLast} />
       <div className="min-w-0 flex-1 py-1">
-        <p className={cn('truncate system-sm-semibold', isActive ? 'text-text-accent' : 'text-text-secondary')}>
+        <p
+          className={cn(
+            'truncate system-sm-semibold',
+            isActive ? 'text-text-accent' : 'text-text-secondary',
+          )}
+        >
           {tWorkflow('versionHistory.currentDraft')}
         </p>
       </div>
@@ -151,13 +158,15 @@ export function AgentPreviewVersionsPanel({
   const { t } = useTranslation('agentV2')
   const { t: tCommon } = useTranslation('common')
   const { t: tWorkflow } = useTranslation('workflow')
-  const versionsQuery = useQuery(consoleQuery.agent.byAgentId.versions.get.queryOptions({
-    input: {
-      params: {
-        agent_id: agentId,
+  const versionsQuery = useQuery(
+    consoleQuery.agent.byAgentId.versions.get.queryOptions({
+      input: {
+        params: {
+          agent_id: agentId,
+        },
       },
-    },
-  }))
+    }),
+  )
   const versions = versionsQuery.data?.data ?? []
   const latestVersionId = versions[0]?.id
 

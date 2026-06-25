@@ -10,14 +10,8 @@ import { useTranslation } from 'react-i18next'
 import { useFormatTimeFromNow } from '@/hooks/use-format-time-from-now'
 import Link from '@/next/link'
 import { TitleTooltip } from '../../components/title-tooltip'
-import {
-  formatDate,
-  releaseCommit,
-} from '../../shared/domain/release'
-import {
-  deploymentSourceAppIdAtom,
-  deploymentSourceAppQueryAtom,
-} from '../state'
+import { formatDate, releaseCommit } from '../../shared/domain/release'
+import { deploymentSourceAppIdAtom, deploymentSourceAppQueryAtom } from '../state'
 import {
   DetailTable,
   DetailTableBody,
@@ -30,23 +24,19 @@ import {
 } from '../table'
 import { RELEASE_DETAIL_TABLE_COLUMN_CLASS_NAMES } from '../table-styles'
 import { DeployReleaseMenu } from './deploy-release-menu'
-import {
-  ReleaseDeploymentsContent,
-} from './release-history-deployments'
+import { ReleaseDeploymentsContent } from './release-history-deployments'
 
-function ReleaseTitleTooltip({ release }: {
-  release: Release
-}) {
+function ReleaseTitleTooltip({ release }: { release: Release }) {
   const { t } = useTranslation('deployments')
 
   return (
     <Tooltip>
       <TooltipTrigger
-        render={(
+        render={
           <span className="inline-flex max-w-full cursor-default truncate text-text-primary">
             {release.displayName}
           </span>
-        )}
+        }
       />
       <TooltipContent>
         {t('versions.commitTooltip', { commit: releaseCommit(release) })}
@@ -55,37 +45,28 @@ function ReleaseTitleTooltip({ release }: {
   )
 }
 
-function CreatedAtCell({ createdAt }: {
-  createdAt: string
-}) {
+function CreatedAtCell({ createdAt }: { createdAt: string }) {
   const { formatTimeFromNow } = useFormatTimeFromNow()
   const ms = Date.parse(createdAt)
-  if (Number.isNaN(ms))
-    return <>{formatDate(createdAt)}</>
+  if (Number.isNaN(ms)) return <>{formatDate(createdAt)}</>
   return (
     <Tooltip>
-      <TooltipTrigger
-        render={(
-          <span className="cursor-default">
-            {formatTimeFromNow(ms)}
-          </span>
-        )}
-      />
+      <TooltipTrigger render={<span className="cursor-default">{formatTimeFromNow(ms)}</span>} />
       <TooltipContent>{formatDate(createdAt)}</TooltipContent>
     </Tooltip>
   )
 }
 
-function ReleaseSourceCell({ release }: {
-  release: Release
-}) {
+function ReleaseSourceCell({ release }: { release: Release }) {
   const { t } = useTranslation('deployments')
   const sourceAppId = release.sourceAppId
 
   if (!sourceAppId) {
     return (
       <span className="text-text-tertiary">
-        {release.source === ReleaseSource.RELEASE_SOURCE_UPLOAD ? t('versions.manualDslOption') : '—'}
+        {release.source === ReleaseSource.RELEASE_SOURCE_UPLOAD
+          ? t('versions.manualDslOption')
+          : '—'}
       </span>
     )
   }
@@ -93,9 +74,7 @@ function ReleaseSourceCell({ release }: {
   return (
     <ScopeProvider
       key={sourceAppId}
-      atoms={[
-        [deploymentSourceAppIdAtom, sourceAppId],
-      ]}
+      atoms={[[deploymentSourceAppIdAtom, sourceAppId]]}
       name="DeploymentReleaseSource"
     >
       <ReleaseSourceLink sourceAppId={sourceAppId} />
@@ -103,9 +82,7 @@ function ReleaseSourceCell({ release }: {
   )
 }
 
-function ReleaseSourceLink({ sourceAppId }: {
-  sourceAppId: string
-}) {
+function ReleaseSourceLink({ sourceAppId }: { sourceAppId: string }) {
   const sourceAppQuery = useAtomValue(deploymentSourceAppQueryAtom)
   const sourceAppName = sourceAppQuery.data?.name
   const label = sourceAppName || sourceAppId
@@ -126,7 +103,11 @@ function ReleaseSourceLink({ sourceAppId }: {
   )
 }
 
-function ReleaseHistoryMobileRows({ appInstanceId, releaseRows, onReleaseDeleted }: {
+function ReleaseHistoryMobileRows({
+  appInstanceId,
+  releaseRows,
+  onReleaseDeleted,
+}: {
   appInstanceId: string
   releaseRows: ReleaseWithSummaryDeployments[]
   onReleaseDeleted?: () => void
@@ -150,7 +131,8 @@ function ReleaseHistoryMobileRows({ appInstanceId, releaseRows, onReleaseDeleted
                     <CreatedAtCell createdAt={release.createdAt} />
                     <span aria-hidden>·</span>
                     <span>{row.createdBy.displayName}</span>
-                    {(release.sourceAppId || release.source === ReleaseSource.RELEASE_SOURCE_UPLOAD) && (
+                    {(release.sourceAppId ||
+                      release.source === ReleaseSource.RELEASE_SOURCE_UPLOAD) && (
                       <>
                         <span aria-hidden>·</span>
                         <span className="inline-flex max-w-full min-w-0 items-baseline gap-1">
@@ -172,9 +154,7 @@ function ReleaseHistoryMobileRows({ appInstanceId, releaseRows, onReleaseDeleted
               </div>
               {hasDeployments && (
                 <div className="flex min-w-0 flex-wrap items-center gap-1">
-                  <ReleaseDeploymentsContent
-                    items={row.summaryDeployments}
-                  />
+                  <ReleaseDeploymentsContent items={row.summaryDeployments} />
                 </div>
               )}
             </div>
@@ -185,7 +165,11 @@ function ReleaseHistoryMobileRows({ appInstanceId, releaseRows, onReleaseDeleted
   )
 }
 
-export function ReleaseHistoryRows({ appInstanceId, releaseRows, onReleaseDeleted }: {
+export function ReleaseHistoryRows({
+  appInstanceId,
+  releaseRows,
+  onReleaseDeleted,
+}: {
   appInstanceId: string
   releaseRows: ReleaseWithSummaryDeployments[]
   onReleaseDeleted?: () => void
@@ -203,12 +187,26 @@ export function ReleaseHistoryRows({ appInstanceId, releaseRows, onReleaseDelete
         <DetailTable className="min-w-[840px]">
           <DetailTableHeader>
             <DetailTableRow>
-              <DetailTableHead className={RELEASE_DETAIL_TABLE_COLUMN_CLASS_NAMES.release}>{t('versions.col.release')}</DetailTableHead>
-              <DetailTableHead className={RELEASE_DETAIL_TABLE_COLUMN_CLASS_NAMES.sourceApp}>{t('versions.col.sourceApp')}</DetailTableHead>
-              <DetailTableHead className={RELEASE_DETAIL_TABLE_COLUMN_CLASS_NAMES.createdAt}>{t('versions.col.createdAt')}</DetailTableHead>
-              <DetailTableHead className={RELEASE_DETAIL_TABLE_COLUMN_CLASS_NAMES.author}>{t('versions.col.author')}</DetailTableHead>
-              <DetailTableHead className={RELEASE_DETAIL_TABLE_COLUMN_CLASS_NAMES.deployedTo}>{t('versions.col.deployedTo')}</DetailTableHead>
-              <DetailTableHead className={`${RELEASE_DETAIL_TABLE_COLUMN_CLASS_NAMES.action} text-right`}>{t('versions.col.action')}</DetailTableHead>
+              <DetailTableHead className={RELEASE_DETAIL_TABLE_COLUMN_CLASS_NAMES.release}>
+                {t('versions.col.release')}
+              </DetailTableHead>
+              <DetailTableHead className={RELEASE_DETAIL_TABLE_COLUMN_CLASS_NAMES.sourceApp}>
+                {t('versions.col.sourceApp')}
+              </DetailTableHead>
+              <DetailTableHead className={RELEASE_DETAIL_TABLE_COLUMN_CLASS_NAMES.createdAt}>
+                {t('versions.col.createdAt')}
+              </DetailTableHead>
+              <DetailTableHead className={RELEASE_DETAIL_TABLE_COLUMN_CLASS_NAMES.author}>
+                {t('versions.col.author')}
+              </DetailTableHead>
+              <DetailTableHead className={RELEASE_DETAIL_TABLE_COLUMN_CLASS_NAMES.deployedTo}>
+                {t('versions.col.deployedTo')}
+              </DetailTableHead>
+              <DetailTableHead
+                className={`${RELEASE_DETAIL_TABLE_COLUMN_CLASS_NAMES.action} text-right`}
+              >
+                {t('versions.col.action')}
+              </DetailTableHead>
             </DetailTableRow>
           </DetailTableHeader>
           <DetailTableBody>
@@ -224,17 +222,19 @@ export function ReleaseHistoryRows({ appInstanceId, releaseRows, onReleaseDelete
                   <DetailTableCell className={RELEASE_DETAIL_TABLE_COLUMN_CLASS_NAMES.sourceApp}>
                     <ReleaseSourceCell release={release} />
                   </DetailTableCell>
-                  <DetailTableCell className={`${RELEASE_DETAIL_TABLE_COLUMN_CLASS_NAMES.createdAt} text-text-secondary`}>
+                  <DetailTableCell
+                    className={`${RELEASE_DETAIL_TABLE_COLUMN_CLASS_NAMES.createdAt} text-text-secondary`}
+                  >
                     <CreatedAtCell createdAt={release.createdAt} />
                   </DetailTableCell>
-                  <DetailTableCell className={`${RELEASE_DETAIL_TABLE_COLUMN_CLASS_NAMES.author} truncate text-text-secondary`}>
+                  <DetailTableCell
+                    className={`${RELEASE_DETAIL_TABLE_COLUMN_CLASS_NAMES.author} truncate text-text-secondary`}
+                  >
                     {row.createdBy.displayName}
                   </DetailTableCell>
                   <DetailTableCell className={RELEASE_DETAIL_TABLE_COLUMN_CLASS_NAMES.deployedTo}>
                     <div className="flex flex-wrap gap-1">
-                      <ReleaseDeploymentsContent
-                        items={row.summaryDeployments}
-                      />
+                      <ReleaseDeploymentsContent items={row.summaryDeployments} />
                     </div>
                   </DetailTableCell>
                   <DetailTableCell className={RELEASE_DETAIL_TABLE_COLUMN_CLASS_NAMES.action}>

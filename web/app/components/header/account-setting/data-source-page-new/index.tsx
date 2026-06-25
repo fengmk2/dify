@@ -17,7 +17,7 @@ import Card from './card'
 import InstallFromMarketplace from './install-from-marketplace'
 
 type DataSourcePageProps = {
-  layout?: (parts: { body: ReactNode, toolbar: ReactNode }) => ReactNode
+  layout?: (parts: { body: ReactNode; toolbar: ReactNode }) => ReactNode
   stickyToolbar?: boolean
 }
 
@@ -51,19 +51,14 @@ function DataSourceListSkeleton() {
   )
 }
 
-const DataSourcePage = ({
-  layout,
-  stickyToolbar,
-}: DataSourcePageProps) => {
+const DataSourcePage = ({ layout, stickyToolbar }: DataSourcePageProps) => {
   const { t } = useTranslation()
   const renderI18nObject = useRenderI18nObject()
   const [searchText, setSearchText] = useState('')
-  const {
-    canSetPluginPreferences,
-  } = usePluginSettingsAccess()
+  const { canSetPluginPreferences } = usePluginSettingsAccess()
   const { data: enable_marketplace } = useSuspenseQuery({
     ...systemFeaturesQueryOptions(),
-    select: s => s.enable_marketplace,
+    select: (s) => s.enable_marketplace,
   })
   const { data, isLoading: isDataSourceListLoading } = useGetDataSourceListAuth()
   const { data: installedPluginList } = useInstalledPluginList()
@@ -73,12 +68,13 @@ const DataSourcePage = ({
   const invalidateDataSourceList = useInvalidDataSourceList()
   const dataSources = useMemo(() => data?.result ?? [], [data?.result])
   const dataSourcePluginDetails = useMemo(() => {
-    return pluginListWithLatestVersion.filter(plugin => plugin.declaration.category === PluginCategoryEnum.datasource)
+    return pluginListWithLatestVersion.filter(
+      (plugin) => plugin.declaration.category === PluginCategoryEnum.datasource,
+    )
   }, [pluginListWithLatestVersion])
   const filteredDataSources = useMemo(() => {
     const normalizedSearchText = searchText.trim().toLowerCase()
-    if (!normalizedSearchText)
-      return dataSources
+    if (!normalizedSearchText) return dataSources
 
     return dataSources.filter((item) => {
       const searchableText = [
@@ -87,7 +83,9 @@ const DataSourcePage = ({
         item.author,
         renderI18nObject(item.label),
         renderI18nObject(item.description),
-      ].join(' ').toLowerCase()
+      ]
+        .join(' ')
+        .toLowerCase()
 
       return searchableText.includes(normalizedSearchText)
     })
@@ -99,11 +97,14 @@ const DataSourcePage = ({
   }, [invalidateDataSourceList, invalidateDataSourceListAuth, invalidateInstalledPluginList])
 
   const toolbar = (
-    <div className={stickyToolbar
-      ? layout
-        ? 'flex w-full items-center justify-between gap-3'
-        : 'sticky top-0 z-10 -mx-6 mb-2 flex items-center justify-between gap-3 bg-components-panel-bg px-6 pb-2'
-      : 'mb-2 flex items-center justify-between gap-3'}
+    <div
+      className={
+        stickyToolbar
+          ? layout
+            ? 'flex w-full items-center justify-between gap-3'
+            : 'sticky top-0 z-10 -mx-6 mb-2 flex items-center justify-between gap-3 bg-components-panel-bg px-6 pb-2'
+          : 'mb-2 flex items-center justify-between gap-3'
+      }
     >
       <SearchInput
         className="w-[200px]"
@@ -111,11 +112,7 @@ const DataSourcePage = ({
         value={searchText}
         onValueChange={setSearchText}
       />
-      {canSetPluginPreferences && (
-        <UpdateSettingDialog
-          category={PluginCategoryEnum.datasource}
-        />
-      )}
+      {canSetPluginPreferences && <UpdateSettingDialog category={PluginCategoryEnum.datasource} />}
     </div>
   )
 
@@ -143,30 +140,25 @@ const DataSourcePage = ({
       )}
       {!isDataSourceListLoading && !!filteredDataSources.length && (
         <div className="space-y-2">
-          {
-            filteredDataSources.map((item) => {
-              const pluginDetail = dataSourcePluginDetails.find(plugin => plugin.plugin_id === item.plugin_id)
+          {filteredDataSources.map((item) => {
+            const pluginDetail = dataSourcePluginDetails.find(
+              (plugin) => plugin.plugin_id === item.plugin_id,
+            )
 
-              return (
-                <Card
-                  key={item.plugin_unique_identifier}
-                  item={item}
-                  pluginDetail={pluginDetail}
-                  onPluginUpdate={handlePluginUpdate}
-                />
-              )
-            })
-          }
+            return (
+              <Card
+                key={item.plugin_unique_identifier}
+                item={item}
+                pluginDetail={pluginDetail}
+                onPluginUpdate={handlePluginUpdate}
+              />
+            )
+          })}
         </div>
       )}
-      {
-        !isDataSourceListLoading && enable_marketplace && (
-          <InstallFromMarketplace
-            providers={dataSources}
-            searchText={searchText}
-          />
-        )
-      }
+      {!isDataSourceListLoading && enable_marketplace && (
+        <InstallFromMarketplace providers={dataSources} searchText={searchText} />
+      )}
     </>
   )
 

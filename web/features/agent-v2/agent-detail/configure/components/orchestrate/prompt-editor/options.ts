@@ -2,12 +2,12 @@
  * @public
  */
 // TODO: Remove this marker after prompt option menus are wired.
-export type AgentPromptOptionLabelKey
-  = | 'agentDetail.configure.prompt.insert.tenders'
-    | 'agentDetail.configure.prompt.insert.question'
-    | 'agentDetail.configure.prompt.insert.reportFile'
-    | 'agentDetail.configure.prompt.mention.davidHayes'
-    | 'agentDetail.configure.prompt.mention.priyaRamanathan'
+export type AgentPromptOptionLabelKey =
+  | 'agentDetail.configure.prompt.insert.tenders'
+  | 'agentDetail.configure.prompt.insert.question'
+  | 'agentDetail.configure.prompt.insert.reportFile'
+  | 'agentDetail.configure.prompt.mention.davidHayes'
+  | 'agentDetail.configure.prompt.mention.priyaRamanathan'
 
 /**
  * @public
@@ -65,19 +65,16 @@ export const mentionOptions: InsertOption[] = [
 ]
 
 const appendToken = (value: string, token: string) => {
-  if (!value)
-    return token
+  if (!value) return token
 
   return `${value}${value.endsWith(' ') || value.endsWith('\n') ? '' : ' '}${token}`
 }
 
 export const replaceTrailingSlashWithToken = (value: string, token: string) => {
-  if (!value.endsWith('/'))
-    return appendToken(value, token)
+  if (!value.endsWith('/')) return appendToken(value, token)
 
   const valueWithoutSlash = value.slice(0, -1)
-  if (!valueWithoutSlash)
-    return token
+  if (!valueWithoutSlash) return token
 
   return `${valueWithoutSlash}${valueWithoutSlash.endsWith(' ') || valueWithoutSlash.endsWith('\n') ? '' : ' '}${token}`
 }

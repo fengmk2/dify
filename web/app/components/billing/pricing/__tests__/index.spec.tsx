@@ -1,4 +1,4 @@
-import type { Mock } from 'vitest'
+import type { Mock } from 'vite-plus/test'
 import type { UsagePlanInfo } from '../../type'
 import { fireEvent, render, screen } from '@testing-library/react'
 import * as React from 'react'
@@ -20,7 +20,17 @@ vi.mock('../plans/self-hosted-plan-item/list', () => ({
 }))
 
 vi.mock('@/next/link', () => ({
-  default: ({ children, href, className, target }: { children: React.ReactNode, href: string, className?: string, target?: string }) => (
+  default: ({
+    children,
+    href,
+    className,
+    target,
+  }: {
+    children: React.ReactNode
+    href: string
+    className?: string
+    target?: string
+  }) => (
     <a href={href} className={className} target={target} data-testid="pricing-link">
       {children}
     </a>
@@ -73,9 +83,14 @@ describe('Pricing', () => {
     it('should render pricing header and localized footer link', () => {
       render(<Pricing onCancel={vi.fn()} />)
 
-      expect(screen.getByRole('dialog', { name: 'billing.plansCommon.title.plans' })).toBeInTheDocument()
+      expect(
+        screen.getByRole('dialog', { name: 'billing.plansCommon.title.plans' }),
+      ).toBeInTheDocument()
       expect(screen.getByText('billing.plansCommon.title.plans')).toBeInTheDocument()
-      expect(screen.getByTestId('pricing-link')).toHaveAttribute('href', 'https://dify.ai/en/pricing#plans-and-features')
+      expect(screen.getByTestId('pricing-link')).toHaveAttribute(
+        'href',
+        'https://dify.ai/en/pricing#plans-and-features',
+      )
     })
 
     it('should default to yearly billing for education accounts', () => {
@@ -133,7 +148,10 @@ describe('Pricing', () => {
       mockLanguage = ''
       render(<Pricing onCancel={vi.fn()} />)
 
-      expect(screen.getByTestId('pricing-link')).toHaveAttribute('href', 'https://dify.ai/pricing#plans-and-features')
+      expect(screen.getByTestId('pricing-link')).toHaveAttribute(
+        'href',
+        'https://dify.ai/pricing#plans-and-features',
+      )
     })
   })
 })

@@ -32,22 +32,24 @@ export function DeleteAgentDialog({
   const deleteAgentMutation = useMutation(consoleQuery.agent.byAgentId.delete.mutationOptions())
 
   const handleDelete = () => {
-    if (deleteAgentMutation.isPending)
-      return
+    if (deleteAgentMutation.isPending) return
 
-    deleteAgentMutation.mutate({
-      params: {
-        agent_id: agentId,
+    deleteAgentMutation.mutate(
+      {
+        params: {
+          agent_id: agentId,
+        },
       },
-    }, {
-      onSuccess: () => {
-        toast.success(t('roster.deleteSuccess'))
-        onOpenChange(false)
+      {
+        onSuccess: () => {
+          toast.success(t('roster.deleteSuccess'))
+          onOpenChange(false)
+        },
+        onError: () => {
+          toast.error(t('roster.deleteFailed'))
+        },
       },
-      onError: () => {
-        toast.error(t('roster.deleteFailed'))
-      },
-    })
+    )
   }
 
   return (

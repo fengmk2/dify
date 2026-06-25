@@ -13,7 +13,10 @@ import { DeveloperApiHeaderSwitch } from './settings-tab/access/developer-api-se
 import { INSTANCE_DETAIL_TAB_KEYS, isInstanceDetailTabKey } from './tabs'
 import { versionsTabLocalAtoms } from './versions-tab/state'
 
-function MobileDetailTabs({ appInstanceId, activeTab }: {
+function MobileDetailTabs({
+  appInstanceId,
+  activeTab,
+}: {
   appInstanceId: string
   activeTab: InstanceDetailTabKey
 }) {
@@ -25,7 +28,7 @@ function MobileDetailTabs({ appInstanceId, activeTab }: {
       className="border-b border-divider-subtle bg-components-panel-bg px-4 pc:hidden"
     >
       <div className="flex min-w-0 scrollbar-none gap-1 overflow-x-auto py-2">
-        {INSTANCE_DETAIL_TAB_KEYS.map(tab => (
+        {INSTANCE_DETAIL_TAB_KEYS.map((tab) => (
           <Link
             key={tab}
             href={`/deployments/${appInstanceId}/${tab}`}
@@ -43,25 +46,24 @@ function MobileDetailTabs({ appInstanceId, activeTab }: {
   )
 }
 
-export function InstanceDetail({ appInstanceId, children }: {
+export function InstanceDetail({
+  appInstanceId,
+  children,
+}: {
   appInstanceId: string
   children: ReactNode
 }) {
   const { t } = useTranslation('deployments')
   const selectedSegment = useSelectedLayoutSegment()
   const selectedTab = selectedSegment ?? undefined
-  const activeTab: InstanceDetailTabKey = isInstanceDetailTabKey(selectedTab) ? selectedTab : 'overview'
+  const activeTab: InstanceDetailTabKey = isInstanceDetailTabKey(selectedTab)
+    ? selectedTab
+    : 'overview'
 
   useDocumentTitle(t('documentTitle.detail'))
 
   return (
-    <ScopeProvider
-      key={appInstanceId}
-      atoms={[
-        ...versionsTabLocalAtoms,
-      ]}
-      name="DeploymentDetail"
-    >
+    <ScopeProvider key={appInstanceId} atoms={[...versionsTabLocalAtoms]} name="DeploymentDetail">
       <div className="relative m-1 ml-0 flex min-h-0 flex-1 overflow-hidden rounded-lg shadow-xs">
         <div className="min-w-0 grow overflow-hidden bg-components-panel-bg">
           <div className="h-full min-w-0 overflow-y-auto">
@@ -70,20 +72,26 @@ export function InstanceDetail({ appInstanceId, children }: {
                 <div className="flex min-w-0 flex-col gap-3 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
                   <div className="min-w-0">
                     <div className="flex min-w-0 flex-wrap items-center gap-x-3 gap-y-2">
-                      <div className="system-xl-semibold text-text-primary">{t(`tabs.${activeTab}.name`)}</div>
+                      <div className="system-xl-semibold text-text-primary">
+                        {t(`tabs.${activeTab}.name`)}
+                      </div>
                       {activeTab === 'api-tokens' && (
                         <div className="shrink-0">
                           <DeveloperApiHeaderSwitch appInstanceId={appInstanceId} />
                         </div>
                       )}
                     </div>
-                    <div className="system-sm-regular text-text-tertiary">{t(`tabs.${activeTab}.description`)}</div>
+                    <div className="system-sm-regular text-text-tertiary">
+                      {t(`tabs.${activeTab}.description`)}
+                    </div>
                   </div>
                   {(activeTab === 'instances' || activeTab === 'releases') && (
                     <div className="w-full shrink-0 pt-1 sm:w-auto sm:pt-1.5 [&_button]:w-full sm:[&_button]:w-auto">
-                      {activeTab === 'instances'
-                        ? <NewDeploymentHeaderAction appInstanceId={appInstanceId} />
-                        : <CreateReleaseControl appInstanceId={appInstanceId} size="medium" />}
+                      {activeTab === 'instances' ? (
+                        <NewDeploymentHeaderAction appInstanceId={appInstanceId} />
+                      ) : (
+                        <CreateReleaseControl appInstanceId={appInstanceId} size="medium" />
+                      )}
                     </div>
                   )}
                 </div>

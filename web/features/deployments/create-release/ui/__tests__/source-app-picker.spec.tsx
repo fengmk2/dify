@@ -1,18 +1,22 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { SourceAppPicker } from '../source-app-picker'
 
 const mocks = vi.hoisted(() => {
   const sourceAppsQuery = {
     data: {
-      pages: [{
-        data: [{
-          id: 'app-1',
-          name: 'Workflow App',
-        }],
-      }],
+      pages: [
+        {
+          data: [
+            {
+              id: 'app-1',
+              name: 'Workflow App',
+            },
+          ],
+        },
+      ],
     },
     error: null,
     fetchNextPage: vi.fn(),
@@ -71,12 +75,16 @@ describe('SourceAppPicker', () => {
     vi.clearAllMocks()
     Object.assign(mocks.sourceAppsQuery, {
       data: {
-        pages: [{
-          data: [{
-            id: 'app-1',
-            name: 'Workflow App',
-          }],
-        }],
+        pages: [
+          {
+            data: [
+              {
+                id: 'app-1',
+                name: 'Workflow App',
+              },
+            ],
+          },
+        ],
       },
       error: null,
       fetchNextPage: vi.fn(),
@@ -91,7 +99,9 @@ describe('SourceAppPicker', () => {
     renderSourceAppPicker(true)
 
     expect(screen.getByText('Workflow 1')).toBeInTheDocument()
-    expect(screen.getByRole('combobox', { name: 'deployments.versions.sourceAppOption' })).toBeDisabled()
+    expect(
+      screen.getByRole('combobox', { name: 'deployments.versions.sourceAppOption' }),
+    ).toBeDisabled()
   })
 
   it('should use infinite scroll to load more apps when the picker is open', async () => {
@@ -120,6 +130,8 @@ describe('SourceAppPicker', () => {
         }),
       )
     })
-    expect(screen.queryByRole('button', { name: /createModal\.loadMoreApps/ })).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: /createModal\.loadMoreApps/ }),
+    ).not.toBeInTheDocument()
   })
 })

@@ -15,10 +15,16 @@ import {
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useLearnDifyHiddenValue, useSetLearnDifyHidden } from '@/app/components/explore/learn-dify/storage'
+import {
+  useLearnDifyHiddenValue,
+  useSetLearnDifyHidden,
+} from '@/app/components/explore/learn-dify/storage'
 import AccountAbout from '@/app/components/header/account-about'
 import Compliance from '@/app/components/header/account-dropdown/compliance'
-import { ExternalLinkIndicator, MenuItemContent } from '@/app/components/header/account-dropdown/menu-item-content'
+import {
+  ExternalLinkIndicator,
+  MenuItemContent,
+} from '@/app/components/header/account-dropdown/menu-item-content'
 import GithubStar from '@/app/components/header/github-star'
 import { IS_CLOUD_EDITION } from '@/config'
 import { useAppContext } from '@/context/app-context'
@@ -33,21 +39,24 @@ type HelpMenuProps = {
 }
 
 const defaultTriggerIcon = (
-  <svg
-    aria-hidden
-    className="size-6 shrink-0"
-    viewBox="0 0 24 24"
-    fill="none"
-  >
-    <path d="M11.9666 16.9985V17.011" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    <path d="M11.9665 13.2485C11.9665 11.1995 14.4665 11.9134 14.4665 9.49854C14.4665 8.11782 13.3473 6.99854 11.9665 6.99854C11.0412 6.99854 10.2333 7.50129 9.80103 8.24854" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+  <svg aria-hidden className="size-6 shrink-0" viewBox="0 0 24 24" fill="none">
+    <path
+      d="M11.9666 16.9985V17.011"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+    />
+    <path
+      d="M11.9665 13.2485C11.9665 11.1995 14.4665 11.9134 14.4665 9.49854C14.4665 8.11782 13.3473 6.99854 11.9665 6.99854C11.0412 6.99854 10.2333 7.50129 9.80103 8.24854"
+      stroke="currentColor"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    />
   </svg>
 )
 
-const HelpMenu = ({
-  triggerIcon = defaultTriggerIcon,
-  triggerClassName,
-}: HelpMenuProps) => {
+const HelpMenu = ({ triggerIcon = defaultTriggerIcon, triggerClassName }: HelpMenuProps) => {
   const { t } = useTranslation()
   const docLink = useDocLink()
   const { data: systemFeatures } = useSuspenseQuery(systemFeaturesQueryOptions())
@@ -58,8 +67,7 @@ const HelpMenu = ({
   const [open, setOpen] = useState(false)
   const shouldShowLearnDifySwitch = systemFeatures.enable_learn_app
 
-  if (systemFeatures.branding.enabled)
-    return null
+  if (systemFeatures.branding.enabled) return null
 
   return (
     <>
@@ -82,14 +90,24 @@ const HelpMenu = ({
         >
           <>
             <DropdownMenuGroup className="p-1">
-              <DropdownMenuLinkItem href={docLink('/use-dify/getting-started/introduction')} target="_blank" rel="noopener noreferrer" className="mx-0 h-8 gap-1 px-3 py-1">
+              <DropdownMenuLinkItem
+                href={docLink('/use-dify/getting-started/introduction')}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mx-0 h-8 gap-1 px-3 py-1"
+              >
                 <MenuItemContent
                   iconClassName="i-ri-book-open-line"
                   label={t('mainNav.help.docs', { ns: 'common' })}
                   trailing={<ExternalLinkIndicator />}
                 />
               </DropdownMenuLinkItem>
-              <DropdownMenuLinkItem href="https://roadmap.dify.ai" target="_blank" rel="noopener noreferrer" className="mx-0 h-8 gap-1 px-3 py-1">
+              <DropdownMenuLinkItem
+                href="https://roadmap.dify.ai"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mx-0 h-8 gap-1 px-3 py-1"
+              >
                 <MenuItemContent
                   iconClassName="i-ri-map-2-line"
                   label={t('userProfile.roadmap', { ns: 'common' })}
@@ -101,9 +119,12 @@ const HelpMenu = ({
                   checked={!learnDifyHidden}
                   closeOnClick={false}
                   className="mx-0 h-8 gap-1 px-0 py-1 pr-2 pl-3"
-                  onCheckedChange={checked => setLearnDifyHidden(!checked)}
+                  onCheckedChange={(checked) => setLearnDifyHidden(!checked)}
                 >
-                  <span aria-hidden className="i-custom-vender-workflow-docs-extractor size-4 shrink-0 text-text-tertiary" />
+                  <span
+                    aria-hidden
+                    className="i-custom-vender-workflow-docs-extractor size-4 shrink-0 text-text-tertiary"
+                  />
                   <span className="min-w-0 flex-1 truncate px-1 py-0.5 system-md-regular text-text-secondary">
                     {t('mainNav.help.learnDify', { ns: 'common' })}
                   </span>
@@ -111,7 +132,9 @@ const HelpMenu = ({
                     aria-hidden
                     className={cn(
                       'relative inline-flex h-4 w-7 shrink-0 items-center rounded-[5px] p-0.5 transition-colors',
-                      !learnDifyHidden ? 'bg-components-toggle-bg' : 'bg-components-toggle-bg-unchecked',
+                      !learnDifyHidden
+                        ? 'bg-components-toggle-bg'
+                        : 'bg-components-toggle-bg-unchecked',
                     )}
                   >
                     <span
@@ -131,16 +154,24 @@ const HelpMenu = ({
             </DropdownMenuGroup>
             <DropdownMenuSeparator className="my-0!" />
             <DropdownMenuGroup className="p-1">
-              <DropdownMenuLinkItem href="https://github.com/langgenius/dify" target="_blank" rel="noopener noreferrer" className="mx-0 h-8 gap-1 px-3 py-1.5">
+              <DropdownMenuLinkItem
+                href="https://github.com/langgenius/dify"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mx-0 h-8 gap-1 px-3 py-1.5"
+              >
                 <MenuItemContent
                   iconClassName="i-ri-github-line"
                   label={t('userProfile.github', { ns: 'common' })}
-                  trailing={(
+                  trailing={
                     <div className="flex items-center gap-0.5 rounded-[5px] border border-divider-deep bg-components-badge-bg-dimm px-[5px] py-[3px]">
-                      <span aria-hidden className="i-ri-star-line size-3 shrink-0 text-text-tertiary" />
+                      <span
+                        aria-hidden
+                        className="i-ri-star-line size-3 shrink-0 text-text-tertiary"
+                      />
                       <GithubStar className="system-2xs-medium-uppercase text-text-tertiary" />
                     </div>
-                  )}
+                  }
                 />
               </DropdownMenuLinkItem>
               {env.NEXT_PUBLIC_SITE_ABOUT !== 'hide' && (
@@ -154,11 +185,16 @@ const HelpMenu = ({
                   <MenuItemContent
                     iconClassName="i-ri-information-2-line"
                     label={t('userProfile.about', { ns: 'common' })}
-                    trailing={(
+                    trailing={
                       <div className="flex shrink-0 items-center">
-                        <div className="system-xs-regular text-text-tertiary">{t('about.version', { ns: 'common', version: langGeniusVersionInfo.current_version })}</div>
+                        <div className="system-xs-regular text-text-tertiary">
+                          {t('about.version', {
+                            ns: 'common',
+                            version: langGeniusVersionInfo.current_version,
+                          })}
+                        </div>
                       </div>
-                    )}
+                    }
                   />
                 </DropdownMenuItem>
               )}
@@ -166,7 +202,12 @@ const HelpMenu = ({
           </>
         </DropdownMenuContent>
       </DropdownMenu>
-      {aboutVisible && <AccountAbout onCancel={() => setAboutVisible(false)} langGeniusVersionInfo={langGeniusVersionInfo} />}
+      {aboutVisible && (
+        <AccountAbout
+          onCancel={() => setAboutVisible(false)}
+          langGeniusVersionInfo={langGeniusVersionInfo}
+        />
+      )}
     </>
   )
 }

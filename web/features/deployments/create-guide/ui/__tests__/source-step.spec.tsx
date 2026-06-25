@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { SourceStepContent } from '../source-step'
 
 const mocks = vi.hoisted(() => {
@@ -38,7 +38,7 @@ vi.mock('@/features/deployments/create-guide/state', async () => {
     dslFileAtom: atom<File | undefined>(undefined),
     dslReadErrorAtom: atom(false),
     dslUnsupportedModeAtom: atom(false),
-    effectiveMethodAtom: atom(get => get(methodAtom)),
+    effectiveMethodAtom: atom((get) => get(methodAtom)),
     effectiveSelectedAppAtom: atom(undefined),
     isReadingDslAtom: atom(false),
     methodAtom,
@@ -74,19 +74,27 @@ describe('SourceStepContent', () => {
 
     expect(screen.getByText(/createGuide\.methods\.bindApp\.title/)).toBeInTheDocument()
     expect(screen.queryByText(/createGuide\.methods\.importDsl\.title/)).not.toBeInTheDocument()
-    expect(screen.queryByText(/createGuide\.methods\.importDsl\.description/)).not.toBeInTheDocument()
-    expect(screen.getByRole('textbox', { name: /createGuide\.source\.sourceApp/ })).toBeInTheDocument()
+    expect(
+      screen.queryByText(/createGuide\.methods\.importDsl\.description/),
+    ).not.toBeInTheDocument()
+    expect(
+      screen.getByRole('textbox', { name: /createGuide\.source\.sourceApp/ }),
+    ).toBeInTheDocument()
   })
 
   it('should use infinite scroll to load more source apps', () => {
     Object.assign(mocks.sourceAppsQuery, {
       data: {
-        pages: [{
-          data: [{
-            id: 'app-1',
-            name: 'Workflow App',
-          }],
-        }],
+        pages: [
+          {
+            data: [
+              {
+                id: 'app-1',
+                name: 'Workflow App',
+              },
+            ],
+          },
+        ],
       },
       hasNextPage: true,
     })
@@ -100,6 +108,8 @@ describe('SourceStepContent', () => {
         threshold: 0.1,
       }),
     )
-    expect(screen.queryByRole('button', { name: /createModal\.loadMoreApps/ })).not.toBeInTheDocument()
+    expect(
+      screen.queryByRole('button', { name: /createModal\.loadMoreApps/ }),
+    ).not.toBeInTheDocument()
   })
 })

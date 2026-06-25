@@ -11,32 +11,36 @@ const intersectionObserverMocks = vi.hoisted(() => ({
 }))
 
 vi.mock('@/context/app-context', () => ({
-  useSelector: <T,>(selector: (value: { userProfile: { email: string } }) => T) => selector({
-    userProfile: {
-      email: 'member@example.com',
-    },
-  }),
+  useSelector: <T,>(selector: (value: { userProfile: { email: string } }) => T) =>
+    selector({
+      userProfile: {
+        email: 'member@example.com',
+      },
+    }),
 }))
 
 vi.mock('@/service/access-control/use-app-access-control', () => ({
-  useSearchForWhiteListCandidates: (...args: unknown[]) => mockUseSearchForWhiteListCandidates(...args),
+  useSearchForWhiteListCandidates: (...args: unknown[]) =>
+    mockUseSearchForWhiteListCandidates(...args),
 }))
 
-const createGroup = (overrides: Partial<AccessControlGroup> = {}): AccessControlGroup => ({
-  id: 'group-1',
-  name: 'Group One',
-  groupSize: 5,
-  ...overrides,
-} as AccessControlGroup)
+const createGroup = (overrides: Partial<AccessControlGroup> = {}): AccessControlGroup =>
+  ({
+    id: 'group-1',
+    name: 'Group One',
+    groupSize: 5,
+    ...overrides,
+  }) as AccessControlGroup
 
-const createMember = (overrides: Partial<AccessControlAccount> = {}): AccessControlAccount => ({
-  id: 'member-1',
-  name: 'Member One',
-  email: 'member@example.com',
-  avatar: '',
-  avatarUrl: '',
-  ...overrides,
-} as AccessControlAccount)
+const createMember = (overrides: Partial<AccessControlAccount> = {}): AccessControlAccount =>
+  ({
+    id: 'member-1',
+    name: 'Member One',
+    email: 'member@example.com',
+    avatar: '',
+    avatarUrl: '',
+    ...overrides,
+  }) as AccessControlAccount
 
 describe('AddMemberOrGroupDialog', () => {
   const baseGroup = createGroup()
@@ -81,25 +85,29 @@ describe('AddMemberOrGroupDialog', () => {
 
   it('should open the search popover and display candidates', async () => {
     const user = userEvent.setup()
-    const harness = createAccessControlDraftHarness(
-      <AddMemberOrGroupDialog />,
-      { appId: 'app-1', currentMenu: AccessMode.SPECIFIC_GROUPS_MEMBERS },
-    )
+    const harness = createAccessControlDraftHarness(<AddMemberOrGroupDialog />, {
+      appId: 'app-1',
+      currentMenu: AccessMode.SPECIFIC_GROUPS_MEMBERS,
+    })
     render(harness.element)
 
     await user.click(screen.getByText('common.operation.add'))
 
-    expect(screen.getByPlaceholderText('app.accessControlDialog.operateGroupAndMember.searchPlaceholder')).toBeInTheDocument()
+    expect(
+      screen.getByPlaceholderText(
+        'app.accessControlDialog.operateGroupAndMember.searchPlaceholder',
+      ),
+    ).toBeInTheDocument()
     expect(screen.getByText(baseGroup.name)).toBeInTheDocument()
     expect(screen.getByText(baseMember.name)).toBeInTheDocument()
   })
 
   it('should allow expanding groups and selecting members', async () => {
     const user = userEvent.setup()
-    const harness = createAccessControlDraftHarness(
-      <AddMemberOrGroupDialog />,
-      { appId: 'app-1', currentMenu: AccessMode.SPECIFIC_GROUPS_MEMBERS },
-    )
+    const harness = createAccessControlDraftHarness(<AddMemberOrGroupDialog />, {
+      appId: 'app-1',
+      currentMenu: AccessMode.SPECIFIC_GROUPS_MEMBERS,
+    })
     render(harness.element)
 
     await user.click(screen.getByText('common.operation.add'))
@@ -121,15 +129,17 @@ describe('AddMemberOrGroupDialog', () => {
     })
 
     const user = userEvent.setup()
-    const harness = createAccessControlDraftHarness(
-      <AddMemberOrGroupDialog />,
-      { appId: 'app-1', currentMenu: AccessMode.SPECIFIC_GROUPS_MEMBERS },
-    )
+    const harness = createAccessControlDraftHarness(<AddMemberOrGroupDialog />, {
+      appId: 'app-1',
+      currentMenu: AccessMode.SPECIFIC_GROUPS_MEMBERS,
+    })
     render(harness.element)
 
     await user.click(screen.getByText('common.operation.add'))
 
-    expect(screen.getByRole('status')).toHaveTextContent('app.accessControlDialog.operateGroupAndMember.noResult')
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'app.accessControlDialog.operateGroupAndMember.noResult',
+    )
   })
 
   it('should keep breadcrumbs visible when the current group has no candidates', async () => {
@@ -141,23 +151,30 @@ describe('AddMemberOrGroupDialog', () => {
     })
 
     const user = userEvent.setup()
-    const harness = createAccessControlDraftHarness(
-      <AddMemberOrGroupDialog />,
-      {
-        appId: 'app-1',
-        currentMenu: AccessMode.SPECIFIC_GROUPS_MEMBERS,
-        selectedGroupsForBreadcrumb: [baseGroup],
-      },
-    )
+    const harness = createAccessControlDraftHarness(<AddMemberOrGroupDialog />, {
+      appId: 'app-1',
+      currentMenu: AccessMode.SPECIFIC_GROUPS_MEMBERS,
+      selectedGroupsForBreadcrumb: [baseGroup],
+    })
     render(harness.element)
 
     await user.click(screen.getByText('common.operation.add'))
 
-    expect(screen.getByRole('button', { name: 'app.accessControlDialog.operateGroupAndMember.allMembers' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', {
+        name: 'app.accessControlDialog.operateGroupAndMember.allMembers',
+      }),
+    ).toBeInTheDocument()
     expect(screen.getByText(baseGroup.name)).toBeInTheDocument()
-    expect(screen.getByRole('status')).toHaveTextContent('app.accessControlDialog.operateGroupAndMember.noResult')
+    expect(screen.getByRole('status')).toHaveTextContent(
+      'app.accessControlDialog.operateGroupAndMember.noResult',
+    )
 
-    await user.click(screen.getByRole('button', { name: 'app.accessControlDialog.operateGroupAndMember.allMembers' }))
+    await user.click(
+      screen.getByRole('button', {
+        name: 'app.accessControlDialog.operateGroupAndMember.allMembers',
+      }),
+    )
 
     expect(harness.getSnapshot().selectedGroupsForBreadcrumb).toEqual([])
   })

@@ -2,7 +2,7 @@ import type { GetSystemFeaturesResponse } from '@dify/contracts/api/console/syst
 import type { ChangeEvent } from 'react'
 import type { AppContextValue } from '@/context/app-context'
 import { act } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { createMockProviderContextValue } from '@/__mocks__/provider-context'
 import { renderHookWithSystemFeatures } from '@/__tests__/utils/mock-system-features'
 import { getImageUploadErrorMessage, imageUpload } from '@/app/components/base/image-uploader/utils'
@@ -89,7 +89,8 @@ const createProviderContext = ({
 
 const createAppContextValue = (overrides: Partial<AppContextValue> = {}): AppContextValue => {
   const { currentWorkspace: currentWorkspaceOverride, ...restOverrides } = overrides
-  const workspaceOverrides: Partial<AppContextValue['currentWorkspace']> = currentWorkspaceOverride ?? {}
+  const workspaceOverrides: Partial<AppContextValue['currentWorkspace']> =
+    currentWorkspaceOverride ?? {}
   const currentWorkspace = {
     ...initialWorkspaceInfo,
     ...workspaceOverrides,
@@ -170,10 +171,12 @@ describe('useWebAppBrand', () => {
     })
 
     it('should disable uploads in sandbox workspaces and when branding is removed', () => {
-      mockUseProviderContext.mockReturnValue(createProviderContext({
-        enableBilling: true,
-        planType: Plan.sandbox,
-      }))
+      mockUseProviderContext.mockReturnValue(
+        createProviderContext({
+          enableBilling: true,
+          planType: Plan.sandbox,
+        }),
+      )
       appContextValue = createAppContextValue({
         currentWorkspace: {
           ...initialWorkspaceInfo,

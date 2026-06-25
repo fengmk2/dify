@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { createSystemFeaturesWrapper } from '@/__tests__/utils/mock-system-features'
 import PluginPage from '@/app/components/plugins/plugin-page'
 import { createNuqsTestWrapper } from '@/test/nuqs-testing'
@@ -9,7 +9,7 @@ const mockFetchManifestFromMarketPlace = vi.fn()
 
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string, options?: { ns?: string }) => options?.ns ? `${options.ns}.${key}` : key,
+    t: (key: string, options?: { ns?: string }) => (options?.ns ? `${options.ns}.${key}` : key),
   }),
 }))
 
@@ -37,11 +37,7 @@ vi.mock('@/context/app-context', () => ({
     langGeniusVersionInfo: {
       current_version: '1.0.0',
     },
-    workspacePermissionKeys: [
-      'plugin.install',
-      'plugin.delete',
-      'plugin.plugin_preferences',
-    ],
+    workspacePermissionKeys: ['plugin.install', 'plugin.delete', 'plugin.plugin_preferences'],
   }),
 }))
 
@@ -107,16 +103,12 @@ vi.mock('@/app/components/plugins/plugin-page/install-plugin-dropdown', () => ({
 }))
 
 vi.mock('@/app/components/plugins/install-plugin/install-from-marketplace', () => ({
-  default: ({
-    uniqueIdentifier,
-    onClose,
-  }: {
-    uniqueIdentifier: string
-    onClose: () => void
-  }) => (
+  default: ({ uniqueIdentifier, onClose }: { uniqueIdentifier: string; onClose: () => void }) => (
     <div data-testid="install-from-marketplace-modal">
       <span>{uniqueIdentifier}</span>
-      <button type="button" onClick={onClose}>close-install-modal</button>
+      <button type="button" onClick={onClose}>
+        close-install-modal
+      </button>
     </div>
   ),
 }))

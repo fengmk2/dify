@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { DeploymentActionsMenu } from './index'
 
 type QueryOptions = {
@@ -87,47 +87,44 @@ describe('DeploymentActionsMenu', () => {
   it('prefetches the app instance when the menu opens', async () => {
     const user = userEvent.setup()
 
-    render(
-      <DeploymentActionsMenu
-        appInstanceId="app-instance-1"
-        placement="bottom-end"
-      />,
-    )
+    render(<DeploymentActionsMenu appInstanceId="app-instance-1" placement="bottom-end" />)
 
     expect(prefetchQueryMock).not.toHaveBeenCalled()
 
     await user.click(screen.getByRole('button', { name: 'deployments.card.moreActions' }))
     await screen.findByRole('menuitem', { name: 'deployments.card.menu.editInfo' })
 
-    expect(prefetchQueryMock).toHaveBeenCalledWith(expect.objectContaining({
-      input: {
-        params: {
-          appInstanceId: 'app-instance-1',
+    expect(prefetchQueryMock).toHaveBeenCalledWith(
+      expect.objectContaining({
+        input: {
+          params: {
+            appInstanceId: 'app-instance-1',
+          },
         },
-      },
-      queryKey: ['getAppInstance', {
-        params: {
-          appInstanceId: 'app-instance-1',
-        },
-      }],
-    }))
+        queryKey: [
+          'getAppInstance',
+          {
+            params: {
+              appInstanceId: 'app-instance-1',
+            },
+          },
+        ],
+      }),
+    )
   })
 
   it('opens edit and delete dialogs from menu items', async () => {
     const user = userEvent.setup()
 
-    render(
-      <DeploymentActionsMenu
-        appInstanceId="app-instance-1"
-        placement="bottom-end"
-      />,
-    )
+    render(<DeploymentActionsMenu appInstanceId="app-instance-1" placement="bottom-end" />)
 
     expect(screen.getByTestId('edit-dialog')).toHaveAttribute('data-open', 'false')
     expect(screen.getByTestId('delete-dialog')).toHaveAttribute('data-open', 'false')
 
     await user.click(screen.getByRole('button', { name: 'deployments.card.moreActions' }))
-    await user.click(await screen.findByRole('menuitem', { name: 'deployments.card.menu.editInfo' }))
+    await user.click(
+      await screen.findByRole('menuitem', { name: 'deployments.card.menu.editInfo' }),
+    )
 
     expect(screen.getByTestId('edit-dialog')).toHaveAttribute('data-open', 'true')
     expect(screen.getByTestId('delete-dialog')).toHaveAttribute('data-open', 'false')

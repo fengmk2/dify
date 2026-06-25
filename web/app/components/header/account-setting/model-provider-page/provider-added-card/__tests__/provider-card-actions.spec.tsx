@@ -41,8 +41,12 @@ vi.mock('@/app/components/plugins/plugin-detail-panel/detail-header/hooks', () =
 }))
 
 vi.mock('@/app/components/plugins/plugin-detail-panel/detail-header/components', () => ({
-  HeaderModals: ({ targetVersion, isDowngrade, isAutoUpgradeEnabled }: {
-    targetVersion?: { version: string, unique_identifier: string }
+  HeaderModals: ({
+    targetVersion,
+    isDowngrade,
+    isAutoUpgradeEnabled,
+  }: {
+    targetVersion?: { version: string; unique_identifier: string }
     isDowngrade: boolean
     isAutoUpgradeEnabled: boolean
   }) => (
@@ -56,17 +60,33 @@ vi.mock('@/app/components/plugins/plugin-detail-panel/detail-header/components',
 }))
 
 vi.mock('@/app/components/plugins/plugin-detail-panel/operation-dropdown', () => ({
-  default: ({ detailUrl, onInfo, onCheckVersion, onRemove, destructiveRemove }: {
+  default: ({
+    detailUrl,
+    onInfo,
+    onCheckVersion,
+    onRemove,
+    destructiveRemove,
+  }: {
     detailUrl: string
     onInfo: () => void
     onCheckVersion: () => void
     onRemove: () => void
     destructiveRemove?: boolean
   }) => (
-    <div data-testid="operation-dropdown" data-detail-url={detailUrl} data-destructive-remove={String(Boolean(destructiveRemove))}>
-      <button type="button" onClick={onInfo}>info</button>
-      <button type="button" onClick={onCheckVersion}>check version</button>
-      <button type="button" onClick={onRemove}>remove</button>
+    <div
+      data-testid="operation-dropdown"
+      data-detail-url={detailUrl}
+      data-destructive-remove={String(Boolean(destructiveRemove))}
+    >
+      <button type="button" onClick={onInfo}>
+        info
+      </button>
+      <button type="button" onClick={onCheckVersion}>
+        check version
+      </button>
+      <button type="button" onClick={onRemove}>
+        remove
+      </button>
     </div>
   ),
 }))
@@ -82,16 +102,22 @@ vi.mock('@/app/components/plugins/plugin-page/use-reference-setting', () => ({
 }))
 
 vi.mock('@/app/components/plugins/update-plugin/plugin-version-picker', () => ({
-  default: ({ trigger, onSelect, disabled }: {
+  default: ({
+    trigger,
+    onSelect,
+    disabled,
+  }: {
     trigger: ReactNode
-    onSelect: (state: { version: string, unique_identifier: string, isDowngrade?: boolean }) => void
+    onSelect: (state: { version: string; unique_identifier: string; isDowngrade?: boolean }) => void
     disabled?: boolean
   }) => (
     <div data-testid="plugin-version-picker" data-disabled={String(Boolean(disabled))}>
       {trigger}
       <button
         type="button"
-        onClick={() => onSelect({ version: '2.0.0', unique_identifier: 'plugin@2.0.0', isDowngrade: true })}
+        onClick={() =>
+          onSelect({ version: '2.0.0', unique_identifier: 'plugin@2.0.0', isDowngrade: true })
+        }
       >
         select version
       </button>
@@ -111,21 +137,22 @@ vi.mock('@/utils/var', () => ({
   getMarketplaceUrl: (...args: unknown[]) => mockGetMarketplaceUrl(...args),
 }))
 
-const createDetail = (overrides: Partial<PluginDetail> = {}): PluginDetail => ({
-  plugin_id: 'plugin-id',
-  plugin_unique_identifier: 'plugin-id@1.0.0',
-  name: 'provider-plugin',
-  source: PluginSource.marketplace,
-  version: '1.0.0',
-  latest_version: '2.0.0',
-  latest_unique_identifier: 'plugin-id@2.0.0',
-  declaration: {
-    author: 'langgenius',
+const createDetail = (overrides: Partial<PluginDetail> = {}): PluginDetail =>
+  ({
+    plugin_id: 'plugin-id',
+    plugin_unique_identifier: 'plugin-id@1.0.0',
     name: 'provider-plugin',
-  },
-  meta: undefined,
-  ...overrides,
-} as PluginDetail)
+    source: PluginSource.marketplace,
+    version: '1.0.0',
+    latest_version: '2.0.0',
+    latest_unique_identifier: 'plugin-id@2.0.0',
+    declaration: {
+      author: 'langgenius',
+      name: 'provider-plugin',
+    },
+    meta: undefined,
+    ...overrides,
+  }) as PluginDetail
 
 describe('ProviderCardActions', () => {
   beforeEach(() => {
@@ -147,7 +174,9 @@ describe('ProviderCardActions', () => {
       isFromMarketplace: true,
       isFromGitHub: false,
     }
-    mockGetMarketplaceUrl.mockReturnValue('https://marketplace.example.com/plugins/langgenius/provider-plugin')
+    mockGetMarketplaceUrl.mockReturnValue(
+      'https://marketplace.example.com/plugins/langgenius/provider-plugin',
+    )
   })
 
   it('should render version controls for marketplace plugins and handle manual version selection', () => {
@@ -194,7 +223,10 @@ describe('ProviderCardActions', () => {
   it('should request destructive remove styling for the operation dropdown', () => {
     render(<ProviderCardActions detail={createDetail()} />)
 
-    expect(screen.getByTestId('operation-dropdown')).toHaveAttribute('data-destructive-remove', 'true')
+    expect(screen.getByTestId('operation-dropdown')).toHaveAttribute(
+      'data-destructive-remove',
+      'true',
+    )
   })
 
   it('should relay operation dropdown actions', () => {
@@ -218,14 +250,15 @@ describe('ProviderCardActions', () => {
     }
 
     render(
-      <ProviderCardActions detail={createDetail({
-        source: PluginSource.github,
-        meta: {
-          repo: 'langgenius/provider-plugin',
-          version: '1.0.0',
-          package: 'provider-plugin.difypkg',
-        },
-      })}
+      <ProviderCardActions
+        detail={createDetail({
+          source: PluginSource.github,
+          meta: {
+            repo: 'langgenius/provider-plugin',
+            version: '1.0.0',
+            package: 'provider-plugin.difypkg',
+          },
+        })}
       />,
     )
 

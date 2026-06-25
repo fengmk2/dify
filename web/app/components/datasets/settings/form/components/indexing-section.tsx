@@ -1,5 +1,8 @@
 'use client'
-import type { DefaultModel, Model } from '@/app/components/header/account-setting/model-provider-page/declarations'
+import type {
+  DefaultModel,
+  Model,
+} from '@/app/components/header/account-setting/model-provider-page/declarations'
 import type { DataSet, SummaryIndexSetting as SummaryIndexSettingType } from '@/models/datasets'
 import type { RetrievalConfig } from '@/types/app'
 import { useTranslation } from 'react-i18next'
@@ -54,17 +57,22 @@ const IndexingSection = ({
   const { t } = useTranslation()
   const docLink = useDocLink()
 
-  const isShowIndexMethod = currentDataset
-    && currentDataset.doc_form !== ChunkingMode.parentChild
-    && currentDataset.indexing_technique
-    && indexMethod
+  const isShowIndexMethod =
+    currentDataset &&
+    currentDataset.doc_form !== ChunkingMode.parentChild &&
+    currentDataset.indexing_technique &&
+    indexMethod
 
-  const showUpgradeWarning = currentDataset?.indexing_technique === IndexingType.ECONOMICAL
-    && indexMethod === IndexingType.QUALIFIED
+  const showUpgradeWarning =
+    currentDataset?.indexing_technique === IndexingType.ECONOMICAL &&
+    indexMethod === IndexingType.QUALIFIED
 
-  const showSummaryIndexSetting = indexMethod === IndexingType.QUALIFIED
-    && [ChunkingMode.text, ChunkingMode.parentChild].includes(currentDataset?.doc_form as ChunkingMode)
-    && IS_CE_EDITION
+  const showSummaryIndexSetting =
+    indexMethod === IndexingType.QUALIFIED &&
+    [ChunkingMode.text, ChunkingMode.parentChild].includes(
+      currentDataset?.doc_form as ChunkingMode,
+    ) &&
+    IS_CE_EDITION
 
   return (
     <>
@@ -104,7 +112,9 @@ const IndexingSection = ({
       {!!isShowIndexMethod && (
         <div className={rowClass}>
           <div className={labelClass}>
-            <div className="system-sm-semibold text-text-secondary">{t('form.indexMethod', { ns: 'datasetSettings' })}</div>
+            <div className="system-sm-semibold text-text-secondary">
+              {t('form.indexMethod', { ns: 'datasetSettings' })}
+            </div>
           </div>
           <div className="grow">
             <IndexMethod
@@ -186,22 +196,20 @@ const IndexingSection = ({
               </div>
             </div>
             <div className="grow">
-              {indexMethod === IndexingType.QUALIFIED
-                ? (
-                    <RetrievalMethodConfig
-                      value={retrievalConfig}
-                      onChange={setRetrievalConfig}
-                      showMultiModalTip={showMultiModalTip}
-                      disabled={readonly}
-                    />
-                  )
-                : (
-                    <EconomicalRetrievalMethodConfig
-                      value={retrievalConfig}
-                      onChange={setRetrievalConfig}
-                      disabled={readonly}
-                    />
-                  )}
+              {indexMethod === IndexingType.QUALIFIED ? (
+                <RetrievalMethodConfig
+                  value={retrievalConfig}
+                  onChange={setRetrievalConfig}
+                  showMultiModalTip={showMultiModalTip}
+                  disabled={readonly}
+                />
+              ) : (
+                <EconomicalRetrievalMethodConfig
+                  value={retrievalConfig}
+                  onChange={setRetrievalConfig}
+                  disabled={readonly}
+                />
+              )}
             </div>
           </div>
         </>

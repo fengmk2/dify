@@ -1,13 +1,15 @@
 import { render, screen } from '@testing-library/react'
 import * as React from 'react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 
 vi.mock('../title', () => ({
   default: ({ title }: { title: string }) => <span data-testid="title">{title}</span>,
 }))
 
 vi.mock('../../../../base/icons/src/vender/other', () => ({
-  Group: ({ className }: { className: string }) => <span data-testid="group-icon" className={className} />,
+  Group: ({ className }: { className: string }) => (
+    <span data-testid="group-icon" className={className} />
+  ),
 }))
 
 vi.mock('@langgenius/dify-ui/cn', () => ({

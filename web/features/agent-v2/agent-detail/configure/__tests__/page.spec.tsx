@@ -38,12 +38,9 @@ vi.mock('@tanstack/react-query', async (importOriginal) => {
     useQuery: vi.fn((options: { queryKey?: readonly string[] }) => {
       const queryKey = options.queryKey?.[0]
 
-      if (queryKey === 'agent')
-        return mocks.queryState.agent
-      if (queryKey === 'composer')
-        return mocks.queryState.composer
-      if (queryKey === 'version')
-        return mocks.queryState.version
+      if (queryKey === 'agent') return mocks.queryState.agent
+      if (queryKey === 'composer') return mocks.queryState.composer
+      if (queryKey === 'version') return mocks.queryState.version
 
       return {
         data: undefined,
@@ -112,7 +109,9 @@ vi.mock('../components/preview/header', () => ({
 
 vi.mock('../components/preview/versions-panel', () => ({
   AgentPreviewVersionsPanel: (props: { onSelectVersion: (versionId: string) => void }) => (
-    <button type="button" onClick={() => props.onSelectVersion('snapshot-2')}>select version</button>
+    <button type="button" onClick={() => props.onSelectVersion('snapshot-2')}>
+      select version
+    </button>
   ),
 }))
 

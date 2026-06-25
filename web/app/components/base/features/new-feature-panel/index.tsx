@@ -69,8 +69,12 @@ const NewFeaturePanel = ({
         {/* header */}
         <div className="flex shrink-0 justify-between p-4 pb-3">
           <div>
-            <div className="system-xl-semibold text-text-primary">{title ?? t('common.features', { ns: 'workflow' })}</div>
-            <div className="body-xs-regular text-text-tertiary">{description ?? t('common.featuresDescription', { ns: 'workflow' })}</div>
+            <div className="system-xl-semibold text-text-primary">
+              {title ?? t('common.features', { ns: 'workflow' })}
+            </div>
+            <div className="body-xs-regular text-text-tertiary">
+              {description ?? t('common.featuresDescription', { ns: 'workflow' })}
+            </div>
           </div>
           <DrawerCloseButton
             aria-label={t('operation.close', { ns: 'common' })}
@@ -79,9 +83,7 @@ const NewFeaturePanel = ({
         </div>
         {/* list */}
         <div className="grow basis-0 overflow-y-auto px-4 pb-4">
-          {!isChatMode && !inWorkflow && (
-            <MoreLikeThis disabled={disabled} onChange={onChange} />
-          )}
+          {!isChatMode && !inWorkflow && <MoreLikeThis disabled={disabled} onChange={onChange} />}
           {isChatMode && (
             <ConversationOpener
               disabled={disabled}
@@ -91,9 +93,7 @@ const NewFeaturePanel = ({
               onAutoAddPromptVariable={onAutoAddPromptVariable}
             />
           )}
-          {isChatMode && (
-            <FollowUp disabled={disabled} onChange={onChange} />
-          )}
+          {isChatMode && <FollowUp disabled={disabled} onChange={onChange} />}
           {text2speechDefaultModel && (isChatMode || !inWorkflow) && (
             <TextToSpeech disabled={disabled} onChange={onChange} />
           )}
@@ -102,10 +102,10 @@ const NewFeaturePanel = ({
           )}
           {showFileUpload && isChatMode && <FileUpload disabled={disabled} onChange={onChange} />}
           {showFileUpload && !isChatMode && <ImageUpload disabled={disabled} onChange={onChange} />}
-          {isChatMode && (
-            <Citation disabled={disabled} onChange={onChange} />
+          {isChatMode && <Citation disabled={disabled} onChange={onChange} />}
+          {showModeration && (isChatMode || !inWorkflow) && (
+            <Moderation disabled={disabled} onChange={onChange} />
           )}
-          {showModeration && (isChatMode || !inWorkflow) && <Moderation disabled={disabled} onChange={onChange} />}
           {showAnnotationReply && !inWorkflow && isChatMode && (
             <AnnotationReply disabled={disabled} onChange={onChange} />
           )}

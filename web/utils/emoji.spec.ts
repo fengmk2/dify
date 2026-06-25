@@ -1,4 +1,4 @@
-import type { Mock } from 'vitest'
+import type { Mock } from 'vite-plus/test'
 import { SearchIndex } from 'emoji-mart'
 import { searchEmoji } from './emoji'
 
@@ -51,11 +51,7 @@ describe('Emoji Utilities', () => {
     it('should extract native from first skin', async () => {
       const mockEmojis = [
         {
-          skins: [
-            { native: '👍' },
-            { native: '👍🏻' },
-            { native: '👍🏼' },
-          ],
+          skins: [{ native: '👍' }, { native: '👍🏻' }, { native: '👍🏼' }],
         },
       ]
       ;(SearchIndex.search as Mock).mockResolvedValue(mockEmojis)
@@ -65,10 +61,7 @@ describe('Emoji Utilities', () => {
     })
 
     it('should handle multiple search terms', async () => {
-      const mockEmojis = [
-        { skins: [{ native: '❤️' }] },
-        { skins: [{ native: '💙' }] },
-      ]
+      const mockEmojis = [{ skins: [{ native: '❤️' }] }, { skins: [{ native: '💙' }] }]
       ;(SearchIndex.search as Mock).mockResolvedValue(mockEmojis)
 
       const result = await searchEmoji('heart love')

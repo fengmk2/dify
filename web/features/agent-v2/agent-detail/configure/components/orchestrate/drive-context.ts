@@ -58,8 +58,7 @@ const toAgentFileNodeFromDriveItem = (item: {
 
 export const useAgentDriveApiContext = () => {
   const context = use(AgentDriveApiContext)
-  if (!context)
-    throw new Error('AgentDriveApiContextProvider is required for drive-backed UI.')
+  if (!context) throw new Error('AgentDriveApiContextProvider is required for drive-backed UI.')
 
   return context
 }
@@ -134,7 +133,10 @@ export const useAgentDriveFiles = ({
   })
   const query = apiContext.workflow ? workflowFilesQuery : agentFilesQuery
   const files = useMemo(
-    () => (query.data?.items ?? []).map((item: AgentDriveItemResponse) => toAgentFileNodeFromDriveItem(item)),
+    () =>
+      (query.data?.items ?? []).map((item: AgentDriveItemResponse) =>
+        toAgentFileNodeFromDriveItem(item),
+      ),
     [query.data?.items],
   )
 

@@ -9,11 +9,15 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
   ### Base URL
   <CodeGroup title="Code" targetCode={props.appDetail.api_base_url} />
 
-  ### Authentication
+### Authentication
 
-  Service API 使用 `API-Key` 进行鉴权。
-  <i>**强烈建议开发者把 `API-Key` 放在后端存储，而非分享或者放在客户端存储，以免 `API-Key` 泄露，导致财产损失。**</i>
-  所有 API 请求都应在 **`Authorization`** HTTP Header 中包含您的 `API-Key`，如下所示：
+Service API 使用 `API-Key` 进行鉴权。
+
+<i>
+  **强烈建议开发者把 `API-Key` 放在后端存储，而非分享或者放在客户端存储，以免 `API-Key`
+  泄露，导致财产损失。**
+</i>
+所有 API 请求都应在 **`Authorization`** HTTP Header 中包含您的 `API-Key`，如下所示：
 
   <CodeGroup title="Code" targetCode='Authorization: Bearer {API_KEY}' />
 </div>
@@ -622,6 +626,7 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
           print("文件上传失败，无法执行工作流")
       ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -658,7 +663,7 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
             - `local_file`: 上传文件。
           - `url` 文件地址。（仅当传递方式为 `remote_url` 时）。
           - `upload_file_id` 上传文件 ID。（仅当传递方式为 `local_file `时）。
-          
+
       - `response_mode` (string) Required
         返回响应模式，支持：
         - `streaming` 流式模式（推荐）。基于 SSE（**[Server-Sent Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events)**）实现类似打字机输出方式的流式返回。
@@ -936,6 +941,7 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -978,6 +984,7 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1009,6 +1016,7 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
     - 404，表单不存在或不属于当前应用
     - 412，`human_input_form_submitted`，表单已被提交
     - 412，`human_input_form_expired`，表单已过期
+
   </Col>
   <Col sticky>
     <CodeGroup
@@ -1042,6 +1050,7 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1073,6 +1082,7 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
     - 404，表单不存在或不属于当前应用
     - 412，`human_input_form_submitted`，表单已被提交
     - 412，`human_input_form_expired`，表单已过期
+
   </Col>
   <Col sticky>
     <CodeGroup
@@ -1094,6 +1104,7 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
     {}
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1123,6 +1134,7 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
     Server-Sent Events 流（`text/event-stream`）。
     常见事件包括 `workflow_paused`、`node_started`、`node_finished`、`human_input_form_filled`、`human_input_form_timeout`、`workflow_finished`。
     如果调用该接口时工作流已经结束，服务端会立即返回单个完成事件。
+
   </Col>
   <Col sticky>
     <CodeGroup
@@ -1170,6 +1182,7 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
     data: {"event":"workflow_finished","workflow_run_id":"5d7ef348-e1c1-4f6d-bb9b-62cc2fb2ef3c","task_id":"1784c3dd-20eb-4919-bd5d-a8d800b74ada","data":{"id":"5d7ef348-e1c1-4f6d-bb9b-62cc2fb2ef3c","workflow_id":"e46514f1-c008-41ff-94b0-4f33d4b97d36","status":"succeeded","outputs":{"output":"field 1 filled!"},"error":null,"elapsed_time":0.364935,"total_tokens":0,"total_steps":5,"created_by":{"id":"7932d34c-dcf4-4fba-b770-f2a9de88c0a0","user":"abc-123"},"created_at":1776087877,"finished_at":1776087877,"exceptions_count":0,"files":[]}}
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1218,6 +1231,7 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
     - 503，`s3_connection_failed`，无法连接到 S3 服务
     - 503，`s3_permission_denied`，无权限上传文件到 S3
     - 503，`s3_file_too_large`，文件超出 S3 大小限制
+
   </Col>
   <Col sticky>
 
@@ -1226,10 +1240,11 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
       tag="POST"
       label="/files/upload"
       targetCode={`curl -X POST '${props.appDetail.api_base_url}/files/upload' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --form 'file=@localfile;type=image/[png|jpeg|jpg|webp|gif]' \\
 --form 'user=abc-123'`}
-    />
+/>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -1244,6 +1259,7 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -1307,6 +1323,7 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -1345,44 +1362,26 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
     </Properties>
 
     ### Response
-  - `page` (int) 当前页码
-  - `limit` (int) 每页条数
-  - `total` (int) 总条数
-  - `has_more` (bool) 是否还有更多数据
-  - `data` (array[object]) 当前页码的数据
-    - `id` (string) 标识
-    - `workflow_run` (object) Workflow 执行日志
-      - `id` (string) 标识
-      - `version` (string) 版本
-      - `status` (string) 执行状态，`running` / `succeeded` / `failed` / `stopped`
-      - `error` (string) (可选) 错误
-      - `elapsed_time` (float) 耗时，单位秒
-      - `total_tokens` (int) 消耗的 token 数量
-      - `total_steps` (int) 执行步骤长度
-      - `created_at` (timestamp) 开始时间
-      - `finished_at` (timestamp) 结束时间
-    - `created_from` (string) 来源
-    - `created_by_role` (string) 角色
-    - `created_by_account` (string) (可选) 帐号
-    - `created_by_end_user` (object) 用户
-      - `id` (string) 标识
-      - `type` (string) 类型
-      - `is_anonymous` (bool) 是否匿名
-      - `session_id` (string) 会话标识
-    - `created_at` (timestamp) 创建时间
-  </Col>
+
+- `page` (int) 当前页码
+- `limit` (int) 每页条数
+- `total` (int) 总条数
+- `has_more` (bool) 是否还有更多数据
+- `data` (array[object]) 当前页码的数据 - `id` (string) 标识 - `workflow_run` (object) Workflow 执行日志 - `id` (string) 标识 - `version` (string) 版本 - `status` (string) 执行状态，`running` / `succeeded` / `failed` / `stopped` - `error` (string) (可选) 错误 - `elapsed_time` (float) 耗时，单位秒 - `total_tokens` (int) 消耗的 token 数量 - `total_steps` (int) 执行步骤长度 - `created_at` (timestamp) 开始时间 - `finished_at` (timestamp) 结束时间 - `created_from` (string) 来源 - `created_by_role` (string) 角色 - `created_by_account` (string) (可选) 帐号 - `created_by_end_user` (object) 用户 - `id` (string) 标识 - `type` (string) 类型 - `is_anonymous` (bool) 是否匿名 - `session_id` (string) 会话标识 - `created_at` (timestamp) 创建时间
+
+    </Col>
   <Col sticky>
 
-    <CodeGroup
-      title="Request"
-      tag="GET"
-      label="/workflows/logs"
-      targetCode={`curl -X GET '${props.appDetail.api_base_url}/workflows/logs'\\
---header 'Authorization: Bearer {api_key}'`}
-    />
-    ### Response Example
-    <CodeGroup title="Response">
-    ```json {{ title: 'Response' }}
+      <CodeGroup
+        title="Request"
+        tag="GET"
+        label="/workflows/logs"
+        targetCode={`curl -X GET '${props.appDetail.api_base_url}/workflows/logs'\\
+
+  --header 'Authorization: Bearer {api_key}'`}
+  /> ### Response Example
+  <CodeGroup title="Response">
+  `json {{ title: 'Response' }}
     {
         "page": 1,
         "limit": 1,
@@ -1415,10 +1414,12 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
             }
         ]
     }
-    ```
-    </CodeGroup>
-  </Col>
+    `
+  </CodeGroup>
+
+    </Col>
 </Row>
+
 ---
 
 <Heading
@@ -1566,6 +1567,7 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1619,6 +1621,7 @@ Workflow 应用无会话支持，适合用于翻译/文章写作/总结 AI 等�
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ___

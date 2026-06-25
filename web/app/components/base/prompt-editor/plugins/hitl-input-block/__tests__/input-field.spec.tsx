@@ -1,4 +1,7 @@
-import type { FormInputItem, ParagraphFormInput } from '@/app/components/workflow/nodes/human-input/types'
+import type {
+  FormInputItem,
+  ParagraphFormInput,
+} from '@/app/components/workflow/nodes/human-input/types'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { InputVarType, SupportUploadFileTypes, VarType } from '@/app/components/workflow/types'
@@ -55,20 +58,26 @@ vi.mock('@/app/components/app/configuration/config-var/config-select', () => ({
 
 vi.mock('@/app/components/workflow/nodes/_base/components/file-upload-setting', () => ({
   __esModule: true,
-  default: ({ onChange }: { onChange: (payload: {
-    allowed_file_extensions: string[]
-    allowed_file_types: SupportUploadFileTypes[]
-    allowed_file_upload_methods: TransferMethod[]
-    max_length?: number
-  }) => void }) => (
+  default: ({
+    onChange,
+  }: {
+    onChange: (payload: {
+      allowed_file_extensions: string[]
+      allowed_file_types: SupportUploadFileTypes[]
+      allowed_file_upload_methods: TransferMethod[]
+      max_length?: number
+    }) => void
+  }) => (
     <button
       type="button"
-      onClick={() => onChange({
-        allowed_file_extensions: ['.pdf'],
-        allowed_file_types: [SupportUploadFileTypes.document],
-        allowed_file_upload_methods: [TransferMethod.local_file],
-        max_length: fileUploadSettingMaxLength,
-      })}
+      onClick={() =>
+        onChange({
+          allowed_file_extensions: ['.pdf'],
+          allowed_file_types: [SupportUploadFileTypes.document],
+          allowed_file_upload_methods: [TransferMethod.local_file],
+          max_length: fileUploadSettingMaxLength,
+        })
+      }
     >
       file-upload-setting
     </button>
@@ -134,7 +143,9 @@ describe('InputField', () => {
     await user.clear(inputs[0]!)
     await user.type(inputs[0]!, 'invalid name')
 
-    expect(screen.getByText('workflow.nodes.humanInput.insertInputField.variableNameInvalid'))!.toBeInTheDocument()
+    expect(
+      screen.getByText('workflow.nodes.humanInput.insertInputField.variableNameInvalid'),
+    )!.toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'common.operation.save' }))!.toBeDisabled()
     await user.click(screen.getByRole('button', { name: 'common.operation.save' }))
     await user.keyboard('{Control>}{Enter}{/Control}')
@@ -160,8 +171,14 @@ describe('InputField', () => {
     await user.clear(inputs[0]!)
     await user.type(inputs[0]!, 'existing_name')
 
-    expect(screen.getByText('workflow.nodes.humanInput.insertInputField.variableNameDuplicated')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i })).toBeDisabled()
+    expect(
+      screen.getByText('workflow.nodes.humanInput.insertInputField.variableNameDuplicated'),
+    ).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', {
+        name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i,
+      }),
+    ).toBeDisabled()
     await user.keyboard('{Control>}{Enter}{/Control}')
     expect(onChange).not.toHaveBeenCalled()
   })
@@ -220,7 +237,11 @@ describe('InputField', () => {
 
     const nameInput = screen.getAllByRole('textbox')[0]
     await user.type(nameInput!, 'generated_name')
-    await user.click(screen.getByRole('button', { name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i }))
+    await user.click(
+      screen.getByRole('button', {
+        name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i,
+      }),
+    )
 
     expect(onChange).toHaveBeenCalledTimes(1)
     expect(onChange.mock.calls[0]![0]).toEqual({
@@ -287,8 +308,14 @@ describe('InputField', () => {
       />,
     )
 
-    await user.click(screen.getByText(/workflow\.nodes\.humanInput\.insertInputField\.useVarInstead/i))
-    await user.click(screen.getByRole('button', { name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i }))
+    await user.click(
+      screen.getByText(/workflow\.nodes\.humanInput\.insertInputField\.useVarInstead/i),
+    )
+    await user.click(
+      screen.getByRole('button', {
+        name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i,
+      }),
+    )
 
     expect(onChange).toHaveBeenCalledTimes(1)
     expect(onChange.mock.calls[0]![0].default.type).toBe('variable')
@@ -314,8 +341,14 @@ describe('InputField', () => {
       />,
     )
 
-    await user.click(screen.getByText(/workflow\.nodes\.humanInput\.insertInputField\.useConstantInstead/i))
-    await user.click(screen.getByRole('button', { name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i }))
+    await user.click(
+      screen.getByText(/workflow\.nodes\.humanInput\.insertInputField\.useConstantInstead/i),
+    )
+    await user.click(
+      screen.getByRole('button', {
+        name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i,
+      }),
+    )
 
     expect(onChange).toHaveBeenCalledTimes(1)
     expect(onChange.mock.calls[0]![0].default.type).toBe('constant')
@@ -342,7 +375,11 @@ describe('InputField', () => {
     )
 
     await user.click(screen.getByText('pick-variable'))
-    await user.click(screen.getByRole('button', { name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i }))
+    await user.click(
+      screen.getByRole('button', {
+        name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i,
+      }),
+    )
 
     expect(onChange).toHaveBeenCalledTimes(1)
     expect(onChange.mock.calls[0]![0].default).toEqual({
@@ -371,8 +408,14 @@ describe('InputField', () => {
     )
 
     await user.keyboard('{Tab}')
-    await user.click(screen.getByText(/workflow\.nodes\.humanInput\.insertInputField\.useVarInstead/i))
-    await user.click(screen.getByRole('button', { name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i }))
+    await user.click(
+      screen.getByText(/workflow\.nodes\.humanInput\.insertInputField\.useVarInstead/i),
+    )
+    await user.click(
+      screen.getByRole('button', {
+        name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i,
+      }),
+    )
 
     expect(onChange).toHaveBeenCalledTimes(1)
     expect(onChange.mock.calls[0]![0].default).toEqual({
@@ -397,7 +440,11 @@ describe('InputField', () => {
     )
 
     await user.click(screen.getByRole('button', { name: 'select-select' }))
-    await user.click(screen.getByRole('button', { name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i }))
+    await user.click(
+      screen.getByRole('button', {
+        name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i,
+      }),
+    )
 
     expect(onChange).toHaveBeenCalledTimes(1)
     expect(onChange.mock.calls[0]![0]).toEqual({
@@ -409,7 +456,9 @@ describe('InputField', () => {
         value: [],
       },
     })
-    expect(screen.queryByText(/workflow\.nodes\.humanInput\.insertInputField\.prePopulateField/i)).not.toBeInTheDocument()
+    expect(
+      screen.queryByText(/workflow\.nodes\.humanInput\.insertInputField\.prePopulateField/i),
+    ).not.toBeInTheDocument()
   })
 
   it('should keep paragraph pre-populate editor available after switching back to paragraph', async () => {
@@ -425,13 +474,19 @@ describe('InputField', () => {
       />,
     )
 
-    expect(screen.getByText(/workflow\.nodes\.humanInput\.insertInputField\.prePopulateField/i)).toBeInTheDocument()
+    expect(
+      screen.getByText(/workflow\.nodes\.humanInput\.insertInputField\.prePopulateField/i),
+    ).toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: 'select-file' }))
-    expect(screen.queryByText(/workflow\.nodes\.humanInput\.insertInputField\.prePopulateField/i)).not.toBeInTheDocument()
+    expect(
+      screen.queryByText(/workflow\.nodes\.humanInput\.insertInputField\.prePopulateField/i),
+    ).not.toBeInTheDocument()
 
     await user.click(screen.getByRole('button', { name: 'select-paragraph' }))
-    expect(screen.getByText(/workflow\.nodes\.humanInput\.insertInputField\.prePopulateField/i)).toBeInTheDocument()
+    expect(
+      screen.getByText(/workflow\.nodes\.humanInput\.insertInputField\.prePopulateField/i),
+    ).toBeInTheDocument()
   })
 
   it('should save constant select options', async () => {
@@ -450,7 +505,11 @@ describe('InputField', () => {
 
     await user.click(screen.getByRole('button', { name: 'select-select' }))
     await user.click(screen.getByRole('button', { name: 'config-select' }))
-    await user.click(screen.getByRole('button', { name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i }))
+    await user.click(
+      screen.getByRole('button', {
+        name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i,
+      }),
+    )
 
     expect(onChange).toHaveBeenCalledTimes(1)
     expect(onChange.mock.calls[0]![0]).toEqual({
@@ -480,10 +539,18 @@ describe('InputField', () => {
 
     await user.click(screen.getByRole('button', { name: 'select-select' }))
     await user.click(screen.getByRole('button', { name: 'config-select' }))
-    await user.click(screen.getByText(/workflow\.nodes\.humanInput\.insertInputField\.useVarInstead/i))
+    await user.click(
+      screen.getByText(/workflow\.nodes\.humanInput\.insertInputField\.useVarInstead/i),
+    )
     await user.click(screen.getByText('pick-variable'))
-    await user.click(screen.getByText(/workflow\.nodes\.humanInput\.insertInputField\.useConstantInstead/i))
-    await user.click(screen.getByRole('button', { name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i }))
+    await user.click(
+      screen.getByText(/workflow\.nodes\.humanInput\.insertInputField\.useConstantInstead/i),
+    )
+    await user.click(
+      screen.getByRole('button', {
+        name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i,
+      }),
+    )
 
     expect(onChange).toHaveBeenCalledTimes(1)
     expect(onChange.mock.calls[0]![0]).toEqual({
@@ -511,7 +578,9 @@ describe('InputField', () => {
     )
 
     await user.click(screen.getByRole('button', { name: 'select-select' }))
-    await user.click(screen.getByText(/workflow\.nodes\.humanInput\.insertInputField\.useVarInstead/i))
+    await user.click(
+      screen.getByText(/workflow\.nodes\.humanInput\.insertInputField\.useVarInstead/i),
+    )
 
     expect(lastVarReferencePickerProps?.filterVar?.({ type: VarType.arrayString })).toBe(true)
     expect(lastVarReferencePickerProps?.filterVar?.({ type: VarType.string })).toBe(false)
@@ -539,7 +608,11 @@ describe('InputField', () => {
     )
 
     await user.click(screen.getByRole('button', { name: 'select-select' }))
-    await user.click(screen.getByRole('button', { name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i }))
+    await user.click(
+      screen.getByRole('button', {
+        name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i,
+      }),
+    )
 
     expect(onChange).toHaveBeenCalledTimes(1)
     expect(onChange.mock.calls[0]![0]).not.toHaveProperty('default')
@@ -561,7 +634,11 @@ describe('InputField', () => {
 
     await user.click(screen.getByRole('button', { name: 'select-file' }))
     await user.click(screen.getByRole('button', { name: 'file-upload-setting' }))
-    await user.click(screen.getByRole('button', { name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i }))
+    await user.click(
+      screen.getByRole('button', {
+        name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i,
+      }),
+    )
 
     expect(onChange).toHaveBeenCalledTimes(1)
     expect(onChange.mock.calls[0]![0]).toEqual({
@@ -594,7 +671,11 @@ describe('InputField', () => {
     )
 
     await user.click(screen.getByRole('button', { name: 'select-file' }))
-    await user.click(screen.getByRole('button', { name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i }))
+    await user.click(
+      screen.getByRole('button', {
+        name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i,
+      }),
+    )
 
     expect(onChange).toHaveBeenCalledTimes(1)
     expect(onChange.mock.calls[0]![0]).not.toHaveProperty('default')
@@ -616,7 +697,11 @@ describe('InputField', () => {
 
     await user.click(screen.getByRole('button', { name: 'select-file-list' }))
     await user.click(screen.getByRole('button', { name: 'file-upload-setting' }))
-    await user.click(screen.getByRole('button', { name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i }))
+    await user.click(
+      screen.getByRole('button', {
+        name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i,
+      }),
+    )
 
     expect(onChange).toHaveBeenCalledTimes(1)
     expect(onChange.mock.calls[0]![0]).toEqual({
@@ -646,13 +731,19 @@ describe('InputField', () => {
 
     await user.click(screen.getByRole('button', { name: 'select-file-list' }))
     await user.click(screen.getByRole('button', { name: 'file-upload-setting' }))
-    await user.click(screen.getByRole('button', { name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i }))
+    await user.click(
+      screen.getByRole('button', {
+        name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i,
+      }),
+    )
 
     expect(onChange).toHaveBeenCalledTimes(1)
-    expect(onChange.mock.calls[0]![0]).toEqual(expect.objectContaining({
-      type: InputVarType.multiFiles,
-      number_limits: 1,
-    }))
+    expect(onChange.mock.calls[0]![0]).toEqual(
+      expect.objectContaining({
+        type: InputVarType.multiFiles,
+        number_limits: 1,
+      }),
+    )
   })
 
   it('should clear paragraph default state when switching to file-list', async () => {
@@ -676,7 +767,11 @@ describe('InputField', () => {
     )
 
     await user.click(screen.getByRole('button', { name: 'select-file-list' }))
-    await user.click(screen.getByRole('button', { name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i }))
+    await user.click(
+      screen.getByRole('button', {
+        name: /workflow\.nodes\.humanInput\.insertInputField\.insert/i,
+      }),
+    )
 
     expect(onChange).toHaveBeenCalledTimes(1)
     expect(onChange.mock.calls[0]![0]).not.toHaveProperty('default')

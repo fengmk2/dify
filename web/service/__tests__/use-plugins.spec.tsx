@@ -2,9 +2,17 @@ import type { ReactNode } from 'react'
 import type { Permissions, PluginTaskStart } from '@/app/components/plugins/types'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { act, renderHook, waitFor } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
-import { AUTO_UPDATE_MODE, AUTO_UPDATE_STRATEGY } from '@/app/components/plugins/reference-setting-modal/auto-update-setting/types'
-import { PermissionType, PluginCategoryEnum, PluginSource, TaskStatus } from '@/app/components/plugins/types'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
+import {
+  AUTO_UPDATE_MODE,
+  AUTO_UPDATE_STRATEGY,
+} from '@/app/components/plugins/reference-setting-modal/auto-update-setting/types'
+import {
+  PermissionType,
+  PluginCategoryEnum,
+  PluginSource,
+  TaskStatus,
+} from '@/app/components/plugins/types'
 import {
   useInstalledPluginList,
   useMutationPluginAutoUpgradeSettings,
@@ -13,10 +21,7 @@ import {
   usePluginTaskList,
 } from '../use-plugins'
 
-const {
-  mockGet,
-  mockPost,
-} = vi.hoisted(() => ({
+const { mockGet, mockPost } = vi.hoisted(() => ({
   mockGet: vi.fn(),
   mockPost: vi.fn(),
 }))
@@ -46,24 +51,21 @@ vi.mock('../use-tools', () => ({
   useInvalidateAllBuiltInTools: () => vi.fn(),
 }))
 
-const createQueryClient = () => new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
+const createQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: {
+        retry: false,
+      },
+      mutations: {
+        retry: false,
+      },
     },
-    mutations: {
-      retry: false,
-    },
-  },
-})
+  })
 
 const createWrapper = (queryClient: QueryClient) => {
   return function Wrapper({ children }: { children: ReactNode }) {
-    return (
-      <QueryClientProvider client={queryClient}>
-        {children}
-      </QueryClientProvider>
-    )
+    return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   }
 }
 
@@ -87,9 +89,11 @@ describe('use-plugins mutations', () => {
       upgrade_time_of_day: 3600,
     }
     let resolvePost: (value: unknown) => void = () => {}
-    mockPost.mockReturnValue(new Promise((resolve) => {
-      resolvePost = resolve
-    }))
+    mockPost.mockReturnValue(
+      new Promise((resolve) => {
+        resolvePost = resolve
+      }),
+    )
     queryClient.setQueryData(queryKey, {
       category: PluginCategoryEnum.model,
       auto_upgrade: previousAutoUpgrade,
@@ -134,15 +138,16 @@ describe('use-plugins mutations', () => {
       debug_permission: PermissionType.admin,
     }
     let resolvePost: (value: unknown) => void = () => {}
-    mockPost.mockReturnValue(new Promise((resolve) => {
-      resolvePost = resolve
-    }))
+    mockPost.mockReturnValue(
+      new Promise((resolve) => {
+        resolvePost = resolve
+      }),
+    )
     queryClient.setQueryData(queryKey, previousPermission)
 
-    const { result } = renderHook(
-      () => useMutationPluginPermissionSettings(),
-      { wrapper: createWrapper(queryClient) },
-    )
+    const { result } = renderHook(() => useMutationPluginPermissionSettings(), {
+      wrapper: createWrapper(queryClient),
+    })
 
     act(() => {
       result.current.mutate(nextPermission)
@@ -175,9 +180,11 @@ describe('use-plugins mutations', () => {
       upgrade_time_of_day: 3600,
     }
     let rejectPost: (reason?: unknown) => void = () => {}
-    mockPost.mockReturnValue(new Promise((_resolve, reject) => {
-      rejectPost = reject
-    }))
+    mockPost.mockReturnValue(
+      new Promise((_resolve, reject) => {
+        rejectPost = reject
+      }),
+    )
     queryClient.setQueryData(queryKey, {
       category: PluginCategoryEnum.model,
       auto_upgrade: previousAutoUpgrade,
@@ -219,9 +226,11 @@ describe('use-plugins mutations', () => {
       include_plugins: [],
     }
     let rejectPost: (reason?: unknown) => void = () => {}
-    mockPost.mockReturnValue(new Promise((_resolve, reject) => {
-      rejectPost = reject
-    }))
+    mockPost.mockReturnValue(
+      new Promise((_resolve, reject) => {
+        rejectPost = reject
+      }),
+    )
 
     const { result } = renderHook(
       () => useMutationPluginAutoUpgradeSettings({ category: PluginCategoryEnum.model }),
@@ -257,15 +266,16 @@ describe('use-plugins mutations', () => {
       debug_permission: PermissionType.admin,
     }
     let rejectPost: (reason?: unknown) => void = () => {}
-    mockPost.mockReturnValue(new Promise((_resolve, reject) => {
-      rejectPost = reject
-    }))
+    mockPost.mockReturnValue(
+      new Promise((_resolve, reject) => {
+        rejectPost = reject
+      }),
+    )
     queryClient.setQueryData(queryKey, previousPermission)
 
-    const { result } = renderHook(
-      () => useMutationPluginPermissionSettings(),
-      { wrapper: createWrapper(queryClient) },
-    )
+    const { result } = renderHook(() => useMutationPluginPermissionSettings(), {
+      wrapper: createWrapper(queryClient),
+    })
 
     const mutation = result.current.mutateAsync(nextPermission).catch(() => undefined)
 
@@ -291,10 +301,7 @@ describe('useInstalledPluginList', () => {
     const queryClient = createQueryClient()
     mockGet.mockResolvedValue({ plugins: [], total: 0 })
 
-    renderHook(
-      () => useInstalledPluginList(false, 100),
-      { wrapper: createWrapper(queryClient) },
-    )
+    renderHook(() => useInstalledPluginList(false, 100), { wrapper: createWrapper(queryClient) })
 
     await waitFor(() => {
       expect(mockGet).toHaveBeenCalledWith('/workspaces/current/plugin/list?page=1&page_size=100')
@@ -305,13 +312,14 @@ describe('useInstalledPluginList', () => {
     const queryClient = createQueryClient()
     mockGet.mockResolvedValue({ plugins: [], has_more: false })
 
-    renderHook(
-      () => useInstalledPluginList(false, 100, { category: PluginCategoryEnum.trigger }),
-      { wrapper: createWrapper(queryClient) },
-    )
+    renderHook(() => useInstalledPluginList(false, 100, { category: PluginCategoryEnum.trigger }), {
+      wrapper: createWrapper(queryClient),
+    })
 
     await waitFor(() => {
-      expect(mockGet).toHaveBeenCalledWith('/workspaces/current/plugin/trigger/list?page=1&page_size=100')
+      expect(mockGet).toHaveBeenCalledWith(
+        '/workspaces/current/plugin/trigger/list?page=1&page_size=100',
+      )
     })
   })
 
@@ -348,15 +356,11 @@ describe('useInstalledPluginList', () => {
     const queryClient = createQueryClient()
     mockGet
       .mockResolvedValueOnce({
-        plugins: [
-          { plugin_id: 'trigger-plugin-1' },
-        ],
+        plugins: [{ plugin_id: 'trigger-plugin-1' }],
         has_more: true,
       })
       .mockResolvedValueOnce({
-        plugins: [
-          { plugin_id: 'trigger-plugin-2' },
-        ],
+        plugins: [{ plugin_id: 'trigger-plugin-2' }],
         has_more: false,
       })
 
@@ -374,7 +378,9 @@ describe('useInstalledPluginList', () => {
     })
 
     await waitFor(() => {
-      expect(mockGet).toHaveBeenCalledWith('/workspaces/current/plugin/trigger/list?page=2&page_size=100')
+      expect(mockGet).toHaveBeenCalledWith(
+        '/workspaces/current/plugin/trigger/list?page=2&page_size=100',
+      )
     })
     await waitFor(() => {
       expect(result.current.isLastPage).toBe(true)
@@ -400,16 +406,12 @@ describe('useInstalledPluginList', () => {
     ]
     mockGet
       .mockResolvedValueOnce({
-        plugins: [
-          { plugin_id: 'tool-plugin-1' },
-        ],
+        plugins: [{ plugin_id: 'tool-plugin-1' }],
         builtin_tools: builtinTools,
         has_more: true,
       })
       .mockResolvedValueOnce({
-        plugins: [
-          { plugin_id: 'tool-plugin-2' },
-        ],
+        plugins: [{ plugin_id: 'tool-plugin-2' }],
         builtin_tools: builtinTools,
         has_more: false,
       })
@@ -472,10 +474,9 @@ describe('usePluginTaskList', () => {
       ],
     }
 
-    const { result } = renderHook(
-      () => usePluginTaskList(PluginCategoryEnum.tool),
-      { wrapper: createWrapper(queryClient) },
-    )
+    const { result } = renderHook(() => usePluginTaskList(PluginCategoryEnum.tool), {
+      wrapper: createWrapper(queryClient),
+    })
 
     act(() => {
       result.current.handleInstallTaskStart({
@@ -531,10 +532,9 @@ describe('usePluginTaskList', () => {
     })
     mockGet.mockResolvedValue({ tasks: [] })
 
-    const { result } = renderHook(
-      () => usePluginTaskList(PluginCategoryEnum.tool),
-      { wrapper: createWrapper(queryClient) },
-    )
+    const { result } = renderHook(() => usePluginTaskList(PluginCategoryEnum.tool), {
+      wrapper: createWrapper(queryClient),
+    })
 
     act(() => {
       result.current.handleInstallTaskStart({
@@ -615,13 +615,14 @@ describe('usePluginTaskList', () => {
       ],
     }
 
-    const { result } = renderHook(
-      () => usePluginTaskList(PluginCategoryEnum.tool),
-      { wrapper: createWrapper(queryClient) },
-    )
+    const { result } = renderHook(() => usePluginTaskList(PluginCategoryEnum.tool), {
+      wrapper: createWrapper(queryClient),
+    })
 
     await waitFor(() => {
-      expect(queryClient.getQueryData(['plugins', 'pluginTaskList'])).toEqual({ tasks: [staleTask] })
+      expect(queryClient.getQueryData(['plugins', 'pluginTaskList'])).toEqual({
+        tasks: [staleTask],
+      })
     })
 
     act(() => {
@@ -660,10 +661,9 @@ describe('usePluginAutoUpgradeSettings', () => {
     const queryClient = createQueryClient()
     mockGet.mockReturnValue(new Promise(() => {}))
 
-    const { result } = renderHook(
-      () => usePluginAutoUpgradeSettings(PluginCategoryEnum.model),
-      { wrapper: createWrapper(queryClient) },
-    )
+    const { result } = renderHook(() => usePluginAutoUpgradeSettings(PluginCategoryEnum.model), {
+      wrapper: createWrapper(queryClient),
+    })
 
     expect(result.current.data).toBeUndefined()
     expect(mockGet).toHaveBeenCalledWith('/workspaces/current/plugin/auto-upgrade/fetch', {
@@ -687,10 +687,9 @@ describe('usePluginAutoUpgradeSettings', () => {
       auto_upgrade: backendAutoUpgrade,
     })
 
-    const { result } = renderHook(
-      () => usePluginAutoUpgradeSettings(PluginCategoryEnum.tool),
-      { wrapper: createWrapper(queryClient) },
-    )
+    const { result } = renderHook(() => usePluginAutoUpgradeSettings(PluginCategoryEnum.tool), {
+      wrapper: createWrapper(queryClient),
+    })
 
     await waitFor(() => {
       expect(result.current.data).toEqual({
