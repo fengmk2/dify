@@ -7,11 +7,13 @@ export type AgentFormValues = {
   role?: string
 }
 
-export type AgentIconSelection = AppIconSelection | {
-  type: 'link'
-  icon: string
-  url: string
-}
+export type AgentIconSelection =
+  | AppIconSelection
+  | {
+      type: 'link'
+      icon: string
+      url: string
+    }
 
 export const defaultAgentIcon = {
   type: 'emoji',
@@ -44,11 +46,9 @@ export const createAgentIconSelection = (agent: AgentAppPartial): AgentIconSelec
 }
 
 export const getAgentIconKey = (icon: AgentIconSelection) => {
-  if (icon.type === 'emoji')
-    return `${icon.type}:${icon.icon}:${icon.background}`
+  if (icon.type === 'emoji') return `${icon.type}:${icon.icon}:${icon.background}`
 
-  if (icon.type === 'image')
-    return `${icon.type}:${icon.fileId}`
+  if (icon.type === 'image') return `${icon.type}:${icon.fileId}`
 
   return `${icon.type}:${icon.icon}`
 }

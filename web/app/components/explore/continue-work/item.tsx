@@ -19,13 +19,11 @@ type ContinueWorkItemProps = {
   app: App
 }
 
-const ContinueWorkItem = ({
-  app,
-}: ContinueWorkItemProps) => {
+const ContinueWorkItem = ({ app }: ContinueWorkItemProps) => {
   const { t } = useTranslation()
   const { formatTimeFromNow } = useFormatTimeFromNow()
-  const currentUserId = useAppContextSelector(state => state.userProfile?.id)
-  const workspacePermissionKeys = useAppContextSelector(state => state.workspacePermissionKeys)
+  const currentUserId = useAppContextSelector((state) => state.userProfile?.id)
+  const workspacePermissionKeys = useAppContextSelector((state) => state.workspacePermissionKeys)
   const { data: systemFeatures } = useSuspenseQuery(systemFeaturesQueryOptions())
   const isRbacEnabled = systemFeatures.rbac_enabled
   const updatedAt = (app.updated_at || app.created_at) * 1000
@@ -46,8 +44,7 @@ const ContinueWorkItem = ({
   }
 
   const handlePreviewOnlyCardKeyDown = (event: React.KeyboardEvent<HTMLElement>) => {
-    if (event.key !== 'Enter' && event.key !== ' ')
-      return
+    if (event.key !== 'Enter' && event.key !== ' ') return
 
     event.preventDefault()
     showPreviewOnlyAccessWarning()
@@ -70,13 +67,13 @@ const ContinueWorkItem = ({
         />
       </div>
       <div className="min-w-0 py-px">
-        <h3 className="truncate system-md-semibold text-text-secondary">
-          {app.name}
-        </h3>
+        <h3 className="truncate system-md-semibold text-text-secondary">{app.name}</h3>
         <div className="flex min-w-0 items-center gap-1 system-xs-regular text-text-tertiary">
           <span className="shrink-0">{app.author_name}</span>
           <span className="shrink-0">·</span>
-          <span className="min-w-0 truncate">{t('continueWork.editedAt', { ns: 'explore', time: formatTimeFromNow(updatedAt) })}</span>
+          <span className="min-w-0 truncate">
+            {t('continueWork.editedAt', { ns: 'explore', time: formatTimeFromNow(updatedAt) })}
+          </span>
         </div>
       </div>
     </>

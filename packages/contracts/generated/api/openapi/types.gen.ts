@@ -97,15 +97,15 @@ export type AppListRow = {
   workspace_name?: string | null
 }
 
-export type AppMode
-  = | 'advanced-chat'
-    | 'agent'
-    | 'agent-chat'
-    | 'channel'
-    | 'chat'
-    | 'completion'
-    | 'rag-pipeline'
-    | 'workflow'
+export type AppMode =
+  | 'advanced-chat'
+  | 'agent'
+  | 'agent-chat'
+  | 'channel'
+  | 'chat'
+  | 'completion'
+  | 'rag-pipeline'
+  | 'workflow'
 
 export type AppRunRequest = {
   auto_generate_name?: boolean
@@ -314,38 +314,38 @@ export type MessageMetadata = {
   usage?: UsageInfo | null
 }
 
-export type OpenApiErrorCode
-  = | 'app_unavailable'
-    | 'bad_gateway'
-    | 'bad_request'
-    | 'completion_request_error'
-    | 'conflict'
-    | 'conversation_completed'
-    | 'file_extension_blocked'
-    | 'file_too_large'
-    | 'filename_not_exists'
-    | 'forbidden'
-    | 'form_not_found'
-    | 'internal_server_error'
-    | 'invalid_param'
-    | 'member_license_exceeded'
-    | 'member_limit_exceeded'
-    | 'method_not_allowed'
-    | 'model_currently_not_support'
-    | 'no_file_uploaded'
-    | 'not_acceptable'
-    | 'not_found'
-    | 'provider_not_initialize'
-    | 'provider_quota_exceeded'
-    | 'rate_limit_error'
-    | 'recipient_surface_mismatch'
-    | 'request_entity_too_large'
-    | 'too_many_files'
-    | 'too_many_requests'
-    | 'unauthorized'
-    | 'unknown'
-    | 'unsupported_file_type'
-    | 'unsupported_media_type'
+export type OpenApiErrorCode =
+  | 'app_unavailable'
+  | 'bad_gateway'
+  | 'bad_request'
+  | 'completion_request_error'
+  | 'conflict'
+  | 'conversation_completed'
+  | 'file_extension_blocked'
+  | 'file_too_large'
+  | 'filename_not_exists'
+  | 'forbidden'
+  | 'form_not_found'
+  | 'internal_server_error'
+  | 'invalid_param'
+  | 'member_license_exceeded'
+  | 'member_limit_exceeded'
+  | 'method_not_allowed'
+  | 'model_currently_not_support'
+  | 'no_file_uploaded'
+  | 'not_acceptable'
+  | 'not_found'
+  | 'provider_not_initialize'
+  | 'provider_quota_exceeded'
+  | 'rate_limit_error'
+  | 'recipient_surface_mismatch'
+  | 'request_entity_too_large'
+  | 'too_many_files'
+  | 'too_many_requests'
+  | 'unauthorized'
+  | 'unknown'
+  | 'unsupported_file_type'
+  | 'unsupported_media_type'
 
 export type Package = {
   plugin_unique_identifier: string
@@ -539,8 +539,8 @@ export type GetAccountSessionsResponses = {
   200: SessionListResponse
 }
 
-export type GetAccountSessionsResponse
-  = GetAccountSessionsResponses[keyof GetAccountSessionsResponses]
+export type GetAccountSessionsResponse =
+  GetAccountSessionsResponses[keyof GetAccountSessionsResponses]
 
 export type DeleteAccountSessionsSelfData = {
   body?: never
@@ -553,15 +553,15 @@ export type DeleteAccountSessionsSelfErrors = {
   default: ErrorBody
 }
 
-export type DeleteAccountSessionsSelfError
-  = DeleteAccountSessionsSelfErrors[keyof DeleteAccountSessionsSelfErrors]
+export type DeleteAccountSessionsSelfError =
+  DeleteAccountSessionsSelfErrors[keyof DeleteAccountSessionsSelfErrors]
 
 export type DeleteAccountSessionsSelfResponses = {
   200: RevokeResponse
 }
 
-export type DeleteAccountSessionsSelfResponse
-  = DeleteAccountSessionsSelfResponses[keyof DeleteAccountSessionsSelfResponses]
+export type DeleteAccountSessionsSelfResponse =
+  DeleteAccountSessionsSelfResponses[keyof DeleteAccountSessionsSelfResponses]
 
 export type DeleteAccountSessionsBySessionIdData = {
   body?: never
@@ -576,15 +576,15 @@ export type DeleteAccountSessionsBySessionIdErrors = {
   default: ErrorBody
 }
 
-export type DeleteAccountSessionsBySessionIdError
-  = DeleteAccountSessionsBySessionIdErrors[keyof DeleteAccountSessionsBySessionIdErrors]
+export type DeleteAccountSessionsBySessionIdError =
+  DeleteAccountSessionsBySessionIdErrors[keyof DeleteAccountSessionsBySessionIdErrors]
 
 export type DeleteAccountSessionsBySessionIdResponses = {
   200: RevokeResponse
 }
 
-export type DeleteAccountSessionsBySessionIdResponse
-  = DeleteAccountSessionsBySessionIdResponses[keyof DeleteAccountSessionsBySessionIdResponses]
+export type DeleteAccountSessionsBySessionIdResponse =
+  DeleteAccountSessionsBySessionIdResponses[keyof DeleteAccountSessionsBySessionIdResponses]
 
 export type GetAppsData = {
   body?: never
@@ -625,15 +625,15 @@ export type GetAppsByAppIdCheckDependenciesErrors = {
   default: ErrorBody
 }
 
-export type GetAppsByAppIdCheckDependenciesError
-  = GetAppsByAppIdCheckDependenciesErrors[keyof GetAppsByAppIdCheckDependenciesErrors]
+export type GetAppsByAppIdCheckDependenciesError =
+  GetAppsByAppIdCheckDependenciesErrors[keyof GetAppsByAppIdCheckDependenciesErrors]
 
 export type GetAppsByAppIdCheckDependenciesResponses = {
   200: CheckDependenciesResult
 }
 
-export type GetAppsByAppIdCheckDependenciesResponse
-  = GetAppsByAppIdCheckDependenciesResponses[keyof GetAppsByAppIdCheckDependenciesResponses]
+export type GetAppsByAppIdCheckDependenciesResponse =
+  GetAppsByAppIdCheckDependenciesResponses[keyof GetAppsByAppIdCheckDependenciesResponses]
 
 export type GetAppsByAppIdDescribeData = {
   body?: never
@@ -651,15 +651,15 @@ export type GetAppsByAppIdDescribeErrors = {
   default: ErrorBody
 }
 
-export type GetAppsByAppIdDescribeError
-  = GetAppsByAppIdDescribeErrors[keyof GetAppsByAppIdDescribeErrors]
+export type GetAppsByAppIdDescribeError =
+  GetAppsByAppIdDescribeErrors[keyof GetAppsByAppIdDescribeErrors]
 
 export type GetAppsByAppIdDescribeResponses = {
   200: AppDescribeResponse
 }
 
-export type GetAppsByAppIdDescribeResponse
-  = GetAppsByAppIdDescribeResponses[keyof GetAppsByAppIdDescribeResponses]
+export type GetAppsByAppIdDescribeResponse =
+  GetAppsByAppIdDescribeResponses[keyof GetAppsByAppIdDescribeResponses]
 
 export type GetAppsByAppIdExportData = {
   body?: never
@@ -684,8 +684,8 @@ export type GetAppsByAppIdExportResponses = {
   200: AppDslExportResponse
 }
 
-export type GetAppsByAppIdExportResponse
-  = GetAppsByAppIdExportResponses[keyof GetAppsByAppIdExportResponses]
+export type GetAppsByAppIdExportResponse =
+  GetAppsByAppIdExportResponses[keyof GetAppsByAppIdExportResponses]
 
 export type PostAppsByAppIdFilesUploadData = {
   body?: never
@@ -704,15 +704,15 @@ export type PostAppsByAppIdFilesUploadErrors = {
   default: ErrorBody
 }
 
-export type PostAppsByAppIdFilesUploadError
-  = PostAppsByAppIdFilesUploadErrors[keyof PostAppsByAppIdFilesUploadErrors]
+export type PostAppsByAppIdFilesUploadError =
+  PostAppsByAppIdFilesUploadErrors[keyof PostAppsByAppIdFilesUploadErrors]
 
 export type PostAppsByAppIdFilesUploadResponses = {
   201: FileResponse
 }
 
-export type PostAppsByAppIdFilesUploadResponse
-  = PostAppsByAppIdFilesUploadResponses[keyof PostAppsByAppIdFilesUploadResponses]
+export type PostAppsByAppIdFilesUploadResponse =
+  PostAppsByAppIdFilesUploadResponses[keyof PostAppsByAppIdFilesUploadResponses]
 
 export type GetAppsByAppIdFormHumanInputByFormTokenData = {
   body?: never
@@ -728,8 +728,8 @@ export type GetAppsByAppIdFormHumanInputByFormTokenResponses = {
   200: HumanInputFormDefinitionResponse
 }
 
-export type GetAppsByAppIdFormHumanInputByFormTokenResponse
-  = GetAppsByAppIdFormHumanInputByFormTokenResponses[keyof GetAppsByAppIdFormHumanInputByFormTokenResponses]
+export type GetAppsByAppIdFormHumanInputByFormTokenResponse =
+  GetAppsByAppIdFormHumanInputByFormTokenResponses[keyof GetAppsByAppIdFormHumanInputByFormTokenResponses]
 
 export type PostAppsByAppIdFormHumanInputByFormTokenData = {
   body: HumanInputFormSubmitPayload
@@ -746,15 +746,15 @@ export type PostAppsByAppIdFormHumanInputByFormTokenErrors = {
   default: ErrorBody
 }
 
-export type PostAppsByAppIdFormHumanInputByFormTokenError
-  = PostAppsByAppIdFormHumanInputByFormTokenErrors[keyof PostAppsByAppIdFormHumanInputByFormTokenErrors]
+export type PostAppsByAppIdFormHumanInputByFormTokenError =
+  PostAppsByAppIdFormHumanInputByFormTokenErrors[keyof PostAppsByAppIdFormHumanInputByFormTokenErrors]
 
 export type PostAppsByAppIdFormHumanInputByFormTokenResponses = {
   200: FormSubmitResponse
 }
 
-export type PostAppsByAppIdFormHumanInputByFormTokenResponse
-  = PostAppsByAppIdFormHumanInputByFormTokenResponses[keyof PostAppsByAppIdFormHumanInputByFormTokenResponses]
+export type PostAppsByAppIdFormHumanInputByFormTokenResponse =
+  PostAppsByAppIdFormHumanInputByFormTokenResponses[keyof PostAppsByAppIdFormHumanInputByFormTokenResponses]
 
 export type PostAppsByAppIdRunData = {
   body: AppRunRequest
@@ -775,8 +775,8 @@ export type PostAppsByAppIdRunResponses = {
   200: EventStreamResponse
 }
 
-export type PostAppsByAppIdRunResponse
-  = PostAppsByAppIdRunResponses[keyof PostAppsByAppIdRunResponses]
+export type PostAppsByAppIdRunResponse =
+  PostAppsByAppIdRunResponses[keyof PostAppsByAppIdRunResponses]
 
 export type GetAppsByAppIdTasksByTaskIdEventsData = {
   body?: never
@@ -795,8 +795,8 @@ export type GetAppsByAppIdTasksByTaskIdEventsResponses = {
   200: EventStreamResponse
 }
 
-export type GetAppsByAppIdTasksByTaskIdEventsResponse
-  = GetAppsByAppIdTasksByTaskIdEventsResponses[keyof GetAppsByAppIdTasksByTaskIdEventsResponses]
+export type GetAppsByAppIdTasksByTaskIdEventsResponse =
+  GetAppsByAppIdTasksByTaskIdEventsResponses[keyof GetAppsByAppIdTasksByTaskIdEventsResponses]
 
 export type PostAppsByAppIdTasksByTaskIdStopData = {
   body?: never
@@ -812,15 +812,15 @@ export type PostAppsByAppIdTasksByTaskIdStopErrors = {
   default: ErrorBody
 }
 
-export type PostAppsByAppIdTasksByTaskIdStopError
-  = PostAppsByAppIdTasksByTaskIdStopErrors[keyof PostAppsByAppIdTasksByTaskIdStopErrors]
+export type PostAppsByAppIdTasksByTaskIdStopError =
+  PostAppsByAppIdTasksByTaskIdStopErrors[keyof PostAppsByAppIdTasksByTaskIdStopErrors]
 
 export type PostAppsByAppIdTasksByTaskIdStopResponses = {
   200: TaskStopResponse
 }
 
-export type PostAppsByAppIdTasksByTaskIdStopResponse
-  = PostAppsByAppIdTasksByTaskIdStopResponses[keyof PostAppsByAppIdTasksByTaskIdStopResponses]
+export type PostAppsByAppIdTasksByTaskIdStopResponse =
+  PostAppsByAppIdTasksByTaskIdStopResponses[keyof PostAppsByAppIdTasksByTaskIdStopResponses]
 
 export type PostOauthDeviceApproveData = {
   body: DeviceMutateRequest
@@ -833,8 +833,8 @@ export type PostOauthDeviceApproveResponses = {
   200: DeviceMutateResponse
 }
 
-export type PostOauthDeviceApproveResponse
-  = PostOauthDeviceApproveResponses[keyof PostOauthDeviceApproveResponses]
+export type PostOauthDeviceApproveResponse =
+  PostOauthDeviceApproveResponses[keyof PostOauthDeviceApproveResponses]
 
 export type PostOauthDeviceCodeData = {
   body: DeviceCodeRequest
@@ -847,8 +847,8 @@ export type PostOauthDeviceCodeResponses = {
   200: DeviceCodeResponse
 }
 
-export type PostOauthDeviceCodeResponse
-  = PostOauthDeviceCodeResponses[keyof PostOauthDeviceCodeResponses]
+export type PostOauthDeviceCodeResponse =
+  PostOauthDeviceCodeResponses[keyof PostOauthDeviceCodeResponses]
 
 export type PostOauthDeviceDenyData = {
   body: DeviceMutateRequest
@@ -861,8 +861,8 @@ export type PostOauthDeviceDenyResponses = {
   200: DeviceMutateResponse
 }
 
-export type PostOauthDeviceDenyResponse
-  = PostOauthDeviceDenyResponses[keyof PostOauthDeviceDenyResponses]
+export type PostOauthDeviceDenyResponse =
+  PostOauthDeviceDenyResponses[keyof PostOauthDeviceDenyResponses]
 
 export type GetOauthDeviceLookupData = {
   body?: never
@@ -877,8 +877,8 @@ export type GetOauthDeviceLookupResponses = {
   200: DeviceLookupResponse
 }
 
-export type GetOauthDeviceLookupResponse
-  = GetOauthDeviceLookupResponses[keyof GetOauthDeviceLookupResponses]
+export type GetOauthDeviceLookupResponse =
+  GetOauthDeviceLookupResponses[keyof GetOauthDeviceLookupResponses]
 
 export type PostOauthDeviceTokenData = {
   body: DevicePollRequest
@@ -891,8 +891,8 @@ export type PostOauthDeviceTokenResponses = {
   200: DeviceTokenResponse
 }
 
-export type PostOauthDeviceTokenResponse
-  = PostOauthDeviceTokenResponses[keyof PostOauthDeviceTokenResponses]
+export type PostOauthDeviceTokenResponse =
+  PostOauthDeviceTokenResponses[keyof PostOauthDeviceTokenResponses]
 
 export type GetPermittedExternalAppsData = {
   body?: never
@@ -911,15 +911,15 @@ export type GetPermittedExternalAppsErrors = {
   default: ErrorBody
 }
 
-export type GetPermittedExternalAppsError
-  = GetPermittedExternalAppsErrors[keyof GetPermittedExternalAppsErrors]
+export type GetPermittedExternalAppsError =
+  GetPermittedExternalAppsErrors[keyof GetPermittedExternalAppsErrors]
 
 export type GetPermittedExternalAppsResponses = {
   200: PermittedExternalAppsListResponse
 }
 
-export type GetPermittedExternalAppsResponse
-  = GetPermittedExternalAppsResponses[keyof GetPermittedExternalAppsResponses]
+export type GetPermittedExternalAppsResponse =
+  GetPermittedExternalAppsResponses[keyof GetPermittedExternalAppsResponses]
 
 export type GetPermittedExternalAppsByAppIdDescribeData = {
   body?: never
@@ -937,15 +937,15 @@ export type GetPermittedExternalAppsByAppIdDescribeErrors = {
   default: ErrorBody
 }
 
-export type GetPermittedExternalAppsByAppIdDescribeError
-  = GetPermittedExternalAppsByAppIdDescribeErrors[keyof GetPermittedExternalAppsByAppIdDescribeErrors]
+export type GetPermittedExternalAppsByAppIdDescribeError =
+  GetPermittedExternalAppsByAppIdDescribeErrors[keyof GetPermittedExternalAppsByAppIdDescribeErrors]
 
 export type GetPermittedExternalAppsByAppIdDescribeResponses = {
   200: AppDescribeResponse
 }
 
-export type GetPermittedExternalAppsByAppIdDescribeResponse
-  = GetPermittedExternalAppsByAppIdDescribeResponses[keyof GetPermittedExternalAppsByAppIdDescribeResponses]
+export type GetPermittedExternalAppsByAppIdDescribeResponse =
+  GetPermittedExternalAppsByAppIdDescribeResponses[keyof GetPermittedExternalAppsByAppIdDescribeResponses]
 
 export type GetWorkspacesData = {
   body?: never
@@ -979,15 +979,15 @@ export type GetWorkspacesByWorkspaceIdErrors = {
   default: ErrorBody
 }
 
-export type GetWorkspacesByWorkspaceIdError
-  = GetWorkspacesByWorkspaceIdErrors[keyof GetWorkspacesByWorkspaceIdErrors]
+export type GetWorkspacesByWorkspaceIdError =
+  GetWorkspacesByWorkspaceIdErrors[keyof GetWorkspacesByWorkspaceIdErrors]
 
 export type GetWorkspacesByWorkspaceIdResponses = {
   200: WorkspaceDetailResponse
 }
 
-export type GetWorkspacesByWorkspaceIdResponse
-  = GetWorkspacesByWorkspaceIdResponses[keyof GetWorkspacesByWorkspaceIdResponses]
+export type GetWorkspacesByWorkspaceIdResponse =
+  GetWorkspacesByWorkspaceIdResponses[keyof GetWorkspacesByWorkspaceIdResponses]
 
 export type PostWorkspacesByWorkspaceIdAppsImportsData = {
   body: AppDslImportPayload
@@ -1004,16 +1004,16 @@ export type PostWorkspacesByWorkspaceIdAppsImportsErrors = {
   default: ErrorBody
 }
 
-export type PostWorkspacesByWorkspaceIdAppsImportsError
-  = PostWorkspacesByWorkspaceIdAppsImportsErrors[keyof PostWorkspacesByWorkspaceIdAppsImportsErrors]
+export type PostWorkspacesByWorkspaceIdAppsImportsError =
+  PostWorkspacesByWorkspaceIdAppsImportsErrors[keyof PostWorkspacesByWorkspaceIdAppsImportsErrors]
 
 export type PostWorkspacesByWorkspaceIdAppsImportsResponses = {
   200: Import
   202: Import
 }
 
-export type PostWorkspacesByWorkspaceIdAppsImportsResponse
-  = PostWorkspacesByWorkspaceIdAppsImportsResponses[keyof PostWorkspacesByWorkspaceIdAppsImportsResponses]
+export type PostWorkspacesByWorkspaceIdAppsImportsResponse =
+  PostWorkspacesByWorkspaceIdAppsImportsResponses[keyof PostWorkspacesByWorkspaceIdAppsImportsResponses]
 
 export type PostWorkspacesByWorkspaceIdAppsImportsByImportIdConfirmData = {
   body?: never
@@ -1030,15 +1030,15 @@ export type PostWorkspacesByWorkspaceIdAppsImportsByImportIdConfirmErrors = {
   default: ErrorBody
 }
 
-export type PostWorkspacesByWorkspaceIdAppsImportsByImportIdConfirmError
-  = PostWorkspacesByWorkspaceIdAppsImportsByImportIdConfirmErrors[keyof PostWorkspacesByWorkspaceIdAppsImportsByImportIdConfirmErrors]
+export type PostWorkspacesByWorkspaceIdAppsImportsByImportIdConfirmError =
+  PostWorkspacesByWorkspaceIdAppsImportsByImportIdConfirmErrors[keyof PostWorkspacesByWorkspaceIdAppsImportsByImportIdConfirmErrors]
 
 export type PostWorkspacesByWorkspaceIdAppsImportsByImportIdConfirmResponses = {
   200: Import
 }
 
-export type PostWorkspacesByWorkspaceIdAppsImportsByImportIdConfirmResponse
-  = PostWorkspacesByWorkspaceIdAppsImportsByImportIdConfirmResponses[keyof PostWorkspacesByWorkspaceIdAppsImportsByImportIdConfirmResponses]
+export type PostWorkspacesByWorkspaceIdAppsImportsByImportIdConfirmResponse =
+  PostWorkspacesByWorkspaceIdAppsImportsByImportIdConfirmResponses[keyof PostWorkspacesByWorkspaceIdAppsImportsByImportIdConfirmResponses]
 
 export type GetWorkspacesByWorkspaceIdMembersData = {
   body?: never
@@ -1057,15 +1057,15 @@ export type GetWorkspacesByWorkspaceIdMembersErrors = {
   default: ErrorBody
 }
 
-export type GetWorkspacesByWorkspaceIdMembersError
-  = GetWorkspacesByWorkspaceIdMembersErrors[keyof GetWorkspacesByWorkspaceIdMembersErrors]
+export type GetWorkspacesByWorkspaceIdMembersError =
+  GetWorkspacesByWorkspaceIdMembersErrors[keyof GetWorkspacesByWorkspaceIdMembersErrors]
 
 export type GetWorkspacesByWorkspaceIdMembersResponses = {
   200: MemberListResponse
 }
 
-export type GetWorkspacesByWorkspaceIdMembersResponse
-  = GetWorkspacesByWorkspaceIdMembersResponses[keyof GetWorkspacesByWorkspaceIdMembersResponses]
+export type GetWorkspacesByWorkspaceIdMembersResponse =
+  GetWorkspacesByWorkspaceIdMembersResponses[keyof GetWorkspacesByWorkspaceIdMembersResponses]
 
 export type PostWorkspacesByWorkspaceIdMembersData = {
   body: MemberInvitePayload
@@ -1081,15 +1081,15 @@ export type PostWorkspacesByWorkspaceIdMembersErrors = {
   default: ErrorBody
 }
 
-export type PostWorkspacesByWorkspaceIdMembersError
-  = PostWorkspacesByWorkspaceIdMembersErrors[keyof PostWorkspacesByWorkspaceIdMembersErrors]
+export type PostWorkspacesByWorkspaceIdMembersError =
+  PostWorkspacesByWorkspaceIdMembersErrors[keyof PostWorkspacesByWorkspaceIdMembersErrors]
 
 export type PostWorkspacesByWorkspaceIdMembersResponses = {
   201: MemberInviteResponse
 }
 
-export type PostWorkspacesByWorkspaceIdMembersResponse
-  = PostWorkspacesByWorkspaceIdMembersResponses[keyof PostWorkspacesByWorkspaceIdMembersResponses]
+export type PostWorkspacesByWorkspaceIdMembersResponse =
+  PostWorkspacesByWorkspaceIdMembersResponses[keyof PostWorkspacesByWorkspaceIdMembersResponses]
 
 export type DeleteWorkspacesByWorkspaceIdMembersByMemberIdData = {
   body?: never
@@ -1105,15 +1105,15 @@ export type DeleteWorkspacesByWorkspaceIdMembersByMemberIdErrors = {
   default: ErrorBody
 }
 
-export type DeleteWorkspacesByWorkspaceIdMembersByMemberIdError
-  = DeleteWorkspacesByWorkspaceIdMembersByMemberIdErrors[keyof DeleteWorkspacesByWorkspaceIdMembersByMemberIdErrors]
+export type DeleteWorkspacesByWorkspaceIdMembersByMemberIdError =
+  DeleteWorkspacesByWorkspaceIdMembersByMemberIdErrors[keyof DeleteWorkspacesByWorkspaceIdMembersByMemberIdErrors]
 
 export type DeleteWorkspacesByWorkspaceIdMembersByMemberIdResponses = {
   200: MemberActionResponse
 }
 
-export type DeleteWorkspacesByWorkspaceIdMembersByMemberIdResponse
-  = DeleteWorkspacesByWorkspaceIdMembersByMemberIdResponses[keyof DeleteWorkspacesByWorkspaceIdMembersByMemberIdResponses]
+export type DeleteWorkspacesByWorkspaceIdMembersByMemberIdResponse =
+  DeleteWorkspacesByWorkspaceIdMembersByMemberIdResponses[keyof DeleteWorkspacesByWorkspaceIdMembersByMemberIdResponses]
 
 export type PutWorkspacesByWorkspaceIdMembersByMemberIdRoleData = {
   body: MemberRoleUpdatePayload
@@ -1130,15 +1130,15 @@ export type PutWorkspacesByWorkspaceIdMembersByMemberIdRoleErrors = {
   default: ErrorBody
 }
 
-export type PutWorkspacesByWorkspaceIdMembersByMemberIdRoleError
-  = PutWorkspacesByWorkspaceIdMembersByMemberIdRoleErrors[keyof PutWorkspacesByWorkspaceIdMembersByMemberIdRoleErrors]
+export type PutWorkspacesByWorkspaceIdMembersByMemberIdRoleError =
+  PutWorkspacesByWorkspaceIdMembersByMemberIdRoleErrors[keyof PutWorkspacesByWorkspaceIdMembersByMemberIdRoleErrors]
 
 export type PutWorkspacesByWorkspaceIdMembersByMemberIdRoleResponses = {
   200: MemberActionResponse
 }
 
-export type PutWorkspacesByWorkspaceIdMembersByMemberIdRoleResponse
-  = PutWorkspacesByWorkspaceIdMembersByMemberIdRoleResponses[keyof PutWorkspacesByWorkspaceIdMembersByMemberIdRoleResponses]
+export type PutWorkspacesByWorkspaceIdMembersByMemberIdRoleResponse =
+  PutWorkspacesByWorkspaceIdMembersByMemberIdRoleResponses[keyof PutWorkspacesByWorkspaceIdMembersByMemberIdRoleResponses]
 
 export type PostWorkspacesByWorkspaceIdSwitchData = {
   body?: never
@@ -1153,12 +1153,12 @@ export type PostWorkspacesByWorkspaceIdSwitchErrors = {
   default: ErrorBody
 }
 
-export type PostWorkspacesByWorkspaceIdSwitchError
-  = PostWorkspacesByWorkspaceIdSwitchErrors[keyof PostWorkspacesByWorkspaceIdSwitchErrors]
+export type PostWorkspacesByWorkspaceIdSwitchError =
+  PostWorkspacesByWorkspaceIdSwitchErrors[keyof PostWorkspacesByWorkspaceIdSwitchErrors]
 
 export type PostWorkspacesByWorkspaceIdSwitchResponses = {
   200: WorkspaceDetailResponse
 }
 
-export type PostWorkspacesByWorkspaceIdSwitchResponse
-  = PostWorkspacesByWorkspaceIdSwitchResponses[keyof PostWorkspacesByWorkspaceIdSwitchResponses]
+export type PostWorkspacesByWorkspaceIdSwitchResponse =
+  PostWorkspacesByWorkspaceIdSwitchResponses[keyof PostWorkspacesByWorkspaceIdSwitchResponses]

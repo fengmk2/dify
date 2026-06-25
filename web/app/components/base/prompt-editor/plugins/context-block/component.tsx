@@ -30,8 +30,7 @@ const ContextBlockComponent: FC<ContextBlockComponentProps> = ({
   const [localDatasets, setLocalDatasets] = useState<Dataset[]>(datasets)
 
   eventEmitter?.useSubscription((event?: EventEmitterValue) => {
-    if (typeof event === 'string')
-      return
+    if (typeof event === 'string') return
 
     if (event?.type === UPDATE_DATASETS_EVENT_EMITTER && Array.isArray(event.payload))
       setLocalDatasets(event.payload as Dataset[])
@@ -46,15 +45,17 @@ const ContextBlockComponent: FC<ContextBlockComponentProps> = ({
     `}
       ref={ref}
     >
-      <span className="mr-1 i-custom-vender-solid-files-file-05 h-[14px] w-[14px]" data-testid="file-icon" />
-      <div className="mr-1 text-xs font-medium">{t('promptEditor.context.item.title', { ns: 'common' })}</div>
+      <span
+        className="mr-1 i-custom-vender-solid-files-file-05 h-[14px] w-[14px]"
+        data-testid="file-icon"
+      />
+      <div className="mr-1 text-xs font-medium">
+        {t('promptEditor.context.item.title', { ns: 'common' })}
+      </div>
       {!canNotAddContext && (
-        <Popover
-          open={open}
-          onOpenChange={setOpen}
-        >
+        <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger
-            render={(
+            render={
               <button
                 type="button"
                 aria-label={t('promptEditor.context.item.title', { ns: 'common' })}
@@ -63,11 +64,11 @@ const ContextBlockComponent: FC<ContextBlockComponentProps> = ({
             ${open ? 'bg-[#6938EF] text-white' : 'bg-white/50 group-hover:bg-white group-hover:shadow-xs'}
           `}
                 ref={triggerRef}
-                onClick={e => e.preventDefault()}
+                onClick={(e) => e.preventDefault()}
               >
                 {localDatasets.length}
               </button>
-            )}
+            }
           />
           <PopoverContent
             placement="bottom-end"
@@ -78,19 +79,25 @@ const ContextBlockComponent: FC<ContextBlockComponentProps> = ({
             <div className="w-[360px] rounded-xl bg-white shadow-lg">
               <div className="p-4">
                 <div className="mb-2 text-xs font-medium text-gray-500">
-                  {t('promptEditor.context.modal.title', { ns: 'common', num: localDatasets.length })}
+                  {t('promptEditor.context.modal.title', {
+                    ns: 'common',
+                    num: localDatasets.length,
+                  })}
                 </div>
                 <div className="max-h-[270px] overflow-y-auto">
-                  {
-                    localDatasets.map(dataset => (
-                      <div key={dataset.id} className="flex h-8 items-center">
-                        <div className="mr-2 flex h-6 w-6 shrink-0 items-center justify-center rounded-md border-[0.5px] border-[#EAECF5] bg-[#F5F8FF]">
-                          <span className="i-custom-vender-solid-files-folder h-4 w-4 text-[#444CE7]" data-testid="folder-icon" />
-                        </div>
-                        <div className="truncate text-sm text-gray-800" title="">{dataset.name}</div>
+                  {localDatasets.map((dataset) => (
+                    <div key={dataset.id} className="flex h-8 items-center">
+                      <div className="mr-2 flex h-6 w-6 shrink-0 items-center justify-center rounded-md border-[0.5px] border-[#EAECF5] bg-[#F5F8FF]">
+                        <span
+                          className="i-custom-vender-solid-files-folder h-4 w-4 text-[#444CE7]"
+                          data-testid="folder-icon"
+                        />
                       </div>
-                    ))
-                  }
+                      <div className="truncate text-sm text-gray-800" title="">
+                        {dataset.name}
+                      </div>
+                    </div>
+                  ))}
                 </div>
                 <button
                   type="button"
@@ -100,7 +107,9 @@ const ContextBlockComponent: FC<ContextBlockComponentProps> = ({
                   <div className="mr-2 flex h-6 w-6 shrink-0 items-center justify-center rounded-md border-[0.5px] border-gray-100">
                     <span className="i-ri-add-line h-[14px] w-[14px]" aria-hidden="true" />
                   </div>
-                  <div className="text-[13px] font-medium" title="">{t('promptEditor.context.modal.add', { ns: 'common' })}</div>
+                  <div className="text-[13px] font-medium" title="">
+                    {t('promptEditor.context.modal.add', { ns: 'common' })}
+                  </div>
                 </button>
               </div>
               <div className="rounded-b-xl border-t-[0.5px] border-gray-50 bg-gray-50 px-4 py-3 text-xs text-gray-500">
@@ -110,7 +119,6 @@ const ContextBlockComponent: FC<ContextBlockComponentProps> = ({
           </PopoverContent>
         </Popover>
       )}
-
     </div>
   )
 }

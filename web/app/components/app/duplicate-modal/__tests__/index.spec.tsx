@@ -28,7 +28,9 @@ vi.mock('@langgenius/dify-ui/toast', () => ({
 
 vi.mock('@/app/components/base/app-icon', () => ({
   default: ({ onClick }: { onClick: () => void }) => (
-    <button type="button" onClick={onClick}>open-icon-picker</button>
+    <button type="button" onClick={onClick}>
+      open-icon-picker
+    </button>
   ),
 }))
 
@@ -38,7 +40,7 @@ vi.mock('@/app/components/base/app-icon-picker', () => ({
     onSelect,
   }: {
     onOpenChange: (open: boolean) => void
-    onSelect: (payload: { type: 'emoji', icon: string, background: string }) => void
+    onSelect: (payload: { type: 'emoji'; icon: string; background: string }) => void
   }) => {
     let selectedBackground = '#FFEAD5'
     return (
@@ -47,7 +49,13 @@ vi.mock('@/app/components/base/app-icon-picker', () => ({
         <button type="button" onClick={() => {}}>
           <em-emoji />
         </button>
-        <button type="button" aria-label="#E4FBCC" onClick={() => { selectedBackground = '#E4FBCC' }} />
+        <button
+          type="button"
+          aria-label="#E4FBCC"
+          onClick={() => {
+            selectedBackground = '#E4FBCC'
+          }}
+        />
         <button
           type="button"
           onClick={() => {
@@ -57,7 +65,9 @@ vi.mock('@/app/components/base/app-icon-picker', () => ({
         >
           iconPicker.ok
         </button>
-        <button type="button" onClick={() => onOpenChange(false)}>iconPicker.cancel</button>
+        <button type="button" onClick={() => onOpenChange(false)}>
+          iconPicker.cancel
+        </button>
       </div>
     )
   },
@@ -194,11 +204,13 @@ describe('DuplicateAppModal', () => {
     })
     await user.click(screen.getByRole('button', { name: 'duplicate' }))
 
-    expect(onConfirm).toHaveBeenCalledWith(expect.objectContaining({
-      name: 'Image App',
-      icon_type: 'emoji',
-      icon: expect.any(String),
-      icon_background: '#E4FBCC',
-    }))
+    expect(onConfirm).toHaveBeenCalledWith(
+      expect.objectContaining({
+        name: 'Image App',
+        icon_type: 'emoji',
+        icon: expect.any(String),
+        icon_background: '#E4FBCC',
+      }),
+    )
   })
 })

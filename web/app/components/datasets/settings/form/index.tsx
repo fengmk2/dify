@@ -89,35 +89,33 @@ const Form = () => {
         readonly={readonly}
       />
 
-      {isExternalProvider
-        ? (
-            <ExternalKnowledgeSection
-              currentDataset={currentDataset}
-              topK={topK}
-              scoreThreshold={scoreThreshold}
-              scoreThresholdEnabled={scoreThresholdEnabled}
-              handleSettingsChange={handleSettingsChange}
-              readonly={readonly}
-            />
-          )
-        : (
-            <IndexingSection
-              currentDataset={currentDataset}
-              indexMethod={indexMethod}
-              setIndexMethod={setIndexMethod}
-              keywordNumber={keywordNumber}
-              setKeywordNumber={setKeywordNumber}
-              embeddingModel={embeddingModel}
-              setEmbeddingModel={setEmbeddingModel}
-              embeddingModelList={embeddingModelList}
-              retrievalConfig={retrievalConfig}
-              setRetrievalConfig={setRetrievalConfig}
-              summaryIndexSetting={summaryIndexSetting}
-              handleSummaryIndexSettingChange={handleSummaryIndexSettingChange}
-              showMultiModalTip={showMultiModalTip}
-              readonly={readonly}
-            />
-          )}
+      {isExternalProvider ? (
+        <ExternalKnowledgeSection
+          currentDataset={currentDataset}
+          topK={topK}
+          scoreThreshold={scoreThreshold}
+          scoreThresholdEnabled={scoreThresholdEnabled}
+          handleSettingsChange={handleSettingsChange}
+          readonly={readonly}
+        />
+      ) : (
+        <IndexingSection
+          currentDataset={currentDataset}
+          indexMethod={indexMethod}
+          setIndexMethod={setIndexMethod}
+          keywordNumber={keywordNumber}
+          setKeywordNumber={setKeywordNumber}
+          embeddingModel={embeddingModel}
+          setEmbeddingModel={setEmbeddingModel}
+          embeddingModelList={embeddingModelList}
+          retrievalConfig={retrievalConfig}
+          setRetrievalConfig={setRetrievalConfig}
+          summaryIndexSetting={summaryIndexSetting}
+          handleSummaryIndexSettingChange={handleSummaryIndexSettingChange}
+          showMultiModalTip={showMultiModalTip}
+          readonly={readonly}
+        />
+      )}
 
       <Divider type="horizontal" className="my-1 h-px bg-divider-subtle" />
 

@@ -50,8 +50,7 @@ function DeploymentActionsMenuContent({
   const openDeleteDialog = useSetAtom(openDeleteDeploymentDialogAtom)
 
   function handleMenuOpenChange(open: boolean) {
-    if (open)
-      void queryClient.prefetchQuery(appInstanceQueryOptions)
+    if (open) void queryClient.prefetchQuery(appInstanceQueryOptions)
   }
 
   return (
@@ -61,8 +60,8 @@ function DeploymentActionsMenuContent({
         className,
         '[&:has([data-popup-open])]:pointer-events-auto [&:has([data-popup-open])]:opacity-100',
       )}
-      onClick={event => event.stopPropagation()}
-      onKeyDown={event => event.stopPropagation()}
+      onClick={(event) => event.stopPropagation()}
+      onKeyDown={(event) => event.stopPropagation()}
     >
       <DropdownMenu modal={false} onOpenChange={handleMenuOpenChange}>
         <DropdownMenuTrigger
@@ -71,17 +70,17 @@ function DeploymentActionsMenuContent({
         >
           <span aria-hidden className="i-ri-more-fill size-4" />
         </DropdownMenuTrigger>
-        <DropdownMenuContent placement={placement} sideOffset={sideOffset} popupClassName="min-w-44">
+        <DropdownMenuContent
+          placement={placement}
+          sideOffset={sideOffset}
+          popupClassName="min-w-44"
+        >
           <DropdownMenuItem className="gap-2 px-3" onClick={openEditDialog}>
             <span aria-hidden className="i-ri-edit-line size-4 shrink-0 text-text-tertiary" />
             <span className="system-sm-regular text-text-secondary">{t('card.menu.editInfo')}</span>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem
-            variant="destructive"
-            className="gap-2 px-3"
-            onClick={openDeleteDialog}
-          >
+          <DropdownMenuItem variant="destructive" className="gap-2 px-3" onClick={openDeleteDialog}>
             <span aria-hidden className="i-ri-delete-bin-line size-4 shrink-0" />
             <span className="system-sm-regular">{t('card.menu.delete')}</span>
           </DropdownMenuItem>
@@ -93,17 +92,11 @@ function DeploymentActionsMenuContent({
   )
 }
 
-export function DeploymentActionsMenu({
-  appInstanceId,
-  ...props
-}: DeploymentActionsMenuProps) {
+export function DeploymentActionsMenu({ appInstanceId, ...props }: DeploymentActionsMenuProps) {
   return (
     <ScopeProvider
       key={appInstanceId}
-      atoms={[
-        [deploymentActionAppInstanceIdAtom, appInstanceId],
-        ...deploymentActionsLocalAtoms,
-      ]}
+      atoms={[[deploymentActionAppInstanceIdAtom, appInstanceId], ...deploymentActionsLocalAtoms]}
       name="DeploymentActionsMenu"
     >
       <DeploymentActionsMenuContent {...props} />

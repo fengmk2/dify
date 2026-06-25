@@ -11,9 +11,7 @@ import {
 } from '@langgenius/dify-ui/alert-dialog'
 import { useTranslation } from 'react-i18next'
 
-function DeploymentErrorDetails({ error }: {
-  error?: EnvironmentDeployment['error']
-}) {
+function DeploymentErrorDetails({ error }: { error?: EnvironmentDeployment['error'] }) {
   const { t } = useTranslation('deployments')
   const message = error?.message?.trim() || t('deployTab.panel.unknownError')
   const metadata = [
@@ -31,7 +29,7 @@ function DeploymentErrorDetails({ error }: {
       </div>
       {metadata.length > 0 && (
         <div className="mt-3 flex flex-wrap gap-2">
-          {metadata.map(item => (
+          {metadata.map((item) => (
             <span
               key={item.label}
               className="inline-flex max-w-full items-center gap-1.5 rounded-md border border-divider-subtle bg-background-default px-2 py-1 system-xs-regular text-text-tertiary"
@@ -46,7 +44,11 @@ function DeploymentErrorDetails({ error }: {
   )
 }
 
-export function DeploymentErrorDialog({ open, row, onOpenChange }: {
+export function DeploymentErrorDialog({
+  open,
+  row,
+  onOpenChange,
+}: {
   open: boolean
   row: EnvironmentDeployment
   onOpenChange: (open: boolean) => void

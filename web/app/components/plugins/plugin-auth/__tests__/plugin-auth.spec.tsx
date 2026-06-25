@@ -1,5 +1,5 @@
 import { cleanup, fireEvent, render, screen } from '@testing-library/react'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { ACCOUNT_SETTING_TAB } from '@/app/components/header/account-setting/constants'
 import PluginAuth from '../plugin-auth'
 import { AuthCategory } from '../types'
@@ -44,7 +44,11 @@ const defaultPayload = {
 describe('PluginAuth', () => {
   beforeEach(() => {
     vi.clearAllMocks()
-    mockAppContext.workspacePermissionKeys = ['credential.use', 'credential.create', 'credential.manage']
+    mockAppContext.workspacePermissionKeys = [
+      'credential.use',
+      'credential.create',
+      'credential.manage',
+    ]
   })
 
   afterEach(() => {
@@ -110,7 +114,9 @@ describe('PluginAuth', () => {
       notAllowCustomCredential: false,
     })
 
-    const { container } = render(<PluginAuth pluginPayload={defaultPayload} className="custom-class" />)
+    const { container } = render(
+      <PluginAuth pluginPayload={defaultPayload} className="custom-class" />,
+    )
     expect(container.innerHTML).toContain('custom-class')
   })
 
@@ -124,7 +130,9 @@ describe('PluginAuth', () => {
       notAllowCustomCredential: false,
     })
 
-    const { container } = render(<PluginAuth pluginPayload={defaultPayload} className="custom-class" />)
+    const { container } = render(
+      <PluginAuth pluginPayload={defaultPayload} className="custom-class" />,
+    )
     expect(container.innerHTML).not.toContain('custom-class')
   })
 
@@ -158,7 +166,9 @@ describe('PluginAuth', () => {
     expect(screen.getByRole('button', { name: 'plugin.auth.useApiAuth' })).toBeDisabled()
     expect(screen.getByText('plugin.auth.permissionHint.title')).toBeInTheDocument()
     expect(screen.getByText('plugin.auth.permissionHint.description')).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'plugin.auth.permissionHint.action' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'plugin.auth.permissionHint.action' }),
+    ).toBeInTheDocument()
   })
 
   it('opens members settings when permission hint action is clicked', () => {

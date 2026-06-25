@@ -2,9 +2,7 @@
 
 import type { AgentDriveApiContext } from '../drive-context'
 import type { AgentSkill } from '@/features/agent-v2/agent-composer/form-state'
-import {
-  Dialog,
-} from '@langgenius/dify-ui/dialog'
+import { Dialog } from '@langgenius/dify-ui/dialog'
 import { useCallback, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useAgentOrchestrateReadOnly } from '../read-only-context'
@@ -68,12 +66,7 @@ export function AgentSkillItem({
           </span>
         </div>
       </div>
-      {isPreviewOpen && (
-        <AgentSkillDetailDialog
-          skillName={skill.name}
-          detail={detail}
-        />
-      )}
+      {isPreviewOpen && <AgentSkillDetailDialog skillName={skill.name} detail={detail} />}
     </Dialog>
   )
 }

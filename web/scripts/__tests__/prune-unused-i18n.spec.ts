@@ -1,18 +1,14 @@
 import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import path from 'node:path'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it } from 'vite-plus/test'
 import { analyzeUnusedTranslations, removeUnusedTranslations } from '../i18n-prune/core'
 
 let webRoot: string
 
 function writeJson(relativePath: string, value: Record<string, string>) {
   mkdirSync(path.dirname(path.join(webRoot, relativePath)), { recursive: true })
-  writeFileSync(
-    path.join(webRoot, relativePath),
-    `${JSON.stringify(value, null, 2)}\n`,
-    'utf8',
-  )
+  writeFileSync(path.join(webRoot, relativePath), `${JSON.stringify(value, null, 2)}\n`, 'utf8')
 }
 
 function writeSource(relativePath: string, content: string) {
@@ -20,10 +16,14 @@ function writeSource(relativePath: string, content: string) {
   writeFileSync(path.join(webRoot, relativePath), content, 'utf8')
 }
 
-function sortedUnusedKeysByNamespace(result: Awaited<ReturnType<typeof analyzeUnusedTranslations>>) {
+function sortedUnusedKeysByNamespace(
+  result: Awaited<ReturnType<typeof analyzeUnusedTranslations>>,
+) {
   return Object.fromEntries(
-    Object.entries(result.unusedKeysByNamespace)
-      .map(([namespace, keys]) => [namespace, [...keys].sort()]),
+    Object.entries(result.unusedKeysByNamespace).map(([namespace, keys]) => [
+      namespace,
+      [...keys].sort(),
+    ]),
   )
 }
 
@@ -42,7 +42,7 @@ describe('prune-unused-i18n', () => {
       // Arrange
       writeJson('i18n/en-US/app.json', {
         'literal.title': 'Title',
-        'withDefault': 'With default',
+        withDefault: 'With default',
         'trans.shared': 'Shared app',
         'unused.app': 'Unused app',
       })
@@ -51,7 +51,9 @@ describe('prune-unused-i18n', () => {
         'trans.shared': 'Shared common',
         'unused.common': 'Unused common',
       })
-      writeSource('src/example.tsx', `
+      writeSource(
+        'src/example.tsx',
+        `
         import { Trans, useTranslation } from 'react-i18next'
 
         export function Example() {
@@ -70,7 +72,8 @@ describe('prune-unused-i18n', () => {
             </>
           )
         }
-      `)
+      `,
+      )
 
       // Act
       const result = await analyzeUnusedTranslations({ webRoot })
@@ -91,9 +94,11 @@ describe('prune-unused-i18n', () => {
         'voice.language.enUS': 'English',
         'voice.language.zhCN': 'Chinese',
         'voice.language.unused': 'Fallback language',
-        'unrelated': 'Unrelated',
+        unrelated: 'Unrelated',
       })
-      writeSource('src/dynamic.tsx', `
+      writeSource(
+        'src/dynamic.tsx',
+        `
         import { useTranslation } from 'react-i18next'
 
         const i18nPrefix = 'notice'
@@ -105,7 +110,8 @@ describe('prune-unused-i18n', () => {
           t(\`\${i18nPrefix}.reason.\${deprecatedReasonKey}\`)
           t(\`voice.language.\${language}\`, 'Fallback', { ns: 'plugin' })
         }
-      `)
+      `,
+      )
 
       // Act
       const result = await analyzeUnusedTranslations({ webRoot })
@@ -127,14 +133,17 @@ describe('prune-unused-i18n', () => {
         'maybe.used': 'Maybe used',
         'otherwise.unused': 'Otherwise unused',
       })
-      writeSource('src/unresolved.tsx', `
+      writeSource(
+        'src/unresolved.tsx',
+        `
         import { useTranslation } from 'react-i18next'
 
         export function UnresolvedExample(keyFromServer: string) {
           const { t } = useTranslation('app')
           return t(keyFromServer)
         }
-      `)
+      `,
+      )
 
       // Act
       const result = await analyzeUnusedTranslations({ webRoot })
@@ -151,7 +160,9 @@ describe('prune-unused-i18n', () => {
         'duplicateError.value': 'Value',
         'outside.unused': 'Outside',
       })
-      writeSource('src/typed-prefix.tsx', `
+      writeSource(
+        'src/typed-prefix.tsx',
+        `
         import type { I18nKeysByPrefix } from '@/types/i18n'
         import { useTranslation } from 'react-i18next'
 
@@ -159,7 +170,8 @@ describe('prune-unused-i18n', () => {
           const { t } = useTranslation()
           return t(errorKey as I18nKeysByPrefix<'appDebug', 'duplicateError.'>, { ns: 'appDebug' })
         }
-      `)
+      `,
+      )
 
       // Act
       const result = await analyzeUnusedTranslations({ webRoot })
@@ -183,7 +195,9 @@ describe('prune-unused-i18n', () => {
         'status.failed': 'Failed',
         'status.unused': 'Unused',
       })
-      writeSource('src/object-map.tsx', `
+      writeSource(
+        'src/object-map.tsx',
+        `
         import { useTranslation } from 'react-i18next'
 
         const statusI18nKey = {
@@ -195,7 +209,8 @@ describe('prune-unused-i18n', () => {
           const { t } = useTranslation('common')
           return t(statusI18nKey[status])
         }
-      `)
+      `,
+      )
 
       // Act
       const result = await analyzeUnusedTranslations({ webRoot })
@@ -212,7 +227,9 @@ describe('prune-unused-i18n', () => {
         'mainNav.workspace.searchPlaceholder': 'Search',
         'mainNav.workspace.unused': 'Unused',
       })
-      writeSource('src/identity-helper.tsx', `
+      writeSource(
+        'src/identity-helper.tsx',
+        `
         import { useTranslation } from 'react-i18next'
 
         const workspaceSwitchI18nKey = (key: string) => key as 'mainNav.workspace.settings'
@@ -221,7 +238,8 @@ describe('prune-unused-i18n', () => {
           const { t } = useTranslation()
           return t(workspaceSwitchI18nKey('mainNav.workspace.searchPlaceholder'), { ns: 'common' })
         }
-      `)
+      `,
+      )
 
       // Act
       const result = await analyzeUnusedTranslations({ webRoot })
@@ -240,14 +258,17 @@ describe('prune-unused-i18n', () => {
         'overview.unused_one': '1 unused',
         'overview.unused_other': '{{count}} unused',
       })
-      writeSource('src/plural.tsx', `
+      writeSource(
+        'src/plural.tsx',
+        `
         import { useTranslation } from 'react-i18next'
 
         export function PluralExample(count: number) {
           const { t } = useTranslation('deployments')
           return t('overview.environments', { count })
         }
-      `)
+      `,
+      )
 
       // Act
       const result = await analyzeUnusedTranslations({ webRoot })
@@ -266,13 +287,16 @@ describe('prune-unused-i18n', () => {
         'overview.chip.unused_one': '1 unused',
         'overview.chip.unused_other': '{{count}} unused',
       })
-      writeSource('src/typed-t-function.ts', `
+      writeSource(
+        'src/typed-t-function.ts',
+        `
         import type { TFunction } from 'i18next'
 
         export function renderStatus(t: TFunction<'deployments'>) {
           return t('overview.chip.behind', { count: 2 })
         }
-      `)
+      `,
+      )
 
       // Act
       const result = await analyzeUnusedTranslations({ webRoot })
@@ -289,7 +313,9 @@ describe('prune-unused-i18n', () => {
         'agentDetail.configure.tools.credential.authOne': 'Auth 1',
         'agentDetail.configure.tools.unused': 'Unused',
       })
-      writeSource('src/typed-key-field.ts', `
+      writeSource(
+        'src/typed-key-field.ts',
+        `
         type I18nKeysWithPrefix<Namespace extends string, Prefix extends string> =
           'agentDetail.configure.tools.credential.authOne' | 'agentDetail.configure.tools.unused'
 
@@ -300,7 +326,8 @@ describe('prune-unused-i18n', () => {
         export const tool: Tool = {
           credentialKey: 'agentDetail.configure.tools.credential.authOne',
         }
-      `)
+      `,
+      )
 
       // Act
       const result = await analyzeUnusedTranslations({ webRoot })
@@ -318,7 +345,9 @@ describe('prune-unused-i18n', () => {
         'gotoAnything.actions.createChatflowDesc': 'Create a chatflow',
         'gotoAnything.actions.unused': 'Unused',
       })
-      writeSource('src/i18next-instance.tsx', `
+      writeSource(
+        'src/i18next-instance.tsx',
+        `
         import { getI18n } from 'react-i18next'
 
         const i18n = getI18n()
@@ -328,7 +357,8 @@ describe('prune-unused-i18n', () => {
           i18n.t('gotoAnything.actions.createChatflow', { ns: 'app' })
           return tr('gotoAnything.actions.createChatflowDesc')
         }
-      `)
+      `,
+      )
 
       // Act
       const result = await analyzeUnusedTranslations({ webRoot })
@@ -342,19 +372,21 @@ describe('prune-unused-i18n', () => {
     it('should collect keys from imported and parameterized t functions', async () => {
       // Arrange
       writeJson('i18n/en-US/app.json', {
-        'noAccessPermission': 'No access',
+        noAccessPermission: 'No access',
         'typeSelector.chatbot': 'Chatbot',
         'unused.app': 'Unused app',
       })
       writeJson('i18n/en-US/app-api.json', {
-        'pause': 'Pause',
+        pause: 'Pause',
         'unused.api': 'Unused API',
       })
       writeJson('i18n/en-US/tools.json', {
         'mcp.server.publishTip': 'Publish first',
         'unused.tools': 'Unused tools',
       })
-      writeSource('src/parameterized.tsx', `
+      writeSource(
+        'src/parameterized.tsx',
+        `
         import type { TFunction } from 'i18next'
         import { t as globalT } from 'i18next'
         import { useTranslation } from 'react-i18next'
@@ -372,7 +404,8 @@ describe('prune-unused-i18n', () => {
         }
 
         globalT('pause', { ns: 'appApi' })
-      `)
+      `,
+      )
 
       // Act
       const result = await analyzeUnusedTranslations({ webRoot })
@@ -397,14 +430,17 @@ describe('prune-unused-i18n', () => {
         kept: '保留',
         unused: '未使用',
       })
-      writeSource('src/example.tsx', `
+      writeSource(
+        'src/example.tsx',
+        `
         import { useTranslation } from 'react-i18next'
 
         export function Example() {
           const { t } = useTranslation('app')
           return t('kept')
         }
-      `)
+      `,
+      )
       const result = await analyzeUnusedTranslations({ webRoot })
 
       // Act

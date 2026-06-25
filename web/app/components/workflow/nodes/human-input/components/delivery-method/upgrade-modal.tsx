@@ -12,12 +12,9 @@ type UpgradeModalProps = {
   onOpenChange: (open: boolean) => void
 }
 
-export function UpgradeModal({
-  open,
-  onOpenChange,
-}: UpgradeModalProps) {
+export function UpgradeModal({ open, onOpenChange }: UpgradeModalProps) {
   const { t } = useTranslation()
-  const setShowPricingModal = useModalContextSelector(s => s.setShowPricingModal)
+  const setShowPricingModal = useModalContextSelector((s) => s.setShowPricingModal)
   const handleUpgrade = () => {
     setShowPricingModal()
   }
@@ -32,12 +29,9 @@ export function UpgradeModal({
       classNames={{
         content: 'max-w-[580px]',
       }}
-      footer={(
+      footer={
         <>
-          <Button
-            className="w-[72px]"
-            onClick={() => onOpenChange(false)}
-          >
+          <Button className="w-[72px]" onClick={() => onOpenChange(false)}>
             {t('nodes.humanInput.deliveryMethod.upgradeTipHide', { ns: 'workflow' })}
           </Button>
           {IS_CLOUD_EDITION && (
@@ -47,16 +41,17 @@ export function UpgradeModal({
               className="h-8 w-[93px]"
               onClick={handleUpgrade}
             >
-              <SparklesSoft aria-hidden="true" className="flex h-3.5 w-3.5 items-center py-px pl-[3px] text-components-premium-badge-indigo-text-stop-0" />
+              <SparklesSoft
+                aria-hidden="true"
+                className="flex h-3.5 w-3.5 items-center py-px pl-[3px] text-components-premium-badge-indigo-text-stop-0"
+              />
               <div className="system-sm-medium">
-                <span className="p-1">
-                  {t('upgradeBtn.encourageShort', { ns: 'billing' })}
-                </span>
+                <span className="p-1">{t('upgradeBtn.encourageShort', { ns: 'billing' })}</span>
               </div>
             </PremiumBadgeButton>
           )}
         </>
-      )}
+      }
     />
   )
 }

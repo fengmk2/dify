@@ -12,19 +12,18 @@ type ContinueWorkProps = {
   className?: string
 }
 
-const ContinueWork = ({
-  apps,
-  className,
-}: ContinueWorkProps) => {
+const ContinueWork = ({ apps, className }: ContinueWorkProps) => {
   const { t } = useTranslation()
 
-  if (apps.length === 0)
-    return null
+  if (apps.length === 0) return null
 
   return (
     <section className={cn('px-8 pb-5', className)} aria-labelledby="continue-work-title">
       <div className="flex items-center justify-between pt-2">
-        <h2 id="continue-work-title" className="min-w-0 truncate system-xl-medium text-text-primary">
+        <h2
+          id="continue-work-title"
+          className="min-w-0 truncate system-xl-medium text-text-primary"
+        >
           {t('continueWork.title', { ns: 'explore' })}
         </h2>
         <Link
@@ -36,7 +35,7 @@ const ContinueWork = ({
         </Link>
       </div>
       <div className="grid grid-cols-1 gap-2.5 pt-2 sm:grid-cols-2 xl:grid-cols-4">
-        {apps.map(app => (
+        {apps.map((app) => (
           <ContinueWorkItem key={app.id} app={app} />
         ))}
       </div>

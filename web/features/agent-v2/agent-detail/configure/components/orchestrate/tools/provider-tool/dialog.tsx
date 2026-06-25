@@ -15,32 +15,33 @@ const localize = (value: string) => ({
   zh_Hans: value,
 })
 
-const createFallbackToolCollection = (tool: AgentProviderTool): ToolWithProvider => ({
-  id: tool.id,
-  name: tool.id,
-  author: tool.name,
-  description: localize(`${tool.name} tools`),
-  icon: tool.icon ?? '',
-  icon_dark: tool.iconDark,
-  label: localize(tool.displayName ?? tool.name),
-  type: (tool.providerType as CollectionType | undefined) ?? CollectionType.builtIn,
-  team_credentials: {},
-  is_team_authorization: true,
-  allow_delete: tool.allowDelete ?? false,
-  labels: [],
-  meta: {
-    version: '0.0.0',
-  },
-  tools: tool.actions.map<Tool>(action => ({
-    name: action.toolName,
+const createFallbackToolCollection = (tool: AgentProviderTool): ToolWithProvider =>
+  ({
+    id: tool.id,
+    name: tool.id,
     author: tool.name,
-    label: localize(action.name),
-    description: localize(action.description),
-    parameters: [],
+    description: localize(`${tool.name} tools`),
+    icon: tool.icon ?? '',
+    icon_dark: tool.iconDark,
+    label: localize(tool.displayName ?? tool.name),
+    type: (tool.providerType as CollectionType | undefined) ?? CollectionType.builtIn,
+    team_credentials: {},
+    is_team_authorization: true,
+    allow_delete: tool.allowDelete ?? false,
     labels: [],
-    output_schema: {},
-  })),
-}) as ToolWithProvider
+    meta: {
+      version: '0.0.0',
+    },
+    tools: tool.actions.map<Tool>((action) => ({
+      name: action.toolName,
+      author: tool.name,
+      label: localize(action.name),
+      description: localize(action.description),
+      parameters: [],
+      labels: [],
+      output_schema: {},
+    })),
+  }) as ToolWithProvider
 
 export function ProviderToolSettingsDialog({
   settingTarget,
@@ -53,24 +54,24 @@ export function ProviderToolSettingsDialog({
 }) {
   const [toolSettings, setToolSettings] = useAtom(agentComposerToolSettingsAtom)
   const toolCollection = useMemo(() => {
-    if (!settingTarget)
-      return null
+    if (!settingTarget) return null
 
     return collection ?? createFallbackToolCollection(settingTarget.tool)
   }, [collection, settingTarget])
-  const handleSave = useCallback((value: Record<string, unknown>) => {
-    if (!settingTarget)
-      return
+  const handleSave = useCallback(
+    (value: Record<string, unknown>) => {
+      if (!settingTarget) return
 
-    setToolSettings({
-      ...toolSettings,
-      [settingTarget.action.id]: value,
-    })
-    onClose()
-  }, [onClose, setToolSettings, settingTarget, toolSettings])
+      setToolSettings({
+        ...toolSettings,
+        [settingTarget.action.id]: value,
+      })
+      onClose()
+    },
+    [onClose, setToolSettings, settingTarget, toolSettings],
+  )
 
-  if (!settingTarget || !toolCollection)
-    return null
+  if (!settingTarget || !toolCollection) return null
 
   return (
     <SettingBuiltInTool

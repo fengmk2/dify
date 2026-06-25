@@ -18,10 +18,11 @@ const Footer: FC<DatePickerFooterProps> = ({
   const { t } = useTranslation()
 
   return (
-    <div className={cn(
-      'flex items-center justify-between border-t-[0.5px] border-divider-regular p-2',
-      !needTimePicker && 'justify-end',
-    )}
+    <div
+      className={cn(
+        'flex items-center justify-between border-t-[0.5px] border-divider-regular p-2',
+        !needTimePicker && 'justify-end',
+      )}
     >
       {/* Time Picker */}
       {needTimePicker && (

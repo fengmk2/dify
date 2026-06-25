@@ -1,9 +1,18 @@
 'use client'
 
-import type { AgentAppCopyPayload, AgentAppPartial } from '@dify/contracts/api/console/agent/types.gen'
+import type {
+  AgentAppCopyPayload,
+  AgentAppPartial,
+} from '@dify/contracts/api/console/agent/types.gen'
 import type { AgentFormValues, AgentIconSelection } from './agent-form'
 import { Button } from '@langgenius/dify-ui/button'
-import { Dialog, DialogCloseButton, DialogContent, DialogDescription, DialogTitle } from '@langgenius/dify-ui/dialog'
+import {
+  Dialog,
+  DialogCloseButton,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from '@langgenius/dify-ui/dialog'
 import { FieldControl, FieldError, FieldLabel, FieldRoot } from '@langgenius/dify-ui/field'
 import { Form } from '@langgenius/dify-ui/form'
 import { Textarea } from '@langgenius/dify-ui/textarea'
@@ -37,20 +46,27 @@ export function DuplicateAgentDialog({
   const { t } = useTranslation('agentV2')
   const { t: tCommon } = useTranslation('common')
   const queryClient = useQueryClient()
-  const latestAgent = queryClient.getQueryData<AgentAppPartial>(consoleQuery.agent.byAgentId.get.queryKey({
-    input: {
-      params: {
-        agent_id: agent.id,
-      },
-    },
-  })) ?? agent
+  const latestAgent =
+    queryClient.getQueryData<AgentAppPartial>(
+      consoleQuery.agent.byAgentId.get.queryKey({
+        input: {
+          params: {
+            agent_id: agent.id,
+          },
+        },
+      }),
+    ) ?? agent
   const [renderedFormKey, setRenderedFormKey] = useState(formKey)
   const [name, setName] = useState('')
   const [description, setDescription] = useState(latestAgent.description ?? '')
   const [role, setRole] = useState(latestAgent.role ?? '')
   const [iconPickerOpen, setIconPickerOpen] = useState(false)
-  const [agentIcon, setAgentIcon] = useState<AgentIconSelection>(() => createAgentIconSelection(latestAgent))
-  const duplicateAgentMutation = useMutation(consoleQuery.agent.byAgentId.copy.post.mutationOptions())
+  const [agentIcon, setAgentIcon] = useState<AgentIconSelection>(() =>
+    createAgentIconSelection(latestAgent),
+  )
+  const duplicateAgentMutation = useMutation(
+    consoleQuery.agent.byAgentId.copy.post.mutationOptions(),
+  )
   const defaultCopyName = getDefaultCopyName(latestAgent.name)
 
   if (formKey !== renderedFormKey) {
@@ -64,27 +80,28 @@ export function DuplicateAgentDialog({
 
   const handleOpenChange = (nextOpen: boolean) => {
     if (nextOpen) {
-      const currentAgent = queryClient.getQueryData<AgentAppPartial>(consoleQuery.agent.byAgentId.get.queryKey({
-        input: {
-          params: {
-            agent_id: agent.id,
-          },
-        },
-      })) ?? agent
+      const currentAgent =
+        queryClient.getQueryData<AgentAppPartial>(
+          consoleQuery.agent.byAgentId.get.queryKey({
+            input: {
+              params: {
+                agent_id: agent.id,
+              },
+            },
+          }),
+        ) ?? agent
       setName('')
       setDescription(currentAgent.description ?? '')
       setRole(currentAgent.role ?? '')
       setAgentIcon(createAgentIconSelection(currentAgent))
-    }
-    else {
+    } else {
       setIconPickerOpen(false)
     }
     onOpenChange(nextOpen)
   }
 
   const handleSubmit = (formValues: AgentFormValues) => {
-    if (duplicateAgentMutation.isPending)
-      return
+    if (duplicateAgentMutation.isPending) return
 
     const trimmedName = formValues.name?.trim() ?? ''
     const trimmedRole = formValues.role?.trim() ?? ''
@@ -97,17 +114,20 @@ export function DuplicateAgentDialog({
       ...(trimmedName ? { name: trimmedName } : {}),
     }
 
-    duplicateAgentMutation.mutate({
-      params: {
-        agent_id: agent.id,
+    duplicateAgentMutation.mutate(
+      {
+        params: {
+          agent_id: agent.id,
+        },
+        body,
       },
-      body,
-    }, {
-      onSuccess: () => {
-        toast.success(t('roster.duplicateSuccess'))
-        handleOpenChange(false)
+      {
+        onSuccess: () => {
+          toast.success(t('roster.duplicateSuccess'))
+          handleOpenChange(false)
+        },
       },
-    })
+    )
   }
 
   return (
@@ -174,9 +194,7 @@ export function DuplicateAgentDialog({
                       return null
                     }}
                   >
-                    <FieldLabel>
-                      {t('roster.createForm.roleLabel')}
-                    </FieldLabel>
+                    <FieldLabel>{t('roster.createForm.roleLabel')}</FieldLabel>
                     <FieldControl
                       autoComplete="off"
                       maxLength={255}
@@ -186,16 +204,16 @@ export function DuplicateAgentDialog({
                       value={role}
                     />
                     <div className="absolute top-full left-0 mt-1">
-                      <FieldError match="valueMissing">{t('roster.createForm.roleRequired')}</FieldError>
+                      <FieldError match="valueMissing">
+                        {t('roster.createForm.roleRequired')}
+                      </FieldError>
                       <FieldError match="customError" />
                     </div>
                   </FieldRoot>
                 </div>
               </div>
               <FieldRoot name="description">
-                <FieldLabel>
-                  {t('roster.createForm.descriptionLabel')}
-                </FieldLabel>
+                <FieldLabel>{t('roster.createForm.descriptionLabel')}</FieldLabel>
                 <Textarea
                   autoComplete="off"
                   className="h-20 resize-none"
@@ -206,7 +224,12 @@ export function DuplicateAgentDialog({
               </FieldRoot>
             </div>
             <div className="flex shrink-0 justify-end gap-2 px-6 pt-5 pb-6">
-              <Button type="button" className="min-w-18" onClick={() => handleOpenChange(false)} disabled={duplicateAgentMutation.isPending}>
+              <Button
+                type="button"
+                className="min-w-18"
+                onClick={() => handleOpenChange(false)}
+                disabled={duplicateAgentMutation.isPending}
+              >
                 {tCommon('operation.cancel')}
               </Button>
               <Button
@@ -223,9 +246,11 @@ export function DuplicateAgentDialog({
       </Dialog>
       <AppIconPicker
         open={iconPickerOpen}
-        initialEmoji={agentIcon.type === 'emoji'
-          ? { icon: agentIcon.icon, background: agentIcon.background }
-          : undefined}
+        initialEmoji={
+          agentIcon.type === 'emoji'
+            ? { icon: agentIcon.icon, background: agentIcon.background }
+            : undefined
+        }
         onOpenChange={setIconPickerOpen}
         onSelect={setAgentIcon}
       />

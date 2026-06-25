@@ -1,16 +1,12 @@
 {
-  "cucumber.features": [
-    "e2e/features/**/*.feature",
-  ],
-  "cucumber.glue": [
-    "e2e/features/**/*.ts",
-  ],
+  "cucumber.features": ["e2e/features/**/*.feature"],
+  "cucumber.glue": ["e2e/features/**/*.ts"],
 
   "tailwindCSS.experimental.configFile": "web/app/styles/globals.css",
 
   // Auto fix
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": "explicit",
+    "source.fixAll.eslint": "explicit"
   },
 
   // Silent the stylistic rules in your IDE, but still auto fix them

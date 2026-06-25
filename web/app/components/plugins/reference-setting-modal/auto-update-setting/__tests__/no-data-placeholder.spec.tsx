@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import NoDataPlaceholder from '../no-data-placeholder'
 
 describe('NoDataPlaceholder', () => {
@@ -14,6 +14,8 @@ describe('NoDataPlaceholder', () => {
     const { container } = render(<NoDataPlaceholder className="min-h-10" noPlugins />)
 
     expect(container.querySelector('svg')).toBeInTheDocument()
-    expect(screen.getByText('plugin.autoUpdate.noPluginPlaceholder.noInstalled')).toBeInTheDocument()
+    expect(
+      screen.getByText('plugin.autoUpdate.noPluginPlaceholder.noInstalled'),
+    ).toBeInTheDocument()
   })
 })

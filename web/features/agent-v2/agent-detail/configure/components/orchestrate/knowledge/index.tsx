@@ -54,14 +54,16 @@ export function AgentKnowledgeRetrieval() {
   const retrievalListId = 'agent-configure-knowledge-retrieval-list'
   const isDialogOpen = isAddDialogOpen || !!editingRetrieval
   const updateRetrieval = (nextRetrieval: AgentKnowledgeRetrievalItem) => {
-    setRetrievals(retrievals.map(retrieval => retrieval.id === nextRetrieval.id ? nextRetrieval : retrieval))
+    setRetrievals(
+      retrievals.map((retrieval) =>
+        retrieval.id === nextRetrieval.id ? nextRetrieval : retrieval,
+      ),
+    )
     setEditingRetrieval(nextRetrieval)
   }
   const getDefaultRetrievalName = (index: number) => {
-    if (index === 1)
-      return t('agentDetail.configure.knowledgeRetrieval.retrievalOne')
-    if (index === 2)
-      return t('agentDetail.configure.knowledgeRetrieval.retrievalTwo')
+    if (index === 1) return t('agentDetail.configure.knowledgeRetrieval.retrievalOne')
+    if (index === 2) return t('agentDetail.configure.knowledgeRetrieval.retrievalTwo')
 
     return t('agentDetail.configure.knowledgeRetrieval.defaultName', { index })
   }
@@ -89,39 +91,45 @@ export function AgentKnowledgeRetrieval() {
         tipAriaLabel={knowledgeRetrievalTip}
         rootClassName="border-b border-divider-subtle pt-4"
         panelContentClassName="flex flex-col gap-1 pb-4"
-        actions={(
+        actions={
           <ConfigureSectionAddButton
             ariaLabel={t('agentDetail.configure.knowledgeRetrieval.add')}
             onClick={() => addRetrieval()}
           />
-        )}
+        }
       >
-        {retrievals.length === 0
-          ? (
-              <ConfigureSectionEmpty
-                title={t('agentDetail.configure.knowledgeRetrieval.empty.title')}
-                description={t('agentDetail.configure.knowledgeRetrieval.empty.description')}
-              />
-            )
-          : retrievals.map(item => (
-              <AgentKnowledgeRetrievalRow
-                key={item.id}
-                item={item}
-                onDelete={() => setRetrievals(retrievals.filter(retrieval => retrieval.id !== item.id))}
-                onEdit={() => setEditingRetrieval(item)}
-              />
-            ))}
+        {retrievals.length === 0 ? (
+          <ConfigureSectionEmpty
+            title={t('agentDetail.configure.knowledgeRetrieval.empty.title')}
+            description={t('agentDetail.configure.knowledgeRetrieval.empty.description')}
+          />
+        ) : (
+          retrievals.map((item) => (
+            <AgentKnowledgeRetrievalRow
+              key={item.id}
+              item={item}
+              onDelete={() =>
+                setRetrievals(retrievals.filter((retrieval) => retrieval.id !== item.id))
+              }
+              onEdit={() => setEditingRetrieval(item)}
+            />
+          ))
+        )}
       </ConfigureSection>
       <AgentKnowledgeRetrievalDialog
         key={editingRetrieval?.id ?? 'add'}
         item={editingRetrieval ?? undefined}
-        initialName={editingRetrieval ? (editingRetrieval.name ?? (editingRetrieval.nameKey ? t(editingRetrieval.nameKey) : editingRetrieval.id)) : undefined}
+        initialName={
+          editingRetrieval
+            ? (editingRetrieval.name ??
+              (editingRetrieval.nameKey ? t(editingRetrieval.nameKey) : editingRetrieval.id))
+            : undefined
+        }
         onItemChange={updateRetrieval}
         open={isDialogOpen}
         onOpenChange={(open) => {
           setIsAddDialogOpen(open)
-          if (!open)
-            setEditingRetrieval(null)
+          if (!open) setEditingRetrieval(null)
         }}
       />
     </>

@@ -1,14 +1,10 @@
 import { DropdownMenu } from '@langgenius/dify-ui/dropdown-menu'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 import Operations from '../operations'
 
 function renderInMenu(ui: React.ReactElement) {
-  return render(
-    <DropdownMenu open>
-      {ui}
-    </DropdownMenu>,
-  )
+  return render(<DropdownMenu open>{ui}</DropdownMenu>)
 }
 
 describe('Operations', () => {
@@ -84,7 +80,9 @@ describe('Operations', () => {
 
     it('should call openAccessConfig when access config is clicked', () => {
       const openAccessConfig = vi.fn()
-      renderInMenu(<Operations {...defaultProps} showAccessConfig openAccessConfig={openAccessConfig} />)
+      renderInMenu(
+        <Operations {...defaultProps} showAccessConfig openAccessConfig={openAccessConfig} />,
+      )
 
       fireEvent.click(screen.getByText(/settings\.resourceAccess/))
       expect(openAccessConfig).toHaveBeenCalledTimes(1)

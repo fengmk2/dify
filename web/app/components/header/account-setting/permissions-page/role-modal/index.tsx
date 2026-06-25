@@ -31,13 +31,7 @@ type RoleModalProps = {
   onSubmit?: (data: submitRoleData) => void
 }
 
-const RoleModal = ({
-  mode,
-  open,
-  role,
-  onClose,
-  onSubmit,
-}: RoleModalProps) => {
+const RoleModal = ({ mode, open, role, onClose, onSubmit }: RoleModalProps) => {
   const { t } = useTranslation()
   const [name, setName] = useState(role?.name ?? '')
   const [desc, setDesc] = useState(role?.description ?? '')
@@ -62,8 +56,7 @@ const RoleModal = ({
     <Dialog
       open={open}
       onOpenChange={(nextOpen) => {
-        if (!nextOpen)
-          onClose()
+        if (!nextOpen) onClose()
       }}
     >
       <DialogContent
@@ -126,14 +119,12 @@ const RoleModal = ({
           </a>
           <div className="flex items-center gap-2">
             <Button variant="secondary" onClick={onClose}>
-              {readonly ? t('operation.close', { ns: 'common' }) : t('operation.cancel', { ns: 'common' })}
+              {readonly
+                ? t('operation.close', { ns: 'common' })
+                : t('operation.cancel', { ns: 'common' })}
             </Button>
             {!readonly && (
-              <Button
-                variant="primary"
-                disabled={!name.trim()}
-                onClick={handleSubmit}
-              >
+              <Button variant="primary" disabled={!name.trim()} onClick={handleSubmit}>
                 {t('operation.confirm', { ns: 'common' })}
               </Button>
             )}

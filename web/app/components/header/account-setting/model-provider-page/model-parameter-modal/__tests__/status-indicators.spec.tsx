@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { vi } from 'vitest'
+import { vi } from 'vite-plus/test'
 import StatusIndicators from '../status-indicators'
 
 let installedPlugins = [{ name: 'demo-plugin', plugin_unique_identifier: 'demo@1.0.0' }]
@@ -10,7 +10,9 @@ vi.mock('@/service/use-plugins', () => ({
 }))
 
 vi.mock('@/app/components/workflow/nodes/_base/components/switch-plugin-version', () => ({
-  SwitchPluginVersion: ({ uniqueIdentifier }: { uniqueIdentifier: string }) => <div>{`SwitchVersion:${uniqueIdentifier}`}</div>,
+  SwitchPluginVersion: ({ uniqueIdentifier }: { uniqueIdentifier: string }) => (
+    <div>{`SwitchVersion:${uniqueIdentifier}`}</div>
+  ),
 }))
 
 const t = (key: string) => key
@@ -56,7 +58,9 @@ describe('StatusIndicators', () => {
 
     await user.hover(getPopoverTrigger('nodes.agent.modelSelectorTooltips.deprecated'))
 
-    expect(await screen.findByText('nodes.agent.modelSelectorTooltips.deprecated')).toBeInTheDocument()
+    expect(
+      await screen.findByText('nodes.agent.modelSelectorTooltips.deprecated'),
+    ).toBeInTheDocument()
   })
 
   it('should render model-not-support tooltip when disabled model is not in model list and has no pluginInfo', async () => {

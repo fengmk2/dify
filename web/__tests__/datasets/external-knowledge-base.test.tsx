@@ -6,7 +6,7 @@
  */
 
 import type { CreateKnowledgeBaseReq } from '@/app/components/datasets/external-knowledge-base/create/declarations'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 
 // --- Factory ---
 const createFormData = (overrides?: Partial<CreateKnowledgeBaseReq>): CreateKnowledgeBaseReq => ({
@@ -65,11 +65,11 @@ describe('External Knowledge Base Creation Flow', () => {
   describe('Form Validation Logic', () => {
     const isFormValid = (form: CreateKnowledgeBaseReq): boolean => {
       return (
-        form.name.trim() !== ''
-        && form.external_knowledge_api_id !== ''
-        && form.external_knowledge_id !== ''
-        && form.external_retrieval_model.top_k !== undefined
-        && form.external_retrieval_model.score_threshold !== undefined
+        form.name.trim() !== '' &&
+        form.external_knowledge_api_id !== '' &&
+        form.external_knowledge_id !== '' &&
+        form.external_retrieval_model.top_k !== undefined &&
+        form.external_retrieval_model.score_threshold !== undefined
       )
     }
 

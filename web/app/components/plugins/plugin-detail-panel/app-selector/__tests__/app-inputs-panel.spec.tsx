@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import AppInputsPanel from '../app-inputs-panel'
 
 let mockHookResult = {
@@ -12,20 +12,19 @@ vi.mock('@/app/components/base/loading', () => ({
 }))
 
 vi.mock('@/app/components/plugins/plugin-detail-panel/app-selector/app-inputs-form', () => ({
-  default: ({
-    onFormChange,
-  }: {
-    onFormChange: (value: Record<string, unknown>) => void
-  }) => (
+  default: ({ onFormChange }: { onFormChange: (value: Record<string, unknown>) => void }) => (
     <button data-testid="app-inputs-form" onClick={() => onFormChange({ topic: 'updated' })}>
       Form
     </button>
   ),
 }))
 
-vi.mock('@/app/components/plugins/plugin-detail-panel/app-selector/hooks/use-app-inputs-form-schema', () => ({
-  useAppInputsFormSchema: () => mockHookResult,
-}))
+vi.mock(
+  '@/app/components/plugins/plugin-detail-panel/app-selector/hooks/use-app-inputs-form-schema',
+  () => ({
+    useAppInputsFormSchema: () => mockHookResult,
+  }),
+)
 
 describe('AppInputsPanel', () => {
   beforeEach(() => {

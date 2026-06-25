@@ -39,7 +39,9 @@ export function AgentPreviewHeader({
           aria-label={t('agentDetail.configure.preview.chatFeatures')}
         >
           <span aria-hidden className="i-ri-apps-2-add-line size-4" />
-          <span className="px-0.5 system-sm-medium">{t('agentDetail.configure.preview.chatFeatures')}</span>
+          <span className="px-0.5 system-sm-medium">
+            {t('agentDetail.configure.preview.chatFeatures')}
+          </span>
         </button>
       </div>
     </div>

@@ -14,9 +14,7 @@ import { TitleTooltip } from '../../components/title-tooltip'
 import { openDeployDrawerAtom } from '../../deploy-drawer/state'
 import { releaseCommit } from '../../shared/domain/release'
 import { DeploymentStatusBadge } from '../../shared/ui/deployment-status-badge'
-import {
-  deploymentStatusLabelKey,
-} from '../../shared/ui/deployment-status-style'
+import { deploymentStatusLabelKey } from '../../shared/ui/deployment-status-style'
 import { OVERVIEW_ICON_CLASS_NAME, OVERVIEW_INTERACTIVE_CARD_CLASS_NAME } from './card-styles'
 import {
   renderActionLabel,
@@ -55,8 +53,7 @@ export function EnvironmentTile({ appInstanceId, row, releaseRows }: Environment
       : undefined
 
   function handleDrawerAction() {
-    if (config.intent === 'disabled')
-      return
+    if (config.intent === 'disabled') return
     openDeployDrawer({ appInstanceId, environmentId: envId, releaseId: config.releaseId })
   }
 
@@ -66,30 +63,29 @@ export function EnvironmentTile({ appInstanceId, row, releaseRows }: Environment
     isDisabled && 'cursor-not-allowed opacity-60',
   )
   const actionLabel = renderActionLabel(config.kind, Boolean(currentReleaseId), t)
-  const actionControl = config.intent === 'navigate'
-    ? (
-        <Link
-          href={`/deployments/${appInstanceId}/instances`}
-          className={actionClassName}
-        >
-          <span className="whitespace-nowrap">{actionLabel}</span>
-        </Link>
-      )
-    : (
-        <button
-          type="button"
-          disabled={isDisabled}
-          onClick={handleDrawerAction}
-          className={actionClassName}
-        >
-          <span className="whitespace-nowrap">{actionLabel}</span>
-        </button>
-      )
+  const actionControl =
+    config.intent === 'navigate' ? (
+      <Link href={`/deployments/${appInstanceId}/instances`} className={actionClassName}>
+        <span className="whitespace-nowrap">{actionLabel}</span>
+      </Link>
+    ) : (
+      <button
+        type="button"
+        disabled={isDisabled}
+        onClick={handleDrawerAction}
+        className={actionClassName}
+      >
+        <span className="whitespace-nowrap">{actionLabel}</span>
+      </button>
+    )
 
   return (
     <article
       data-slot="deployment-overview-environment-tile"
-      className={cn(OVERVIEW_INTERACTIVE_CARD_CLASS_NAME, 'flex min-h-28 min-w-0 flex-col justify-between gap-4')}
+      className={cn(
+        OVERVIEW_INTERACTIVE_CARD_CLASS_NAME,
+        'flex min-h-28 min-w-0 flex-col justify-between gap-4',
+      )}
     >
       <div className="flex min-w-0 items-center justify-between gap-3">
         <div className="flex min-w-0 flex-1 items-center gap-3">
@@ -123,21 +119,22 @@ export function EnvironmentTile({ appInstanceId, row, releaseRows }: Environment
           </div>
         </div>
 
-        {tooltip
-          ? (
-              <TitleTooltip content={tooltip}>
-                <span className="inline-flex max-w-full min-w-0 shrink-0">
-                  {actionControl}
-                </span>
-              </TitleTooltip>
-            )
-          : actionControl}
+        {tooltip ? (
+          <TitleTooltip content={tooltip}>
+            <span className="inline-flex max-w-full min-w-0 shrink-0">{actionControl}</span>
+          </TitleTooltip>
+        ) : (
+          actionControl
+        )}
       </div>
     </article>
   )
 }
 
-function RuntimeStatusSignal({ status, t }: {
+function RuntimeStatusSignal({
+  status,
+  t,
+}: {
   status: RuntimeInstanceStatusValue
   t: ReturnType<typeof useTranslation<'deployments'>>['t']
 }) {
@@ -150,7 +147,12 @@ function RuntimeStatusSignal({ status, t }: {
   )
 }
 
-function StatusSignal({ className, config, drift, t }: {
+function StatusSignal({
+  className,
+  config,
+  drift,
+  t,
+}: {
   className?: string
   config: TileConfig
   drift: ReturnType<typeof computeDrift>

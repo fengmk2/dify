@@ -1,9 +1,4 @@
-import {
-  memo,
-  useCallback,
-  useEffect,
-  useState,
-} from 'react'
+import { memo, useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Textarea from 'react-textarea-autosize'
 
@@ -12,10 +7,7 @@ type TitleInputProps = {
   onBlur: (value: string) => void
 }
 
-export const TitleInput = memo(({
-  value,
-  onBlur,
-}: TitleInputProps) => {
+export const TitleInput = memo(({ value, onBlur }: TitleInputProps) => {
   const { t } = useTranslation()
   const [localValue, setLocalValue] = useState(value)
 
@@ -67,10 +59,7 @@ type DescriptionInputProps = {
   value: string
   onChange: (value: string) => void
 }
-export const DescriptionInput = memo(({
-  value,
-  onChange,
-}: DescriptionInputProps) => {
+export const DescriptionInput = memo(({ value, onChange }: DescriptionInputProps) => {
   const { t } = useTranslation()
   const [focus, setFocus] = useState(false)
   const handleFocus = useCallback(() => {
@@ -90,7 +79,7 @@ export const DescriptionInput = memo(({
     >
       <Textarea
         value={value}
-        onChange={e => onChange(e.target.value)}
+        onChange={(e) => onChange(e.target.value)}
         minRows={1}
         onFocus={handleFocus}
         onBlur={handleBlur}

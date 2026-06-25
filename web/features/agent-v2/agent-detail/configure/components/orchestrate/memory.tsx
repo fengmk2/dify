@@ -43,31 +43,26 @@ function MemoryConfigValue({
         <span aria-hidden className={`${icon} size-4`} />
       </div>
       <div className="min-w-0 flex-1">
-        <div className="system-xs-semibold-uppercase text-text-tertiary">
-          {label}
-        </div>
-        {isPending
-          ? <SkeletonRectangle className="mt-2 h-4 w-28 animate-pulse rounded-md" />
-          : (
-              <div
-                className={cn(
-                  'mt-1 truncate system-sm-semibold',
-                  value ? 'text-text-primary' : 'text-text-quaternary',
-                )}
-                translate={value ? 'no' : undefined}
-              >
-                {value || t('agentDetail.memorySettings.notConfigured')}
-              </div>
+        <div className="system-xs-semibold-uppercase text-text-tertiary">{label}</div>
+        {isPending ? (
+          <SkeletonRectangle className="mt-2 h-4 w-28 animate-pulse rounded-md" />
+        ) : (
+          <div
+            className={cn(
+              'mt-1 truncate system-sm-semibold',
+              value ? 'text-text-primary' : 'text-text-quaternary',
             )}
+            translate={value ? 'no' : undefined}
+          >
+            {value || t('agentDetail.memorySettings.notConfigured')}
+          </div>
+        )}
       </div>
     </div>
   )
 }
 
-export function MemorySettings({
-  isPending,
-  memory,
-}: MemorySettingsProps) {
+export function MemorySettings({ isPending, memory }: MemorySettingsProps) {
   const { t } = useTranslation('agentV2')
 
   return (
@@ -87,7 +82,7 @@ export function MemorySettings({
       </div>
 
       <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-        {memoryConfigFields.map(field => (
+        {memoryConfigFields.map((field) => (
           <MemoryConfigValue
             key={field.key}
             icon={field.icon}
@@ -110,12 +105,7 @@ export function MemorySettings({
             {t('agentDetail.memorySettings.export.description')}
           </p>
         </div>
-        <Button
-          variant="secondary"
-          size="small"
-          disabled
-          className="gap-1.5"
-        >
+        <Button variant="secondary" size="small" disabled className="gap-1.5">
           <span aria-hidden className="i-ri-download-line size-3.5" />
           {t('agentDetail.memorySettings.export.download')}
         </Button>

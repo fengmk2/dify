@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import ListLoading from '../list-loading'
 
 describe('ListLoading', () => {
@@ -11,7 +11,9 @@ describe('ListLoading', () => {
 
     it('should render 5 skeleton items', () => {
       render(<ListLoading />)
-      const skeletonItems = document.querySelectorAll('[class*="bg-components-panel-on-panel-item-bg-hover"]')
+      const skeletonItems = document.querySelectorAll(
+        '[class*="bg-components-panel-on-panel-item-bg-hover"]',
+      )
       expect(skeletonItems.length).toBe(5)
     })
 

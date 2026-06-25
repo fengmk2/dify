@@ -1,5 +1,5 @@
 import type { Label } from '../constant'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 
 describe('tool label type contract', () => {
   it('accepts string labels', () => {

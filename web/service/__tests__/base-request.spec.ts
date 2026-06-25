@@ -1,16 +1,19 @@
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vite-plus/test'
 
 const createUnauthorizedResponse = () =>
-  new Response(JSON.stringify({
-    code: 'unauthorized',
-    message: 'Invalid Authorization token.',
-    status: 401,
-  }), {
-    status: 401,
-    headers: {
-      'Content-Type': 'application/json',
+  new Response(
+    JSON.stringify({
+      code: 'unauthorized',
+      message: 'Invalid Authorization token.',
+      status: 401,
+    }),
+    {
+      status: 401,
+      headers: {
+        'Content-Type': 'application/json',
+      },
     },
-  })
+  )
 
 async function loadServerRequest() {
   vi.resetModules()

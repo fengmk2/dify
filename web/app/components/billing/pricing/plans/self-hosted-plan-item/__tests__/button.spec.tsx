@@ -1,4 +1,4 @@
-import type { MockedFunction } from 'vitest'
+import type { MockedFunction } from 'vite-plus/test'
 import { fireEvent, render, screen } from '@testing-library/react'
 import * as React from 'react'
 import useTheme from '@/hooks/use-theme'
@@ -18,12 +18,7 @@ beforeEach(() => {
 describe('SelfHostedPlanButton', () => {
   it('should invoke handler when clicked', () => {
     const handleGetPayUrl = vi.fn()
-    render(
-      <Button
-        plan={SelfHostedPlan.community}
-        handleGetPayUrl={handleGetPayUrl}
-      />,
-    )
+    render(<Button plan={SelfHostedPlan.community} handleGetPayUrl={handleGetPayUrl} />)
 
     fireEvent.click(screen.getByRole('button', { name: 'billing.plans.community.btnText' }))
     expect(handleGetPayUrl).toHaveBeenCalledTimes(1)
@@ -35,13 +30,10 @@ describe('SelfHostedPlanButton', () => {
   ])('should render premium button label when theme is $label', ({ theme }) => {
     mockUseTheme.mockReturnValue({ theme } as unknown as ReturnType<typeof useTheme>)
 
-    render(
-      <Button
-        plan={SelfHostedPlan.premium}
-        handleGetPayUrl={vi.fn()}
-      />,
-    )
+    render(<Button plan={SelfHostedPlan.premium} handleGetPayUrl={vi.fn()} />)
 
-    expect(screen.getByRole('button', { name: 'billing.plans.premium.btnText' })).toBeInTheDocument()
+    expect(
+      screen.getByRole('button', { name: 'billing.plans.premium.btnText' }),
+    ).toBeInTheDocument()
   })
 })

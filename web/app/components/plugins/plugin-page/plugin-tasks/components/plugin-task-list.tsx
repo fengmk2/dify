@@ -65,12 +65,10 @@ function PluginTaskList({
             plugins={successPlugins}
             getIconUrl={getIconUrl}
             language={language}
-            statusIcon={
-              <span className="i-ri-checkbox-circle-fill size-3.5 text-text-success" />
-            }
+            statusIcon={<span className="i-ri-checkbox-circle-fill size-3.5 text-text-success" />}
             defaultStatusText={t('task.installed', { ns: 'plugin' })}
             statusClassName="text-text-success"
-            headerAction={(
+            headerAction={
               <Button
                 aria-label={`${successSectionTitle} ${t('task.clearAll', { ns: 'plugin' })}`}
                 className="shrink-0"
@@ -80,7 +78,7 @@ function PluginTaskList({
               >
                 {t('task.clearAll', { ns: 'plugin' })}
               </Button>
-            )}
+            }
             onClearSingle={onClearSingle}
           />
         )}
@@ -88,11 +86,7 @@ function PluginTaskList({
         {errorPlugins.length > 0 && (
           <>
             <div className="sticky top-0 flex h-7 items-center justify-between px-2 pt-1 system-sm-semibold-uppercase text-text-secondary">
-              {errorSectionTitle}
-              {' '}
-              (
-              {errorPlugins.length}
-              )
+              {errorSectionTitle} ({errorPlugins.length})
               <Button
                 aria-label={`${errorSectionTitle} ${t('task.clearAll', { ns: 'plugin' })}`}
                 className="shrink-0"
@@ -111,7 +105,7 @@ function PluginTaskList({
                 content: 'min-w-0',
               }}
             >
-              {errorPlugins.map(plugin => (
+              {errorPlugins.map((plugin) => (
                 <ErrorPluginItem
                   key={plugin.plugin_unique_identifier}
                   plugin={plugin}

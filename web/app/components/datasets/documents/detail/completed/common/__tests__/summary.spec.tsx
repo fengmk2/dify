@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import SummaryLabel from '../summary-label'
 import SummaryStatus from '../summary-status'
 import SummaryText from '../summary-text'
@@ -153,7 +153,10 @@ describe('SummaryText', () => {
       render(<SummaryText />)
       const textarea = screen.getByRole('textbox')
       expect(textarea).toBeInTheDocument()
-      expect(textarea).toHaveAttribute('placeholder', expect.stringContaining('segment.summaryPlaceholder'))
+      expect(textarea).toHaveAttribute(
+        'placeholder',
+        expect.stringContaining('segment.summaryPlaceholder'),
+      )
     })
   })
 

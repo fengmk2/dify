@@ -59,9 +59,7 @@ export function AgentFormFields({
               return null
             }}
           >
-            <FieldLabel>
-              {t('roster.createForm.nameLabel')}
-            </FieldLabel>
+            <FieldLabel>{t('roster.createForm.nameLabel')}</FieldLabel>
             <FieldControl
               autoComplete="off"
               // eslint-disable-next-line jsx-a11y/no-autofocus -- Agent roster dialogs open from explicit commands, and the name field is the primary editable control.
@@ -87,9 +85,7 @@ export function AgentFormFields({
               return null
             }}
           >
-            <FieldLabel>
-              {t('roster.createForm.roleLabel')}
-            </FieldLabel>
+            <FieldLabel>{t('roster.createForm.roleLabel')}</FieldLabel>
             <FieldControl
               autoComplete="off"
               maxLength={255}
@@ -106,9 +102,7 @@ export function AgentFormFields({
         </div>
       </div>
       <FieldRoot name="description">
-        <FieldLabel>
-          {t('roster.createForm.descriptionLabel')}
-        </FieldLabel>
+        <FieldLabel>{t('roster.createForm.descriptionLabel')}</FieldLabel>
         <Textarea
           autoComplete="off"
           className="h-20 resize-none"

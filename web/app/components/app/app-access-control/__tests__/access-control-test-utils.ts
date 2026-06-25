@@ -17,23 +17,23 @@ function draftKey(draft: AccessControlDraft) {
   return [
     draft.appId ?? '',
     draft.currentMenu,
-    draft.specificGroups?.map(group => group.id).join(',') ?? '',
-    draft.specificMembers?.map(member => member.id).join(',') ?? '',
-    draft.selectedGroupsForBreadcrumb?.map(group => group.id).join(',') ?? '',
+    draft.specificGroups?.map((group) => group.id).join(',') ?? '',
+    draft.specificMembers?.map((member) => member.id).join(',') ?? '',
+    draft.selectedGroupsForBreadcrumb?.map((group) => group.id).join(',') ?? '',
   ].join(':')
 }
 
-function completeDraft(initialDraft: Partial<AccessControlDraft> = {}): Required<AccessControlDraft> {
+function completeDraft(
+  initialDraft: Partial<AccessControlDraft> = {},
+): Required<AccessControlDraft> {
   return {
     ...emptyDraft,
     ...initialDraft,
   }
 }
 
-function SnapshotProbe({ onSnapshot }: {
-  onSnapshot: (snapshot: AccessControlStore) => void
-}) {
-  onSnapshot(useAccessControlStore(state => state))
+function SnapshotProbe({ onSnapshot }: { onSnapshot: (snapshot: AccessControlStore) => void }) {
+  onSnapshot(useAccessControlStore((state) => state))
   return null
 }
 
@@ -62,7 +62,7 @@ export function createAccessControlDraftHarness(
         initialDraft: draft,
       },
       createElement(SnapshotProbe, {
-        onSnapshot: nextSnapshot => snapshot = nextSnapshot,
+        onSnapshot: (nextSnapshot) => (snapshot = nextSnapshot),
       }),
       children,
     ),

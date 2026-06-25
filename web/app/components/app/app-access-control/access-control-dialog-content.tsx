@@ -39,8 +39,8 @@ export function AccessControlDialogContent({
   onConfirm,
 }: AccessControlDialogContentProps) {
   const { t } = useTranslation()
-  const currentMenu = useAccessControlStore(s => s.currentMenu)
-  const setCurrentMenu = useAccessControlStore(s => s.setCurrentMenu)
+  const currentMenu = useAccessControlStore((s) => s.currentMenu)
+  const setCurrentMenu = useAccessControlStore((s) => s.setCurrentMenu)
 
   return (
     <div className="flex flex-col gap-y-3">
@@ -81,7 +81,10 @@ export function AccessControlDialogContent({
           <AccessControlItem type={AccessMode.EXTERNAL_MEMBERS}>
             <div className="flex items-center p-3">
               <div className="flex grow items-center gap-x-2">
-                <span className="i-ri-verified-badge-line size-4 text-text-primary" aria-hidden="true" />
+                <span
+                  className="i-ri-verified-badge-line size-4 text-text-primary"
+                  aria-hidden="true"
+                />
                 <p className="system-sm-medium text-text-primary">
                   {t('accessControlDialog.accessItems.external', { ns: 'app' })}
                 </p>
@@ -100,8 +103,15 @@ export function AccessControlDialogContent({
         </AccessControlItem>
       </RadioGroup>
       <div className="flex items-center justify-end gap-x-2 p-6 pt-5">
-        <Button disabled={saving} onClick={onClose}>{t('operation.cancel', { ns: 'common' })}</Button>
-        <Button disabled={confirmDisabled || saving} loading={saving} variant="primary" onClick={onConfirm}>
+        <Button disabled={saving} onClick={onClose}>
+          {t('operation.cancel', { ns: 'common' })}
+        </Button>
+        <Button
+          disabled={confirmDisabled || saving}
+          loading={saving}
+          variant="primary"
+          onClick={onConfirm}
+        >
           {t('operation.confirm', { ns: 'common' })}
         </Button>
       </div>

@@ -10,35 +10,40 @@ export type IntegrationHeader = {
 }
 
 export const getPluginCategoryBySection = (section: IntegrationSection) => {
-  if (section === 'builtin')
-    return PluginCategoryEnum.tool
-  if (section === 'trigger')
-    return PluginCategoryEnum.trigger
-  if (section === 'agent-strategy')
-    return PluginCategoryEnum.agent
-  if (section === 'extension')
-    return PluginCategoryEnum.extension
+  if (section === 'builtin') return PluginCategoryEnum.tool
+  if (section === 'trigger') return PluginCategoryEnum.trigger
+  if (section === 'agent-strategy') return PluginCategoryEnum.agent
+  if (section === 'extension') return PluginCategoryEnum.extension
 }
 
 export function useIntegrationNav(section: IntegrationSection) {
   const { t } = useTranslation()
-  const providerItem = useMemo<IntegrationSidebarNavItemData>(() => ({
-    section: 'provider',
-    label: t('settings.provider', { ns: 'common' }),
-    icon: 'i-ri-brain-2-line',
-  }), [t])
-  const dataSourceItem = useMemo<IntegrationSidebarNavItemData>(() => ({
-    section: 'data-source',
-    label: t('settings.dataSource', { ns: 'common' }),
-    icon: 'i-ri-database-2-line',
-    iconClassName: 'size-4',
-  }), [t])
-  const customEndpointItem = useMemo<IntegrationSidebarNavItemData>(() => ({
-    section: 'custom-endpoint',
-    label: t('settings.customEndpoint', { ns: 'common' }),
-    icon: 'i-custom-vender-integrations-api-extension',
-    iconClassName: 'h-[13px] w-3.5',
-  }), [t])
+  const providerItem = useMemo<IntegrationSidebarNavItemData>(
+    () => ({
+      section: 'provider',
+      label: t('settings.provider', { ns: 'common' }),
+      icon: 'i-ri-brain-2-line',
+    }),
+    [t],
+  )
+  const dataSourceItem = useMemo<IntegrationSidebarNavItemData>(
+    () => ({
+      section: 'data-source',
+      label: t('settings.dataSource', { ns: 'common' }),
+      icon: 'i-ri-database-2-line',
+      iconClassName: 'size-4',
+    }),
+    [t],
+  )
+  const customEndpointItem = useMemo<IntegrationSidebarNavItemData>(
+    () => ({
+      section: 'custom-endpoint',
+      label: t('settings.customEndpoint', { ns: 'common' }),
+      icon: 'i-custom-vender-integrations-api-extension',
+      iconClassName: 'h-[13px] w-3.5',
+    }),
+    [t],
+  )
   const toolItems = useMemo<IntegrationSidebarNavItemData[]>(() => {
     const items: IntegrationSidebarNavItemData[] = [
       {
@@ -76,27 +81,36 @@ export function useIntegrationNav(section: IntegrationSection) {
 
     return items
   }, [t])
-  const secondaryItems = useMemo<IntegrationSidebarNavItemData[]>(() => [
-    {
-      section: 'trigger',
-      label: t('categorySingle.trigger', { ns: 'plugin' }),
-      icon: 'i-custom-vender-integrations-trigger',
-      iconClassName: 'h-[13.5px] w-[13.5px]',
-    },
-    {
-      section: 'agent-strategy',
-      label: t('categorySingle.agent', { ns: 'plugin' }),
-      icon: 'i-custom-vender-integrations-agent-strategy',
-      iconClassName: 'h-[14.5px] w-[15.5px]',
-    },
-    {
-      section: 'extension',
-      label: t('categorySingle.extension', { ns: 'plugin' }),
-      icon: 'i-custom-vender-integrations-extension',
-      iconClassName: 'h-[13.5px] w-3',
-    },
-  ], [t])
-  const activeItem = [providerItem, dataSourceItem, ...toolItems, ...secondaryItems, customEndpointItem].find(item => item.section === section)
+  const secondaryItems = useMemo<IntegrationSidebarNavItemData[]>(
+    () => [
+      {
+        section: 'trigger',
+        label: t('categorySingle.trigger', { ns: 'plugin' }),
+        icon: 'i-custom-vender-integrations-trigger',
+        iconClassName: 'h-[13.5px] w-[13.5px]',
+      },
+      {
+        section: 'agent-strategy',
+        label: t('categorySingle.agent', { ns: 'plugin' }),
+        icon: 'i-custom-vender-integrations-agent-strategy',
+        iconClassName: 'h-[14.5px] w-[15.5px]',
+      },
+      {
+        section: 'extension',
+        label: t('categorySingle.extension', { ns: 'plugin' }),
+        icon: 'i-custom-vender-integrations-extension',
+        iconClassName: 'h-[13.5px] w-3',
+      },
+    ],
+    [t],
+  )
+  const activeItem = [
+    providerItem,
+    dataSourceItem,
+    ...toolItems,
+    ...secondaryItems,
+    customEndpointItem,
+  ].find((item) => item.section === section)
   const integrationHeader = useMemo<IntegrationHeader | null>(() => {
     switch (section) {
       case 'builtin':

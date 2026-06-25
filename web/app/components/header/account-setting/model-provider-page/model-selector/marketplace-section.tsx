@@ -29,8 +29,7 @@ function MarketplaceSection({
 }: MarketplaceSectionProps) {
   const { t } = useTranslation()
 
-  if (marketplaceProviders.length === 0)
-    return null
+  if (marketplaceProviders.length === 0) return null
 
   return (
     <>
@@ -45,7 +44,12 @@ function MarketplaceSection({
             onClick={() => onMarketplaceCollapsedChange(!marketplaceCollapsed)}
           >
             {t('modelProvider.selector.fromMarketplace', { ns: 'common' })}
-            <span className={cn('i-custom-vender-solid-general-arrow-down-round-fill size-4 text-text-quaternary', marketplaceCollapsed && '-rotate-90')} />
+            <span
+              className={cn(
+                'i-custom-vender-solid-general-arrow-down-round-fill size-4 text-text-quaternary',
+                marketplaceCollapsed && '-rotate-90',
+              )}
+            />
           </button>
         </div>
         {!marketplaceCollapsed && (
@@ -60,7 +64,9 @@ function MarketplaceSection({
                 >
                   <div className="flex flex-1 items-center gap-2 py-0.5">
                     <Icon className="size-5 shrink-0 rounded-md" />
-                    <span className="system-sm-regular text-text-secondary">{modelNameMap[key]}</span>
+                    <span className="system-sm-regular text-text-secondary">
+                      {modelNameMap[key]}
+                    </span>
                   </div>
                   {canInstallPlugin && (
                     <Button
@@ -73,7 +79,9 @@ function MarketplaceSection({
                       disabled={isInstalling || isMarketplacePluginsLoading}
                       onClick={() => onInstallPlugin(key)}
                     >
-                      {isInstalling && <span className="i-ri-loader-2-line size-3.5 animate-spin" />}
+                      {isInstalling && (
+                        <span className="i-ri-loader-2-line size-3.5 animate-spin" />
+                      )}
                       {isInstalling
                         ? t('installModal.installing', { ns: 'plugin' })
                         : t('modelProvider.selector.install', { ns: 'common' })}

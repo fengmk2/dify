@@ -12,10 +12,10 @@ function isPathUnderRoute(pathname: string, route: string) {
 export function RoleRouteGuard({ children }: { children: ReactNode }) {
   const { data: systemFeatures } = useSuspenseQuery(systemFeaturesQueryOptions())
   const pathname = usePathname()
-  const shouldRedirectAppDeploy = isPathUnderRoute(pathname, '/deployments') && !systemFeatures.enable_app_deploy
+  const shouldRedirectAppDeploy =
+    isPathUnderRoute(pathname, '/deployments') && !systemFeatures.enable_app_deploy
 
-  if (shouldRedirectAppDeploy)
-    redirect('/apps')
+  if (shouldRedirectAppDeploy) redirect('/apps')
 
   return <>{children}</>
 }

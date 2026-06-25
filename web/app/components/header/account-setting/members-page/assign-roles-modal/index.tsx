@@ -30,7 +30,7 @@ const AssignRolesModalBody = ({
 }: AssignRolesModalBodyProps) => {
   const { t } = useTranslation()
   const [selected, setSelected] = useState(selectedRoles)
-  const selectedRoleIds = selected.map(role => role.id)
+  const selectedRoleIds = selected.map((role) => role.id)
   const isConfirmDisabled = selected.length === 0
   const title = allowMultipleRoles
     ? t('members.assignRolesModal.title', { ns: 'common', defaultValue: 'Assign Roles' })
@@ -47,8 +47,7 @@ const AssignRolesModalBody = ({
       })
 
   const handleConfirm = () => {
-    if (isConfirmDisabled)
-      return
+    if (isConfirmDisabled) return
 
     onSubmit(selected)
     onClose()
@@ -62,9 +61,7 @@ const AssignRolesModalBody = ({
       <div className="relative shrink-0 px-6 pt-6 pb-4">
         <DialogCloseButton />
         <div className="pr-8">
-          <DialogTitle className="system-xl-semibold text-text-primary">
-            {title}
-          </DialogTitle>
+          <DialogTitle className="system-xl-semibold text-text-primary">{title}</DialogTitle>
           <DialogDescription className="mt-1 system-sm-regular text-text-tertiary">
             {description}
           </DialogDescription>
@@ -110,8 +107,7 @@ const AssignRolesModal = ({
     <Dialog
       open
       onOpenChange={(nextOpen) => {
-        if (!nextOpen)
-          onClose()
+        if (!nextOpen) onClose()
       }}
     >
       <AssignRolesModalBody

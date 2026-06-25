@@ -1,5 +1,5 @@
 import { fireEvent, screen, waitFor } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { renderWithSystemFeatures } from '@/__tests__/utils/mock-system-features'
 import { AppPublisher } from '@/app/components/app/app-publisher'
 import { AccessMode } from '@/models/access-control'
@@ -35,15 +35,16 @@ const renderWithQueryClient = (ui: React.ReactElement) =>
 
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
-    t: (key: string, options?: { ns?: string }) => options?.ns ? `${options.ns}.${key}` : key,
+    t: (key: string, options?: { ns?: string }) => (options?.ns ? `${options.ns}.${key}` : key),
   }),
 }))
 
 vi.mock('@/app/components/app/store', () => ({
-  useStore: (selector: (state: Record<string, unknown>) => unknown) => selector({
-    appDetail: mockAppDetail,
-    setAppDetail: mockSetAppDetail,
-  }),
+  useStore: (selector: (state: Record<string, unknown>) => unknown) =>
+    selector({
+      appDetail: mockAppDetail,
+      setAppDetail: mockSetAppDetail,
+    }),
 }))
 
 vi.mock('@/hooks/use-format-time-from-now', () => ({
@@ -97,8 +98,12 @@ vi.mock('@/app/components/app/app-access-control', () => ({
     onClose: () => void
   }) => (
     <div data-testid="access-control-modal">
-      <button type="button" onClick={() => void onConfirm()}>confirm-access-control</button>
-      <button type="button" onClick={onClose}>close-access-control</button>
+      <button type="button" onClick={() => void onConfirm()}>
+        confirm-access-control
+      </button>
+      <button type="button" onClick={onClose}>
+        close-access-control
+      </button>
     </div>
   ),
 }))
@@ -140,12 +145,17 @@ describe('App Access Control Flow', () => {
     await waitFor(() => {
       expect(mockFetchAppDetail).toHaveBeenCalledWith({ url: '/apps', id: 'app-1' })
     })
-    expect(setQueryDataSpy).toHaveBeenCalledWith(['apps', 'detail', 'app-1'], expect.objectContaining({
-      access_mode: AccessMode.PUBLIC,
-    }))
-    expect(mockSetAppDetail).toHaveBeenCalledWith(expect.objectContaining({
-      access_mode: AccessMode.PUBLIC,
-    }))
+    expect(setQueryDataSpy).toHaveBeenCalledWith(
+      ['apps', 'detail', 'app-1'],
+      expect.objectContaining({
+        access_mode: AccessMode.PUBLIC,
+      }),
+    )
+    expect(mockSetAppDetail).toHaveBeenCalledWith(
+      expect.objectContaining({
+        access_mode: AccessMode.PUBLIC,
+      }),
+    )
 
     await waitFor(() => {
       expect(screen.queryByTestId('access-control-modal')).not.toBeInTheDocument()

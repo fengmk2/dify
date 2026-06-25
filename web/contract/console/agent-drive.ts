@@ -42,11 +42,13 @@ const agentDriveSkillsByAgentContract = base
     path: '/agent/{agent_id}/drive/skills',
     method: 'GET',
   })
-  .input(type<{
-    params: {
-      agent_id: string
-    }
-  }>())
+  .input(
+    type<{
+      params: {
+        agent_id: string
+      }
+    }>(),
+  )
   .output(type<{ items: AgentDriveSkillItem[] }>())
 
 const agentDriveSkillInspectByAgentContract = base
@@ -54,12 +56,14 @@ const agentDriveSkillInspectByAgentContract = base
     path: '/agent/{agent_id}/drive/skills/{skill_path}/inspect',
     method: 'GET',
   })
-  .input(type<{
-    params: {
-      agent_id: string
-      skill_path: string
-    }
-  }>())
+  .input(
+    type<{
+      params: {
+        agent_id: string
+        skill_path: string
+      }
+    }>(),
+  )
   .output(type<AgentDriveSkillInspect>())
 
 const agentDriveSkillsByAppContract = base
@@ -67,14 +71,16 @@ const agentDriveSkillsByAppContract = base
     path: '/apps/{app_id}/agent/drive/skills',
     method: 'GET',
   })
-  .input(type<{
-    params: {
-      app_id: string
-    }
-    query?: {
-      node_id?: string
-    }
-  }>())
+  .input(
+    type<{
+      params: {
+        app_id: string
+      }
+      query?: {
+        node_id?: string
+      }
+    }>(),
+  )
   .output(type<{ items: AgentDriveSkillItem[] }>())
 
 const agentDriveSkillInspectByAppContract = base
@@ -82,15 +88,17 @@ const agentDriveSkillInspectByAppContract = base
     path: '/apps/{app_id}/agent/drive/skills/{skill_path}/inspect',
     method: 'GET',
   })
-  .input(type<{
-    params: {
-      app_id: string
-      skill_path: string
-    }
-    query?: {
-      node_id?: string
-    }
-  }>())
+  .input(
+    type<{
+      params: {
+        app_id: string
+        skill_path: string
+      }
+      query?: {
+        node_id?: string
+      }
+    }>(),
+  )
   .output(type<AgentDriveSkillInspect>())
 
 export const agentDriveContracts = {

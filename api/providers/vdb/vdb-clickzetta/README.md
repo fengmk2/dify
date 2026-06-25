@@ -70,7 +70,7 @@ CREATE TABLE <collection_name> (
 
 -- Vector index for similarity search
 CREATE VECTOR INDEX idx_<collection_name>_vec
-ON TABLE <schema>.<collection_name>(vector) 
+ON TABLE <schema>.<collection_name>(vector)
 PROPERTIES (
     "distance.function" = "cosine_distance",
     "scalar.type" = "f32"

@@ -7,28 +7,32 @@ import { createAccessControlDraftHarness } from './access-control-test-utils'
 const mockUseSearchForWhiteListCandidates = vi.fn()
 
 vi.mock('@/service/access-control', () => ({
-  useSearchForWhiteListCandidates: (...args: unknown[]) => mockUseSearchForWhiteListCandidates(...args),
+  useSearchForWhiteListCandidates: (...args: unknown[]) =>
+    mockUseSearchForWhiteListCandidates(...args),
 }))
 
 vi.mock('@/service/access-control/use-app-access-control', () => ({
-  useSearchForWhiteListCandidates: (...args: unknown[]) => mockUseSearchForWhiteListCandidates(...args),
+  useSearchForWhiteListCandidates: (...args: unknown[]) =>
+    mockUseSearchForWhiteListCandidates(...args),
 }))
 
-const createGroup = (overrides: Partial<AccessControlGroup> = {}): AccessControlGroup => ({
-  id: 'group-1',
-  name: 'Group One',
-  groupSize: 5,
-  ...overrides,
-} as AccessControlGroup)
+const createGroup = (overrides: Partial<AccessControlGroup> = {}): AccessControlGroup =>
+  ({
+    id: 'group-1',
+    name: 'Group One',
+    groupSize: 5,
+    ...overrides,
+  }) as AccessControlGroup
 
-const createMember = (overrides: Partial<AccessControlAccount> = {}): AccessControlAccount => ({
-  id: 'member-1',
-  name: 'Member One',
-  email: 'member@example.com',
-  avatar: '',
-  avatarUrl: '',
-  ...overrides,
-} as AccessControlAccount)
+const createMember = (overrides: Partial<AccessControlAccount> = {}): AccessControlAccount =>
+  ({
+    id: 'member-1',
+    name: 'Member One',
+    email: 'member@example.com',
+    avatar: '',
+    avatarUrl: '',
+    ...overrides,
+  }) as AccessControlAccount
 
 describe('SpecificGroupsOrMembers', () => {
   const baseGroup = createGroup()
@@ -45,10 +49,9 @@ describe('SpecificGroupsOrMembers', () => {
   })
 
   it('should render the collapsed row when not in specific mode', () => {
-    const harness = createAccessControlDraftHarness(
-      <SpecificGroupsOrMembers />,
-      { currentMenu: AccessMode.ORGANIZATION },
-    )
+    const harness = createAccessControlDraftHarness(<SpecificGroupsOrMembers />, {
+      currentMenu: AccessMode.ORGANIZATION,
+    })
 
     render(harness.element)
 
@@ -68,14 +71,11 @@ describe('SpecificGroupsOrMembers', () => {
   })
 
   it('should render fetched groups and members and support removal', async () => {
-    const harness = createAccessControlDraftHarness(
-      <SpecificGroupsOrMembers />,
-      {
-        appId: 'app-1',
-        specificGroups: [baseGroup],
-        specificMembers: [baseMember],
-      },
-    )
+    const harness = createAccessControlDraftHarness(<SpecificGroupsOrMembers />, {
+      appId: 'app-1',
+      specificGroups: [baseGroup],
+      specificMembers: [baseMember],
+    })
 
     render(harness.element)
 

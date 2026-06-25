@@ -2,10 +2,7 @@ import type { ToolsContentInset } from '../content-inset'
 import type { useMarketplace } from './hooks'
 import type { SearchParamsFromCollection } from '@/app/components/plugins/marketplace/types'
 import { cn } from '@langgenius/dify-ui/cn'
-import {
-  RiArrowRightUpLine,
-  RiArrowUpDoubleLine,
-} from '@remixicon/react'
+import { RiArrowRightUpLine, RiArrowUpDoubleLine } from '@remixicon/react'
 import { useTheme } from 'next-themes'
 import { useTranslation } from 'react-i18next'
 import { useLocale } from '#i18n'
@@ -37,25 +34,17 @@ const Marketplace = ({
   const { theme } = useTheme()
   const router = useRouter()
   const { canInstallPlugin } = usePluginSettingsAccess()
-  const {
-    isLoading,
-    marketplaceCollections,
-    marketplaceCollectionPluginsMap,
-    plugins,
-    page,
-  } = marketplaceContext
+  const { isLoading, marketplaceCollections, marketplaceCollectionPluginsMap, plugins, page } =
+    marketplaceContext
   const contentPaddingClassName = toolsContentInsetClassNames[contentInset]
   const marketplaceFrameClassName = cn(contentPaddingClassName, toolsUnifiedContentFrameClassName)
   const cardContainerClassName = 'grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3'
   const handleCollectionMoreClick = (searchParams?: SearchParamsFromCollection) => {
     const params = new URLSearchParams({ category: 'tool' })
 
-    if (searchParams?.query)
-      params.set('q', searchParams.query)
-    if (searchParams?.sort_by)
-      params.set('sort_by', searchParams.sort_by)
-    if (searchParams?.sort_order)
-      params.set('sort_order', searchParams.sort_order)
+    if (searchParams?.query) params.set('q', searchParams.query)
+    if (searchParams?.sort_by) params.set('sort_by', searchParams.sort_by)
+    if (searchParams?.sort_order) params.set('sort_order', searchParams.sort_order)
 
     router.push(`/marketplace?${params.toString()}`)
   }
@@ -104,7 +93,12 @@ const Marketplace = ({
             </span>
             {t('operation.in', { ns: 'common' })}
             <a
-              href={getMarketplaceUrl('', { language: locale, q: searchPluginText, tags: filterPluginTags.join(','), theme })}
+              href={getMarketplaceUrl('', {
+                language: locale,
+                q: searchPluginText,
+                tags: filterPluginTags.join(','),
+                theme,
+              })}
               className="ml-1 flex items-center system-sm-medium text-text-accent"
               target="_blank"
             >
@@ -115,27 +109,23 @@ const Marketplace = ({
         </div>
       </div>
       <div className="mt-[-14px] shrink-0 grow bg-background-default-subtle pb-2">
-        {
-          isLoading && page === 1 && (
-            <div className="absolute top-1/2 left-1/2 -translate-1/2">
-              <Loading />
-            </div>
-          )
-        }
-        {
-          (!isLoading || page > 1) && (
-            <div className={marketplaceFrameClassName}>
-              <List
-                marketplaceCollections={marketplaceCollections || []}
-                marketplaceCollectionPluginsMap={marketplaceCollectionPluginsMap || {}}
-                plugins={plugins}
-                showInstallButton={canInstallPlugin}
-                cardContainerClassName={cardContainerClassName}
-                onCollectionMoreClick={handleCollectionMoreClick}
-              />
-            </div>
-          )
-        }
+        {isLoading && page === 1 && (
+          <div className="absolute top-1/2 left-1/2 -translate-1/2">
+            <Loading />
+          </div>
+        )}
+        {(!isLoading || page > 1) && (
+          <div className={marketplaceFrameClassName}>
+            <List
+              marketplaceCollections={marketplaceCollections || []}
+              marketplaceCollectionPluginsMap={marketplaceCollectionPluginsMap || {}}
+              plugins={plugins}
+              showInstallButton={canInstallPlugin}
+              cardContainerClassName={cardContainerClassName}
+              onCollectionMoreClick={handleCollectionMoreClick}
+            />
+          </div>
+        )}
       </div>
     </>
   )

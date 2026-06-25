@@ -5,7 +5,7 @@
  * and schema validation for various input types.
  */
 import type { InputVar } from '@/models/pipeline'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 import { PipelineInputVarType } from '@/models/pipeline'
 
 // Mock the config module for VAR_ITEM_TEMPLATE_IN_PIPELINE
@@ -26,9 +26,8 @@ vi.mock('@/config', () => ({
 }))
 
 // Import real functions (not mocked)
-const { convertToInputFieldFormData, convertFormDataToINputField } = await import(
-  '@/app/components/rag-pipeline/components/panel/input-field/editor/utils',
-)
+const { convertToInputFieldFormData, convertFormDataToINputField } =
+  await import('@/app/components/rag-pipeline/components/panel/input-field/editor/utils')
 
 describe('Input Field Editor Data Flow', () => {
   describe('convertToInputFieldFormData', () => {

@@ -19,8 +19,7 @@ function useMCPCreateAction({ handleCreate }: Props) {
   const [showModal, setShowModal] = useState(false)
 
   const create = async (info: Parameters<typeof createMCP>[0]) => {
-    if (!canManageMCP)
-      return
+    if (!canManageMCP) return
 
     const provider = await createMCP(info)
     await handleCreate(provider)
@@ -37,15 +36,9 @@ function useMCPCreateAction({ handleCreate }: Props) {
 export function NewMCPButton({ handleCreate }: Props) {
   const { t } = useTranslation()
   const addMCPServerLabel = t('mcp.create.cardTitle', { ns: 'tools' })
-  const {
-    canManageMCP,
-    create,
-    setShowModal,
-    showModal,
-  } = useMCPCreateAction({ handleCreate })
+  const { canManageMCP, create, setShowModal, showModal } = useMCPCreateAction({ handleCreate })
 
-  if (!canManageMCP)
-    return null
+  if (!canManageMCP) return null
 
   return (
     <>
@@ -60,11 +53,7 @@ export function NewMCPButton({ handleCreate }: Props) {
         {addMCPServerLabel}
       </Button>
       {canManageMCP && showModal && (
-        <MCPModal
-          show={showModal}
-          onConfirm={create}
-          onHide={() => setShowModal(false)}
-        />
+        <MCPModal show={showModal} onConfirm={create} onHide={() => setShowModal(false)} />
       )}
     </>
   )
@@ -73,12 +62,7 @@ export function NewMCPButton({ handleCreate }: Props) {
 const NewMCPCard = ({ handleCreate }: Props) => {
   const { t } = useTranslation()
   const docLink = useDocLink()
-  const {
-    canManageMCP,
-    create,
-    setShowModal,
-    showModal,
-  } = useMCPCreateAction({ handleCreate })
+  const { canManageMCP, create, setShowModal, showModal } = useMCPCreateAction({ handleCreate })
 
   const linkUrl = useMemo(() => docLink('/use-dify/build/mcp'), [docLink])
 
@@ -93,11 +77,7 @@ const NewMCPCard = ({ handleCreate }: Props) => {
         />
       )}
       {canManageMCP && showModal && (
-        <MCPModal
-          show={showModal}
-          onConfirm={create}
-          onHide={() => setShowModal(false)}
-        />
+        <MCPModal show={showModal} onConfirm={create} onHide={() => setShowModal(false)} />
       )}
     </>
   )

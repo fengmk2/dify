@@ -15,7 +15,7 @@ permissions:
 jobs:
   python-style:
     name: Python Style
-    runs-on: depot-ubuntu-24.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
@@ -36,7 +36,7 @@ jobs:
         uses: astral-sh/setup-uv@fac544c07dec837d0ccb6301d7b5580bf5edae39 # v8.2.0
         with:
           enable-cache: false
-          python-version: "3.12"
+          python-version: '3.12'
           cache-dependency-glob: api/uv.lock
 
       - name: Install dependencies
@@ -61,7 +61,7 @@ jobs:
 
   web-style:
     name: Web Style
-    runs-on: depot-ubuntu-24.04
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./web
@@ -115,7 +115,7 @@ jobs:
 
   ts-common-style:
     name: TS Common
-    runs-on: depot-ubuntu-24.04
+    runs-on: ubuntu-latest
     permissions:
       checks: write
       pull-requests: read
@@ -175,7 +175,7 @@ jobs:
 
   superlinter:
     name: SuperLinter
-    runs-on: depot-ubuntu-24.04
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code

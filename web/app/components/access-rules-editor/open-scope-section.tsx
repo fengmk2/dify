@@ -13,29 +13,28 @@ type ResourceOpenScopeSectionProps = {
   onChange?: (openScope: ResourceOpenScope) => void
 }
 
-function ResourceOpenScopeSection({
-  value,
-  disabled,
-  onChange,
-}: ResourceOpenScopeSectionProps) {
+function ResourceOpenScopeSection({ value, disabled, onChange }: ResourceOpenScopeSectionProps) {
   const { t } = useTranslation()
   const [pendingOpenScope, setPendingOpenScope] = useState<ResourceOpenScope | null>(null)
-  const resourceOpenScopeDescription = t('accessRule.resourceOpenScopeDescription', { ns: 'permission' })
+  const resourceOpenScopeDescription = t('accessRule.resourceOpenScopeDescription', {
+    ns: 'permission',
+  })
 
-  const handleRequestChange = useCallback((nextOpenScope: ResourceOpenScope) => {
-    if (nextOpenScope === value)
-      return
+  const handleRequestChange = useCallback(
+    (nextOpenScope: ResourceOpenScope) => {
+      if (nextOpenScope === value) return
 
-    setPendingOpenScope(nextOpenScope)
-  }, [value])
+      setPendingOpenScope(nextOpenScope)
+    },
+    [value],
+  )
 
   const handleCancelChange = useCallback(() => {
     setPendingOpenScope(null)
   }, [])
 
   const handleConfirmChange = useCallback(() => {
-    if (!pendingOpenScope)
-      return
+    if (!pendingOpenScope) return
 
     onChange?.(pendingOpenScope)
     setPendingOpenScope(null)

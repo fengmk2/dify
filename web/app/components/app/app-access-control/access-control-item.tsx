@@ -4,7 +4,10 @@ import type { AccessMode } from '@/models/access-control'
 import { cn } from '@langgenius/dify-ui/cn'
 import { RadioRoot } from '@langgenius/dify-ui/radio'
 
-export function AccessControlItem({ type, children }: PropsWithChildren<{
+export function AccessControlItem({
+  type,
+  children,
+}: PropsWithChildren<{
   type: AccessMode
 }>) {
   return (

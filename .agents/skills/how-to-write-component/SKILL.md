@@ -9,15 +9,15 @@ Use this as the component decision guide for Dify web. Existing code is referenc
 
 ## First Decisions
 
-| Question | Default | Promote or extract only when |
-| --- | --- | --- |
-| Where should code live? | Keep it local to the feature workflow, route, or owner. | Multiple verticals need the same stable primitive. |
-| Who owns state, data, and handlers? | The lowest component that uses them. | A parent coordinates shared loading, errors, empty UI, selection, submission, navigation, or one consistent snapshot. |
-| Should this become Jotai state? | Keep synchronous UI/form state in component or DOM state. | Siblings need one source of truth, the value drives atoms, or scoped workflow state must survive hidden/unmounted steps. |
-| Should URL state enter Jotai? | Let Next.js route params and `nuqs` own URL state and updates. | Query atoms or shared derived atoms need a read-only bridge hydrated at the route/surface boundary. |
-| Should this query/mutation become an atom? | Use TanStack Query hooks at the lowest owner. | It reads atom state, feeds derived atoms, or participates in shared Jotai workflow orchestration. |
-| Should this be a helper/wrapper? | Prefer direct readable code at the use site. | The name captures a stable domain rule or the wrapper owns real behavior, validation, state, error handling, or semantics. |
-| Is an Effect needed? | No. Derive during render or handle the user action in the event handler. | It synchronizes with an external system such as browser APIs, subscriptions, timers, analytics, or imperative DOM/non-React widgets. |
+| Question                                   | Default                                                                  | Promote or extract only when                                                                                                         |
+| ------------------------------------------ | ------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------ |
+| Where should code live?                    | Keep it local to the feature workflow, route, or owner.                  | Multiple verticals need the same stable primitive.                                                                                   |
+| Who owns state, data, and handlers?        | The lowest component that uses them.                                     | A parent coordinates shared loading, errors, empty UI, selection, submission, navigation, or one consistent snapshot.                |
+| Should this become Jotai state?            | Keep synchronous UI/form state in component or DOM state.                | Siblings need one source of truth, the value drives atoms, or scoped workflow state must survive hidden/unmounted steps.             |
+| Should URL state enter Jotai?              | Let Next.js route params and `nuqs` own URL state and updates.           | Query atoms or shared derived atoms need a read-only bridge hydrated at the route/surface boundary.                                  |
+| Should this query/mutation become an atom? | Use TanStack Query hooks at the lowest owner.                            | It reads atom state, feeds derived atoms, or participates in shared Jotai workflow orchestration.                                    |
+| Should this be a helper/wrapper?           | Prefer direct readable code at the use site.                             | The name captures a stable domain rule or the wrapper owns real behavior, validation, state, error handling, or semantics.           |
+| Is an Effect needed?                       | No. Derive during render or handle the user action in the event handler. | It synchronizes with an external system such as browser APIs, subscriptions, timers, analytics, or imperative DOM/non-React widgets. |
 
 ## Core Defaults
 

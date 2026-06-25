@@ -22,7 +22,7 @@ import useTheme from '@/hooks/use-theme'
 import { getDocLanguage } from '@/i18n-config/language'
 import { AppModeEnum, Theme } from '@/types/app'
 
-type PromptVariable = { key: string, name: string }
+type PromptVariable = { key: string; name: string }
 type WorkflowApiDocAppDetail = Pick<App, 'id' | 'mode' | 'api_base_url'>
 
 type WorkflowDocTemplateProps = {
@@ -34,35 +34,22 @@ type WorkflowDocTemplateProps = {
 const EMPTY_VARIABLES: PromptVariable[] = []
 const EMPTY_INPUTS: Record<string, string> = {}
 
-function WorkflowDocTemplate({ docLanguage, appDetail, variables, inputs }: WorkflowDocTemplateProps & {
+function WorkflowDocTemplate({
+  docLanguage,
+  appDetail,
+  variables,
+  inputs,
+}: WorkflowDocTemplateProps & {
   docLanguage: string
 }) {
   if (docLanguage === 'zh') {
-    return (
-      <TemplateWorkflowZh
-        appDetail={appDetail}
-        variables={variables}
-        inputs={inputs}
-      />
-    )
+    return <TemplateWorkflowZh appDetail={appDetail} variables={variables} inputs={inputs} />
   }
   if (docLanguage === 'ja') {
-    return (
-      <TemplateWorkflowJa
-        appDetail={appDetail}
-        variables={variables}
-        inputs={inputs}
-      />
-    )
+    return <TemplateWorkflowJa appDetail={appDetail} variables={variables} inputs={inputs} />
   }
 
-  return (
-    <TemplateWorkflowEn
-      appDetail={appDetail}
-      variables={variables}
-      inputs={inputs}
-    />
-  )
+  return <TemplateWorkflowEn appDetail={appDetail} variables={variables} inputs={inputs} />
 }
 
 export function DeveloperApiDocsDrawer({
@@ -87,12 +74,7 @@ export function DeveloperApiDocsDrawer({
   }
 
   return (
-    <Drawer
-      open={open}
-      modal
-      swipeDirection="right"
-      onOpenChange={onOpenChange}
-    >
+    <Drawer open={open} modal swipeDirection="right" onOpenChange={onOpenChange}>
       <DrawerPortal>
         <DrawerBackdrop />
         <DrawerViewport>

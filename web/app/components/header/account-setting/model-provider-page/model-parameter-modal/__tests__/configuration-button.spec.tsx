@@ -1,6 +1,6 @@
 import type { ComponentProps } from 'react'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { vi } from 'vitest'
+import { vi } from 'vite-plus/test'
 import { ConfigurationMethodEnum } from '../../declarations'
 import ConfigurationButton from '../configuration-button'
 
@@ -11,7 +11,9 @@ describe('ConfigurationButton', () => {
 
     render(
       <ConfigurationButton
-        modelProvider={modelProvider as unknown as ComponentProps<typeof ConfigurationButton>['modelProvider']}
+        modelProvider={
+          modelProvider as unknown as ComponentProps<typeof ConfigurationButton>['modelProvider']
+        }
         handleOpenModal={handleOpenModal}
       />,
     )

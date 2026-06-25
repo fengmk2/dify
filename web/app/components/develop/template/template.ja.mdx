@@ -9,12 +9,16 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
   ### ベース URL
   <CodeGroup title="コード" targetCode={props.appDetail.api_base_url} />
 
-  ### 認証
+### 認証
 
-  サービス API は `API-Key` 認証を使用します。
-  <i>**API キーの漏洩による重大な結果を避けるため、API キーはサーバーサイドに保存し、クライアントサイドでは共有や保存しないことを強く推奨します。**</i>
+サービス API は `API-Key` 認証を使用します。
 
-  すべての API リクエストで、以下のように `Authorization` HTTP ヘッダーに API キーを含めてください：
+<i>
+  **API キーの漏洩による重大な結果を避けるため、API
+  キーはサーバーサイドに保存し、クライアントサイドでは共有や保存しないことを強く推奨します。**
+</i>
+
+すべての API リクエストで、以下のように `Authorization` HTTP ヘッダーに API キーを含めてください：
 
   <CodeGroup title="コード" targetCode='Authorization: Bearer {API_KEY}' />
 </div>
@@ -151,17 +155,17 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="POST"
       label="/completion-messages"
       targetCode={`curl -X POST '${props.appDetail.api_base_url}/completion-messages' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --header 'Content-Type: application/json' \\
 --data-raw '{
-    "inputs": {"query": "Hello, world!"},
-    "response_mode": "streaming",
-    "user": "abc-123"
+"inputs": {"query": "Hello, world!"},
+"response_mode": "streaming",
+"user": "abc-123"
 }'`}
-    />
-    ### ブロッキングモード
-    <CodeGroup title="Response">
-    ```json {{ title: 'Response' }}
+/> ### ブロッキングモード
+<CodeGroup title="Response">
+`json {{ title: 'Response' }}
     {
       "event": "message",
       "message_id": "9da23599-e713-473b-982c-4328d4f5c78a",
@@ -185,11 +189,10 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       },
       "created_at": 1705407629
   }
-    ```
-    </CodeGroup>
-    ### ストリーミングモード
-    <CodeGroup title="Response">
-    ```streaming {{ title: 'Response' }}
+    `
+</CodeGroup> ### ストリーミングモード
+<CodeGroup title="Response">
+`streaming {{ title: 'Response' }}
       data: {"event": "message", "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290", "answer": " I", "created_at": 1679586595}
       data: {"event": "message", "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290", "answer": "'m", "created_at": 1679586595}
       data: {"event": "message", "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290", "answer": " glad", "created_at": 1679586595}
@@ -199,12 +202,14 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       data: {"event": "message_end", "id": "5e52ce04-874b-4d27-9045-b3bc80def685", "metadata": {"usage": {"prompt_tokens": 1033, "prompt_unit_price": "0.001", "prompt_price_unit": "0.001", "prompt_price": "0.0010330", "completion_tokens": 135, "completion_unit_price": "0.002", "completion_price_unit": "0.001", "completion_price": "0.0002700", "total_tokens": 1168, "total_price": "0.0013030", "currency": "USD", "latency": 1.381760165997548}}}
       data: {"event": "tts_message", "conversation_id": "23dd85f3-1a41-4ea0-b7a9-062734ccfaf9", "message_id": "a8bdc41c-13b2-4c18-bfd9-054b9803038c", "created_at": 1721205487, "task_id": "3bf8a0bb-e73b-4690-9e66-4e429bad8ee7", "audio": "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"}
       data: {"event": "tts_message_end", "conversation_id": "23dd85f3-1a41-4ea0-b7a9-062734ccfaf9", "message_id": "a8bdc41c-13b2-4c18-bfd9-054b9803038c", "created_at": 1721205487, "task_id": "3bf8a0bb-e73b-4690-9e66-4e429bad8ee7", "audio": ""}
-    ```
-    </CodeGroup>
+    `
+</CodeGroup>
+
   </Col>
 </Row>
 
 ---
+
 <Heading
   url='/files/upload'
   method='POST'
@@ -217,34 +222,39 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
   png、jpg、jpeg、webp、gif 形式に対応しています。
   <i>アップロードされたファイルは、現在のエンドユーザーのみが使用できます。</i>
 
-  ### リクエストボディ
-  このインターフェースは`multipart/form-data`リクエストが必要です。
-  - `file` (File) 必須
-    アップロードするファイル。
-  - `user` (string) 必須
-    開発者のルールで定義されたユーザー識別子。アプリケーション内で一意である必要があります。サービス API は WebApp によって作成された会話を共有しません。
+### リクエストボディ
 
-  ### レスポンス
-  アップロードが成功すると、サーバーはファイルの ID と関連情報を返します。
-  - `id` (uuid) ID
-  - `name` (string) ファイル名
-  - `size` (int) ファイルサイズ（バイト）
-  - `extension` (string) ファイル拡張子
-  - `mime_type` (string) ファイルの MIME タイプ
-  - `created_by` (uuid) エンドユーザーID
-  - `created_at` (timestamp) 作成タイムスタンプ、例：1705395332
+このインターフェースは`multipart/form-data`リクエストが必要です。
 
-  ### エラー
-  - 400, `no_file_uploaded`, ファイルを提供する必要があります
-  - 400, `too_many_files`, 現在は 1 つのファイルのみ受け付けています
-  - 400, `unsupported_preview`, ファイルがプレビューに対応していません
-  - 400, `unsupported_estimate`, ファイルが推定に対応していません
-  - 413, `file_too_large`, ファイルが大きすぎます
-  - 415, `unsupported_file_type`, サポートされていない拡張子です。現在はドキュメントファイルのみ受け付けています
-  - 503, `s3_connection_failed`, S3 サービスに接続できません
-  - 503, `s3_permission_denied`, S3 へのファイルアップロード権限がありません
-  - 503, `s3_file_too_large`, ファイルが S3 のサイズ制限を超えています
-  - 500, 内部サーバーエラー
+- `file` (File) 必須
+  アップロードするファイル。
+- `user` (string) 必須
+  開発者のルールで定義されたユーザー識別子。アプリケーション内で一意である必要があります。サービス API は WebApp によって作成された会話を共有しません。
+
+### レスポンス
+
+アップロードが成功すると、サーバーはファイルの ID と関連情報を返します。
+
+- `id` (uuid) ID
+- `name` (string) ファイル名
+- `size` (int) ファイルサイズ（バイト）
+- `extension` (string) ファイル拡張子
+- `mime_type` (string) ファイルの MIME タイプ
+- `created_by` (uuid) エンドユーザーID
+- `created_at` (timestamp) 作成タイムスタンプ、例：1705395332
+
+### エラー
+
+- 400, `no_file_uploaded`, ファイルを提供する必要があります
+- 400, `too_many_files`, 現在は 1 つのファイルのみ受け付けています
+- 400, `unsupported_preview`, ファイルがプレビューに対応していません
+- 400, `unsupported_estimate`, ファイルが推定に対応していません
+- 413, `file_too_large`, ファイルが大きすぎます
+- 415, `unsupported_file_type`, サポートされていない拡張子です。現在はドキュメントファイルのみ受け付けています
+- 503, `s3_connection_failed`, S3 サービスに接続できません
+- 503, `s3_permission_denied`, S3 へのファイルアップロード権限がありません
+- 503, `s3_file_too_large`, ファイルが S3 のサイズ制限を超えています
+- 500, 内部サーバーエラー
 
   </Col>
   <Col sticky>
@@ -259,8 +269,8 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
 --form 'user=abc-123'`}
   />
 
+### レスポンス例
 
-  ### レスポンス例
   <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
     {
@@ -339,6 +349,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -394,9 +405,10 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="GET"
       label="/files/:file_id/preview"
       targetCode={`curl -X GET '${props.appDetail.api_base_url}/files/72fa9618-8f89-4a37-9b33-7e1178a24a67/preview?as_attachment=true' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --output downloaded_file.png`}
-    />
+/>
 
     ### レスポンスヘッダー例
     <CodeGroup title="Response Headers">
@@ -416,6 +428,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     Cache-Control: public, max-age=3600
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -457,6 +470,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -495,6 +509,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
 
     ### レスポンス
     - `result` (string) 常に"success"を返します
+
   </Col>
   <Col sticky>
 
@@ -503,14 +518,15 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="POST"
       label="/messages/:message_id/feedbacks"
       targetCode={`curl -X POST '${props.appDetail.api_base_url}/messages/:message_id/feedbacks \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --header 'Content-Type: application/json' \\
 --data-raw '{
-    "rating": "like",
-    "user": "abc-123",
-    "content": "message feedback information"
+"rating": "like",
+"user": "abc-123",
+"content": "message feedback information"
 }'`}
-    />
+/>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -519,6 +535,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -548,6 +565,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
 
     ### レスポンス
     - `data` (リスト) このアプリの「いいね」とフィードバックの一覧を返します。
+
   </Col>
   <Col sticky>
 
@@ -579,6 +597,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
         }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -606,6 +625,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
         開発者が定義したユーザー識別子。アプリ内で一意性を確保する必要があります。
       </Property>
     </Properties>
+
   </Col>
   <Col sticky>
 
@@ -614,14 +634,15 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="POST"
       label="/text-to-audio"
       targetCode={`curl -o text-to-audio.mp3 -X POST '${props.appDetail.api_base_url}/text-to-audio' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --header 'Content-Type: application/json' \\
 --data-raw '{
-    "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290",
-    "text": "Hello Dify",
-    "user": "abc-123"
+"message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290",
+"text": "Hello Dify",
+"user": "abc-123"
 }'`}
-    />
+/>
 
     <CodeGroup title="headers">
     ```json {{ title: 'headers' }}
@@ -630,6 +651,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -644,13 +666,14 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
   <Col>
   このアプリケーションの基本情報を取得するために使用されます
 
-  ### Response
-  - `name` (string) アプリケーションの名前
-  - `description` (string) アプリケーションの説明
-  - `tags` (array[string]) アプリケーションのタグ
-  - `mode` (string) アプリケーションのモード
-  - `author_name` (string) 作者の名前
-  </Col>
+### Response
+
+- `name` (string) アプリケーションの名前
+- `description` (string) アプリケーションの説明
+- `tags` (array[string]) アプリケーションのタグ
+- `mode` (string) アプリケーションのモード
+- `author_name` (string) 作者の名前
+    </Col>
   <Col>
     <CodeGroup
       title="Request"
@@ -803,6 +826,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -861,6 +885,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ___

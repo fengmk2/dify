@@ -25,11 +25,7 @@ import {
 } from '@langgenius/dify-ui/dropdown-menu'
 import { FieldControl, FieldLabel, FieldRoot } from '@langgenius/dify-ui/field'
 import { toast } from '@langgenius/dify-ui/toast'
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@langgenius/dify-ui/tooltip'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@langgenius/dify-ui/tooltip'
 import { useSuspenseQuery } from '@tanstack/react-query'
 import { useCallback, useId, useMemo, useState } from 'react'
 import { Trans, useTranslation } from 'react-i18next'
@@ -56,7 +52,11 @@ import { fetchWorkflowDraft } from '@/service/workflow'
 import { AppModeEnum } from '@/types/app'
 import { getRedirection, getRedirectionPath } from '@/utils/app-redirection'
 import { downloadBlob } from '@/utils/download'
-import { getAppACLCapabilities, hasOnlyAppPreviewPermission, hasPermission } from '@/utils/permission'
+import {
+  getAppACLCapabilities,
+  hasOnlyAppPreviewPermission,
+  hasPermission,
+} from '@/utils/permission'
 import { formatTime } from '@/utils/time'
 import { basePath } from '@/utils/var'
 
@@ -69,12 +69,18 @@ const DuplicateAppModal = dynamic(() => import('@/app/components/app/duplicate-m
 const SwitchAppModal = dynamic(() => import('@/app/components/app/switch-app-modal'), {
   ssr: false,
 })
-const DSLExportConfirmModal = dynamic(() => import('@/app/components/workflow/dsl-export-confirm-modal'), {
-  ssr: false,
-})
-const AccessControl = dynamic(() => import('@/app/components/app/app-access-control').then(mod => mod.AccessControl), {
-  ssr: false,
-})
+const DSLExportConfirmModal = dynamic(
+  () => import('@/app/components/workflow/dsl-export-confirm-modal'),
+  {
+    ssr: false,
+  },
+)
+const AccessControl = dynamic(
+  () => import('@/app/components/app/app-access-control').then((mod) => mod.AccessControl),
+  {
+    ssr: false,
+  },
+)
 
 const ACCESS_MODE_ICON_CLASS_NAMES: Record<AccessMode, string> = {
   [AccessMode.PUBLIC]: 'i-ri-global-line',
@@ -106,14 +112,12 @@ const getAppResourceMaintainer = (app: App) => app.maintainer
 function AppAccessModeIcon({ accessMode }: AppAccessModeIconProps) {
   const { t } = useTranslation()
 
-  if (!accessMode)
-    return null
+  if (!accessMode) return null
 
   const iconClassName = ACCESS_MODE_ICON_CLASS_NAMES[accessMode]
   const labelKey = ACCESS_MODE_LABEL_KEYS[accessMode]
 
-  if (!iconClassName || !labelKey)
-    return null
+  if (!iconClassName || !labelKey) return null
 
   const label = t(labelKey, { ns: 'app' })
 
@@ -121,7 +125,13 @@ function AppAccessModeIcon({ accessMode }: AppAccessModeIconProps) {
     <div className="absolute right-3 bottom-3 flex size-4 items-center justify-center">
       <Tooltip>
         <TooltipTrigger
-          render={<span role="img" aria-label={label} className={cn(iconClassName, 'size-4 text-text-quaternary')} />}
+          render={
+            <span
+              role="img"
+              aria-label={label}
+              className={cn(iconClassName, 'size-4 text-text-quaternary')}
+            />
+          }
         />
         <TooltipContent>{label}</TooltipContent>
       </Tooltip>
@@ -171,7 +181,8 @@ function AppCardOperationsMenu({
   const hasEditGroup = shouldShowEditOption
   const hasCreateExportGroup = shouldShowDuplicateOption || shouldShowExportOption
   const hasSwitchOrExploreGroup = shouldShowSwitchOption || shouldShowOpenInExploreOption
-  const hasAccessDeleteGroup = shouldShowAccessControlOption || shouldShowAccessConfigOption || shouldShowDeleteOption
+  const hasAccessDeleteGroup =
+    shouldShowAccessControlOption || shouldShowAccessConfigOption || shouldShowDeleteOption
 
   function handleMenuAction(e: MouseEvent<HTMLElement>, action: () => void) {
     e.stopPropagation()
@@ -183,18 +194,20 @@ function AppCardOperationsMenu({
     e.stopPropagation()
     e.preventDefault()
     try {
-      await openAsyncWindow(async () => {
-        const { installed_apps } = await fetchInstalledAppList(app.id)
-        if (installed_apps?.length > 0)
-          return `${basePath}${buildInstalledAppPath(installed_apps[0]!.id)}`
-        throw new Error('No app found in Explore')
-      }, {
-        onError: (err) => {
-          toast.error(`${err.message || err}`)
+      await openAsyncWindow(
+        async () => {
+          const { installed_apps } = await fetchInstalledAppList(app.id)
+          if (installed_apps?.length > 0)
+            return `${basePath}${buildInstalledAppPath(installed_apps[0]!.id)}`
+          throw new Error('No app found in Explore')
         },
-      })
-    }
-    catch (e: unknown) {
+        {
+          onError: (err) => {
+            toast.error(`${err.message || err}`)
+          },
+        },
+      )
+    } catch (e: unknown) {
       const message = e instanceof Error ? e.message : `${e}`
       toast.error(message)
     }
@@ -203,68 +216,83 @@ function AppCardOperationsMenu({
   return (
     <>
       {shouldShowEditOption && (
-        <DropdownMenuItem className="gap-2 px-3" onClick={e => handleMenuAction(e, onEdit)}>
-          <span className="system-sm-regular text-text-secondary">{t('editApp', { ns: 'app' })}</span>
+        <DropdownMenuItem className="gap-2 px-3" onClick={(e) => handleMenuAction(e, onEdit)}>
+          <span className="system-sm-regular text-text-secondary">
+            {t('editApp', { ns: 'app' })}
+          </span>
         </DropdownMenuItem>
       )}
-      {hasEditGroup && (hasCreateExportGroup || hasSwitchOrExploreGroup || hasAccessDeleteGroup) && (
-        <DropdownMenuSeparator />
-      )}
+      {hasEditGroup &&
+        (hasCreateExportGroup || hasSwitchOrExploreGroup || hasAccessDeleteGroup) && (
+          <DropdownMenuSeparator />
+        )}
       {shouldShowDuplicateOption && (
-        <DropdownMenuItem className="gap-2 px-3" onClick={e => handleMenuAction(e, onDuplicate)}>
-          <span className="system-sm-regular text-text-secondary">{t('duplicate', { ns: 'app' })}</span>
+        <DropdownMenuItem className="gap-2 px-3" onClick={(e) => handleMenuAction(e, onDuplicate)}>
+          <span className="system-sm-regular text-text-secondary">
+            {t('duplicate', { ns: 'app' })}
+          </span>
         </DropdownMenuItem>
       )}
       {shouldShowExportOption && (
-        <DropdownMenuItem className="gap-2 px-3" onClick={e => handleMenuAction(e, onExport)}>
-          <span className="system-sm-regular text-text-secondary">{t('export', { ns: 'app' })}</span>
+        <DropdownMenuItem className="gap-2 px-3" onClick={(e) => handleMenuAction(e, onExport)}>
+          <span className="system-sm-regular text-text-secondary">
+            {t('export', { ns: 'app' })}
+          </span>
         </DropdownMenuItem>
       )}
       {hasCreateExportGroup && (hasSwitchOrExploreGroup || hasAccessDeleteGroup) && (
         <DropdownMenuSeparator />
       )}
       {shouldShowSwitchOption && (
-        <DropdownMenuItem className="gap-2 px-3" onClick={e => handleMenuAction(e, onSwitch)}>
+        <DropdownMenuItem className="gap-2 px-3" onClick={(e) => handleMenuAction(e, onSwitch)}>
           <span className="text-sm/5 text-text-secondary">{t('switch', { ns: 'app' })}</span>
         </DropdownMenuItem>
       )}
       {shouldShowOpenInExploreOption && (
         <DropdownMenuItem className="gap-2 px-3" onClick={handleOpenInstalledApp}>
-          <span className="system-sm-regular text-text-secondary">{t('openInExplore', { ns: 'app' })}</span>
+          <span className="system-sm-regular text-text-secondary">
+            {t('openInExplore', { ns: 'app' })}
+          </span>
         </DropdownMenuItem>
       )}
-      {hasSwitchOrExploreGroup && hasAccessDeleteGroup && (
-        <DropdownMenuSeparator />
-      )}
+      {hasSwitchOrExploreGroup && hasAccessDeleteGroup && <DropdownMenuSeparator />}
       {shouldShowAccessControlOption && (
-        <DropdownMenuItem className="gap-2 px-3" onClick={e => handleMenuAction(e, onAccessControl)}>
+        <DropdownMenuItem
+          className="gap-2 px-3"
+          onClick={(e) => handleMenuAction(e, onAccessControl)}
+        >
           <span className="text-sm/5 text-text-secondary">{t('accessControl', { ns: 'app' })}</span>
         </DropdownMenuItem>
       )}
       {shouldShowAccessConfigOption && (
-        <DropdownMenuItem className="gap-2 px-3" onClick={e => handleMenuAction(e, onAccessConfig)}>
-          <span className="text-sm/5 text-text-secondary">{t('settings.resourceAccess', { ns: 'common' })}</span>
+        <DropdownMenuItem
+          className="gap-2 px-3"
+          onClick={(e) => handleMenuAction(e, onAccessConfig)}
+        >
+          <span className="text-sm/5 text-text-secondary">
+            {t('settings.resourceAccess', { ns: 'common' })}
+          </span>
         </DropdownMenuItem>
       )}
-      {(shouldShowAccessControlOption || shouldShowAccessConfigOption) && shouldShowDeleteOption && (
-        <DropdownMenuSeparator />
-      )}
+      {(shouldShowAccessControlOption || shouldShowAccessConfigOption) &&
+        shouldShowDeleteOption && <DropdownMenuSeparator />}
       {shouldShowDeleteOption && (
         <DropdownMenuItem
           variant="destructive"
           className="gap-2 px-3"
-          onClick={e => handleMenuAction(e, onDelete)}
+          onClick={(e) => handleMenuAction(e, onDelete)}
         >
-          <span className="system-sm-regular">
-            {t('operation.delete', { ns: 'common' })}
-          </span>
+          <span className="system-sm-regular">{t('operation.delete', { ns: 'common' })}</span>
         </DropdownMenuItem>
       )}
     </>
   )
 }
 
-type AppCardOperationsMenuContentProps = Omit<AppCardOperationsMenuProps, 'shouldShowOpenInExploreOption'>
+type AppCardOperationsMenuContentProps = Omit<
+  AppCardOperationsMenuProps,
+  'shouldShowOpenInExploreOption'
+>
 
 function AppCardOperationsMenuContent(props: AppCardOperationsMenuContentProps) {
   const { data: systemFeatures } = useSuspenseQuery(systemFeaturesQueryOptions())
@@ -273,11 +301,10 @@ function AppCardOperationsMenuContent(props: AppCardOperationsMenuContentProps) 
     enabled: systemFeatures.webapp_auth.enabled,
   })
 
-  const shouldShowOpenInExploreOption = !props.app.has_draft_trigger
-    && (
-      !systemFeatures.webapp_auth.enabled
-      || (!isGettingUserCanAccessApp && Boolean(userCanAccessApp?.result))
-    )
+  const shouldShowOpenInExploreOption =
+    !props.app.has_draft_trigger &&
+    (!systemFeatures.webapp_auth.enabled ||
+      (!isGettingUserCanAccessApp && Boolean(userCanAccessApp?.result)))
 
   return (
     <AppCardOperationsMenu
@@ -295,8 +322,8 @@ type AppCardActionBarProps = {
 export function AppCardActionBar({ app, onRefresh }: AppCardActionBarProps) {
   const { t } = useTranslation()
   const { data: systemFeatures } = useSuspenseQuery(systemFeaturesQueryOptions())
-  const currentUserId = useAppContextSelector(state => state.userProfile?.id)
-  const workspacePermissionKeys = useAppContextSelector(state => state.workspacePermissionKeys)
+  const currentUserId = useAppContextSelector((state) => state.userProfile?.id)
+  const workspacePermissionKeys = useAppContextSelector((state) => state.workspacePermissionKeys)
   const isRbacEnabled = systemFeatures.rbac_enabled
   const { onPlanInfoChanged } = useProviderContext()
   const { push } = useRouter()
@@ -313,13 +340,19 @@ export function AppCardActionBar({ app, onRefresh }: AppCardActionBarProps) {
   const { mutateAsync: mutateToggleAppStar, isPending: isTogglingStar } = useToggleAppStarMutation()
   const setNeedRefresh = useSetNeedRefreshAppList()
   const resourceMaintainer = getAppResourceMaintainer(app)
-  const maintainerPermissionOptions = useMemo(() => ({
-    currentUserId,
-    resourceMaintainer,
-    workspacePermissionKeys,
-    isRbacEnabled,
-  }), [currentUserId, isRbacEnabled, resourceMaintainer, workspacePermissionKeys])
-  const appACLCapabilities = useMemo(() => getAppACLCapabilities(app.permission_keys, maintainerPermissionOptions), [app.permission_keys, maintainerPermissionOptions])
+  const maintainerPermissionOptions = useMemo(
+    () => ({
+      currentUserId,
+      resourceMaintainer,
+      workspacePermissionKeys,
+      isRbacEnabled,
+    }),
+    [currentUserId, isRbacEnabled, resourceMaintainer, workspacePermissionKeys],
+  )
+  const appACLCapabilities = useMemo(
+    () => getAppACLCapabilities(app.permission_keys, maintainerPermissionOptions),
+    [app.permission_keys, maintainerPermissionOptions],
+  )
   const isPreviewOnly = hasOnlyAppPreviewPermission(app.permission_keys)
   const canCreateApp = hasPermission(workspacePermissionKeys, 'app.create_and_management')
 
@@ -330,31 +363,33 @@ export function AppCardActionBar({ app, onRefresh }: AppCardActionBarProps) {
       onPlanInfoChanged()
       setShowConfirmDelete(false)
       setConfirmDeleteInput('')
-    }
-    catch (e) {
+    } catch (e) {
       const message = e instanceof Error ? e.message : ''
       toast.error(`${t('appDeleteFailed', { ns: 'app' })}${message ? `: ${message}` : ''}`)
     }
   }, [app.id, mutateDeleteApp, onPlanInfoChanged, t])
 
-  const onDeleteDialogOpenChange = useCallback((open: boolean) => {
-    if (isDeleting)
-      return
+  const onDeleteDialogOpenChange = useCallback(
+    (open: boolean) => {
+      if (isDeleting) return
 
-    setShowConfirmDelete(open)
-    if (!open)
-      setConfirmDeleteInput('')
-  }, [isDeleting])
+      setShowConfirmDelete(open)
+      if (!open) setConfirmDeleteInput('')
+    },
+    [isDeleting],
+  )
 
   const isDeleteConfirmDisabled = isDeleting || confirmDeleteInput !== app.name
 
-  const onDeleteDialogSubmit: FormEventHandler<HTMLFormElement> = useCallback((e) => {
-    e.preventDefault()
-    if (isDeleteConfirmDisabled)
-      return
+  const onDeleteDialogSubmit: FormEventHandler<HTMLFormElement> = useCallback(
+    (e) => {
+      e.preventDefault()
+      if (isDeleteConfirmDisabled) return
 
-    void onConfirmDelete()
-  }, [isDeleteConfirmDisabled, onConfirmDelete])
+      void onConfirmDelete()
+    },
+    [isDeleteConfirmDisabled, onConfirmDelete],
+  )
 
   const handleShowEditModal = useCallback(() => {
     setIsOperationsMenuOpen(false)
@@ -396,36 +431,43 @@ export function AppCardActionBar({ app, onRefresh }: AppCardActionBarProps) {
     push(`/app/${app.id}/access-config`)
   }, [app.id, push])
 
-  const onEdit: CreateAppModalProps['onConfirm'] = useCallback(async ({
+  const onEdit: CreateAppModalProps['onConfirm'] = useCallback(
+    async ({
+      name,
+      icon_type,
+      icon,
+      icon_background,
+      description,
+      use_icon_as_answer_icon,
+      max_active_requests,
+    }) => {
+      try {
+        await updateAppInfo({
+          appID: app.id,
+          name,
+          icon_type,
+          icon,
+          icon_background,
+          description,
+          use_icon_as_answer_icon,
+          max_active_requests,
+        })
+        setShowEditModal(false)
+        toast.success(t('editDone', { ns: 'app' }))
+        onRefresh?.()
+      } catch (e) {
+        toast.error(e instanceof Error ? e.message : t('editFailed', { ns: 'app' }))
+      }
+    },
+    [app.id, onRefresh, t],
+  )
+
+  const onCopy: DuplicateAppModalProps['onConfirm'] = async ({
     name,
     icon_type,
     icon,
     icon_background,
-    description,
-    use_icon_as_answer_icon,
-    max_active_requests,
   }) => {
-    try {
-      await updateAppInfo({
-        appID: app.id,
-        name,
-        icon_type,
-        icon,
-        icon_background,
-        description,
-        use_icon_as_answer_icon,
-        max_active_requests,
-      })
-      setShowEditModal(false)
-      toast.success(t('editDone', { ns: 'app' }))
-      onRefresh?.()
-    }
-    catch (e) {
-      toast.error(e instanceof Error ? e.message : t('editFailed', { ns: 'app' }))
-    }
-  }, [app.id, onRefresh, t])
-
-  const onCopy: DuplicateAppModalProps['onConfirm'] = async ({ name, icon_type, icon, icon_background }) => {
     try {
       const newApp = await copyApp({
         appID: app.id,
@@ -446,8 +488,7 @@ export function AppCardActionBar({ app, onRefresh }: AppCardActionBarProps) {
         workspacePermissionKeys,
         isRbacEnabled,
       })
-    }
-    catch {
+    } catch {
       toast.error(t('newApp.appCreateFailed', { ns: 'app' }))
     }
   }
@@ -460,8 +501,7 @@ export function AppCardActionBar({ app, onRefresh }: AppCardActionBarProps) {
       })
       const file = new Blob([data], { type: 'application/yaml' })
       downloadBlob({ data: file, fileName: `${app.name}.yml` })
-    }
-    catch {
+    } catch {
       toast.error(t('exportFailed', { ns: 'app' }))
     }
   }
@@ -474,14 +514,15 @@ export function AppCardActionBar({ app, onRefresh }: AppCardActionBarProps) {
     }
     try {
       const workflowDraft = await fetchWorkflowDraft(`/apps/${app.id}/workflows/draft`)
-      const list = (workflowDraft.environment_variables || []).filter(env => env.value_type === 'secret')
+      const list = (workflowDraft.environment_variables || []).filter(
+        (env) => env.value_type === 'secret',
+      )
       if (list.length === 0) {
         onExport()
         return
       }
       setSecretEnvList(list)
-    }
-    catch {
+    } catch {
       toast.error(t('exportFailed', { ns: 'app' }))
     }
   }
@@ -496,33 +537,45 @@ export function AppCardActionBar({ app, onRefresh }: AppCardActionBarProps) {
     setShowAccessControl(false)
   }, [onRefresh, setShowAccessControl])
 
-  const handleToggleStar = useCallback(async (e: MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
-    e.preventDefault()
+  const handleToggleStar = useCallback(
+    async (e: MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation()
+      e.preventDefault()
 
-    if (isTogglingStar)
-      return
+      if (isTogglingStar) return
 
-    try {
-      await mutateToggleAppStar({
-        appId: app.id,
-        isStarred: Boolean(app.is_starred),
-      })
-      onRefresh?.()
-    }
-    catch (error) {
-      toast.error(error instanceof Error ? error.message : t('studio.starFailed', { ns: 'app' }))
-    }
-  }, [app.id, app.is_starred, isTogglingStar, mutateToggleAppStar, onRefresh, t])
+      try {
+        await mutateToggleAppStar({
+          appId: app.id,
+          isStarred: Boolean(app.is_starred),
+        })
+        onRefresh?.()
+      } catch (error) {
+        toast.error(error instanceof Error ? error.message : t('studio.starFailed', { ns: 'app' }))
+      }
+    },
+    [app.id, app.is_starred, isTogglingStar, mutateToggleAppStar, onRefresh, t],
+  )
 
   const shouldShowEditOption = appACLCapabilities.canEdit
   const shouldShowDuplicateOption = canCreateApp
   const shouldShowExportOption = appACLCapabilities.canImportExportDSL
-  const shouldShowSwitchOption = canCreateApp && appACLCapabilities.canEdit && (app.mode === AppModeEnum.COMPLETION || app.mode === AppModeEnum.CHAT)
-  const shouldShowAccessControlOption = systemFeatures.webapp_auth.enabled && appACLCapabilities.canReleaseAndVersion
+  const shouldShowSwitchOption =
+    canCreateApp &&
+    appACLCapabilities.canEdit &&
+    (app.mode === AppModeEnum.COMPLETION || app.mode === AppModeEnum.CHAT)
+  const shouldShowAccessControlOption =
+    systemFeatures.webapp_auth.enabled && appACLCapabilities.canReleaseAndVersion
   const shouldShowAccessConfigOption = appACLCapabilities.canAccessConfig
   const shouldShowDeleteOption = appACLCapabilities.canDelete
-  const shouldShowOperationsMenu = shouldShowEditOption || shouldShowDuplicateOption || shouldShowExportOption || shouldShowSwitchOption || shouldShowAccessControlOption || shouldShowAccessConfigOption || shouldShowDeleteOption
+  const shouldShowOperationsMenu =
+    shouldShowEditOption ||
+    shouldShowDuplicateOption ||
+    shouldShowExportOption ||
+    shouldShowSwitchOption ||
+    shouldShowAccessControlOption ||
+    shouldShowAccessConfigOption ||
+    shouldShowDeleteOption
   const operationsMenuWidthClassName = shouldShowSwitchOption ? 'w-[256px]' : 'w-[216px]'
   const starActionLabel = app.is_starred
     ? t('studio.unstarApp', { ns: 'app' })
@@ -541,7 +594,7 @@ export function AppCardActionBar({ app, onRefresh }: AppCardActionBarProps) {
         >
           <Tooltip>
             <TooltipTrigger
-              render={(
+              render={
                 <button
                   type="button"
                   aria-label={starActionLabel}
@@ -557,12 +610,16 @@ export function AppCardActionBar({ app, onRefresh }: AppCardActionBarProps) {
                     )}
                   />
                 </button>
-              )}
+              }
             />
             <TooltipContent>{starActionLabel}</TooltipContent>
           </Tooltip>
           {shouldShowOperationsMenu && (
-            <DropdownMenu modal={false} open={isOperationsMenuOpen} onOpenChange={setIsOperationsMenuOpen}>
+            <DropdownMenu
+              modal={false}
+              open={isOperationsMenuOpen}
+              onOpenChange={setIsOperationsMenuOpen}
+            >
               <DropdownMenuTrigger
                 aria-label={t('operation.more', { ns: 'common' })}
                 className={cn(
@@ -582,46 +639,44 @@ export function AppCardActionBar({ app, onRefresh }: AppCardActionBarProps) {
                 sideOffset={4}
                 popupClassName={operationsMenuWidthClassName}
               >
-                {systemFeatures.webapp_auth.enabled
-                  ? (
-                      <AppCardOperationsMenuContent
-                        app={app}
-                        shouldShowEditOption={shouldShowEditOption}
-                        shouldShowDuplicateOption={shouldShowDuplicateOption}
-                        shouldShowExportOption={shouldShowExportOption}
-                        shouldShowSwitchOption={shouldShowSwitchOption}
-                        shouldShowAccessControlOption={shouldShowAccessControlOption}
-                        shouldShowAccessConfigOption={shouldShowAccessConfigOption}
-                        shouldShowDeleteOption={shouldShowDeleteOption}
-                        onEdit={handleShowEditModal}
-                        onDuplicate={handleShowDuplicateModal}
-                        onExport={exportCheck}
-                        onSwitch={handleShowSwitchModal}
-                        onDelete={handleShowDeleteConfirm}
-                        onAccessControl={handleShowAccessControl}
-                        onAccessConfig={handleOpenAccessConfig}
-                      />
-                    )
-                  : (
-                      <AppCardOperationsMenu
-                        app={app}
-                        shouldShowEditOption={shouldShowEditOption}
-                        shouldShowDuplicateOption={shouldShowDuplicateOption}
-                        shouldShowExportOption={shouldShowExportOption}
-                        shouldShowSwitchOption={shouldShowSwitchOption}
-                        shouldShowOpenInExploreOption={!app.has_draft_trigger}
-                        shouldShowAccessControlOption={shouldShowAccessControlOption}
-                        shouldShowAccessConfigOption={shouldShowAccessConfigOption}
-                        shouldShowDeleteOption={shouldShowDeleteOption}
-                        onEdit={handleShowEditModal}
-                        onDuplicate={handleShowDuplicateModal}
-                        onExport={exportCheck}
-                        onSwitch={handleShowSwitchModal}
-                        onDelete={handleShowDeleteConfirm}
-                        onAccessControl={handleShowAccessControl}
-                        onAccessConfig={handleOpenAccessConfig}
-                      />
-                    )}
+                {systemFeatures.webapp_auth.enabled ? (
+                  <AppCardOperationsMenuContent
+                    app={app}
+                    shouldShowEditOption={shouldShowEditOption}
+                    shouldShowDuplicateOption={shouldShowDuplicateOption}
+                    shouldShowExportOption={shouldShowExportOption}
+                    shouldShowSwitchOption={shouldShowSwitchOption}
+                    shouldShowAccessControlOption={shouldShowAccessControlOption}
+                    shouldShowAccessConfigOption={shouldShowAccessConfigOption}
+                    shouldShowDeleteOption={shouldShowDeleteOption}
+                    onEdit={handleShowEditModal}
+                    onDuplicate={handleShowDuplicateModal}
+                    onExport={exportCheck}
+                    onSwitch={handleShowSwitchModal}
+                    onDelete={handleShowDeleteConfirm}
+                    onAccessControl={handleShowAccessControl}
+                    onAccessConfig={handleOpenAccessConfig}
+                  />
+                ) : (
+                  <AppCardOperationsMenu
+                    app={app}
+                    shouldShowEditOption={shouldShowEditOption}
+                    shouldShowDuplicateOption={shouldShowDuplicateOption}
+                    shouldShowExportOption={shouldShowExportOption}
+                    shouldShowSwitchOption={shouldShowSwitchOption}
+                    shouldShowOpenInExploreOption={!app.has_draft_trigger}
+                    shouldShowAccessControlOption={shouldShowAccessControlOption}
+                    shouldShowAccessConfigOption={shouldShowAccessConfigOption}
+                    shouldShowDeleteOption={shouldShowDeleteOption}
+                    onEdit={handleShowEditModal}
+                    onDuplicate={handleShowDuplicateModal}
+                    onExport={exportCheck}
+                    onSwitch={handleShowSwitchModal}
+                    onDelete={handleShowDeleteConfirm}
+                    onAccessControl={handleShowAccessControl}
+                    onAccessConfig={handleOpenAccessConfig}
+                  />
+                )}
               </DropdownMenuContent>
             </DropdownMenu>
           )}
@@ -681,7 +736,9 @@ export function AppCardActionBar({ app, onRefresh }: AppCardActionBarProps) {
                     ns="app"
                     values={{ appName: app.name }}
                     components={{
-                      appName: <span className="system-sm-semibold text-text-primary" translate="no" />,
+                      appName: (
+                        <span className="system-sm-semibold text-text-primary" translate="no" />
+                      ),
                     }}
                   />
                 </FieldLabel>
@@ -719,17 +776,26 @@ export function AppCardActionBar({ app, onRefresh }: AppCardActionBarProps) {
         />
       )}
       {showAccessControl && (
-        <AccessControl app={app} onConfirm={onUpdateAccessControl} onClose={() => setShowAccessControl(false)} />
+        <AccessControl
+          app={app}
+          onConfirm={onUpdateAccessControl}
+          onClose={() => setShowAccessControl(false)}
+        />
       )}
     </>
   )
 }
 
-export function AppCard({ app, onlineUsers = [], onRefresh, onOpenTagManagement = () => {} }: AppCardProps) {
+export function AppCard({
+  app,
+  onlineUsers = [],
+  onRefresh,
+  onOpenTagManagement = () => {},
+}: AppCardProps) {
   const { t } = useTranslation()
   const { data: systemFeatures } = useSuspenseQuery(systemFeaturesQueryOptions())
-  const currentUserId = useAppContextSelector(state => state.userProfile?.id)
-  const workspacePermissionKeys = useAppContextSelector(state => state.workspacePermissionKeys)
+  const currentUserId = useAppContextSelector((state) => state.userProfile?.id)
+  const workspacePermissionKeys = useAppContextSelector((state) => state.workspacePermissionKeys)
   const isRbacEnabled = systemFeatures.rbac_enabled
   const { onPlanInfoChanged } = useProviderContext()
   const { push } = useRouter()
@@ -746,13 +812,19 @@ export function AppCard({ app, onlineUsers = [], onRefresh, onOpenTagManagement 
   const { mutateAsync: mutateToggleAppStar, isPending: isTogglingStar } = useToggleAppStarMutation()
   const setNeedRefresh = useSetNeedRefreshAppList()
   const resourceMaintainer = getAppResourceMaintainer(app)
-  const maintainerPermissionOptions = useMemo(() => ({
-    currentUserId,
-    resourceMaintainer,
-    workspacePermissionKeys,
-    isRbacEnabled,
-  }), [currentUserId, isRbacEnabled, resourceMaintainer, workspacePermissionKeys])
-  const appACLCapabilities = useMemo(() => getAppACLCapabilities(app.permission_keys, maintainerPermissionOptions), [app.permission_keys, maintainerPermissionOptions])
+  const maintainerPermissionOptions = useMemo(
+    () => ({
+      currentUserId,
+      resourceMaintainer,
+      workspacePermissionKeys,
+      isRbacEnabled,
+    }),
+    [currentUserId, isRbacEnabled, resourceMaintainer, workspacePermissionKeys],
+  )
+  const appACLCapabilities = useMemo(
+    () => getAppACLCapabilities(app.permission_keys, maintainerPermissionOptions),
+    [app.permission_keys, maintainerPermissionOptions],
+  )
   const isPreviewOnly = hasOnlyAppPreviewPermission(app.permission_keys)
   const canCreateApp = hasPermission(workspacePermissionKeys, 'app.create_and_management')
   const canManageAppTags = hasPermission(workspacePermissionKeys, 'app.tag.manage')
@@ -764,28 +836,24 @@ export function AppCard({ app, onlineUsers = [], onRefresh, onOpenTagManagement 
       onPlanInfoChanged()
       setShowConfirmDelete(false)
       setConfirmDeleteInput('')
-    }
-    catch (e) {
+    } catch (e) {
       const message = e instanceof Error ? e.message : ''
       toast.error(`${t('appDeleteFailed', { ns: 'app' })}${message ? `: ${message}` : ''}`)
     }
   }
 
   function onDeleteDialogOpenChange(open: boolean) {
-    if (isDeleting)
-      return
+    if (isDeleting) return
 
     setShowConfirmDelete(open)
-    if (!open)
-      setConfirmDeleteInput('')
+    if (!open) setConfirmDeleteInput('')
   }
 
   const isDeleteConfirmDisabled = isDeleting || confirmDeleteInput !== app.name
 
   function onDeleteDialogSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
-    if (isDeleteConfirmDisabled)
-      return
+    if (isDeleteConfirmDisabled) return
 
     void onConfirmDelete()
   }
@@ -852,15 +920,18 @@ export function AppCard({ app, onlineUsers = [], onRefresh, onOpenTagManagement 
       })
       setShowEditModal(false)
       toast.success(t('editDone', { ns: 'app' }))
-      if (onRefresh)
-        onRefresh()
-    }
-    catch (e) {
+      if (onRefresh) onRefresh()
+    } catch (e) {
       toast.error(e instanceof Error ? e.message : t('editFailed', { ns: 'app' }))
     }
   }
 
-  const onCopy: DuplicateAppModalProps['onConfirm'] = async ({ name, icon_type, icon, icon_background }) => {
+  const onCopy: DuplicateAppModalProps['onConfirm'] = async ({
+    name,
+    icon_type,
+    icon,
+    icon_background,
+  }) => {
     try {
       const newApp = await copyApp({
         appID: app.id,
@@ -873,8 +944,7 @@ export function AppCard({ app, onlineUsers = [], onRefresh, onOpenTagManagement 
       setShowDuplicateModal(false)
       toast.success(t('newApp.appCreated', { ns: 'app' }))
       setNeedRefresh('1')
-      if (onRefresh)
-        onRefresh()
+      if (onRefresh) onRefresh()
       onPlanInfoChanged()
       getRedirection(newApp, push, {
         currentUserId,
@@ -882,8 +952,7 @@ export function AppCard({ app, onlineUsers = [], onRefresh, onOpenTagManagement 
         workspacePermissionKeys,
         isRbacEnabled,
       })
-    }
-    catch {
+    } catch {
       toast.error(t('newApp.appCreateFailed', { ns: 'app' }))
     }
   }
@@ -896,8 +965,7 @@ export function AppCard({ app, onlineUsers = [], onRefresh, onOpenTagManagement 
       })
       const file = new Blob([data], { type: 'application/yaml' })
       downloadBlob({ data: file, fileName: `${app.name}.yml` })
-    }
-    catch {
+    } catch {
       toast.error(t('exportFailed', { ns: 'app' }))
     }
   }
@@ -910,57 +978,67 @@ export function AppCard({ app, onlineUsers = [], onRefresh, onOpenTagManagement 
     }
     try {
       const workflowDraft = await fetchWorkflowDraft(`/apps/${app.id}/workflows/draft`)
-      const list = (workflowDraft.environment_variables || []).filter(env => env.value_type === 'secret')
+      const list = (workflowDraft.environment_variables || []).filter(
+        (env) => env.value_type === 'secret',
+      )
       if (list.length === 0) {
         onExport()
         return
       }
       setSecretEnvList(list)
-    }
-    catch {
+    } catch {
       toast.error(t('exportFailed', { ns: 'app' }))
     }
   }
 
   const onSwitch = () => {
-    if (onRefresh)
-      onRefresh()
+    if (onRefresh) onRefresh()
     setShowSwitchModal(false)
   }
 
   function onUpdateAccessControl() {
-    if (onRefresh)
-      onRefresh()
+    if (onRefresh) onRefresh()
     setShowAccessControl(false)
   }
 
-  const handleToggleStar = useCallback(async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
-    e.preventDefault()
+  const handleToggleStar = useCallback(
+    async (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.stopPropagation()
+      e.preventDefault()
 
-    if (isTogglingStar)
-      return
+      if (isTogglingStar) return
 
-    try {
-      await mutateToggleAppStar({
-        appId: app.id,
-        isStarred: Boolean(app.is_starred),
-      })
-      onRefresh?.()
-    }
-    catch (error) {
-      toast.error(error instanceof Error ? error.message : t('studio.starFailed', { ns: 'app' }))
-    }
-  }, [app.id, app.is_starred, isTogglingStar, mutateToggleAppStar, onRefresh, t])
+      try {
+        await mutateToggleAppStar({
+          appId: app.id,
+          isStarred: Boolean(app.is_starred),
+        })
+        onRefresh?.()
+      } catch (error) {
+        toast.error(error instanceof Error ? error.message : t('studio.starFailed', { ns: 'app' }))
+      }
+    },
+    [app.id, app.is_starred, isTogglingStar, mutateToggleAppStar, onRefresh, t],
+  )
 
   const shouldShowEditOption = appACLCapabilities.canEdit
   const shouldShowDuplicateOption = canCreateApp
   const shouldShowExportOption = appACLCapabilities.canImportExportDSL
-  const shouldShowSwitchOption = appACLCapabilities.canEdit && (app.mode === AppModeEnum.COMPLETION || app.mode === AppModeEnum.CHAT)
-  const shouldShowAccessControlOption = systemFeatures.webapp_auth.enabled && appACLCapabilities.canReleaseAndVersion
+  const shouldShowSwitchOption =
+    appACLCapabilities.canEdit &&
+    (app.mode === AppModeEnum.COMPLETION || app.mode === AppModeEnum.CHAT)
+  const shouldShowAccessControlOption =
+    systemFeatures.webapp_auth.enabled && appACLCapabilities.canReleaseAndVersion
   const shouldShowAccessConfigOption = appACLCapabilities.canAccessConfig
   const shouldShowDeleteOption = appACLCapabilities.canDelete
-  const shouldShowOperationsMenu = shouldShowEditOption || shouldShowDuplicateOption || shouldShowExportOption || shouldShowSwitchOption || shouldShowAccessControlOption || shouldShowAccessConfigOption || shouldShowDeleteOption
+  const shouldShowOperationsMenu =
+    shouldShowEditOption ||
+    shouldShowDuplicateOption ||
+    shouldShowExportOption ||
+    shouldShowSwitchOption ||
+    shouldShowAccessControlOption ||
+    shouldShowAccessConfigOption ||
+    shouldShowDeleteOption
   const canBindOrUnbindTags = !isPreviewOnly && (canManageAppTags || appACLCapabilities.canEdit)
   const operationsMenuWidthClassName = shouldShowSwitchOption ? 'w-[256px]' : 'w-[216px]'
 
@@ -1000,7 +1078,7 @@ export function AppCard({ app, onlineUsers = [], onRefresh, onOpenTagManagement 
           avatar_url: user.avatar || null,
         }
       })
-      .filter(user => Boolean(user.id))
+      .filter((user) => Boolean(user.id))
   }, [app.id, onlineUsers])
   const appNameId = useId()
   const appDescriptionId = useId()
@@ -1017,13 +1095,15 @@ export function AppCard({ app, onlineUsers = [], onRefresh, onOpenTagManagement 
   const showPreviewOnlyAccessWarning = useCallback(() => {
     toast.warning(t('noAccessResourcePermission', { ns: 'app' }))
   }, [t])
-  const handlePreviewOnlyCardKeyDown = useCallback((event: KeyboardEvent<HTMLElement>) => {
-    if (event.key !== 'Enter' && event.key !== ' ')
-      return
+  const handlePreviewOnlyCardKeyDown = useCallback(
+    (event: KeyboardEvent<HTMLElement>) => {
+      if (event.key !== 'Enter' && event.key !== ' ') return
 
-    event.preventDefault()
-    showPreviewOnlyAccessWarning()
-  }, [showPreviewOnlyAccessWarning])
+      event.preventDefault()
+      showPreviewOnlyAccessWarning()
+    },
+    [showPreviewOnlyAccessWarning],
+  )
   const appCardContent = (
     <>
       <div className="flex shrink-0 items-center gap-3 pt-4 pr-4 pb-2 pl-4">
@@ -1035,25 +1115,35 @@ export function AppCard({ app, onlineUsers = [], onRefresh, onOpenTagManagement 
             background={app.icon_background}
             imageUrl={app.icon_url}
           />
-          <AppTypeIcon type={app.mode} wrapperClassName="absolute -bottom-0.5 -right-0.5 w-4 h-4 shadow-sm" className="size-3" />
+          <AppTypeIcon
+            type={app.mode}
+            wrapperClassName="absolute -bottom-0.5 -right-0.5 w-4 h-4 shadow-sm"
+            className="size-3"
+          />
         </div>
         <div className="flex w-0 grow flex-col gap-1 py-px">
           <div className="flex items-center text-sm/5 font-semibold text-text-secondary">
-            <div id={appNameId} className="truncate">{app.name}</div>
+            <div id={appNameId} className="truncate">
+              {app.name}
+            </div>
           </div>
-          <div className="truncate system-2xs-medium-uppercase text-text-tertiary">{appModeLabel}</div>
+          <div className="truncate system-2xs-medium-uppercase text-text-tertiary">
+            {appModeLabel}
+          </div>
         </div>
         {onlinePresenceUsers.length > 0 && (
           <div className="ml-3 flex shrink-0 items-start">
-            <UserAvatarList users={onlinePresenceUsers} size="xxs" maxVisible={3} className="justify-end" />
+            <UserAvatarList
+              users={onlinePresenceUsers}
+              size="xxs"
+              maxVisible={3}
+              className="justify-end"
+            />
           </div>
         )}
       </div>
       <div className="shrink-0 px-4 py-1 system-xs-regular text-text-tertiary">
-        <div
-          id={appDescriptionId}
-          className="line-clamp-2 min-h-8"
-        >
+        <div id={appDescriptionId} className="line-clamp-2 min-h-8">
           {app.description}
         </div>
       </div>
@@ -1070,34 +1160,30 @@ export function AppCard({ app, onlineUsers = [], onRefresh, onOpenTagManagement 
 
   return (
     <>
-      <div
-        className="group relative col-span-1 h-41.5"
-      >
-        {isPreviewOnly
-          ? (
-              <article
-                role="button"
-                tabIndex={0}
-                aria-disabled="true"
-                aria-labelledby={appNameId}
-                aria-describedby={app.description ? appDescriptionId : undefined}
-                className={appCardClassName}
-                onClick={showPreviewOnlyAccessWarning}
-                onKeyDown={handlePreviewOnlyCardKeyDown}
-              >
-                {appCardContent}
-              </article>
-            )
-          : (
-              <Link
-                href={appHref}
-                aria-labelledby={appNameId}
-                aria-describedby={app.description ? appDescriptionId : undefined}
-                className={appCardClassName}
-              >
-                {appCardContent}
-              </Link>
-            )}
+      <div className="group relative col-span-1 h-41.5">
+        {isPreviewOnly ? (
+          <article
+            role="button"
+            tabIndex={0}
+            aria-disabled="true"
+            aria-labelledby={appNameId}
+            aria-describedby={app.description ? appDescriptionId : undefined}
+            className={appCardClassName}
+            onClick={showPreviewOnlyAccessWarning}
+            onKeyDown={handlePreviewOnlyCardKeyDown}
+          >
+            {appCardContent}
+          </article>
+        ) : (
+          <Link
+            href={appHref}
+            aria-labelledby={appNameId}
+            aria-describedby={app.description ? appDescriptionId : undefined}
+            className={appCardClassName}
+          >
+            {appCardContent}
+          </Link>
+        )}
         <div
           className="absolute top-[104px] right-3 left-3 flex h-[26px] min-w-0 items-start"
           onClick={(e) => {
@@ -1125,7 +1211,7 @@ export function AppCard({ app, onlineUsers = [], onRefresh, onOpenTagManagement 
           >
             <Tooltip>
               <TooltipTrigger
-                render={(
+                render={
                   <button
                     type="button"
                     aria-label={starActionLabel}
@@ -1141,12 +1227,16 @@ export function AppCard({ app, onlineUsers = [], onRefresh, onOpenTagManagement 
                       )}
                     />
                   </button>
-                )}
+                }
               />
               <TooltipContent>{starActionLabel}</TooltipContent>
             </Tooltip>
             {shouldShowOperationsMenu && (
-              <DropdownMenu modal={false} open={isOperationsMenuOpen} onOpenChange={setIsOperationsMenuOpen}>
+              <DropdownMenu
+                modal={false}
+                open={isOperationsMenuOpen}
+                onOpenChange={setIsOperationsMenuOpen}
+              >
                 <DropdownMenuTrigger
                   aria-label={t('operation.more', { ns: 'common' })}
                   className={cn(
@@ -1159,53 +1249,54 @@ export function AppCard({ app, onlineUsers = [], onRefresh, onOpenTagManagement 
                   }}
                 >
                   <span className="sr-only">{t('operation.more', { ns: 'common' })}</span>
-                  <span aria-hidden className="i-ri-more-fill h-[18px] w-[18px] text-text-tertiary" />
+                  <span
+                    aria-hidden
+                    className="i-ri-more-fill h-[18px] w-[18px] text-text-tertiary"
+                  />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
                   placement="bottom-end"
                   sideOffset={4}
                   popupClassName={operationsMenuWidthClassName}
                 >
-                  {systemFeatures.webapp_auth.enabled
-                    ? (
-                        <AppCardOperationsMenuContent
-                          app={app}
-                          shouldShowEditOption={shouldShowEditOption}
-                          shouldShowDuplicateOption={shouldShowDuplicateOption}
-                          shouldShowExportOption={shouldShowExportOption}
-                          shouldShowSwitchOption={shouldShowSwitchOption}
-                          shouldShowAccessControlOption={shouldShowAccessControlOption}
-                          shouldShowAccessConfigOption={shouldShowAccessConfigOption}
-                          shouldShowDeleteOption={shouldShowDeleteOption}
-                          onEdit={handleShowEditModal}
-                          onDuplicate={handleShowDuplicateModal}
-                          onExport={exportCheck}
-                          onSwitch={handleShowSwitchModal}
-                          onDelete={handleShowDeleteConfirm}
-                          onAccessControl={handleShowAccessControl}
-                          onAccessConfig={handleOpenAccessConfig}
-                        />
-                      )
-                    : (
-                        <AppCardOperationsMenu
-                          app={app}
-                          shouldShowEditOption={shouldShowEditOption}
-                          shouldShowDuplicateOption={shouldShowDuplicateOption}
-                          shouldShowExportOption={shouldShowExportOption}
-                          shouldShowSwitchOption={shouldShowSwitchOption}
-                          shouldShowOpenInExploreOption={!app.has_draft_trigger}
-                          shouldShowAccessControlOption={shouldShowAccessControlOption}
-                          shouldShowAccessConfigOption={shouldShowAccessConfigOption}
-                          shouldShowDeleteOption={shouldShowDeleteOption}
-                          onEdit={handleShowEditModal}
-                          onDuplicate={handleShowDuplicateModal}
-                          onExport={exportCheck}
-                          onSwitch={handleShowSwitchModal}
-                          onDelete={handleShowDeleteConfirm}
-                          onAccessControl={handleShowAccessControl}
-                          onAccessConfig={handleOpenAccessConfig}
-                        />
-                      )}
+                  {systemFeatures.webapp_auth.enabled ? (
+                    <AppCardOperationsMenuContent
+                      app={app}
+                      shouldShowEditOption={shouldShowEditOption}
+                      shouldShowDuplicateOption={shouldShowDuplicateOption}
+                      shouldShowExportOption={shouldShowExportOption}
+                      shouldShowSwitchOption={shouldShowSwitchOption}
+                      shouldShowAccessControlOption={shouldShowAccessControlOption}
+                      shouldShowAccessConfigOption={shouldShowAccessConfigOption}
+                      shouldShowDeleteOption={shouldShowDeleteOption}
+                      onEdit={handleShowEditModal}
+                      onDuplicate={handleShowDuplicateModal}
+                      onExport={exportCheck}
+                      onSwitch={handleShowSwitchModal}
+                      onDelete={handleShowDeleteConfirm}
+                      onAccessControl={handleShowAccessControl}
+                      onAccessConfig={handleOpenAccessConfig}
+                    />
+                  ) : (
+                    <AppCardOperationsMenu
+                      app={app}
+                      shouldShowEditOption={shouldShowEditOption}
+                      shouldShowDuplicateOption={shouldShowDuplicateOption}
+                      shouldShowExportOption={shouldShowExportOption}
+                      shouldShowSwitchOption={shouldShowSwitchOption}
+                      shouldShowOpenInExploreOption={!app.has_draft_trigger}
+                      shouldShowAccessControlOption={shouldShowAccessControlOption}
+                      shouldShowAccessConfigOption={shouldShowAccessConfigOption}
+                      shouldShowDeleteOption={shouldShowDeleteOption}
+                      onEdit={handleShowEditModal}
+                      onDuplicate={handleShowDuplicateModal}
+                      onExport={exportCheck}
+                      onSwitch={handleShowSwitchModal}
+                      onDelete={handleShowDeleteConfirm}
+                      onAccessControl={handleShowAccessControl}
+                      onAccessConfig={handleOpenAccessConfig}
+                    />
+                  )}
                 </DropdownMenuContent>
               </DropdownMenu>
             )}
@@ -1266,7 +1357,9 @@ export function AppCard({ app, onlineUsers = [], onRefresh, onOpenTagManagement 
                     ns="app"
                     values={{ appName: app.name }}
                     components={{
-                      appName: <span className="system-sm-semibold text-text-primary" translate="no" />,
+                      appName: (
+                        <span className="system-sm-semibold text-text-primary" translate="no" />
+                      ),
                     }}
                   />
                 </FieldLabel>
@@ -1313,7 +1406,11 @@ export function AppCard({ app, onlineUsers = [], onRefresh, onOpenTagManagement 
         />
       )}
       {showAccessControl && (
-        <AccessControl app={app} onConfirm={onUpdateAccessControl} onClose={() => setShowAccessControl(false)} />
+        <AccessControl
+          app={app}
+          onConfirm={onUpdateAccessControl}
+          onClose={() => setShowAccessControl(false)}
+        />
       )}
     </>
   )

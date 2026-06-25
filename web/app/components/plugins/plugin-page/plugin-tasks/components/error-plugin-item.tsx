@@ -22,14 +22,16 @@ const ErrorPluginItem: FC<ErrorPluginItemProps> = ({ plugin, getIconUrl, languag
   const { t } = useTranslation()
   const source = plugin.source
   const [showInstallModal, setShowInstallModal] = useState(false)
-  const [installPayload, setInstallPayload] = useState<{ uniqueIdentifier: string, manifest: Plugin } | null>(null)
+  const [installPayload, setInstallPayload] = useState<{
+    uniqueIdentifier: string
+    manifest: Plugin
+  } | null>(null)
   const [isFetching, setIsFetching] = useState(false)
   const { canInstallPlugin, currentDifyVersion } = useWorkspacePluginInstallPermission()
 
   const handleInstallFromMarketplace = useCallback(async () => {
     const parts = plugin.plugin_id.split('/')
-    if (parts.length < 2)
-      return
+    if (parts.length < 2) return
     const [org, name] = parts
     setIsFetching(true)
     try {
@@ -60,20 +62,22 @@ const ErrorPluginItem: FC<ErrorPluginItemProps> = ({ plugin, getIconUrl, languag
       }
       setInstallPayload({ uniqueIdentifier: info.latest_package_identifier, manifest })
       setShowInstallModal(true)
-    }
-    catch {
+    } catch {
       // silently fail
-    }
-    finally {
+    } finally {
       setIsFetching(false)
     }
   }, [plugin.plugin_id, plugin.labels, plugin.icon])
 
-  const errorMsgKey: 'task.errorMsg.marketplace' | 'task.errorMsg.github' | 'task.errorMsg.unknown' = source === PluginSource.marketplace
-    ? 'task.errorMsg.marketplace'
-    : source === PluginSource.github
-      ? 'task.errorMsg.github'
-      : 'task.errorMsg.unknown'
+  const errorMsgKey:
+    | 'task.errorMsg.marketplace'
+    | 'task.errorMsg.github'
+    | 'task.errorMsg.unknown' =
+    source === PluginSource.marketplace
+      ? 'task.errorMsg.marketplace'
+      : source === PluginSource.github
+        ? 'task.errorMsg.github'
+        : 'task.errorMsg.unknown'
 
   const errorMsg = t(errorMsgKey, { ns: 'plugin' })
 
@@ -81,7 +85,12 @@ const ErrorPluginItem: FC<ErrorPluginItemProps> = ({ plugin, getIconUrl, languag
     if (source === PluginSource.marketplace && canInstallPlugin) {
       return (
         <div className="pt-1">
-          <Button variant="secondary" size="small" loading={isFetching} onClick={handleInstallFromMarketplace}>
+          <Button
+            variant="secondary"
+            size="small"
+            loading={isFetching}
+            onClick={handleInstallFromMarketplace}
+          >
             {t('task.installFromMarketplace', { ns: 'plugin' })}
           </Button>
         </div>
@@ -105,16 +114,16 @@ const ErrorPluginItem: FC<ErrorPluginItemProps> = ({ plugin, getIconUrl, languag
         plugin={plugin}
         getIconUrl={getIconUrl}
         language={language}
-        statusIcon={(
+        statusIcon={
           <span className="flex size-4 items-center justify-center rounded-full border border-components-panel-bg bg-components-panel-bg">
             <span className="i-ri-error-warning-fill size-4 text-text-destructive" />
           </span>
-        )}
-        statusText={(
+        }
+        statusText={
           <span className="block max-w-full wrap-break-word whitespace-pre-line">
             {plugin.message || errorMsg}
           </span>
-        )}
+        }
         statusClassName="text-text-destructive"
         action={renderAction()}
         onClear={onClear}

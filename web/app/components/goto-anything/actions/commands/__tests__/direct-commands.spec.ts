@@ -26,7 +26,7 @@ vi.mock('@/context/i18n', () => ({
 }))
 
 vi.mock('@/i18n-config/language', () => ({
-  getDocLanguage: (locale: string) => locale === 'en' ? 'en' : locale,
+  getDocLanguage: (locale: string) => (locale === 'en' ? 'en' : locale),
 }))
 
 describe('docsCommand', () => {
@@ -65,9 +65,7 @@ describe('docsCommand', () => {
   })
 
   it('search uses fallback description when i18n returns empty', async () => {
-    mockT.mockImplementation((key: string) =>
-      key.includes('docDesc') ? '' : key,
-    )
+    mockT.mockImplementation((key: string) => (key.includes('docDesc') ? '' : key))
 
     const results = await docsCommand.search('', 'en')
 
@@ -182,9 +180,7 @@ describe('communityCommand', () => {
   })
 
   it('search uses fallback description when i18n returns empty', async () => {
-    mockT.mockImplementation((key: string) =>
-      key.includes('communityDesc') ? '' : key,
-    )
+    mockT.mockImplementation((key: string) => (key.includes('communityDesc') ? '' : key))
 
     const results = await communityCommand.search('', 'en')
 
@@ -213,7 +209,11 @@ describe('communityCommand', () => {
     const handlers = vi.mocked(registerCommands).mock.calls[0]![0]
     await handlers['navigation.community']!()
 
-    expect(openSpy).toHaveBeenCalledWith('https://discord.gg/5AEfbxcd9k', '_blank', 'noopener,noreferrer')
+    expect(openSpy).toHaveBeenCalledWith(
+      'https://discord.gg/5AEfbxcd9k',
+      '_blank',
+      'noopener,noreferrer',
+    )
     openSpy.mockRestore()
   })
 
@@ -239,11 +239,7 @@ describe('forumCommand', () => {
 
     forumCommand.execute?.()
 
-    expect(openSpy).toHaveBeenCalledWith(
-      'https://forum.dify.ai',
-      '_blank',
-      'noopener,noreferrer',
-    )
+    expect(openSpy).toHaveBeenCalledWith('https://forum.dify.ai', '_blank', 'noopener,noreferrer')
     openSpy.mockRestore()
   })
 
@@ -259,9 +255,7 @@ describe('forumCommand', () => {
   })
 
   it('search uses fallback description when i18n returns empty', async () => {
-    mockT.mockImplementation((key: string) =>
-      key.includes('feedbackDesc') ? '' : key,
-    )
+    mockT.mockImplementation((key: string) => (key.includes('feedbackDesc') ? '' : key))
 
     const results = await forumCommand.search('', 'en')
 
@@ -280,7 +274,11 @@ describe('forumCommand', () => {
     const handlers = vi.mocked(registerCommands).mock.calls[0]![0]
     await handlers['navigation.forum']!({ url: 'https://custom-forum.com' })
 
-    expect(openSpy).toHaveBeenCalledWith('https://custom-forum.com', '_blank', 'noopener,noreferrer')
+    expect(openSpy).toHaveBeenCalledWith(
+      'https://custom-forum.com',
+      '_blank',
+      'noopener,noreferrer',
+    )
     openSpy.mockRestore()
   })
 

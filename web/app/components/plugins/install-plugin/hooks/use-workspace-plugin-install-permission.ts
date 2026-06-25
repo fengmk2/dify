@@ -3,10 +3,7 @@ import { useAppContext } from '@/context/app-context'
 import { hasPermission } from '@/utils/permission'
 
 const useWorkspacePluginInstallPermission = () => {
-  const {
-    langGeniusVersionInfo,
-    workspacePermissionKeys,
-  } = useAppContext()
+  const { langGeniusVersionInfo, workspacePermissionKeys } = useAppContext()
 
   const canInstallPlugin = useMemo(() => {
     return hasPermission(workspacePermissionKeys, 'plugin.install')

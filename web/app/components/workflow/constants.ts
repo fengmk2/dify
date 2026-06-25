@@ -65,7 +65,7 @@ export const getGlobalVars = (isChatMode: boolean): Var[] => {
       variable: 'sys.workflow_run_id',
       type: VarType.string,
     },
-    ...((isInWorkflow && !isChatMode)
+    ...(isInWorkflow && !isChatMode
       ? [
           {
             variable: 'sys.timestamp',

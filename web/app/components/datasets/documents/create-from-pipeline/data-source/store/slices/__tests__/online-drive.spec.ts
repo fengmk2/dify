@@ -1,10 +1,11 @@
 import type { OnlineDriveSliceShape } from '../online-drive'
 import type { OnlineDriveFile } from '@/models/pipeline'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import { createStore } from 'zustand'
 import { createOnlineDriveSlice } from '../online-drive'
 
-const createTestStore = () => createStore<OnlineDriveSliceShape>((...args) => createOnlineDriveSlice(...args))
+const createTestStore = () =>
+  createStore<OnlineDriveSliceShape>((...args) => createOnlineDriveSlice(...args))
 
 describe('createOnlineDriveSlice', () => {
   it('should initialize with default values', () => {

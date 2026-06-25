@@ -2,7 +2,7 @@
 
 .jinaLogo {
   @apply w-4 h-4 bg-center bg-no-repeat inline-block;
-  background-color: #F5FAFF;
+  background-color: #f5faff;
   background-image: url(../assets/jina.png);
   background-size: 16px;
 }

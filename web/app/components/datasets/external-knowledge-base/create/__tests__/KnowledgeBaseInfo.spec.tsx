@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import KnowledgeBaseInfo from '../KnowledgeBaseInfo'
 
 describe('KnowledgeBaseInfo', () => {
@@ -139,7 +139,9 @@ describe('KnowledgeBaseInfo', () => {
     })
 
     it('should apply filled text color class when description has content', () => {
-      const { container } = render(<KnowledgeBaseInfo {...defaultProps} description="has content" />)
+      const { container } = render(
+        <KnowledgeBaseInfo {...defaultProps} description="has content" />,
+      )
       const textarea = container.querySelector('textarea')
       expect(textarea).toHaveClass('text-components-input-text-filled')
     })

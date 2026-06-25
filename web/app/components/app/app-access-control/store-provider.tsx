@@ -14,10 +14,13 @@ export function AccessControlDraftProvider({
   draftKey: string
   initialDraft: AccessControlDraft
 }) {
-  const storeRef = useRef<{
-    draftKey: string
-    store: AccessControlStoreApi
-  } | undefined>(undefined)
+  const storeRef = useRef<
+    | {
+        draftKey: string
+        store: AccessControlStoreApi
+      }
+    | undefined
+  >(undefined)
 
   if (!storeRef.current || storeRef.current.draftKey !== draftKey) {
     storeRef.current = {
@@ -27,8 +30,6 @@ export function AccessControlDraftProvider({
   }
 
   return (
-    <AccessControlStoreContext value={storeRef.current.store}>
-      {children}
-    </AccessControlStoreContext>
+    <AccessControlStoreContext value={storeRef.current.store}>{children}</AccessControlStoreContext>
   )
 }

@@ -6,33 +6,44 @@ import { defaultAgentSoulConfigFormState } from '@/features/agent-v2/agent-compo
 import { agentComposerDraftAtom } from '@/features/agent-v2/agent-composer/store'
 import { useAgentConfigureSync } from '../use-agent-configure-sync'
 
-const composerPutMutationFn = vi.hoisted(() => vi.fn(async (variables: {
-  body: {
-    agent_soul: Record<string, unknown>
-  }
-}) => ({
-  agent_soul: variables.body.agent_soul,
-})))
+const composerPutMutationFn = vi.hoisted(() =>
+  vi.fn(
+    async (variables: {
+      body: {
+        agent_soul: Record<string, unknown>
+      }
+    }) => ({
+      agent_soul: variables.body.agent_soul,
+    }),
+  ),
+)
 
-const composerPutMutationOptions = vi.hoisted(() => vi.fn((options?: {
-  onSuccess?: (data: { agent_soul: Record<string, unknown> }, variables: {
-    params: { agent_id: string }
-    body: {
-      agent_soul: Record<string, unknown>
-    }
-  }) => void
-}) => ({
-  mutationFn: async (variables: {
-    params: { agent_id: string }
-    body: {
-      agent_soul: Record<string, unknown>
-    }
-  }) => {
-    const data = await composerPutMutationFn(variables)
-    options?.onSuccess?.(data, variables)
-    return data
-  },
-})))
+const composerPutMutationOptions = vi.hoisted(() =>
+  vi.fn(
+    (options?: {
+      onSuccess?: (
+        data: { agent_soul: Record<string, unknown> },
+        variables: {
+          params: { agent_id: string }
+          body: {
+            agent_soul: Record<string, unknown>
+          }
+        },
+      ) => void
+    }) => ({
+      mutationFn: async (variables: {
+        params: { agent_id: string }
+        body: {
+          agent_soul: Record<string, unknown>
+        }
+      }) => {
+        const data = await composerPutMutationFn(variables)
+        options?.onSuccess?.(data, variables)
+        return data
+      },
+    }),
+  ),
+)
 
 function createDeferredPromise<T>() {
   let resolve!: (value: T) => void
@@ -84,17 +95,19 @@ function renderUseAgentConfigureSync() {
   const store = createStore()
   const wrapper = ({ children }: PropsWithChildren) => (
     <QueryClientProvider client={queryClient}>
-      <JotaiProvider store={store}>
-        {children}
-      </JotaiProvider>
+      <JotaiProvider store={store}>{children}</JotaiProvider>
     </QueryClientProvider>
   )
 
   return {
-    ...renderHook(() => useAgentConfigureSync({
-      agentId: 'agent-1',
-      enabled: true,
-    }), { wrapper }),
+    ...renderHook(
+      () =>
+        useAgentConfigureSync({
+          agentId: 'agent-1',
+          enabled: true,
+        }),
+      { wrapper },
+    ),
     queryClient,
     store,
   }
@@ -127,20 +140,22 @@ describe('useAgentConfigureSync', () => {
       await vi.advanceTimersByTimeAsync(5000)
     })
 
-    expect(composerPutMutationFn).toHaveBeenCalledWith(expect.objectContaining({
-      params: {
-        agent_id: 'agent-1',
-      },
-      body: expect.objectContaining({
-        variant: 'agent_app',
-        save_strategy: 'save_to_current_version',
-        agent_soul: expect.objectContaining({
-          prompt: expect.objectContaining({
-            system_prompt: 'Draft only prompt',
+    expect(composerPutMutationFn).toHaveBeenCalledWith(
+      expect.objectContaining({
+        params: {
+          agent_id: 'agent-1',
+        },
+        body: expect.objectContaining({
+          variant: 'agent_app',
+          save_strategy: 'save_to_current_version',
+          agent_soul: expect.objectContaining({
+            prompt: expect.objectContaining({
+              system_prompt: 'Draft only prompt',
+            }),
           }),
         }),
       }),
-    }))
+    )
     expect(queryClient.getQueryData(['agent-composer', 'agent-1'])).toBeUndefined()
     expect(result.current.draftSavedAt).toBe(1710000105000)
   })
@@ -161,20 +176,22 @@ describe('useAgentConfigureSync', () => {
     })
 
     expect(composerPutMutationFn).toHaveBeenCalledTimes(1)
-    expect(composerPutMutationFn).toHaveBeenCalledWith(expect.objectContaining({
-      params: {
-        agent_id: 'agent-1',
-      },
-      body: expect.objectContaining({
-        variant: 'agent_app',
-        save_strategy: 'save_to_current_version',
-        agent_soul: expect.objectContaining({
-          prompt: expect.objectContaining({
-            system_prompt: 'Run prompt',
+    expect(composerPutMutationFn).toHaveBeenCalledWith(
+      expect.objectContaining({
+        params: {
+          agent_id: 'agent-1',
+        },
+        body: expect.objectContaining({
+          variant: 'agent_app',
+          save_strategy: 'save_to_current_version',
+          agent_soul: expect.objectContaining({
+            prompt: expect.objectContaining({
+              system_prompt: 'Run prompt',
+            }),
           }),
         }),
       }),
-    }))
+    )
     expect(result.current.draftSavedAt).toBe(1710000200000)
   })
 
@@ -196,20 +213,22 @@ describe('useAgentConfigureSync', () => {
       })
     })
 
-    expect(composerPutMutationFn).toHaveBeenCalledWith(expect.objectContaining({
-      params: {
-        agent_id: 'agent-1',
-      },
-      body: expect.objectContaining({
-        variant: 'agent_app',
-        save_strategy: 'save_as_new_version',
-        agent_soul: {
-          prompt: {
-            system_prompt: 'Published prompt',
-          },
+    expect(composerPutMutationFn).toHaveBeenCalledWith(
+      expect.objectContaining({
+        params: {
+          agent_id: 'agent-1',
         },
+        body: expect.objectContaining({
+          variant: 'agent_app',
+          save_strategy: 'save_as_new_version',
+          agent_soul: {
+            prompt: {
+              system_prompt: 'Published prompt',
+            },
+          },
+        }),
       }),
-    }))
+    )
     expect(queryClient.getQueryData(['agent-composer', 'agent-1'])).toEqual({
       agent_soul: {
         prompt: {

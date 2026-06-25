@@ -9,9 +9,7 @@ type MainNavLayoutProps = {
   children: ReactNode
 }
 
-const MainNavLayout = ({
-  children,
-}: MainNavLayoutProps) => {
+const MainNavLayout = ({ children }: MainNavLayoutProps) => {
   const { t } = useTranslation('common')
 
   return (

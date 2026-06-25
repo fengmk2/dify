@@ -14,23 +14,24 @@ export const useSnippetInputFieldActions = ({
   snippetId,
 }: UseSnippetInputFieldActionsOptions) => {
   const { syncInputFieldsDraft } = useNodesSyncDraft(snippetId)
-  const {
-    fields,
-    setFields,
-  } = useSnippetDetailStore(useShallow(state => ({
-    fields: state.fields,
-    setFields: state.setFields,
-  })))
+  const { fields, setFields } = useSnippetDetailStore(
+    useShallow((state) => ({
+      fields: state.fields,
+      setFields: state.setFields,
+    })),
+  )
 
-  const handleFieldsChange = useCallback((newFields: SnippetInputField[]) => {
-    if (!canEdit)
-      return
+  const handleFieldsChange = useCallback(
+    (newFields: SnippetInputField[]) => {
+      if (!canEdit) return
 
-    setFields(newFields)
-    void syncInputFieldsDraft(newFields, {
-      onRefresh: setFields,
-    })
-  }, [canEdit, setFields, syncInputFieldsDraft])
+      setFields(newFields)
+      void syncInputFieldsDraft(newFields, {
+        onRefresh: setFields,
+      })
+    },
+    [canEdit, setFields, syncInputFieldsDraft],
+  )
 
   return {
     fields,

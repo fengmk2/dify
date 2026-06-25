@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import type { Credential, PluginPayload } from '../types'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { AuthCategory, CredentialTypeEnum } from '../types'
 
 // ==================== Mock Setup ====================
@@ -36,14 +36,24 @@ vi.mock('@/service/use-tools', () => ({
 }))
 
 const mockIsCurrentWorkspaceManager = vi.fn()
-const mockUserProfile = { id: 'test-user', name: 'Test User', email: 'test@example.com', avatar_url: '' }
+const mockUserProfile = {
+  id: 'test-user',
+  name: 'Test User',
+  email: 'test@example.com',
+  avatar_url: '',
+}
 vi.mock('@/context/app-context', () => ({
   useAppContext: () => ({
     isCurrentWorkspaceManager: mockIsCurrentWorkspaceManager(),
   }),
   // Item renders useAppContextWithSelector(state => state.userProfile) for the
   // borrowed-row heuristic. Provide a minimal stub so the selector runs.
-  useSelector: (selector: (state: { userProfile: typeof mockUserProfile, workspacePermissionKeys: string[] }) => unknown) =>
+  useSelector: (
+    selector: (state: {
+      userProfile: typeof mockUserProfile
+      workspacePermissionKeys: string[]
+    }) => unknown,
+  ) =>
     selector({
       userProfile: mockUserProfile,
       workspacePermissionKeys: ['credential.use', 'credential.create', 'credential.manage'],
@@ -72,9 +82,7 @@ const createTestQueryClient = () =>
 const createWrapper = () => {
   const testQueryClient = createTestQueryClient()
   return ({ children }: { children: ReactNode }) => (
-    <QueryClientProvider client={testQueryClient}>
-      {children}
-    </QueryClientProvider>
+    <QueryClientProvider client={testQueryClient}>{children}</QueryClientProvider>
   )
 }
 
@@ -120,20 +128,14 @@ describe('PluginAuthInAgent Component', () => {
       allow_custom_token: true,
     })
     const pluginPayload = createPluginPayload()
-    render(
-      <PluginAuthInAgent pluginPayload={pluginPayload} />,
-      { wrapper: createWrapper() },
-    )
+    render(<PluginAuthInAgent pluginPayload={pluginPayload} />, { wrapper: createWrapper() })
     expect(screen.getByRole('button'))!.toBeInTheDocument()
   })
 
   it('should render Authorized with workspace default when authorized', async () => {
     const PluginAuthInAgent = (await import('../plugin-auth-in-agent')).default
     const pluginPayload = createPluginPayload()
-    render(
-      <PluginAuthInAgent pluginPayload={pluginPayload} />,
-      { wrapper: createWrapper() },
-    )
+    render(<PluginAuthInAgent pluginPayload={pluginPayload} />, { wrapper: createWrapper() })
     expect(screen.getByRole('button'))!.toBeInTheDocument()
     expect(screen.getByText('plugin.auth.workspaceDefault'))!.toBeInTheDocument()
   })
@@ -147,10 +149,9 @@ describe('PluginAuthInAgent Component', () => {
       allow_custom_token: true,
     })
     const pluginPayload = createPluginPayload()
-    render(
-      <PluginAuthInAgent pluginPayload={pluginPayload} credentialId="selected-id" />,
-      { wrapper: createWrapper() },
-    )
+    render(<PluginAuthInAgent pluginPayload={pluginPayload} credentialId="selected-id" />, {
+      wrapper: createWrapper(),
+    })
     expect(screen.getByText('Selected Credential'))!.toBeInTheDocument()
   })
 
@@ -162,10 +163,9 @@ describe('PluginAuthInAgent Component', () => {
       allow_custom_token: true,
     })
     const pluginPayload = createPluginPayload()
-    render(
-      <PluginAuthInAgent pluginPayload={pluginPayload} credentialId="non-existent-id" />,
-      { wrapper: createWrapper() },
-    )
+    render(<PluginAuthInAgent pluginPayload={pluginPayload} credentialId="non-existent-id" />, {
+      wrapper: createWrapper(),
+    })
     expect(screen.getByText('plugin.auth.authRemoved'))!.toBeInTheDocument()
   })
 
@@ -183,10 +183,9 @@ describe('PluginAuthInAgent Component', () => {
       allow_custom_token: true,
     })
     const pluginPayload = createPluginPayload()
-    render(
-      <PluginAuthInAgent pluginPayload={pluginPayload} credentialId="unavailable-id" />,
-      { wrapper: createWrapper() },
-    )
+    render(<PluginAuthInAgent pluginPayload={pluginPayload} credentialId="unavailable-id" />, {
+      wrapper: createWrapper(),
+    })
     const button = screen.getByRole('button')
     expect(button.textContent).toContain('plugin.auth.unavailable')
   })
@@ -196,7 +195,10 @@ describe('PluginAuthInAgent Component', () => {
     const onAuthorizationItemClick = vi.fn()
     const pluginPayload = createPluginPayload()
     render(
-      <PluginAuthInAgent pluginPayload={pluginPayload} onAuthorizationItemClick={onAuthorizationItemClick} />,
+      <PluginAuthInAgent
+        pluginPayload={pluginPayload}
+        onAuthorizationItemClick={onAuthorizationItemClick}
+      />,
       { wrapper: createWrapper() },
     )
     const buttons = screen.getAllByRole('button')
@@ -215,13 +217,17 @@ describe('PluginAuthInAgent Component', () => {
     })
     const pluginPayload = createPluginPayload()
     render(
-      <PluginAuthInAgent pluginPayload={pluginPayload} onAuthorizationItemClick={onAuthorizationItemClick} />,
+      <PluginAuthInAgent
+        pluginPayload={pluginPayload}
+        onAuthorizationItemClick={onAuthorizationItemClick}
+      />,
       { wrapper: createWrapper() },
     )
     const triggerButton = screen.getByRole('button')
     fireEvent.click(triggerButton)
     const workspaceDefaultItems = screen.getAllByText('plugin.auth.workspaceDefault')
-    const popupItem = workspaceDefaultItems.length > 1 ? workspaceDefaultItems[1] : workspaceDefaultItems[0]
+    const popupItem =
+      workspaceDefaultItems.length > 1 ? workspaceDefaultItems[1] : workspaceDefaultItems[0]
     fireEvent.click(popupItem!)
     expect(onAuthorizationItemClick).toHaveBeenCalledWith('')
   })
@@ -241,7 +247,10 @@ describe('PluginAuthInAgent Component', () => {
     })
     const pluginPayload = createPluginPayload()
     render(
-      <PluginAuthInAgent pluginPayload={pluginPayload} onAuthorizationItemClick={onAuthorizationItemClick} />,
+      <PluginAuthInAgent
+        pluginPayload={pluginPayload}
+        onAuthorizationItemClick={onAuthorizationItemClick}
+      />,
       { wrapper: createWrapper() },
     )
     const triggerButton = screen.getByRole('button')

@@ -35,18 +35,21 @@ const MemberRow = ({
   const { t } = useTranslation()
   const { formatTimeFromNow } = useFormatTimeFromNow()
 
-  const roleNames = roles.map(role => role.name)
+  const roleNames = roles.map((role) => role.name)
 
   const openDetails = useCallback(() => {
     onOpenDetails(member)
   }, [member, onOpenDetails])
 
-  const handleRowKeyDown = useCallback((e: KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault()
-      openDetails()
-    }
-  }, [openDetails])
+  const handleRowKeyDown = useCallback(
+    (e: KeyboardEvent<HTMLDivElement>) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault()
+        openDetails()
+      }
+    },
+    [openDetails],
+  )
 
   return (
     <div
@@ -82,16 +85,10 @@ const MemberRow = ({
         </div>
       </div>
       <div className="flex w-30 shrink-0 items-center py-2 system-sm-regular text-text-secondary">
-        {formatTimeFromNow(Number((member.last_active_at || member.created_at)) * 1000)}
+        {formatTimeFromNow(Number(member.last_active_at || member.created_at) * 1000)}
       </div>
-      <div
-        className="flex min-w-0 grow items-center gap-2 px-3"
-        role="presentation"
-      >
-        <RoleBadges
-          className="grow"
-          roleNames={roleNames}
-        />
+      <div className="flex min-w-0 grow items-center gap-2 px-3" role="presentation">
+        <RoleBadges className="grow" roleNames={roleNames} />
         {canManage && (
           <MemberMenu
             member={member}

@@ -35,13 +35,19 @@ type AgentRosterListProps = {
 export type AgentRosterListItem = AgentAppPartial
 
 const skeletonRows = ['primary', 'secondary', 'tertiary'] as const
-const emptyPlaceholderCardIds = Array.from({ length: 16 }, (_, index) => `agent-roster-placeholder-card-${index}`)
+const emptyPlaceholderCardIds = Array.from(
+  { length: 16 },
+  (_, index) => `agent-roster-placeholder-card-${index}`,
+)
 
 function AgentRosterSkeleton() {
   return (
     <>
-      {skeletonRows.map(row => (
-        <div key={row} className="relative h-36.5 rounded-xl border-[0.5px] border-components-card-border bg-components-card-bg shadow-xs shadow-shadow-shadow-3">
+      {skeletonRows.map((row) => (
+        <div
+          key={row}
+          className="relative h-36.5 rounded-xl border-[0.5px] border-components-card-border bg-components-card-bg shadow-xs shadow-shadow-shadow-3"
+        >
           <div className="flex items-center gap-3 pt-3.5 pr-4 pb-2 pl-3.5">
             <SkeletonRectangle className="my-0 size-12 shrink-0 animate-pulse rounded-full" />
             <div className="min-w-0 flex-1 space-y-2.5 py-px">
@@ -70,7 +76,7 @@ function AgentRosterPlaceholderState({ title }: { title: string }) {
       className="relative col-span-full min-h-[calc(100vh-142px)] overflow-hidden"
     >
       <div className="pointer-events-none absolute inset-0 grid grid-cols-1 grid-rows-4 gap-3 sm:grid-cols-2 xl:grid-cols-4">
-        {emptyPlaceholderCardIds.map(id => (
+        {emptyPlaceholderCardIds.map((id) => (
           <div key={id} className="rounded-xl bg-background-default-lighter opacity-75" />
         ))}
       </div>
@@ -82,7 +88,10 @@ function AgentRosterPlaceholderState({ title }: { title: string }) {
               <span aria-hidden className="i-ri-robot-2-line size-6 text-text-tertiary" />
             </div>
           </div>
-          <h2 id="agent-roster-placeholder-title" className="system-sm-regular whitespace-nowrap text-text-tertiary">
+          <h2
+            id="agent-roster-placeholder-title"
+            className="system-sm-regular whitespace-nowrap text-text-tertiary"
+          >
             {title}
           </h2>
         </div>
@@ -91,11 +100,7 @@ function AgentRosterPlaceholderState({ title }: { title: string }) {
   )
 }
 
-function AgentRosterItem({
-  agent,
-}: {
-  agent: AgentRosterListItem
-}) {
+function AgentRosterItem({ agent }: { agent: AgentRosterListItem }) {
   const { t } = useTranslation('agentV2')
   const { t: tCommon } = useTranslation('common')
   const { formatTime } = useTimestamp()
@@ -106,23 +111,23 @@ function AgentRosterItem({
   const [isDuplicateOpen, setIsDuplicateOpen] = useState(false)
   const [duplicateSessionKey, setDuplicateSessionKey] = useState(0)
   const [isDeleteOpen, setIsDeleteOpen] = useState(false)
-  const updatedAt = agent.updated_at != null
-    ? formatTime(agent.updated_at, t('roster.dateTimeFormat'))
-    : null
+  const updatedAt =
+    agent.updated_at != null ? formatTime(agent.updated_at, t('roster.dateTimeFormat')) : null
   const referenceCount = agent.published_reference_count ?? 0
   const publishedReferences = agent.published_references ?? []
   const hasPublishedReferences = publishedReferences.length > 0
   const isDraft = agent.active_config_is_published !== true
-  const imageUrl = (agent.icon_type === 'image' || agent.icon_type === 'link') ? agent.icon : undefined
+  const imageUrl =
+    agent.icon_type === 'image' || agent.icon_type === 'link' ? agent.icon : undefined
   const iconType = (imageUrl ? 'image' : agent.icon_type) as AgentIconType | null | undefined
 
   const handleEditOpen = () => {
-    setEditSessionKey(key => key + 1)
+    setEditSessionKey((key) => key + 1)
     setIsEditOpen(true)
   }
 
   const handleDuplicateOpen = () => {
-    setDuplicateSessionKey(key => key + 1)
+    setDuplicateSessionKey((key) => key + 1)
     setIsDuplicateOpen(true)
   }
 
@@ -150,9 +155,7 @@ function AgentRosterItem({
               <h2 id={nameId} className="truncate system-md-semibold text-text-secondary">
                 {agent.name}
               </h2>
-              <p className="truncate system-xs-regular text-text-tertiary">
-                {agent.role}
-              </p>
+              <p className="truncate system-xs-regular text-text-tertiary">{agent.role}</p>
             </div>
           </div>
           <div className="px-4 py-1 system-xs-regular text-text-tertiary">
@@ -171,32 +174,33 @@ function AgentRosterItem({
         </Link>
         <div className="flex min-w-0 shrink-0 items-center pt-2 pr-3 pb-3 pl-4 system-xs-regular text-text-tertiary">
           <div className="flex min-w-0 flex-1 items-center gap-1.5">
-            {hasPublishedReferences
-              ? (
-                  <AgentWorkflowReferencesDropdown
-                    agentName={agent.name}
-                    publishedReferences={publishedReferences}
-                    referenceCount={referenceCount}
-                  />
-                )
-              : (
-                  <div className="flex shrink-0 items-center gap-1">
-                    <span aria-hidden className="i-custom-vender-agent-v2-plan size-3 shrink-0 text-text-tertiary" />
-                    <span className="system-xs-regular text-text-tertiary">{referenceCount}</span>
-                  </div>
-                )}
+            {hasPublishedReferences ? (
+              <AgentWorkflowReferencesDropdown
+                agentName={agent.name}
+                publishedReferences={publishedReferences}
+                referenceCount={referenceCount}
+              />
+            ) : (
+              <div className="flex shrink-0 items-center gap-1">
+                <span
+                  aria-hidden
+                  className="i-custom-vender-agent-v2-plan size-3 shrink-0 text-text-tertiary"
+                />
+                <span className="system-xs-regular text-text-tertiary">{referenceCount}</span>
+              </div>
+            )}
             {updatedAt && (
               <>
-                <span aria-hidden className="shrink-0 text-text-quaternary">·</span>
+                <span aria-hidden className="shrink-0 text-text-quaternary">
+                  ·
+                </span>
                 <span className="min-w-0 truncate">{updatedAt}</span>
               </>
             )}
           </div>
         </div>
       </div>
-      <div
-        className="pointer-events-none absolute top-2 right-2 z-20 flex items-center overflow-hidden rounded-[10px] border-[0.5px] border-components-actionbar-border bg-components-actionbar-bg p-0.5 opacity-0 shadow-lg backdrop-blur-xs transition-opacity group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100 has-data-popup-open:pointer-events-auto has-data-popup-open:opacity-100"
-      >
+      <div className="pointer-events-none absolute top-2 right-2 z-20 flex items-center overflow-hidden rounded-[10px] border-[0.5px] border-components-actionbar-border bg-components-actionbar-bg p-0.5 opacity-0 shadow-lg backdrop-blur-xs transition-opacity group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100 has-data-popup-open:pointer-events-auto has-data-popup-open:opacity-100">
         <DropdownMenu modal={false}>
           <DropdownMenuTrigger
             aria-label={t('roster.moreActions', { name: agent.name })}
@@ -210,11 +214,11 @@ function AgentRosterItem({
               <span aria-hidden className="i-ri-edit-line size-4 shrink-0 text-text-tertiary" />
               <span>{t('roster.editInfo')}</span>
             </DropdownMenuItem>
-            <DropdownMenuItem
-              className="gap-2"
-              onClick={handleDuplicateOpen}
-            >
-              <span aria-hidden className="i-ri-file-copy-line size-4 shrink-0 text-text-tertiary" />
+            <DropdownMenuItem className="gap-2" onClick={handleDuplicateOpen}>
+              <span
+                aria-hidden
+                className="i-ri-file-copy-line size-4 shrink-0 text-text-tertiary"
+              />
               <span>{tCommon('operation.duplicate')}</span>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
@@ -241,7 +245,12 @@ function AgentRosterItem({
         open={isDuplicateOpen}
         onOpenChange={setIsDuplicateOpen}
       />
-      <DeleteAgentDialog agentId={agent.id} agentName={agent.name} open={isDeleteOpen} onOpenChange={setIsDeleteOpen} />
+      <DeleteAgentDialog
+        agentId={agent.id}
+        agentName={agent.name}
+        open={isDeleteOpen}
+        onOpenChange={setIsDeleteOpen}
+      />
     </article>
   )
 }
@@ -260,24 +269,24 @@ export function AgentRosterList({
   const { t } = useTranslation('agentV2')
 
   return (
-    <section aria-label={label} className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,294px),1fr))] gap-2.5" aria-busy={isFetching || undefined}>
+    <section
+      aria-label={label}
+      className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,294px),1fr))] gap-2.5"
+      aria-busy={isFetching || undefined}
+    >
       {isPending && <AgentRosterSkeleton />}
-      {!isPending && isError && (
-        <AgentRosterPlaceholderState title={t('roster.loadingError')} />
-      )}
+      {!isPending && isError && <AgentRosterPlaceholderState title={t('roster.loadingError')} />}
       {!isPending && !isError && agents.length === 0 && (
-        <AgentRosterPlaceholderState title={isEmptySearch ? t('roster.emptySearch') : t('roster.empty')} />
+        <AgentRosterPlaceholderState
+          title={isEmptySearch ? t('roster.emptySearch') : t('roster.empty')}
+        />
       )}
-      {!isPending && !isError && agents.map(agent => (
-        <AgentRosterItem key={agent.id} agent={agent} />
-      ))}
+      {!isPending &&
+        !isError &&
+        agents.map((agent) => <AgentRosterItem key={agent.id} agent={agent} />)}
       {!isPending && !isError && hasMore && (
         <div className="col-span-full flex justify-center pt-1">
-          <Button
-            loading={isFetchingNextPage}
-            disabled={isFetchingNextPage}
-            onClick={onLoadMore}
-          >
+          <Button loading={isFetchingNextPage} disabled={isFetchingNextPage} onClick={onLoadMore}>
             {t('roster.loadMore')}
           </Button>
         </div>

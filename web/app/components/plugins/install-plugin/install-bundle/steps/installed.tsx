@@ -18,13 +18,7 @@ type Props = Readonly<{
   isHideButton?: boolean
 }>
 
-const Installed: FC<Props> = ({
-  list,
-  installStatus,
-  versionInfo,
-  onCancel,
-  isHideButton,
-}) => {
+const Installed: FC<Props> = ({ list, installStatus, versionInfo, onCancel, isHideButton }) => {
   const { t } = useTranslation()
   const { getIconUrl } = useGetIcon()
   return (
@@ -42,15 +36,23 @@ const Installed: FC<Props> = ({
                 className="w-full"
                 payload={{
                   ...plugin,
-                  icon: installStatus[index]!.isFromMarketPlace ? `${MARKETPLACE_API_PREFIX}/plugins/${plugin.org}/${plugin.name}/icon` : getIconUrl(plugin.icon),
+                  icon: installStatus[index]!.isFromMarketPlace
+                    ? `${MARKETPLACE_API_PREFIX}/plugins/${plugin.org}/${plugin.name}/icon`
+                    : getIconUrl(plugin.icon),
                 }}
                 installed={installStatus[index]!.success}
                 installFailed={!installStatus[index]!.success}
-                titleLeft={plugin.version
-                  ? pluginVersionInfo
-                    ? <Version {...pluginVersionInfo} />
-                    : <Badge className="mx-1" size="s" state={BadgeState.Default}>{plugin.version}</Badge>
-                  : null}
+                titleLeft={
+                  plugin.version ? (
+                    pluginVersionInfo ? (
+                      <Version {...pluginVersionInfo} />
+                    ) : (
+                      <Badge className="mx-1" size="s" state={BadgeState.Default}>
+                        {plugin.version}
+                      </Badge>
+                    )
+                  ) : null
+                }
                 compact
               />
             )
@@ -60,11 +62,7 @@ const Installed: FC<Props> = ({
       {/* Action Buttons */}
       {!isHideButton && (
         <div className="flex items-center justify-end gap-2 self-stretch p-6 pt-5">
-          <Button
-            variant="primary"
-            className="min-w-[72px]"
-            onClick={onCancel}
-          >
+          <Button variant="primary" className="min-w-[72px]" onClick={onCancel}>
             {t('operation.close', { ns: 'common' })}
           </Button>
         </div>

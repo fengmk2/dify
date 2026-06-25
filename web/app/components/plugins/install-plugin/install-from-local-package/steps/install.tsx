@@ -48,17 +48,13 @@ const Installed: FC<Props> = ({
   const hasInstalled = !!installedVersion
 
   useEffect(() => {
-    if (hasInstalled && uniqueIdentifier === installedInfoPayload.uniqueIdentifier)
-      onInstalled()
+    if (hasInstalled && uniqueIdentifier === installedInfoPayload.uniqueIdentifier) onInstalled()
   }, [hasInstalled])
 
   const [isInstalling, setIsInstalling] = React.useState(false)
   const { mutateAsync: installPackageFromLocal } = useInstallPackageFromLocal()
 
-  const {
-    check,
-    stop,
-  } = checkTaskStatus()
+  const { check, stop } = checkTaskStatus()
 
   const handleCancel = () => {
     stop()
@@ -67,20 +63,15 @@ const Installed: FC<Props> = ({
 
   const { handleInstallTaskStart } = usePluginTaskList(payload.category)
   const handleInstall = async () => {
-    if (isInstalling)
-      return
+    if (isInstalling) return
     setIsInstalling(true)
     onStartToInstall?.()
 
     try {
-      if (hasInstalled)
-        await uninstallPlugin(installedInfoPayload.installedId)
+      if (hasInstalled) await uninstallPlugin(installedInfoPayload.installedId)
 
       const response = await installPackageFromLocal(uniqueIdentifier)
-      const {
-        all_installed,
-        task_id,
-      } = response
+      const { all_installed, task_id } = response
       handleInstallTaskStart(response)
       const taskId = task_id
       const isInstalled = all_installed
@@ -98,8 +89,7 @@ const Installed: FC<Props> = ({
         return
       }
       onInstalled(true)
-    }
-    catch (e) {
+    } catch (e) {
       if (typeof e === 'string') {
         onFailed(e)
         return
@@ -110,9 +100,11 @@ const Installed: FC<Props> = ({
 
   const { langGeniusVersionInfo } = useAppContext()
   const isDifyVersionCompatible = useMemo(() => {
-    if (!langGeniusVersionInfo.current_version)
-      return true
-    return isEqualOrLaterThanVersion(langGeniusVersionInfo.current_version, payload.meta.minimum_dify_version ?? '0.0.0')
+    if (!langGeniusVersionInfo.current_version) return true
+    return isEqualOrLaterThanVersion(
+      langGeniusVersionInfo.current_version,
+      payload.meta.minimum_dify_version ?? '0.0.0',
+    )
   }, [langGeniusVersionInfo.current_version, payload.meta.minimum_dify_version])
 
   return (
@@ -129,7 +121,10 @@ const Installed: FC<Props> = ({
           </p>
           {!isDifyVersionCompatible && (
             <p className="flex items-center gap-1 system-md-regular text-text-warning">
-              {t('difyVersionNotCompatible', { ns: 'plugin', minimalDifyVersion: payload.meta.minimum_dify_version })}
+              {t('difyVersionNotCompatible', {
+                ns: 'plugin',
+                minimalDifyVersion: payload.meta.minimum_dify_version,
+              })}
             </p>
           )}
         </div>
@@ -137,13 +132,15 @@ const Installed: FC<Props> = ({
           <Card
             className="w-full"
             payload={pluginManifestToCardPluginProps(payload)}
-            titleLeft={!isLoading && (
-              <Version
-                hasInstalled={hasInstalled}
-                installedVersion={installedVersion}
-                toInstallVersion={toInstallVersion}
-              />
-            )}
+            titleLeft={
+              !isLoading && (
+                <Version
+                  hasInstalled={hasInstalled}
+                  installedVersion={installedVersion}
+                  toInstallVersion={toInstallVersion}
+                />
+              )
+            }
           />
         </div>
       </div>
@@ -161,7 +158,9 @@ const Installed: FC<Props> = ({
           onClick={handleInstall}
         >
           {isInstalling && <RiLoader2Line className="size-4 animate-spin-slow" />}
-          <span>{t(`${i18nPrefix}.${isInstalling ? 'installing' : 'install'}`, { ns: 'plugin' })}</span>
+          <span>
+            {t(`${i18nPrefix}.${isInstalling ? 'installing' : 'install'}`, { ns: 'plugin' })}
+          </span>
         </Button>
       </div>
     </>

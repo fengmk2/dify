@@ -50,7 +50,9 @@ export const workspaceSwitchContract = base
     path: '/workspaces/switch',
     method: 'POST',
   })
-  .input(type<{
-    body: SwitchWorkspaceRequest
-  }>())
+  .input(
+    type<{
+      body: SwitchWorkspaceRequest
+    }>(),
+  )
   .output(type<SwitchWorkspaceResponse>())

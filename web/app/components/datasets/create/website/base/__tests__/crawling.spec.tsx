@@ -1,9 +1,11 @@
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 import Crawling from '../crawling'
 
 vi.mock('@/app/components/base/icons/src/public/other', () => ({
-  RowStruct: (props: React.HTMLAttributes<HTMLDivElement>) => <div data-testid="row-struct" {...props} />,
+  RowStruct: (props: React.HTMLAttributes<HTMLDivElement>) => (
+    <div data-testid="row-struct" {...props} />
+  ),
 }))
 
 describe('Crawling', () => {

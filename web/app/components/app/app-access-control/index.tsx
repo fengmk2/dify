@@ -24,10 +24,11 @@ export function AccessControl(props: AccessControlProps) {
   const { app, onClose, onConfirm } = props
   const { t } = useTranslation()
   const { data: systemFeatures } = useSuspenseQuery(systemFeaturesQueryOptions())
-  const hideExternalTip = systemFeatures.webapp_auth.enabled
-    && (systemFeatures.webapp_auth.allow_sso
-      || systemFeatures.webapp_auth.allow_email_password_login
-      || systemFeatures.webapp_auth.allow_email_code_login)
+  const hideExternalTip =
+    systemFeatures.webapp_auth.enabled &&
+    (systemFeatures.webapp_auth.allow_sso ||
+      systemFeatures.webapp_auth.allow_email_password_login ||
+      systemFeatures.webapp_auth.allow_email_code_login)
   const initialAccessMode = app.access_mode ?? AccessMode.SPECIFIC_GROUPS_MEMBERS
   const whiteListSubjectsQuery = useAppWhiteListSubjects(
     app.id,
@@ -38,8 +39,8 @@ export function AccessControl(props: AccessControlProps) {
   const draftKey = [
     app.id,
     initialAccessMode,
-    initialSpecificGroups.map(group => group.id).join(','),
-    initialSpecificMembers.map(member => member.id).join(','),
+    initialSpecificGroups.map((group) => group.id).join(','),
+    initialSpecificMembers.map((member) => member.id).join(','),
   ].join(':')
 
   return (
@@ -56,7 +57,10 @@ export function AccessControl(props: AccessControlProps) {
       <AccessControlForm
         app={app}
         hideExternalTip={hideExternalTip}
-        subjectsLoading={initialAccessMode === AccessMode.SPECIFIC_GROUPS_MEMBERS && whiteListSubjectsQuery.isPending}
+        subjectsLoading={
+          initialAccessMode === AccessMode.SPECIFIC_GROUPS_MEMBERS &&
+          whiteListSubjectsQuery.isPending
+        }
         onClose={onClose}
         onConfirm={onConfirm}
         successMessage={t('accessControlDialog.updateSuccess', { ns: 'app' })}
@@ -80,10 +84,12 @@ function AccessControlForm({
   onClose: () => void
   onConfirm?: () => void
 }) {
-  const specificGroups = useAccessControlStore(s => s.specificGroups)
-  const specificMembers = useAccessControlStore(s => s.specificMembers)
-  const currentMenu = useAccessControlStore(s => s.currentMenu)
-  const { isPending, mutate: updateAccessMode } = useMutation(consoleQuery.explore.updateAppAccessMode.mutationOptions())
+  const specificGroups = useAccessControlStore((s) => s.specificGroups)
+  const specificMembers = useAccessControlStore((s) => s.specificMembers)
+  const currentMenu = useAccessControlStore((s) => s.currentMenu)
+  const { isPending, mutate: updateAccessMode } = useMutation(
+    consoleQuery.explore.updateAppAccessMode.mutationOptions(),
+  )
 
   function handleConfirm() {
     const submitData: {
@@ -94,7 +100,10 @@ function AccessControlForm({
     if (currentMenu === AccessMode.SPECIFIC_GROUPS_MEMBERS) {
       const subjects: Pick<EnterpriseSubject, 'subjectId' | 'subjectType'>[] = []
       specificGroups.forEach((group) => {
-        subjects.push({ subjectId: group.id, subjectType: EnterpriseSubjectType.ACCESS_SUBJECT_TYPE_GROUP })
+        subjects.push({
+          subjectId: group.id,
+          subjectType: EnterpriseSubjectType.ACCESS_SUBJECT_TYPE_GROUP,
+        })
       })
       specificMembers.forEach((member) => {
         subjects.push({
@@ -104,14 +113,17 @@ function AccessControlForm({
       })
       submitData.subjects = subjects
     }
-    updateAccessMode({
-      body: submitData,
-    }, {
-      onSuccess: () => {
-        toast.success(successMessage)
-        onConfirm?.()
+    updateAccessMode(
+      {
+        body: submitData,
       },
-    })
+      {
+        onSuccess: () => {
+          toast.success(successMessage)
+          onConfirm?.()
+        },
+      },
+    )
   }
 
   return (

@@ -41,9 +41,10 @@ vi.mock('@/context/app-context', () => ({
   useAppContext: () => ({
     workspacePermissionKeys: mockWorkspacePermissionKeys(),
   }),
-  useSelector: <T,>(selector: (state: { workspacePermissionKeys: string[] }) => T): T => selector({
-    workspacePermissionKeys: mockWorkspacePermissionKeys(),
-  }),
+  useSelector: <T,>(selector: (state: { workspacePermissionKeys: string[] }) => T): T =>
+    selector({
+      workspacePermissionKeys: mockWorkspacePermissionKeys(),
+    }),
 }))
 
 vi.mock('@langgenius/dify-ui/toast', () => ({
@@ -78,7 +79,11 @@ describe('useCreateSnippet', () => {
   describe('Create Flow', () => {
     it('should create snippet with graph and navigate on success', async () => {
       mockMutateAsync.mockResolvedValue({ id: 'snippet-123' })
-      mockSyncDraftWorkflow.mockResolvedValue({ result: 'success', hash: 'draft-hash', updated_at: 1704067200 })
+      mockSyncDraftWorkflow.mockResolvedValue({
+        result: 'success',
+        hash: 'draft-hash',
+        updated_at: 1704067200,
+      })
       const graph = {
         nodes: [],
         edges: [],

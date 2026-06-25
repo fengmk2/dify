@@ -8,9 +8,11 @@ export const fileUploadContract = base
     method: 'POST',
     successStatus: 201,
   })
-  .input(type<{
-    body: {
-      file: File
-    }
-  }>())
+  .input(
+    type<{
+      body: {
+        file: File
+      }
+    }>(),
+  )
   .output(type<PostFilesUploadResponse>())

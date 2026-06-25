@@ -1,8 +1,4 @@
-import type {
-  CommonNodeType,
-  Node,
-  OnSelectBlock,
-} from '@/app/components/workflow/types'
+import type { CommonNodeType, Node, OnSelectBlock } from '@/app/components/workflow/types'
 import { intersection } from 'es-toolkit/array'
 import { useCallback, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -32,17 +28,19 @@ export function ChangeBlockMenuTrigger({
   const { t } = useTranslation()
   const { handleNodeChange } = useNodesInteractions()
   const nodeCatalogType = getNodeCatalogType(nodeData)
-  const {
-    availablePrevBlocks,
-    availableNextBlocks,
-  } = useAvailableBlocks(nodeCatalogType, nodeData.isInIteration || nodeData.isInLoop)
+  const { availablePrevBlocks, availableNextBlocks } = useAvailableBlocks(
+    nodeCatalogType,
+    nodeData.isInIteration || nodeData.isInLoop,
+  )
   const isChatMode = useIsChatMode()
-  const flowType = useHooksStore(s => s.configsMap?.flowType)
+  const flowType = useHooksStore((s) => s.configsMap?.flowType)
   const nodes = useNodes()
   const hasStartNode = useMemo(() => {
-    return nodes.some(n => (n.data as CommonNodeType | undefined)?.type === BlockEnum.Start)
+    return nodes.some((n) => (n.data as CommonNodeType | undefined)?.type === BlockEnum.Start)
   }, [nodes])
-  const showStartTab = flowType !== FlowType.ragPipeline && (!isChatMode || nodeData.type === BlockEnum.Start || !hasStartNode)
+  const showStartTab =
+    flowType !== FlowType.ragPipeline &&
+    (!isChatMode || nodeData.type === BlockEnum.Start || !hasStartNode)
   const ignoreNodeIds = useMemo(() => {
     if (isTriggerNode(nodeData.type as BlockEnum) || nodeData.type === BlockEnum.Start)
       return [nodeId]
@@ -53,14 +51,16 @@ export function ChangeBlockMenuTrigger({
   const availableNodes = useMemo(() => {
     if (availablePrevBlocks.length && availableNextBlocks.length)
       return intersection(availablePrevBlocks, availableNextBlocks)
-    if (availablePrevBlocks.length)
-      return availablePrevBlocks
+    if (availablePrevBlocks.length) return availablePrevBlocks
     return availableNextBlocks
   }, [availablePrevBlocks, availableNextBlocks])
 
-  const handleSelect = useCallback<OnSelectBlock>((type, pluginDefaultValue) => {
-    handleNodeChange(nodeId, type, sourceHandle, pluginDefaultValue)
-  }, [handleNodeChange, nodeId, sourceHandle])
+  const handleSelect = useCallback<OnSelectBlock>(
+    (type, pluginDefaultValue) => {
+      handleNodeChange(nodeId, type, sourceHandle, pluginDefaultValue)
+    },
+    [handleNodeChange, nodeId, sourceHandle],
+  )
 
   const renderTrigger = useCallback(() => {
     return (

@@ -1,13 +1,20 @@
 'use client'
 
-import type { AgentConfigSnapshotDetailResponse, AgentIconType, AgentSoulConfig } from '@dify/contracts/api/console/agent/types.gen'
+import type {
+  AgentConfigSnapshotDetailResponse,
+  AgentIconType,
+  AgentSoulConfig,
+} from '@dify/contracts/api/console/agent/types.gen'
 import { skipToken, useQuery } from '@tanstack/react-query'
 import { useAtom, useAtomValue } from 'jotai'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Loading from '@/app/components/base/loading'
 import { ModelTypeEnum } from '@/app/components/header/account-setting/model-provider-page/declarations'
-import { useDefaultModel, useTextGenerationCurrentProviderAndModelAndModelList } from '@/app/components/header/account-setting/model-provider-page/hooks'
+import {
+  useDefaultModel,
+  useTextGenerationCurrentProviderAndModelAndModelList,
+} from '@/app/components/header/account-setting/model-provider-page/hooks'
 import { AgentComposerProvider } from '@/features/agent-v2/agent-composer/provider'
 import { useHydrateAgentSoulConfigDraft } from '@/features/agent-v2/agent-composer/store'
 import { agentComposerAppFeaturesAtom } from '@/features/agent-v2/agent-composer/store-modules/app-features'
@@ -24,9 +31,7 @@ type AgentConfigurePageProps = {
   agentId: string
 }
 
-export function AgentConfigurePage({
-  agentId,
-}: AgentConfigurePageProps) {
+export function AgentConfigurePage({ agentId }: AgentConfigurePageProps) {
   return (
     <AgentComposerProvider>
       <AgentConfigurePageContent agentId={agentId} />
@@ -34,15 +39,14 @@ export function AgentConfigurePage({
   )
 }
 
-function AgentConfigurePageContent({
-  agentId,
-}: AgentConfigurePageProps) {
+function AgentConfigurePageContent({ agentId }: AgentConfigurePageProps) {
   const { t } = useTranslation('agentV2')
   const [selectedVersionId, setSelectedVersionId] = useState<string | null>(null)
   const configureData = useAgentConfigureData(agentId, selectedVersionId)
-  const isConfigureDataPending = configureData.agentQuery.isPending
-    || configureData.composerQuery.isPending
-    || (configureData.shouldLoadVersion && configureData.versionQuery.isPending)
+  const isConfigureDataPending =
+    configureData.agentQuery.isPending ||
+    configureData.composerQuery.isPending ||
+    (configureData.shouldLoadVersion && configureData.versionQuery.isPending)
 
   if (isConfigureDataPending) {
     return (
@@ -94,17 +98,9 @@ function AgentConfigurePageLoadedContent({
     activeVersionId,
     config: agentSoulConfig,
   })
-  const {
-    currentModel,
-    setConfigureModel,
-    textGenerationModelList,
-  } = useAgentConfigureModelOptions()
-  const {
-    draftSavedAt,
-    isPublishing,
-    publishDraft,
-    saveDraft,
-  } = useAgentConfigureSync({
+  const { currentModel, setConfigureModel, textGenerationModelList } =
+    useAgentConfigureModelOptions()
+  const { draftSavedAt, isPublishing, publishDraft, saveDraft } = useAgentConfigureSync({
     agentId,
     baseConfig: agentSoulConfig,
     currentModel,
@@ -140,7 +136,7 @@ function AgentConfigurePageLoadedContent({
         <div className="flex min-w-105 flex-1 flex-col overflow-hidden rounded-lg bg-background-gradient-bg-fill-chat-bg-2 shadow-xl shadow-shadow-shadow-5">
           <AgentPreviewHeader
             isChatFeaturesOpen={showChatFeatures}
-            onToggleChatFeatures={() => setShowChatFeatures(open => !open)}
+            onToggleChatFeatures={() => setShowChatFeatures((open) => !open)}
             onRestart={() => setClearPreviewChat(true)}
           />
 
@@ -188,47 +184,54 @@ function AgentPreviewChatWithDraftConfig({
   const draftAppFeatures = useAtomValue(agentComposerAppFeaturesAtom)
   const previewAgentSoulConfig = getPreviewAgentSoulConfig(agentSoulConfig, draftAppFeatures)
 
-  return (
-    <AgentPreviewChat
-      {...props}
-      agentSoulConfig={previewAgentSoulConfig}
-    />
-  )
+  return <AgentPreviewChat {...props} agentSoulConfig={previewAgentSoulConfig} />
 }
 
 function useAgentConfigureData(agentId: string, selectedVersionId: string | null) {
-  const agentQuery = useQuery(consoleQuery.agent.byAgentId.get.queryOptions({
-    input: {
-      params: {
-        agent_id: agentId,
+  const agentQuery = useQuery(
+    consoleQuery.agent.byAgentId.get.queryOptions({
+      input: {
+        params: {
+          agent_id: agentId,
+        },
       },
-    },
-  }))
-  const composerQuery = useQuery(consoleQuery.agent.byAgentId.composer.get.queryOptions({
-    input: {
-      params: {
-        agent_id: agentId,
+    }),
+  )
+  const composerQuery = useQuery(
+    consoleQuery.agent.byAgentId.composer.get.queryOptions({
+      input: {
+        params: {
+          agent_id: agentId,
+        },
       },
-    },
-  }))
+    }),
+  )
   const publishedVersionId = composerQuery.data?.active_config_snapshot?.id
   const shouldLoadPublishedVersion = !selectedVersionId && !composerQuery.data?.agent_soul
-  const versionIdToLoad = selectedVersionId ?? (shouldLoadPublishedVersion ? publishedVersionId : undefined)
+  const versionIdToLoad =
+    selectedVersionId ?? (shouldLoadPublishedVersion ? publishedVersionId : undefined)
   const shouldLoadVersion = !!versionIdToLoad
-  const versionQuery = useQuery(consoleQuery.agent.byAgentId.versions.byVersionId.get.queryOptions({
-    input: versionIdToLoad
-      ? {
-          params: {
-            agent_id: agentId,
-            version_id: versionIdToLoad,
-          },
-        }
-      : skipToken,
-  }))
+  const versionQuery = useQuery(
+    consoleQuery.agent.byAgentId.versions.byVersionId.get.queryOptions({
+      input: versionIdToLoad
+        ? {
+            params: {
+              agent_id: agentId,
+              version_id: versionIdToLoad,
+            },
+          }
+        : skipToken,
+    }),
+  )
   const versionDetail = versionQuery.data as AgentConfigSnapshotDetailResponse | undefined
-  const activeVersionId = selectedVersionId ?? (shouldLoadPublishedVersion ? publishedVersionId : null)
-  const activeConfigSnapshot = selectedVersionId ? versionDetail : (composerQuery.data?.active_config_snapshot ?? versionDetail)
-  const agentSoulConfig = selectedVersionId ? versionDetail?.config_snapshot : (composerQuery.data?.agent_soul ?? versionDetail?.config_snapshot)
+  const activeVersionId =
+    selectedVersionId ?? (shouldLoadPublishedVersion ? publishedVersionId : null)
+  const activeConfigSnapshot = selectedVersionId
+    ? versionDetail
+    : (composerQuery.data?.active_config_snapshot ?? versionDetail)
+  const agentSoulConfig = selectedVersionId
+    ? versionDetail?.config_snapshot
+    : (composerQuery.data?.agent_soul ?? versionDetail?.config_snapshot)
 
   return {
     agentQuery,
@@ -244,9 +247,7 @@ function useAgentConfigureData(agentId: string, selectedVersionId: string | null
 
 function useAgentConfigureModelOptions() {
   const [model, setModel] = useAtom(agentComposerModelAtom)
-  const {
-    data: defaultTextGenerationModel,
-  } = useDefaultModel(ModelTypeEnum.textGeneration)
+  const { data: defaultTextGenerationModel } = useDefaultModel(ModelTypeEnum.textGeneration)
   const defaultModel = defaultTextGenerationModel
     ? {
         provider: defaultTextGenerationModel.provider.provider,
@@ -254,9 +255,8 @@ function useAgentConfigureModelOptions() {
       }
     : undefined
   const currentModel = model ?? defaultModel
-  const {
-    textGenerationModelList,
-  } = useTextGenerationCurrentProviderAndModelAndModelList(currentModel)
+  const { textGenerationModelList } =
+    useTextGenerationCurrentProviderAndModelAndModelList(currentModel)
 
   return {
     currentModel,
@@ -269,8 +269,7 @@ function getPreviewAgentSoulConfig(
   agentSoulConfig: AgentSoulConfig | undefined,
   draftAppFeatures: AgentSoulConfig['app_features'] | undefined,
 ) {
-  if (!agentSoulConfig || !draftAppFeatures)
-    return agentSoulConfig
+  if (!agentSoulConfig || !draftAppFeatures) return agentSoulConfig
 
   return {
     ...agentSoulConfig,

@@ -23,7 +23,8 @@ import {
 } from '@/features/deployments/create-guide/state'
 import { StepShell } from './layout'
 
-const releaseTextareaClassName = 'min-h-16 w-full resize-none appearance-none rounded-md border border-transparent bg-components-input-bg-normal p-2 px-3 system-sm-regular text-components-input-text-filled caret-primary-600 outline-hidden placeholder:text-components-input-text-placeholder hover:border-components-input-border-hover hover:bg-components-input-bg-hover focus:border-components-input-border-active focus:bg-components-input-bg-active focus:shadow-xs'
+const releaseTextareaClassName =
+  'min-h-16 w-full resize-none appearance-none rounded-md border border-transparent bg-components-input-bg-normal p-2 px-3 system-sm-regular text-components-input-text-filled caret-primary-600 outline-hidden placeholder:text-components-input-text-placeholder hover:border-components-input-border-hover hover:bg-components-input-bg-hover focus:border-components-input-border-active focus:bg-components-input-bg-active focus:shadow-xs'
 
 export function ReleaseStepContent() {
   const { t } = useTranslation('deployments')
@@ -77,9 +78,10 @@ function InstanceNameField() {
   const method = useAtomValue(effectiveMethodAtom)
   const selectedApp = useAtomValue(selectedAppAtom)
   const dslDefaultAppName = useAtomValue(dslDefaultAppNameAtom)
-  const instanceNamePlaceholder = method === 'importDsl'
-    ? dslDefaultAppName || t('createGuide.dsl.defaultAppName')
-    : selectedApp?.name
+  const instanceNamePlaceholder =
+    method === 'importDsl'
+      ? dslDefaultAppName || t('createGuide.dsl.defaultAppName')
+      : selectedApp?.name
   const hasInstanceNameConflict = useAtomValue(hasInstanceNameConflictAtom)
   const instanceNameError = hasInstanceNameConflict
     ? t('createGuide.release.instanceNameConflict')
@@ -88,13 +90,16 @@ function InstanceNameField() {
 
   return (
     <div className="flex flex-col gap-2">
-      <label className="system-xs-medium-uppercase text-text-tertiary" htmlFor="create-guide-instance-name">
+      <label
+        className="system-xs-medium-uppercase text-text-tertiary"
+        htmlFor="create-guide-instance-name"
+      >
         {t('createGuide.release.instanceName')}
       </label>
       <Input
         id="create-guide-instance-name"
         value={instanceName}
-        onChange={event => setInstanceName(event.target.value)}
+        onChange={(event) => setInstanceName(event.target.value)}
         placeholder={instanceNamePlaceholder}
         required
         aria-invalid={instanceNameError ? true : undefined}
@@ -102,7 +107,11 @@ function InstanceNameField() {
         className="h-9"
       />
       {instanceNameError && (
-        <div id={instanceNameErrorId} role="alert" className="system-xs-regular text-text-destructive">
+        <div
+          id={instanceNameErrorId}
+          role="alert"
+          className="system-xs-regular text-text-destructive"
+        >
           {instanceNameError}
         </div>
       )}
@@ -123,7 +132,7 @@ function InstanceDescriptionField() {
       <textarea
         id="create-guide-instance-description"
         value={instanceDescription}
-        onChange={event => setInstanceDescription(event.target.value)}
+        onChange={(event) => setInstanceDescription(event.target.value)}
         placeholder={t('createGuide.release.instanceDescriptionPlaceholder')}
         className={releaseTextareaClassName}
       />
@@ -138,13 +147,16 @@ function ReleaseNameField() {
 
   return (
     <div className="flex flex-col gap-2">
-      <label className="system-xs-medium-uppercase text-text-tertiary" htmlFor="create-guide-release-name">
+      <label
+        className="system-xs-medium-uppercase text-text-tertiary"
+        htmlFor="create-guide-release-name"
+      >
         {t('createGuide.release.releaseName')}
       </label>
       <Input
         id="create-guide-release-name"
         value={releaseName}
-        onChange={event => setReleaseName(event.target.value)}
+        onChange={(event) => setReleaseName(event.target.value)}
         placeholder={t('createGuide.release.defaultName')}
         required
         className="h-9"
@@ -166,7 +178,7 @@ function ReleaseDescriptionField() {
       <textarea
         id="create-guide-release-description"
         value={releaseDescription}
-        onChange={event => setReleaseDescription(event.target.value)}
+        onChange={(event) => setReleaseDescription(event.target.value)}
         placeholder={t('createGuide.release.releaseDescriptionPlaceholder')}
         className={releaseTextareaClassName}
       />
@@ -174,10 +186,7 @@ function ReleaseDescriptionField() {
   )
 }
 
-function OptionalFieldLabel({ children, htmlFor }: {
-  children: string
-  htmlFor: string
-}) {
+function OptionalFieldLabel({ children, htmlFor }: { children: string; htmlFor: string }) {
   const { t } = useTranslation('deployments')
 
   return (

@@ -1,6 +1,6 @@
 import type { ProcessRuleResponse } from '@/models/datasets'
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import { ProcessMode } from '@/models/datasets'
 import { RETRIEVE_METHOD } from '@/types/app'
 import { IndexingType } from '../../../../../create/step-two'

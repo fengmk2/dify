@@ -1,6 +1,6 @@
 import type { AppContextValue } from '@/context/app-context'
 import { render, screen } from '@testing-library/react'
-import { vi } from 'vitest'
+import { vi } from 'vite-plus/test'
 import { useAppContext } from '@/context/app-context'
 import EnvNav from '../index'
 
@@ -45,8 +45,6 @@ describe('EnvNav', () => {
     } as unknown as AppContextValue)
 
     render(<EnvNav />)
-    expect(
-      screen.getByText('common.environment.development'),
-    ).toBeInTheDocument()
+    expect(screen.getByText('common.environment.development')).toBeInTheDocument()
   })
 })

@@ -25,9 +25,11 @@ vi.mock('react-i18next', async () => {
 
 const mockAppListInfiniteOptions = vi.hoisted(() => vi.fn((options: unknown) => options))
 const mockAppStarredListQueryOptions = vi.hoisted(() => vi.fn((options: unknown) => options))
-const mockUseWorkflowOnlineUsers = vi.hoisted(() => vi.fn((_options: unknown) => ({
-  onlineUsersMap: {},
-})))
+const mockUseWorkflowOnlineUsers = vi.hoisted(() =>
+  vi.fn((_options: unknown) => ({
+    onlineUsersMap: {},
+  })),
+)
 
 const mockReplace = vi.fn()
 const mockRouter = { replace: mockReplace }
@@ -74,15 +76,18 @@ vi.mock('@/context/app-context', () => ({
     userProfile: { id: 'creator-1' },
     workspacePermissionKeys: mockWorkspacePermissionKeys,
   }),
-  useSelector: (selector: (state: {
-    isCurrentWorkspaceDatasetOperator: boolean
-    userProfile: { id: string }
-    workspacePermissionKeys: string[]
-  }) => unknown) => selector({
-    isCurrentWorkspaceDatasetOperator: mockIsCurrentWorkspaceDatasetOperator(),
-    userProfile: { id: 'creator-1' },
-    workspacePermissionKeys: mockWorkspacePermissionKeys,
-  }),
+  useSelector: (
+    selector: (state: {
+      isCurrentWorkspaceDatasetOperator: boolean
+      userProfile: { id: string }
+      workspacePermissionKeys: string[]
+    }) => unknown,
+  ) =>
+    selector({
+      isCurrentWorkspaceDatasetOperator: mockIsCurrentWorkspaceDatasetOperator(),
+      userProfile: { id: 'creator-1' },
+      workspacePermissionKeys: mockWorkspacePermissionKeys,
+    }),
 }))
 
 const mockOnPlanInfoChanged = vi.fn()
@@ -121,11 +126,23 @@ vi.mock('@/service/use-common', () => ({
 }))
 
 vi.mock('@/features/tag-management/components/tag-filter', () => ({
-  TagFilter: ({ value, onChange, onOpenTagManagement }: { value: string[], onChange: (value: string[]) => void, onOpenTagManagement: () => void }) => (
+  TagFilter: ({
+    value,
+    onChange,
+    onOpenTagManagement,
+  }: {
+    value: string[]
+    onChange: (value: string[]) => void
+    onOpenTagManagement: () => void
+  }) => (
     <div>
-      <button type="button" onClick={() => onChange(['tag-1'])}>common.tag.placeholder</button>
+      <button type="button" onClick={() => onChange(['tag-1'])}>
+        common.tag.placeholder
+      </button>
       <span data-testid="tag-filter-value">{value.join(',')}</span>
-      <button type="button" onClick={onOpenTagManagement}>Manage tags</button>
+      <button type="button" onClick={onOpenTagManagement}>
+        Manage tags
+      </button>
     </div>
   ),
 }))
@@ -156,37 +173,39 @@ const mockServiceState = {
 }
 
 const defaultAppData = {
-  pages: [{
-    data: [
-      {
-        id: 'app-1',
-        name: 'Test App 1',
-        description: 'Description 1',
-        mode: AppModeEnum.CHAT,
-        icon: '🤖',
-        icon_type: 'emoji',
-        icon_background: '#FFEAD5',
-        tags: [],
-        author_name: 'Author 1',
-        created_at: 1704067200,
-        updated_at: 1704153600,
-      },
-      {
-        id: 'app-2',
-        name: 'Test App 2',
-        description: 'Description 2',
-        mode: AppModeEnum.WORKFLOW,
-        icon: '⚙️',
-        icon_type: 'emoji',
-        icon_background: '#E4FBCC',
-        tags: [],
-        author_name: 'Author 2',
-        created_at: 1704067200,
-        updated_at: 1704153600,
-      },
-    ],
-    total: 2,
-  }],
+  pages: [
+    {
+      data: [
+        {
+          id: 'app-1',
+          name: 'Test App 1',
+          description: 'Description 1',
+          mode: AppModeEnum.CHAT,
+          icon: '🤖',
+          icon_type: 'emoji',
+          icon_background: '#FFEAD5',
+          tags: [],
+          author_name: 'Author 1',
+          created_at: 1704067200,
+          updated_at: 1704153600,
+        },
+        {
+          id: 'app-2',
+          name: 'Test App 2',
+          description: 'Description 2',
+          mode: AppModeEnum.WORKFLOW,
+          icon: '⚙️',
+          icon_type: 'emoji',
+          icon_background: '#E4FBCC',
+          tags: [],
+          author_name: 'Author 2',
+          created_at: 1704067200,
+          updated_at: 1704153600,
+        },
+      ],
+      total: 2,
+    },
+  ],
 }
 let mockAppData = defaultAppData
 
@@ -253,24 +272,98 @@ vi.mock('@/next/dynamic', () => ({
       }
     }
     if (fnString.includes('create-from-dsl-modal')) {
-      return function MockCreateFromDSLModal({ show, onClose, onSuccess }: { show: boolean, onClose: () => void, onSuccess: () => void }) {
-        if (!show)
-          return null
-        return React.createElement('div', { 'data-testid': 'create-dsl-modal' }, React.createElement('button', { 'onClick': onClose, 'data-testid': 'close-dsl-modal' }, 'Close'), React.createElement('button', { 'onClick': onSuccess, 'data-testid': 'success-dsl-modal' }, 'Success'))
+      return function MockCreateFromDSLModal({
+        show,
+        onClose,
+        onSuccess,
+      }: {
+        show: boolean
+        onClose: () => void
+        onSuccess: () => void
+      }) {
+        if (!show) return null
+        return React.createElement(
+          'div',
+          { 'data-testid': 'create-dsl-modal' },
+          React.createElement(
+            'button',
+            { onClick: onClose, 'data-testid': 'close-dsl-modal' },
+            'Close',
+          ),
+          React.createElement(
+            'button',
+            { onClick: onSuccess, 'data-testid': 'success-dsl-modal' },
+            'Success',
+          ),
+        )
       }
     }
     if (fnString.includes('create-app-modal')) {
-      return function MockCreateAppModal({ show, onClose, onSuccess, onCreateFromTemplate }: { show: boolean, onClose: () => void, onSuccess: () => void, onCreateFromTemplate: () => void }) {
-        if (!show)
-          return null
-        return React.createElement('div', { 'data-testid': 'create-app-modal' }, React.createElement('button', { 'onClick': onClose, 'data-testid': 'close-create-modal' }, 'Close'), React.createElement('button', { 'onClick': onSuccess, 'data-testid': 'success-create-modal' }, 'Success'), React.createElement('button', { 'onClick': onCreateFromTemplate, 'data-testid': 'to-template-modal' }, 'To Template'))
+      return function MockCreateAppModal({
+        show,
+        onClose,
+        onSuccess,
+        onCreateFromTemplate,
+      }: {
+        show: boolean
+        onClose: () => void
+        onSuccess: () => void
+        onCreateFromTemplate: () => void
+      }) {
+        if (!show) return null
+        return React.createElement(
+          'div',
+          { 'data-testid': 'create-app-modal' },
+          React.createElement(
+            'button',
+            { onClick: onClose, 'data-testid': 'close-create-modal' },
+            'Close',
+          ),
+          React.createElement(
+            'button',
+            { onClick: onSuccess, 'data-testid': 'success-create-modal' },
+            'Success',
+          ),
+          React.createElement(
+            'button',
+            { onClick: onCreateFromTemplate, 'data-testid': 'to-template-modal' },
+            'To Template',
+          ),
+        )
       }
     }
     if (fnString.includes('create-app-dialog')) {
-      return function MockCreateAppTemplateDialog({ show, onClose, onSuccess, onCreateFromBlank }: { show: boolean, onClose: () => void, onSuccess: () => void, onCreateFromBlank: () => void }) {
-        if (!show)
-          return null
-        return React.createElement('div', { 'data-testid': 'template-dialog' }, React.createElement('button', { 'onClick': onClose, 'data-testid': 'close-template-dialog' }, 'Close'), React.createElement('button', { 'onClick': onSuccess, 'data-testid': 'success-template-dialog' }, 'Success'), React.createElement('button', { 'onClick': onCreateFromBlank, 'data-testid': 'to-blank-modal' }, 'To Blank'))
+      return function MockCreateAppTemplateDialog({
+        show,
+        onClose,
+        onSuccess,
+        onCreateFromBlank,
+      }: {
+        show: boolean
+        onClose: () => void
+        onSuccess: () => void
+        onCreateFromBlank: () => void
+      }) {
+        if (!show) return null
+        return React.createElement(
+          'div',
+          { 'data-testid': 'template-dialog' },
+          React.createElement(
+            'button',
+            { onClick: onClose, 'data-testid': 'close-template-dialog' },
+            'Close',
+          ),
+          React.createElement(
+            'button',
+            { onClick: onSuccess, 'data-testid': 'success-template-dialog' },
+            'Success',
+          ),
+          React.createElement(
+            'button',
+            { onClick: onCreateFromBlank, 'data-testid': 'to-blank-modal' },
+            'To Blank',
+          ),
+        )
       }
     }
     return () => null
@@ -278,24 +371,36 @@ vi.mock('@/next/dynamic', () => ({
 }))
 
 vi.mock('../app-card', () => ({
-  AppCard: ({ app }: { app: { id: string, name: string } }) => {
-    return React.createElement('div', { 'data-testid': `app-card-${app.id}`, 'role': 'article' }, app.name)
+  AppCard: ({ app }: { app: { id: string; name: string } }) => {
+    return React.createElement(
+      'div',
+      { 'data-testid': `app-card-${app.id}`, role: 'article' },
+      app.name,
+    )
   },
-  AppCardActionBar: ({ app, onRefresh }: { app: { id: string }, onRefresh?: () => void }) => {
+  AppCardActionBar: ({ app, onRefresh }: { app: { id: string }; onRefresh?: () => void }) => {
     return React.createElement('button', {
       'data-testid': `app-card-action-bar-${app.id}`,
-      'type': 'button',
-      'onClick': onRefresh,
+      type: 'button',
+      onClick: onRefresh,
     })
   },
-  default: ({ app }: { app: { id: string, name: string } }) => {
-    return React.createElement('div', { 'data-testid': `app-card-${app.id}`, 'role': 'article' }, app.name)
+  default: ({ app }: { app: { id: string; name: string } }) => {
+    return React.createElement(
+      'div',
+      { 'data-testid': `app-card-${app.id}`, role: 'article' },
+      app.name,
+    )
   },
 }))
 
 vi.mock('../empty', () => ({
   default: () => {
-    return React.createElement('div', { 'data-testid': 'empty-state', 'role': 'status' }, 'No apps found')
+    return React.createElement(
+      'div',
+      { 'data-testid': 'empty-state', role: 'status' },
+      'No apps found',
+    )
   },
 }))
 
@@ -334,12 +439,17 @@ const renderList = (searchParams = '', options: RenderListOptions = {}) => {
   const { wrapper: SystemFeaturesWrapper } = createSystemFeaturesWrapper({
     systemFeatures: { branding: { enabled: false }, ...options.systemFeatures },
   })
-  return renderWithNuqs(<SystemFeaturesWrapper><List /></SystemFeaturesWrapper>, { searchParams })
+  return renderWithNuqs(
+    <SystemFeaturesWrapper>
+      <List />
+    </SystemFeaturesWrapper>,
+    { searchParams },
+  )
 }
 
 type AppListInfiniteOptions = {
   input: (pageParam: number) => { query: Record<string, unknown> }
-  getNextPageParam: (lastPage: { has_more: boolean, page: number }) => number | undefined
+  getNextPageParam: (lastPage: { has_more: boolean; page: number }) => number | undefined
 }
 
 type AppStarredListQueryOptions = {
@@ -399,16 +509,28 @@ describe('List', () => {
 
       expect(await screen.findByRole('menuitemradio', { name: 'All' }))!.toBeInTheDocument()
       expect(screen.queryByRole('menuitemradio', { name: 'Types' })).not.toBeInTheDocument()
-      expect(await screen.findByRole('menuitemradio', { name: 'app.types.workflow' }))!.toBeInTheDocument()
-      expect(await screen.findByRole('menuitemradio', { name: 'app.types.advanced' }))!.toBeInTheDocument()
-      expect(await screen.findByRole('menuitemradio', { name: 'app.types.chatbot' }))!.toBeInTheDocument()
-      expect(await screen.findByRole('menuitemradio', { name: 'app.types.agent' }))!.toBeInTheDocument()
-      expect(await screen.findByRole('menuitemradio', { name: 'app.newApp.completeApp' }))!.toBeInTheDocument()
+      expect(
+        await screen.findByRole('menuitemradio', { name: 'app.types.workflow' }),
+      )!.toBeInTheDocument()
+      expect(
+        await screen.findByRole('menuitemradio', { name: 'app.types.advanced' }),
+      )!.toBeInTheDocument()
+      expect(
+        await screen.findByRole('menuitemradio', { name: 'app.types.chatbot' }),
+      )!.toBeInTheDocument()
+      expect(
+        await screen.findByRole('menuitemradio', { name: 'app.types.agent' }),
+      )!.toBeInTheDocument()
+      expect(
+        await screen.findByRole('menuitemradio', { name: 'app.newApp.completeApp' }),
+      )!.toBeInTheDocument()
     })
 
     it('should render search input', () => {
       renderList()
-      expect(screen.getByRole('searchbox', { name: 'app.gotoAnything.actions.searchApplications' }))!.toBeInTheDocument()
+      expect(
+        screen.getByRole('searchbox', { name: 'app.gotoAnything.actions.searchApplications' }),
+      )!.toBeInTheDocument()
     })
 
     it('should render tag filter', () => {
@@ -430,12 +552,20 @@ describe('List', () => {
       renderList()
 
       const sortButton = screen.getByRole('button', { name: 'Sort by Last modified' })
-      const searchInput = screen.getByRole('searchbox', { name: 'app.gotoAnything.actions.searchApplications' })
+      const searchInput = screen.getByRole('searchbox', {
+        name: 'app.gotoAnything.actions.searchApplications',
+      })
       const createButton = screen.getByRole('button', { name: 'common.operation.create' })
 
-      expect(sortButton.compareDocumentPosition(searchInput) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
-      expect(searchInput.compareDocumentPosition(createButton) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
-      expect(screen.queryByRole('link', { name: 'app.studio.viewSnippets' })).not.toBeInTheDocument()
+      expect(
+        sortButton.compareDocumentPosition(searchInput) & Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy()
+      expect(
+        searchInput.compareDocumentPosition(createButton) & Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy()
+      expect(
+        screen.queryByRole('link', { name: 'app.studio.viewSnippets' }),
+      ).not.toBeInTheDocument()
     })
 
     it('should render app cards when apps exist', () => {
@@ -454,20 +584,22 @@ describe('List', () => {
 
     it('should render starred apps before all app cards when starred apps exist', () => {
       mockStarredAppData = {
-        data: [{
-          id: 'starred-app-1',
-          name: 'Starred App',
-          description: 'Starred description',
-          mode: AppModeEnum.CHAT,
-          icon: '⭐',
-          icon_type: 'emoji',
-          icon_background: '#FFEAD5',
-          icon_url: null,
-          tags: [],
-          author_name: 'Author 1',
-          created_at: 1704067200,
-          updated_at: 1704153600,
-        }],
+        data: [
+          {
+            id: 'starred-app-1',
+            name: 'Starred App',
+            description: 'Starred description',
+            mode: AppModeEnum.CHAT,
+            icon: '⭐',
+            icon_type: 'emoji',
+            icon_background: '#FFEAD5',
+            icon_url: null,
+            tags: [],
+            author_name: 'Author 1',
+            created_at: 1704067200,
+            updated_at: 1704153600,
+          },
+        ],
         total: 1,
         page: 1,
         limit: 100,
@@ -484,9 +616,15 @@ describe('List', () => {
 
       expect(starredCard).toBeInTheDocument()
       expect(actionBar).toBeInTheDocument()
-      expect(starredLabel.compareDocumentPosition(starredCard) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
-      expect(starredCard.compareDocumentPosition(allAppsLabel) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
-      expect(allAppsLabel.compareDocumentPosition(firstAppCard) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+      expect(
+        starredLabel.compareDocumentPosition(starredCard) & Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy()
+      expect(
+        starredCard.compareDocumentPosition(allAppsLabel) & Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy()
+      expect(
+        allAppsLabel.compareDocumentPosition(firstAppCard) & Node.DOCUMENT_POSITION_FOLLOWING,
+      ).toBeTruthy()
 
       fireEvent.click(actionBar)
 
@@ -606,13 +744,17 @@ describe('List', () => {
   describe('Search Functionality', () => {
     it('should render search input field', () => {
       renderList()
-      expect(screen.getByRole('searchbox', { name: 'app.gotoAnything.actions.searchApplications' }))!.toBeInTheDocument()
+      expect(
+        screen.getByRole('searchbox', { name: 'app.gotoAnything.actions.searchApplications' }),
+      )!.toBeInTheDocument()
     })
 
     it('should handle search input change', () => {
       renderList()
 
-      const input = screen.getByRole('searchbox', { name: 'app.gotoAnything.actions.searchApplications' })
+      const input = screen.getByRole('searchbox', {
+        name: 'app.gotoAnything.actions.searchApplications',
+      })
       fireEvent.change(input, { target: { value: 'test search' } })
 
       expect(mockSetKeywords).toHaveBeenCalledWith('test search')
@@ -625,8 +767,7 @@ describe('List', () => {
 
       const clearButton = document.querySelector('.i-ri-close-circle-fill')?.closest('button')
       expect(clearButton)!.toBeInTheDocument()
-      if (clearButton)
-        fireEvent.click(clearButton)
+      if (clearButton) fireEvent.click(clearButton)
 
       expect(mockSetKeywords).toHaveBeenCalledWith('')
     })
@@ -666,7 +807,9 @@ describe('List', () => {
       renderList()
       fireEvent.click(screen.getByText('common.tag.placeholder'))
 
-      const options = mockAppStarredListQueryOptions.mock.calls.at(-1)?.[0] as AppStarredListQueryOptions
+      const options = mockAppStarredListQueryOptions.mock.calls.at(
+        -1,
+      )?.[0] as AppStarredListQueryOptions
 
       expect(options.input).toEqual({
         query: {
@@ -685,10 +828,9 @@ describe('List', () => {
       renderList('?category=workflow&tagIDs=tag-1;tag-2&keywords=sales')
 
       await waitFor(() => {
-        expect(mockReplace).toHaveBeenCalledWith(
-          '/apps?category=workflow&keywords=sales',
-          { scroll: false },
-        )
+        expect(mockReplace).toHaveBeenCalledWith('/apps?category=workflow&keywords=sales', {
+          scroll: false,
+        })
       })
     })
   })
@@ -760,7 +902,9 @@ describe('List', () => {
 
       renderList()
 
-      expect(screen.queryByRole('button', { name: 'common.operation.create' })).not.toBeInTheDocument()
+      expect(
+        screen.queryByRole('button', { name: 'common.operation.create' }),
+      ).not.toBeInTheDocument()
     })
   })
 
@@ -823,7 +967,9 @@ describe('List', () => {
     it('should render with all filter options visible', () => {
       renderList()
 
-      expect(screen.getByRole('searchbox', { name: 'app.gotoAnything.actions.searchApplications' }))!.toBeInTheDocument()
+      expect(
+        screen.getByRole('searchbox', { name: 'app.gotoAnything.actions.searchApplications' }),
+      )!.toBeInTheDocument()
       expect(screen.getByText('common.tag.placeholder'))!.toBeInTheDocument()
       expect(screen.getByRole('button', { name: 'Creators' }))!.toBeInTheDocument()
     })
@@ -848,11 +994,21 @@ describe('List', () => {
       await openAppTypeSelect()
 
       expect(await screen.findByRole('menuitemradio', { name: 'All' }))!.toBeInTheDocument()
-      expect(await screen.findByRole('menuitemradio', { name: 'app.types.workflow' }))!.toBeInTheDocument()
-      expect(await screen.findByRole('menuitemradio', { name: 'app.types.advanced' }))!.toBeInTheDocument()
-      expect(await screen.findByRole('menuitemradio', { name: 'app.types.chatbot' }))!.toBeInTheDocument()
-      expect(await screen.findByRole('menuitemradio', { name: 'app.types.agent' }))!.toBeInTheDocument()
-      expect(await screen.findByRole('menuitemradio', { name: 'app.newApp.completeApp' }))!.toBeInTheDocument()
+      expect(
+        await screen.findByRole('menuitemradio', { name: 'app.types.workflow' }),
+      )!.toBeInTheDocument()
+      expect(
+        await screen.findByRole('menuitemradio', { name: 'app.types.advanced' }),
+      )!.toBeInTheDocument()
+      expect(
+        await screen.findByRole('menuitemradio', { name: 'app.types.chatbot' }),
+      )!.toBeInTheDocument()
+      expect(
+        await screen.findByRole('menuitemradio', { name: 'app.types.agent' }),
+      )!.toBeInTheDocument()
+      expect(
+        await screen.findByRole('menuitemradio', { name: 'app.newApp.completeApp' }),
+      )!.toBeInTheDocument()
     })
 
     it('should update category for each app type option click', async () => {
@@ -909,8 +1065,7 @@ describe('List', () => {
 
       const mockFile = new File(['test content'], 'test.yml', { type: 'application/yaml' })
       act(() => {
-        if (mockOnDSLFileDropped)
-          mockOnDSLFileDropped(mockFile)
+        if (mockOnDSLFileDropped) mockOnDSLFileDropped(mockFile)
       })
 
       expect(screen.getByTestId('create-dsl-modal'))!.toBeInTheDocument()
@@ -921,8 +1076,7 @@ describe('List', () => {
 
       const mockFile = new File(['test content'], 'test.yml', { type: 'application/yaml' })
       act(() => {
-        if (mockOnDSLFileDropped)
-          mockOnDSLFileDropped(mockFile)
+        if (mockOnDSLFileDropped) mockOnDSLFileDropped(mockFile)
       })
 
       expect(screen.getByTestId('create-dsl-modal'))!.toBeInTheDocument()
@@ -937,8 +1091,7 @@ describe('List', () => {
 
       const mockFile = new File(['test content'], 'test.yml', { type: 'application/yaml' })
       act(() => {
-        if (mockOnDSLFileDropped)
-          mockOnDSLFileDropped(mockFile)
+        if (mockOnDSLFileDropped) mockOnDSLFileDropped(mockFile)
       })
 
       expect(screen.getByTestId('create-dsl-modal'))!.toBeInTheDocument()

@@ -1,6 +1,6 @@
 import type { StrategyDetail } from '@/app/components/plugins/types'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import StrategyItem from '../strategy-item'
 
 vi.mock('@/hooks/use-i18n', () => ({
@@ -14,7 +14,9 @@ vi.mock('@langgenius/dify-ui/cn', () => ({
 vi.mock('../strategy-detail', () => ({
   default: ({ onHide }: { onHide: () => void }) => (
     <div data-testid="strategy-detail-panel">
-      <button data-testid="hide-btn" onClick={onHide}>Hide</button>
+      <button data-testid="hide-btn" onClick={onHide}>
+        Hide
+      </button>
     </div>
   ),
 }))

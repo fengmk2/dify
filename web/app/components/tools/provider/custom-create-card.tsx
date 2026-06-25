@@ -21,8 +21,7 @@ function useCustomToolCreateAction({ onRefreshData }: Props) {
   const [isShowEditCollectionToolModal, setIsShowEditCustomCollectionModal] = useState(false)
 
   const doCreateCustomToolCollection = async (data: CustomCollectionBackend) => {
-    if (!canManageTools)
-      return
+    if (!canManageTools) return
 
     await createCustomCollection(data)
     toast.success(t('api.actionSuccess', { ns: 'common' }))
@@ -48,8 +47,7 @@ export const NewCustomToolButton = ({ onRefreshData }: Props) => {
     setIsShowEditCustomCollectionModal,
   } = useCustomToolCreateAction({ onRefreshData })
 
-  if (!canManageTools)
-    return null
+  if (!canManageTools) return null
 
   return (
     <>

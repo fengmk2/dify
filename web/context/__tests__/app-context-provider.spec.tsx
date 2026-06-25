@@ -52,8 +52,12 @@ vi.mock('@tanstack/react-query', () => ({
       },
     }
   },
-  useQuery: (options: { select?: (workspace: typeof mockCurrentWorkspaceResponse) => unknown }) => ({
-    data: options.select ? options.select(mockCurrentWorkspaceResponse) : mockCurrentWorkspaceResponse,
+  useQuery: (options: {
+    select?: (workspace: typeof mockCurrentWorkspaceResponse) => unknown
+  }) => ({
+    data: options.select
+      ? options.select(mockCurrentWorkspaceResponse)
+      : mockCurrentWorkspaceResponse,
     isFetching: false,
     isPending: false,
   }),
@@ -136,7 +140,7 @@ vi.mock('@/app/components/header/maintenance-notice', () => ({
 
 function AppContextProbe() {
   const context = useAppContext()
-  const selectedWorkspacePermissionKeys = useSelector(state => state.workspacePermissionKeys)
+  const selectedWorkspacePermissionKeys = useSelector((state) => state.workspacePermissionKeys)
 
   return (
     <>

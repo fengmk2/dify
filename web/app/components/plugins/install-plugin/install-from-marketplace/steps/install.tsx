@@ -8,7 +8,12 @@ import { useEffect, useMemo } from 'react'
 import { useTranslation } from 'react-i18next'
 import useCheckInstalled from '@/app/components/plugins/install-plugin/hooks/use-check-installed'
 import { useAppContext } from '@/context/app-context'
-import { useInstallPackageFromMarketPlace, usePluginDeclarationFromMarketPlace, usePluginTaskList, useUpdatePackageFromMarketPlace } from '@/service/use-plugins'
+import {
+  useInstallPackageFromMarketPlace,
+  usePluginDeclarationFromMarketPlace,
+  usePluginTaskList,
+  useUpdatePackageFromMarketPlace,
+} from '@/service/use-plugins'
 import { isEqualOrLaterThanVersion } from '@/utils/semver'
 import Card from '../../../card'
 // import { RiInformation2Line } from '@remixicon/react'
@@ -53,15 +58,11 @@ const Installed: FC<Props> = ({
   const { mutateAsync: installPackageFromMarketPlace } = useInstallPackageFromMarketPlace()
   const { mutateAsync: updatePackageFromMarketPlace } = useUpdatePackageFromMarketPlace()
   const [isInstalling, setIsInstalling] = React.useState(false)
-  const {
-    check,
-    stop,
-  } = checkTaskStatus()
+  const { check, stop } = checkTaskStatus()
   const { handleInstallTaskStart } = usePluginTaskList(payload.category)
 
   useEffect(() => {
-    if (hasInstalled && uniqueIdentifier === installedInfoPayload.uniqueIdentifier)
-      onInstalled()
+    if (hasInstalled && uniqueIdentifier === installedInfoPayload.uniqueIdentifier) onInstalled()
   }, [hasInstalled])
 
   const handleCancel = () => {
@@ -70,8 +71,7 @@ const Installed: FC<Props> = ({
   }
 
   const handleInstall = async () => {
-    if (isInstalling)
-      return
+    if (isInstalling) return
     onStartToInstall?.()
     setIsInstalling(true)
     try {
@@ -84,21 +84,14 @@ const Installed: FC<Props> = ({
           new_plugin_unique_identifier: uniqueIdentifier,
         })
         installResponse = response
-        const {
-          all_installed,
-          task_id,
-        } = response
+        const { all_installed, task_id } = response
         handleInstallTaskStart(response)
         taskId = task_id
         isInstalled = all_installed
-      }
-      else {
+      } else {
         const response = await installPackageFromMarketPlace(uniqueIdentifier)
         installResponse = response
-        const {
-          all_installed,
-          task_id,
-        } = response
+        const { all_installed, task_id } = response
         handleInstallTaskStart(response)
         taskId = task_id
         isInstalled = all_installed
@@ -123,8 +116,7 @@ const Installed: FC<Props> = ({
         return
       }
       onInstalled(true)
-    }
-    catch (e) {
+    } catch (e) {
       if (typeof e === 'string') {
         onFailed(e)
         return
@@ -136,15 +128,17 @@ const Installed: FC<Props> = ({
   const { langGeniusVersionInfo } = useAppContext()
   const { data: pluginDeclaration } = usePluginDeclarationFromMarketPlace(uniqueIdentifier)
   const isDifyVersionCompatible = useMemo(() => {
-    if (!pluginDeclaration || !langGeniusVersionInfo.current_version)
-      return true
-    return isEqualOrLaterThanVersion(langGeniusVersionInfo.current_version, pluginDeclaration?.manifest.meta.minimum_dify_version ?? '0.0.0')
+    if (!pluginDeclaration || !langGeniusVersionInfo.current_version) return true
+    return isEqualOrLaterThanVersion(
+      langGeniusVersionInfo.current_version,
+      pluginDeclaration?.manifest.meta.minimum_dify_version ?? '0.0.0',
+    )
   }, [langGeniusVersionInfo.current_version, pluginDeclaration])
 
-  const {
-    canInstall,
-    isLoading: isInstallLimitLoading,
-  } = useInstallPluginLimit({ ...payload, from: 'marketplace' })
+  const { canInstall, isLoading: isInstallLimitLoading } = useInstallPluginLimit({
+    ...payload,
+    from: 'marketplace',
+  })
   return (
     <>
       <div className="flex flex-col items-start justify-center gap-4 self-stretch px-6 py-3">
@@ -152,7 +146,10 @@ const Installed: FC<Props> = ({
           <p>{t(`${i18nPrefix}.readyToInstall`, { ns: 'plugin' })}</p>
           {!isDifyVersionCompatible && (
             <p className="system-md-regular text-text-warning">
-              {t('difyVersionNotCompatible', { ns: 'plugin', minimalDifyVersion: pluginDeclaration?.manifest.meta.minimum_dify_version })}
+              {t('difyVersionNotCompatible', {
+                ns: 'plugin',
+                minimalDifyVersion: pluginDeclaration?.manifest.meta.minimum_dify_version,
+              })}
             </p>
           )}
         </div>
@@ -160,13 +157,15 @@ const Installed: FC<Props> = ({
           <Card
             className="w-full"
             payload={pluginManifestInMarketToPluginProps(payload as PluginManifestInMarket)}
-            titleLeft={!isLoading && (
-              <Version
-                hasInstalled={hasInstalled}
-                installedVersion={installedVersion}
-                toInstallVersion={toInstallVersion}
-              />
-            )}
+            titleLeft={
+              !isLoading && (
+                <Version
+                  hasInstalled={hasInstalled}
+                  installedVersion={installedVersion}
+                  toInstallVersion={toInstallVersion}
+                />
+              )
+            }
             limitedInstall={!isInstallLimitLoading && !canInstall}
           />
         </div>
@@ -185,7 +184,9 @@ const Installed: FC<Props> = ({
           onClick={handleInstall}
         >
           {isInstalling && <RiLoader2Line className="size-4 animate-spin-slow" />}
-          <span>{t(`${i18nPrefix}.${isInstalling ? 'installing' : 'install'}`, { ns: 'plugin' })}</span>
+          <span>
+            {t(`${i18nPrefix}.${isInstalling ? 'installing' : 'install'}`, { ns: 'plugin' })}
+          </span>
         </Button>
       </div>
     </>

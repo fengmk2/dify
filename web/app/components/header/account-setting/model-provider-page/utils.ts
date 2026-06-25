@@ -1,16 +1,16 @@
 import type { ComponentType } from 'react'
-import type {
-  CredentialFormSchemaSelect,
-  CredentialFormSchemaTextInput,
-} from './declarations'
-import { AnthropicShortLight, Deepseek, Gemini, Grok, OpenaiSmall, Tongyi } from '@/app/components/base/icons/src/public/llm'
+import type { CredentialFormSchemaSelect, CredentialFormSchemaTextInput } from './declarations'
+import {
+  AnthropicShortLight,
+  Deepseek,
+  Gemini,
+  Grok,
+  OpenaiSmall,
+  Tongyi,
+} from '@/app/components/base/icons/src/public/llm'
 
 import { ModelProviderQuotaGetPaid } from '@/types/model-provider'
-import {
-  FormTypeEnum,
-  MODEL_TYPE_TEXT,
-  ModelTypeEnum,
-} from './declarations'
+import { FormTypeEnum, MODEL_TYPE_TEXT, ModelTypeEnum } from './declarations'
 
 export { ModelProviderQuotaGetPaid } from '@/types/model-provider'
 
@@ -19,9 +19,19 @@ export const providerToPluginId = (providerKey: string): string => {
   return lastSlash > 0 ? providerKey.slice(0, lastSlash) : ''
 }
 
-export const MODEL_PROVIDER_QUOTA_GET_PAID = [ModelProviderQuotaGetPaid.OPENAI, ModelProviderQuotaGetPaid.ANTHROPIC, ModelProviderQuotaGetPaid.GEMINI, ModelProviderQuotaGetPaid.X, ModelProviderQuotaGetPaid.DEEPSEEK, ModelProviderQuotaGetPaid.TONGYI]
+export const MODEL_PROVIDER_QUOTA_GET_PAID = [
+  ModelProviderQuotaGetPaid.OPENAI,
+  ModelProviderQuotaGetPaid.ANTHROPIC,
+  ModelProviderQuotaGetPaid.GEMINI,
+  ModelProviderQuotaGetPaid.X,
+  ModelProviderQuotaGetPaid.DEEPSEEK,
+  ModelProviderQuotaGetPaid.TONGYI,
+]
 
-export const providerIconMap: Record<ModelProviderQuotaGetPaid, ComponentType<{ className?: string }>> = {
+export const providerIconMap: Record<
+  ModelProviderQuotaGetPaid,
+  ComponentType<{ className?: string }>
+> = {
   [ModelProviderQuotaGetPaid.OPENAI]: OpenaiSmall,
   [ModelProviderQuotaGetPaid.ANTHROPIC]: AnthropicShortLight,
   [ModelProviderQuotaGetPaid.GEMINI]: Gemini,
@@ -54,20 +64,19 @@ export const isNullOrUndefined = (value: unknown): value is null | undefined => 
 
 export const sizeFormat = (size: number) => {
   const remainder = Math.floor(size / 1000)
-  if (remainder < 1)
-    return `${size}`
-  else
-    return `${remainder}K`
+  if (remainder < 1) return `${size}`
+  else return `${remainder}K`
 }
 
 export const modelTypeFormat = (modelType: ModelTypeEnum) => {
-  if (modelType === ModelTypeEnum.textEmbedding)
-    return 'TEXT EMBEDDING'
+  if (modelType === ModelTypeEnum.textEmbedding) return 'TEXT EMBEDDING'
 
   return modelType.toLocaleUpperCase()
 }
 
-export const genModelTypeFormSchema = (modelTypes: ModelTypeEnum[]): Omit<CredentialFormSchemaSelect, 'name'> => {
+export const genModelTypeFormSchema = (
+  modelTypes: ModelTypeEnum[],
+): Omit<CredentialFormSchemaSelect, 'name'> => {
   return {
     type: FormTypeEnum.select,
     label: {
@@ -91,7 +100,9 @@ export const genModelTypeFormSchema = (modelTypes: ModelTypeEnum[]): Omit<Creden
   }
 }
 
-export const genModelNameFormSchema = (model?: Pick<CredentialFormSchemaTextInput, 'label' | 'placeholder'>): Omit<CredentialFormSchemaTextInput, 'name'> => {
+export const genModelNameFormSchema = (
+  model?: Pick<CredentialFormSchemaTextInput, 'label' | 'placeholder'>,
+): Omit<CredentialFormSchemaTextInput, 'name'> => {
   return {
     type: FormTypeEnum.textInput,
     label: model?.label || {

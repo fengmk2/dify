@@ -14,10 +14,7 @@ import { DeploymentEmptyState } from '../../components/empty-state'
 import { TitleTooltip } from '../../components/title-tooltip'
 import { CreateReleaseControl } from '../../create-release'
 import { formatDate, releaseCommit } from '../../shared/domain/release'
-import {
-  deploymentSourceAppIdAtom,
-  deploymentSourceAppQueryAtom,
-} from '../state'
+import { deploymentSourceAppIdAtom, deploymentSourceAppQueryAtom } from '../state'
 import { OVERVIEW_CARD_CLASS_NAME, OVERVIEW_ICON_CLASS_NAME } from './card-styles'
 
 type ReleaseHeroProps = {
@@ -55,7 +52,12 @@ export function ReleaseHero({ appInstanceId, latestRelease, releaseCount }: Rele
   const commit = releaseCommit(latestRelease)
 
   return (
-    <div className={cn(OVERVIEW_CARD_CLASS_NAME, 'flex min-w-0 flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6')}>
+    <div
+      className={cn(
+        OVERVIEW_CARD_CLASS_NAME,
+        'flex min-w-0 flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-6',
+      )}
+    >
       <div className="flex min-w-0 items-center gap-3">
         <span aria-hidden className={OVERVIEW_ICON_CLASS_NAME}>
           <span className="i-ri-stack-fill size-4" />
@@ -78,16 +80,12 @@ export function ReleaseHero({ appInstanceId, latestRelease, releaseCount }: Rele
               <LatestReleaseSource release={latestRelease} />
             </ReleaseMetaItem>
             {author && (
-              <ReleaseMetaItem>
-                {t('overview.hero.byName', { name: author })}
-              </ReleaseMetaItem>
+              <ReleaseMetaItem>{t('overview.hero.byName', { name: author })}</ReleaseMetaItem>
             )}
             {ago && (
               <ReleaseMetaItem>
                 <TitleTooltip content={createdAtTitle}>
-                  <span>
-                    {ago}
-                  </span>
+                  <span>{ago}</span>
                 </TitleTooltip>
               </ReleaseMetaItem>
             )}
@@ -105,26 +103,26 @@ function ReleaseMetaItem({ label, showSeparator = true, children }: ReleaseMetaI
   return (
     <span className="inline-flex min-w-0 items-center gap-1.5">
       {showSeparator && (
-        <span aria-hidden className="text-text-quaternary">·</span>
+        <span aria-hidden className="text-text-quaternary">
+          ·
+        </span>
       )}
-      {label && (
-        <span className="shrink-0 text-text-quaternary">{label}</span>
-      )}
+      {label && <span className="shrink-0 text-text-quaternary">{label}</span>}
       <span className="min-w-0 truncate">{children}</span>
     </span>
   )
 }
 
-function LatestReleaseSource({ release }: {
-  release: Release
-}) {
+function LatestReleaseSource({ release }: { release: Release }) {
   const { t } = useTranslation('deployments')
   const sourceAppId = release.sourceAppId
 
   if (!sourceAppId) {
     return (
       <span>
-        {release.source === ReleaseSource.RELEASE_SOURCE_UPLOAD ? t('versions.manualDslOption') : '—'}
+        {release.source === ReleaseSource.RELEASE_SOURCE_UPLOAD
+          ? t('versions.manualDslOption')
+          : '—'}
       </span>
     )
   }
@@ -132,9 +130,7 @@ function LatestReleaseSource({ release }: {
   return (
     <ScopeProvider
       key={sourceAppId}
-      atoms={[
-        [deploymentSourceAppIdAtom, sourceAppId],
-      ]}
+      atoms={[[deploymentSourceAppIdAtom, sourceAppId]]}
       name="DeploymentLatestReleaseSource"
     >
       <LatestReleaseSourceLink sourceAppId={sourceAppId} />
@@ -142,9 +138,7 @@ function LatestReleaseSource({ release }: {
   )
 }
 
-function LatestReleaseSourceLink({ sourceAppId }: {
-  sourceAppId: string
-}) {
+function LatestReleaseSourceLink({ sourceAppId }: { sourceAppId: string }) {
   const sourceAppQuery = useAtomValue(deploymentSourceAppQueryAtom)
   const sourceAppName = sourceAppQuery.data?.name
   const label = sourceAppName || sourceAppId

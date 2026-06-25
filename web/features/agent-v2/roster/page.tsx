@@ -22,17 +22,13 @@ import { RosterToolbar } from './components/roster-toolbar'
 
 const ROSTER_PAGE_SIZE = 30
 const isAgentPublished = (agent: AgentRosterListItem) => agent.active_config_is_published === true
-const rosterTabClassName = 'pt-0 pb-2 system-xl-semibold data-active:border-util-colors-blue-brand-blue-brand-500 data-disabled:opacity-100'
+const rosterTabClassName =
+  'pt-0 pb-2 system-xl-semibold data-active:border-util-colors-blue-brand-blue-brand-500 data-disabled:opacity-100'
 
-const getFilteredRosterItems = (
-  agents: AgentRosterListItem[],
-  filter: RosterFilterValue,
-) => {
-  if (filter === 'published')
-    return agents.filter(isAgentPublished)
+const getFilteredRosterItems = (agents: AgentRosterListItem[], filter: RosterFilterValue) => {
+  if (filter === 'published') return agents.filter(isAgentPublished)
 
-  if (filter === 'drafts')
-    return agents.filter(agent => !isAgentPublished(agent))
+  if (filter === 'drafts') return agents.filter((agent) => !isAgentPublished(agent))
 
   return agents
 }
@@ -40,9 +36,12 @@ const getFilteredRosterItems = (
 export default function RosterPage() {
   const { t } = useTranslation('agentV2')
   const { t: tCommon } = useTranslation('common')
-  const [keyword, setKeyword] = useQueryState('keyword', parseAsString.withDefault('').withOptions({
-    limitUrlUpdates: debounce(300),
-  }))
+  const [keyword, setKeyword] = useQueryState(
+    'keyword',
+    parseAsString.withDefault('').withOptions({
+      limitUrlUpdates: debounce(300),
+    }),
+  )
   const [rosterFilter, setRosterFilter] = useQueryState(
     'filter',
     parseAsStringLiteral(ROSTER_FILTER_VALUES).withDefault('all'),
@@ -64,19 +63,19 @@ export default function RosterPage() {
     error,
   } = useInfiniteQuery({
     ...consoleQuery.agent.get.infiniteOptions({
-      input: pageParam => ({
+      input: (pageParam) => ({
         query: {
           ...rosterQueryInput,
           page: Number(pageParam),
         },
       }),
-      getNextPageParam: lastPage => lastPage.has_more ? lastPage.page + 1 : undefined,
+      getNextPageParam: (lastPage) => (lastPage.has_more ? lastPage.page + 1 : undefined),
       initialPageParam: 1,
       placeholderData: keepPreviousData,
     }),
   })
 
-  const rosterItems: AgentRosterListItem[] = rosterPages?.pages.flatMap(page => page.data) ?? []
+  const rosterItems: AgentRosterListItem[] = rosterPages?.pages.flatMap((page) => page.data) ?? []
   const publishedAgents = rosterItems.filter(isAgentPublished).length
   const draftAgents = Math.max(rosterItems.length - publishedAgents, 0)
   const filteredRosterItems = getFilteredRosterItems(rosterItems, rosterFilter)

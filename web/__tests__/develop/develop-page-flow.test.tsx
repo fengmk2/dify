@@ -8,7 +8,7 @@
  */
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import DevelopMain from '@/app/components/develop'
 import { AppModeEnum, Theme } from '@/types/app'
 
@@ -56,8 +56,16 @@ vi.mock('@/context/app-context', () => ({
     isCurrentWorkspaceManager: true,
     isCurrentWorkspaceEditor: true,
   }),
-  useSelector: (selector: (state: { userProfile: { id: string }, workspacePermissionKeys: string[] }) => unknown) =>
-    selector({ userProfile: { id: 'user-1' }, workspacePermissionKeys: ['app.create_and_management'] }),
+  useSelector: (
+    selector: (state: {
+      userProfile: { id: string }
+      workspacePermissionKeys: string[]
+    }) => unknown,
+  ) =>
+    selector({
+      userProfile: { id: 'user-1' },
+      workspacePermissionKeys: ['app.create_and_management'],
+    }),
 }))
 
 vi.mock('@/hooks/use-timestamp', () => ({

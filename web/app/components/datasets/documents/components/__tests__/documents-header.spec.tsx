@@ -1,6 +1,6 @@
 import type { SortType } from '@/service/datasets'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { DataSourceType } from '@/models/datasets'
 import DocumentsHeader from '../documents-header'
 
@@ -10,9 +10,12 @@ vi.mock('@/context/i18n', () => ({
 }))
 
 // Mock child components that require API calls
-vi.mock('@/app/components/datasets/common/document-status-with-action/auto-disabled-document', () => ({
-  default: () => <div data-testid="auto-disabled-document">AutoDisabledDocument</div>,
-}))
+vi.mock(
+  '@/app/components/datasets/common/document-status-with-action/auto-disabled-document',
+  () => ({
+    default: () => <div data-testid="auto-disabled-document">AutoDisabledDocument</div>,
+  }),
+)
 
 vi.mock('@/app/components/datasets/common/document-status-with-action/index-failed', () => ({
   default: () => <div data-testid="index-failed">IndexFailed</div>,

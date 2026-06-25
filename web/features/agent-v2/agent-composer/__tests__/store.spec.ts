@@ -1,5 +1,5 @@
 import type { AgentSoulConfig } from '@dify/contracts/api/console/agent/types.gen'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import { agentSoulConfigToFormState, formStateToAgentSoulConfig } from '../conversions'
 import { defaultAgentSoulConfigFormState } from '../form-state'
 
@@ -120,22 +120,24 @@ describe('agent composer store conversions', () => {
         }),
       ],
     })
-    expect(formState.tools).toEqual(expect.arrayContaining([
-      expect.objectContaining({
-        id: 'duckduckgo',
-        kind: 'provider',
-        actions: [
-          expect.objectContaining({
-            toolName: 'ddg_search',
-          }),
-        ],
-      }),
-      expect.objectContaining({
-        id: 'run-tests',
-        kind: 'cli',
-        installCommand: 'pnpm install',
-      }),
-    ]))
+    expect(formState.tools).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({
+          id: 'duckduckgo',
+          kind: 'provider',
+          actions: [
+            expect.objectContaining({
+              toolName: 'ddg_search',
+            }),
+          ],
+        }),
+        expect.objectContaining({
+          id: 'run-tests',
+          kind: 'cli',
+          installCommand: 'pnpm install',
+        }),
+      ]),
+    )
     expect(formState.toolSettings['duckduckgo:ddg_search']).toEqual({
       query: 'latest docs',
       used_in_agent_nodes: true,

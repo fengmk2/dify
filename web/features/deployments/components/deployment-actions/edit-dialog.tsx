@@ -1,12 +1,7 @@
 'use client'
 
 import { Button } from '@langgenius/dify-ui/button'
-import {
-  Dialog,
-  DialogCloseButton,
-  DialogContent,
-  DialogTitle,
-} from '@langgenius/dify-ui/dialog'
+import { Dialog, DialogCloseButton, DialogContent, DialogTitle } from '@langgenius/dify-ui/dialog'
 import { FieldControl, FieldError, FieldLabel, FieldRoot } from '@langgenius/dify-ui/field'
 import { Form } from '@langgenius/dify-ui/form'
 import { Textarea } from '@langgenius/dify-ui/textarea'
@@ -34,15 +29,16 @@ function normalizedEditDeploymentFormValues(value: EditDeploymentFormValues) {
   }
 }
 
-function canSubmitEditDeploymentForm(initialValues: EditDeploymentFormValues, value: EditDeploymentFormValues) {
+function canSubmitEditDeploymentForm(
+  initialValues: EditDeploymentFormValues,
+  value: EditDeploymentFormValues,
+) {
   const normalizedValues = normalizedEditDeploymentFormValues(value)
 
   return Boolean(
-    normalizedValues.name
-    && (
-      normalizedValues.name !== initialValues.name
-      || normalizedValues.description !== initialValues.description
-    ),
+    normalizedValues.name &&
+    (normalizedValues.name !== initialValues.name ||
+      normalizedValues.description !== initialValues.description),
   )
 }
 
@@ -65,27 +61,23 @@ function EditDeploymentFormSkeleton() {
   )
 }
 
-function EditDeploymentForm({
-  initialValues,
-}: {
-  initialValues: EditDeploymentFormValues
-}) {
+function EditDeploymentForm({ initialValues }: { initialValues: EditDeploymentFormValues }) {
   const { t } = useTranslation('deployments')
   const nameLabel = t('settings.name')
   const appInstanceId = useAtomValue(deploymentActionAppInstanceIdAtom)
   const setOpen = useSetAtom(editDeploymentDialogOpenAtom)
-  const updateInstance = useMutation(consoleQuery.enterprise.appInstanceService.updateAppInstance.mutationOptions())
+  const updateInstance = useMutation(
+    consoleQuery.enterprise.appInstanceService.updateAppInstance.mutationOptions(),
+  )
 
   function handleClose() {
-    if (updateInstance.isPending)
-      return
+    if (updateInstance.isPending) return
 
     setOpen(false)
   }
 
   function handleSubmit(values: EditDeploymentFormValues) {
-    if (!canSubmitEditDeploymentForm(initialValues, values))
-      return
+    if (!canSubmitEditDeploymentForm(initialValues, values)) return
 
     const normalizedValues = normalizedEditDeploymentFormValues(values)
 
@@ -120,22 +112,16 @@ function EditDeploymentForm({
           <FieldLabel className="system-xs-medium-uppercase text-text-tertiary">
             {nameLabel}
           </FieldLabel>
-          <FieldControl
-            type="text"
-            required
-            defaultValue={initialValues.name}
-            className="h-8"
-          />
-          <FieldError match="valueMissing">{t('errorMsg.fieldRequired', { ns: 'common', field: nameLabel })}</FieldError>
+          <FieldControl type="text" required defaultValue={initialValues.name} className="h-8" />
+          <FieldError match="valueMissing">
+            {t('errorMsg.fieldRequired', { ns: 'common', field: nameLabel })}
+          </FieldError>
         </FieldRoot>
         <FieldRoot name="description" className="gap-2">
           <FieldLabel className="system-xs-medium-uppercase text-text-tertiary">
             {t('settings.description')}
           </FieldLabel>
-          <Textarea
-            defaultValue={initialValues.description}
-            className="min-h-24"
-          />
+          <Textarea defaultValue={initialValues.description} className="min-h-24" />
         </FieldRoot>
         <div className="flex justify-end gap-2 pt-2">
           <Button
@@ -174,21 +160,21 @@ function EditDeploymentDialogContent() {
         </DialogTitle>
       </div>
       <div className="px-6 py-5">
-        {instanceQuery.isLoading
-          ? <EditDeploymentFormSkeleton />
-          : instanceQuery.isError
-            ? <div className="system-sm-regular text-text-tertiary">{t('common.loadFailed')}</div>
-            : app
-              ? (
-                  <EditDeploymentForm
-                    key={`${app.id}-${app.displayName}-${app.description}`}
-                    initialValues={{
-                      name: app.displayName,
-                      description: app.description,
-                    }}
-                  />
-                )
-              : <div className="system-sm-regular text-text-tertiary">{t('detail.notFound')}</div>}
+        {instanceQuery.isLoading ? (
+          <EditDeploymentFormSkeleton />
+        ) : instanceQuery.isError ? (
+          <div className="system-sm-regular text-text-tertiary">{t('common.loadFailed')}</div>
+        ) : app ? (
+          <EditDeploymentForm
+            key={`${app.id}-${app.displayName}-${app.description}`}
+            initialValues={{
+              name: app.displayName,
+              description: app.description,
+            }}
+          />
+        ) : (
+          <div className="system-sm-regular text-text-tertiary">{t('detail.notFound')}</div>
+        )}
       </div>
     </>
   )

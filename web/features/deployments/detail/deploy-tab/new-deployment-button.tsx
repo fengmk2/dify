@@ -7,9 +7,7 @@ import { openDeployDrawerAtom } from '../../deploy-drawer/state'
 import { hasRuntimeInstanceDeployment } from '../../shared/domain/runtime-status'
 import { deploymentEnvironmentDeploymentsQueryAtom } from '../state'
 
-export function NewDeploymentButton({ appInstanceId }: {
-  appInstanceId: string
-}) {
+export function NewDeploymentButton({ appInstanceId }: { appInstanceId: string }) {
   const { t } = useTranslation('deployments')
   const openDeployDrawer = useSetAtom(openDeployDrawerAtom)
 
@@ -26,13 +24,17 @@ export function NewDeploymentButton({ appInstanceId }: {
   )
 }
 
-export function NewDeploymentHeaderAction({ appInstanceId }: {
-  appInstanceId: string
-}) {
+export function NewDeploymentHeaderAction({ appInstanceId }: { appInstanceId: string }) {
   const environmentDeploymentsQuery = useAtomValue(deploymentEnvironmentDeploymentsQueryAtom)
-  const rows = environmentDeploymentsQuery.data?.environmentDeployments.filter(hasRuntimeInstanceDeployment) ?? []
+  const rows =
+    environmentDeploymentsQuery.data?.environmentDeployments.filter(hasRuntimeInstanceDeployment) ??
+    []
 
-  if (environmentDeploymentsQuery.isLoading || environmentDeploymentsQuery.isError || rows.length === 0)
+  if (
+    environmentDeploymentsQuery.isLoading ||
+    environmentDeploymentsQuery.isError ||
+    rows.length === 0
+  )
     return null
 
   return <NewDeploymentButton appInstanceId={appInstanceId} />

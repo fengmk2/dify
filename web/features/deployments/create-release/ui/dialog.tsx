@@ -1,6 +1,11 @@
 'use client'
 
-import { DialogCloseButton, DialogContent, DialogDescription, DialogTitle } from '@langgenius/dify-ui/dialog'
+import {
+  DialogCloseButton,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from '@langgenius/dify-ui/dialog'
 import { toast } from '@langgenius/dify-ui/toast'
 import { useAtomValue, useSetAtom } from 'jotai'
 import { ScopeProvider } from 'jotai-scope'
@@ -59,13 +64,11 @@ function CreateReleaseDialogSurface() {
   async function handleSubmit() {
     try {
       const response = await submitCreateReleaseForm()
-      if (!response)
-        return
+      if (!response) return
 
       toast.success(t('versions.createSuccess', { name: response.release.displayName }))
       closeDialog()
-    }
-    catch (error) {
+    } catch (error) {
       if (error instanceof CreateReleaseSubmissionBlockedError) {
         toast.error(t('versions.dslUnsupportedMode'))
         return

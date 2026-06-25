@@ -9,9 +9,7 @@ import {
   useWorkflowVariableInspectPanelHeightValue,
 } from './local-storage-options'
 
-const useIsoLayoutEffect = typeof document !== 'undefined'
-  ? useLayoutEffectFromReact
-  : useEffect
+const useIsoLayoutEffect = typeof document !== 'undefined' ? useLayoutEffectFromReact : useEffect
 
 export const WorkflowLocalStorageBridge = () => {
   const storedNodePanelWidth = useWorkflowNodePanelWidthValue()
@@ -20,23 +18,21 @@ export const WorkflowLocalStorageBridge = () => {
   const [storedControlMode, setControlModeStorage] = useWorkflowOperationMode()
 
   const workflowStore = useWorkflowStore()
-  const setNodePanelWidth = useStore(state => state.setNodePanelWidth)
-  const setPanelWidth = useStore(state => state.setPanelWidth)
-  const setPreviewPanelWidth = useStore(state => state.setPreviewPanelWidth)
-  const setVariableInspectPanelHeight = useStore(state => state.setVariableInspectPanelHeight)
-  const setControlMode = useStore(state => state.setControlMode)
+  const setNodePanelWidth = useStore((state) => state.setNodePanelWidth)
+  const setPanelWidth = useStore((state) => state.setPanelWidth)
+  const setPreviewPanelWidth = useStore((state) => state.setPreviewPanelWidth)
+  const setVariableInspectPanelHeight = useStore((state) => state.setVariableInspectPanelHeight)
+  const setControlMode = useStore((state) => state.setControlMode)
 
   useIsoLayoutEffect(() => {
-    if (!isFiniteNumber(storedNodePanelWidth))
-      return
+    if (!isFiniteNumber(storedNodePanelWidth)) return
 
     setNodePanelWidth(storedNodePanelWidth)
     setPanelWidth(storedNodePanelWidth)
   }, [setNodePanelWidth, setPanelWidth, storedNodePanelWidth])
 
   useIsoLayoutEffect(() => {
-    if (isFiniteNumber(storedPreviewPanelWidth))
-      setPreviewPanelWidth(storedPreviewPanelWidth)
+    if (isFiniteNumber(storedPreviewPanelWidth)) setPreviewPanelWidth(storedPreviewPanelWidth)
   }, [setPreviewPanelWidth, storedPreviewPanelWidth])
 
   useIsoLayoutEffect(() => {
@@ -45,8 +41,7 @@ export const WorkflowLocalStorageBridge = () => {
   }, [setVariableInspectPanelHeight, storedVariableInspectPanelHeight])
 
   useIsoLayoutEffect(() => {
-    if (isControlMode(storedControlMode))
-      setControlMode(storedControlMode)
+    if (isControlMode(storedControlMode)) setControlMode(storedControlMode)
   }, [setControlMode, storedControlMode])
 
   useEffect(() => {

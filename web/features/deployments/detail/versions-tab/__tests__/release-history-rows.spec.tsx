@@ -1,7 +1,7 @@
 import type { ReleaseWithSummaryDeployments } from '../release-deployments'
 import { ReleaseSource, RuntimeInstanceStatus } from '@dify/contracts/enterprise/types.gen'
 import { render, within } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 import { ReleaseHistoryRows } from '../release-history-rows'
 
 vi.mock('../deploy-release-menu', () => ({
@@ -23,7 +23,9 @@ vi.mock('../../state', async (importOriginal) => {
   }
 })
 
-function createReleaseRow(overrides: Partial<ReleaseWithSummaryDeployments> = {}): ReleaseWithSummaryDeployments {
+function createReleaseRow(
+  overrides: Partial<ReleaseWithSummaryDeployments> = {},
+): ReleaseWithSummaryDeployments {
   return {
     id: 'release-1',
     appInstanceId: 'app-instance-1',
@@ -45,10 +47,7 @@ function createReleaseRow(overrides: Partial<ReleaseWithSummaryDeployments> = {}
 describe('ReleaseHistoryRows', () => {
   it('should render the desktop release list with the knowledge table style', () => {
     const { container } = render(
-      <ReleaseHistoryRows
-        appInstanceId="app-instance-1"
-        releaseRows={[createReleaseRow()]}
-      />,
+      <ReleaseHistoryRows appInstanceId="app-instance-1" releaseRows={[createReleaseRow()]} />,
     )
 
     const table = container.querySelector('table')
@@ -60,7 +59,12 @@ describe('ReleaseHistoryRows', () => {
     expect(table).toHaveClass('w-full', 'border-collapse', 'border-0', 'text-sm')
     expect(header).toHaveClass('border-b', 'border-divider-subtle')
     expect(headerCell).not.toHaveClass('bg-background-section-burn', 'rounded-l-lg')
-    expect(bodyRow).toHaveClass('h-8', 'border-b', 'border-divider-subtle', 'hover:bg-background-default-hover')
+    expect(bodyRow).toHaveClass(
+      'h-8',
+      'border-b',
+      'border-divider-subtle',
+      'hover:bg-background-default-hover',
+    )
     expect(tableScope.getByText('Initial Release')).toBeInTheDocument()
   })
 
@@ -70,11 +74,13 @@ describe('ReleaseHistoryRows', () => {
         appInstanceId="app-instance-1"
         releaseRows={[
           createReleaseRow({
-            summaryDeployments: [{
-              environmentId: 'env-1',
-              environmentName: 'test-cpu',
-              status: RuntimeInstanceStatus.RUNTIME_INSTANCE_STATUS_READY,
-            }],
+            summaryDeployments: [
+              {
+                environmentId: 'env-1',
+                environmentName: 'test-cpu',
+                status: RuntimeInstanceStatus.RUNTIME_INSTANCE_STATUS_READY,
+              },
+            ],
           }),
         ]}
       />,

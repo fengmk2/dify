@@ -46,23 +46,35 @@ describe('CreateAgentDialog', () => {
     await user.click(screen.getByRole('button', { name: /agentV2\.roster\.createAgent/ }))
 
     const dialog = await screen.findByRole('dialog', { name: 'agentV2.roster.createDialog.title' })
-    await user.type(within(dialog).getByRole('textbox', { name: 'agentV2.roster.createForm.nameLabel' }), ' Research Agent ')
-    await user.type(within(dialog).getByRole('textbox', { name: 'agentV2.roster.createForm.roleLabel' }), ' Research Assistant ')
-    await user.type(within(dialog).getByPlaceholderText('agentV2.roster.createForm.descriptionPlaceholder'), ' Find and summarize market materials. ')
+    await user.type(
+      within(dialog).getByRole('textbox', { name: 'agentV2.roster.createForm.nameLabel' }),
+      ' Research Agent ',
+    )
+    await user.type(
+      within(dialog).getByRole('textbox', { name: 'agentV2.roster.createForm.roleLabel' }),
+      ' Research Assistant ',
+    )
+    await user.type(
+      within(dialog).getByPlaceholderText('agentV2.roster.createForm.descriptionPlaceholder'),
+      ' Find and summarize market materials. ',
+    )
     await user.click(within(dialog).getByRole('button', { name: 'common.operation.create' }))
 
-    expect(mutationMock.mutate).toHaveBeenCalledWith({
-      body: {
-        name: 'Research Agent',
-        description: 'Find and summarize market materials.',
-        role: 'Research Assistant',
-        icon_type: 'emoji',
-        icon: '🧸',
-        icon_background: '#F5F3FF',
+    expect(mutationMock.mutate).toHaveBeenCalledWith(
+      {
+        body: {
+          name: 'Research Agent',
+          description: 'Find and summarize market materials.',
+          role: 'Research Assistant',
+          icon_type: 'emoji',
+          icon: '🧸',
+          icon_background: '#F5F3FF',
+        },
       },
-    }, expect.objectContaining({
-      onSuccess: expect.any(Function),
-    }))
+      expect.objectContaining({
+        onSuccess: expect.any(Function),
+      }),
+    )
     const mutationOptions = mutationMock.mutate.mock.calls[0]?.[1]
     expect(mutationOptions).not.toHaveProperty('onError')
   })
@@ -74,10 +86,15 @@ describe('CreateAgentDialog', () => {
     await user.click(screen.getByRole('button', { name: /agentV2\.roster\.createAgent/ }))
 
     const dialog = await screen.findByRole('dialog', { name: 'agentV2.roster.createDialog.title' })
-    await user.type(within(dialog).getByRole('textbox', { name: 'agentV2.roster.createForm.roleLabel' }), 'Research Assistant')
+    await user.type(
+      within(dialog).getByRole('textbox', { name: 'agentV2.roster.createForm.roleLabel' }),
+      'Research Assistant',
+    )
     await user.click(within(dialog).getByRole('button', { name: 'common.operation.create' }))
 
-    expect(await within(dialog).findByText('agentV2.roster.createForm.nameRequired')).toBeInTheDocument()
+    expect(
+      await within(dialog).findByText('agentV2.roster.createForm.nameRequired'),
+    ).toBeInTheDocument()
     expect(toastMock.error).not.toHaveBeenCalled()
     expect(mutationMock.mutate).not.toHaveBeenCalled()
   })
@@ -89,10 +106,15 @@ describe('CreateAgentDialog', () => {
     await user.click(screen.getByRole('button', { name: /agentV2\.roster\.createAgent/ }))
 
     const dialog = await screen.findByRole('dialog', { name: 'agentV2.roster.createDialog.title' })
-    await user.type(within(dialog).getByRole('textbox', { name: 'agentV2.roster.createForm.nameLabel' }), 'Research Agent')
+    await user.type(
+      within(dialog).getByRole('textbox', { name: 'agentV2.roster.createForm.nameLabel' }),
+      'Research Agent',
+    )
     await user.click(within(dialog).getByRole('button', { name: 'common.operation.create' }))
 
-    expect(await within(dialog).findByText('agentV2.roster.createForm.roleRequired')).toBeInTheDocument()
+    expect(
+      await within(dialog).findByText('agentV2.roster.createForm.roleRequired'),
+    ).toBeInTheDocument()
     expect(toastMock.error).not.toHaveBeenCalled()
     expect(mutationMock.mutate).not.toHaveBeenCalled()
   })
@@ -104,11 +126,19 @@ describe('CreateAgentDialog', () => {
     await user.click(screen.getByRole('button', { name: /agentV2\.roster\.createAgent/ }))
 
     const dialog = await screen.findByRole('dialog', { name: 'agentV2.roster.createDialog.title' })
-    await user.type(within(dialog).getByRole('textbox', { name: 'agentV2.roster.createForm.nameLabel' }), 'Research Agent')
-    await user.type(within(dialog).getByRole('textbox', { name: 'agentV2.roster.createForm.roleLabel' }), '   ')
+    await user.type(
+      within(dialog).getByRole('textbox', { name: 'agentV2.roster.createForm.nameLabel' }),
+      'Research Agent',
+    )
+    await user.type(
+      within(dialog).getByRole('textbox', { name: 'agentV2.roster.createForm.roleLabel' }),
+      '   ',
+    )
     await user.click(within(dialog).getByRole('button', { name: 'common.operation.create' }))
 
-    expect(await within(dialog).findByText('agentV2.roster.createForm.roleRequired')).toBeInTheDocument()
+    expect(
+      await within(dialog).findByText('agentV2.roster.createForm.roleRequired'),
+    ).toBeInTheDocument()
     expect(toastMock.error).not.toHaveBeenCalled()
     expect(mutationMock.mutate).not.toHaveBeenCalled()
   })
@@ -127,7 +157,9 @@ describe('CreateAgentDialog', () => {
 
     await user.click(within(dialog).getByRole('button', { name: 'common.operation.cancel' }))
     await waitFor(() => {
-      expect(screen.queryByRole('dialog', { name: 'agentV2.roster.createDialog.title' })).not.toBeInTheDocument()
+      expect(
+        screen.queryByRole('dialog', { name: 'agentV2.roster.createDialog.title' }),
+      ).not.toBeInTheDocument()
     })
   })
 })

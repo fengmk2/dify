@@ -2,7 +2,7 @@ import type { ReactElement } from 'react'
 import type { PluginPageProps } from '../index'
 import { act, fireEvent, screen, waitFor } from '@testing-library/react'
 import { useQueryState } from 'nuqs'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 
 import { renderWithSystemFeatures } from '@/__tests__/utils/mock-system-features'
 import useDocumentTitle from '@/hooks/use-document-title'
@@ -43,18 +43,20 @@ vi.mock('@/context/app-context', () => ({
     isCurrentWorkspaceManager: true,
     isCurrentWorkspaceOwner: false,
     langGeniusVersionInfo: { current_version: '1.0.0' },
-    workspacePermissionKeys: ['plugin.install', 'plugin.delete', 'plugin.debug', 'plugin.plugin_preferences'],
+    workspacePermissionKeys: [
+      'plugin.install',
+      'plugin.delete',
+      'plugin.debug',
+      'plugin.plugin_preferences',
+    ],
   }),
 }))
 
 vi.mock('@/service/use-plugins', () => ({
   hasPluginPermission: (permission: string | undefined, isAdmin: boolean) => {
-    if (!permission)
-      return false
-    if (permission === 'noone')
-      return false
-    if (permission === 'everyone')
-      return true
+    if (!permission) return false
+    if (permission === 'noone') return false
+    if (permission === 'everyone') return true
     return isAdmin
   },
   useReferenceSettings: () => ({
@@ -329,12 +331,9 @@ describe('PluginPage Component', () => {
       // Override mock to disable management permission
       vi.doMock('@/service/use-plugins', () => ({
         hasPluginPermission: (permission: string | undefined, isAdmin: boolean) => {
-          if (!permission)
-            return false
-          if (permission === 'noone')
-            return false
-          if (permission === 'everyone')
-            return true
+          if (!permission) return false
+          if (permission === 'noone') return false
+          if (permission === 'everyone') return true
           return isAdmin
         },
         useReferenceSettings: () => ({
@@ -509,9 +508,12 @@ describe('PluginPage Component', () => {
 
       render(<PluginPageWithContext {...createDefaultProps()} />)
 
-      await waitFor(() => {
-        expect(screen.getByTestId('install-marketplace-modal')).toBeInTheDocument()
-      }, { timeout: 3000 })
+      await waitFor(
+        () => {
+          expect(screen.getByTestId('install-marketplace-modal')).toBeInTheDocument()
+        },
+        { timeout: 3000 },
+      )
     })
 
     it('should handle fetch error gracefully', async () => {
@@ -772,9 +774,12 @@ describe('PluginPage Component', () => {
       render(<PluginPageWithContext {...createDefaultProps()} />)
 
       // Wait for modal to appear
-      await waitFor(() => {
-        expect(screen.getByTestId('install-marketplace-modal')).toBeInTheDocument()
-      }, { timeout: 3000 })
+      await waitFor(
+        () => {
+          expect(screen.getByTestId('install-marketplace-modal')).toBeInTheDocument()
+        },
+        { timeout: 3000 },
+      )
 
       // Close modal
       fireEvent.click(screen.getByText('Close'))
@@ -904,7 +909,9 @@ describe('Uploader Hook Integration', () => {
         container.dispatchEvent(dragEnterEvent)
       })
 
-      const file = new File(['content'], 'test-plugin.difypkg', { type: 'application/octet-stream' })
+      const file = new File(['content'], 'test-plugin.difypkg', {
+        type: 'application/octet-stream',
+      })
       const dropEvent = new Event('drop', { bubbles: true, cancelable: true })
       Object.defineProperty(dropEvent, 'dataTransfer', {
         value: { files: [file] },
@@ -1057,9 +1064,12 @@ describe('PluginPage Integration', () => {
     })
 
     // Wait for modal
-    await waitFor(() => {
-      expect(screen.getByTestId('install-marketplace-modal')).toBeInTheDocument()
-    }, { timeout: 3000 })
+    await waitFor(
+      () => {
+        expect(screen.getByTestId('install-marketplace-modal')).toBeInTheDocument()
+      },
+      { timeout: 3000 },
+    )
 
     // Close modal
     fireEvent.click(screen.getByText('Close'))

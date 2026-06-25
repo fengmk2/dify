@@ -51,23 +51,23 @@ export function ApiKeyGenerateMenu({
   const [selectedEnvironmentId, setSelectedEnvironmentId] = useState<string>()
   const [draftName, setDraftName] = useState('')
   const [nameError, setNameError] = useState(false)
-  const generateApiKey = useMutation(consoleQuery.enterprise.accessService.createApiKey.mutationOptions())
+  const generateApiKey = useMutation(
+    consoleQuery.enterprise.accessService.createApiKey.mutationOptions(),
+  )
   const selectableEnvironments = environments
   const selectedEnvironment = selectedEnvironmentId
-    ? selectableEnvironments.find(env => env.id === selectedEnvironmentId)
+    ? selectableEnvironments.find((env) => env.id === selectedEnvironmentId)
     : undefined
   const disabled = selectableEnvironments.length === 0
   const isCreating = generateApiKey.isPending
 
   useEffect(() => {
-    if (createDialogOpen)
-      nameInputRef.current?.focus()
+    if (createDialogOpen) nameInputRef.current?.focus()
   }, [createDialogOpen])
 
   function handleOpenCreateDialog() {
     const firstEnvironment = selectableEnvironments[0]
-    if (!firstEnvironment)
-      return
+    if (!firstEnvironment) return
 
     setSelectedEnvironmentId(firstEnvironment.id)
     setDraftName(generateApiTokenName())
@@ -82,8 +82,7 @@ export function ApiKeyGenerateMenu({
 
   function handleDraftNameChange(nextDraftName: string) {
     setDraftName(nextDraftName)
-    if (nameError && nextDraftName.trim())
-      setNameError(false)
+    if (nameError && nextDraftName.trim()) setNameError(false)
   }
 
   function resetCreateDialog() {
@@ -94,8 +93,7 @@ export function ApiKeyGenerateMenu({
   }
 
   function handleDialogOpenChange(nextOpen: boolean) {
-    if (nextOpen || isCreating)
-      return
+    if (nextOpen || isCreating) return
 
     resetCreateDialog()
   }
@@ -124,8 +122,7 @@ export function ApiKeyGenerateMenu({
       },
       {
         onSuccess: (response) => {
-          if (response.token)
-            onCreatedToken(response.token)
+          if (response.token) onCreatedToken(response.token)
           resetCreateDialog()
         },
         onError: () => {
@@ -185,7 +182,10 @@ export function ApiKeyGenerateMenu({
                   }}
                 />
                 {nameError && (
-                  <div id={`${nameInputId}-error`} className="mt-1 system-xs-regular text-text-destructive">
+                  <div
+                    id={`${nameInputId}-error`}
+                    className="mt-1 system-xs-regular text-text-destructive"
+                  >
                     {t('access.api.nameRequired')}
                   </div>
                 )}
@@ -195,16 +195,14 @@ export function ApiKeyGenerateMenu({
                 <Select
                   value={selectedEnvironmentId ?? null}
                   disabled={isCreating}
-                  onValueChange={value => value && handleEnvironmentChange(value)}
+                  onValueChange={(value) => value && handleEnvironmentChange(value)}
                 >
                   <SelectLabel className="mb-1 block system-sm-medium text-text-secondary">
                     {t('access.api.table.environment')}
                   </SelectLabel>
-                  <SelectTrigger>
-                    {selectedEnvironment?.displayName ?? '—'}
-                  </SelectTrigger>
+                  <SelectTrigger>{selectedEnvironment?.displayName ?? '—'}</SelectTrigger>
                   <SelectContent>
-                    {selectableEnvironments.map(env => (
+                    {selectableEnvironments.map((env) => (
                       <SelectItem key={env.id} value={env.id}>
                         <SelectItemText>{env.displayName}</SelectItemText>
                         <SelectItemIndicator />

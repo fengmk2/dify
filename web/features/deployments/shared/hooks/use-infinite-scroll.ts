@@ -82,56 +82,57 @@ export function useInfiniteScroll<
     setSentinelEl(node)
   }, [])
 
-  const canLoad = enabled
-    && Boolean(query.hasNextPage)
-    && !query.isFetchingNextPage
-    && !(query.isLoading ?? false)
-    && !query.error
-    && !(guardOnFetching && (query.isFetching ?? false))
+  const canLoad =
+    enabled &&
+    Boolean(query.hasNextPage) &&
+    !query.isFetchingNextPage &&
+    !(query.isLoading ?? false) &&
+    !query.error &&
+    !(guardOnFetching && (query.isFetching ?? false))
 
   useEffect(() => {
-    if (!canLoad)
-      return
+    if (!canLoad) return
 
-    if (!sentinelEl)
-      return
+    if (!sentinelEl) return
 
-    if (!useWindow && !rootEl)
-      return
+    if (!useWindow && !rootEl) return
 
-    if (typeof IntersectionObserver === 'undefined')
-      return
+    if (typeof IntersectionObserver === 'undefined') return
 
-    const observer = new IntersectionObserver(([entry]) => {
-      const latest = latestRef.current
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const latest = latestRef.current
 
-      if (!entry?.isIntersecting)
-        return
+        if (!entry?.isIntersecting) return
 
-      if (!latest.enabled
-        || !latest.hasNextPage
-        || latest.isLoading
-        || latest.isFetchingNextPage
-        || latest.error
-        || (latest.guardOnFetching && latest.isFetching)
-        || loadingLockRef.current) {
-        return
-      }
+        if (
+          !latest.enabled ||
+          !latest.hasNextPage ||
+          latest.isLoading ||
+          latest.isFetchingNextPage ||
+          latest.error ||
+          (latest.guardOnFetching && latest.isFetching) ||
+          loadingLockRef.current
+        ) {
+          return
+        }
 
-      loadingLockRef.current = true
+        loadingLockRef.current = true
 
-      const nextPage = latest.fetchNextPage({
-        cancelRefetch: latest.cancelRefetch,
-      })
+        const nextPage = latest.fetchNextPage({
+          cancelRefetch: latest.cancelRefetch,
+        })
 
-      void Promise.resolve(nextPage).finally(() => {
-        loadingLockRef.current = false
-      })
-    }, {
-      root: useWindow ? null : rootEl,
-      rootMargin,
-      threshold,
-    })
+        void Promise.resolve(nextPage).finally(() => {
+          loadingLockRef.current = false
+        })
+      },
+      {
+        root: useWindow ? null : rootEl,
+        rootMargin,
+        threshold,
+      },
+    )
 
     observer.observe(sentinelEl)
 

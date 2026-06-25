@@ -5,15 +5,15 @@ permissions:
 
 on:
   workflow_run:
-    workflows: ["Build and Push API & Web"]
+    workflows: ['Build and Push API & Web']
     branches:
-      - "deploy/agent"
+      - 'deploy/agent'
     types:
       - completed
 
 jobs:
   deploy:
-    runs-on: depot-ubuntu-24.04
+    runs-on: ubuntu-latest
     if: |
       github.event.workflow_run.conclusion == 'success' &&
       github.event.workflow_run.head_branch == 'deploy/agent'

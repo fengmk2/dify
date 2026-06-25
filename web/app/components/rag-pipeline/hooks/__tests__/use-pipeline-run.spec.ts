@@ -1,7 +1,7 @@
 import type { VersionHistory } from '@/types/workflow'
 import { renderHook } from '@testing-library/react'
 import { act } from 'react'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { WorkflowRunningStatus } from '@/app/components/workflow/types'
 
 import { usePipelineRunByCanEdit } from '../use-pipeline-run'
@@ -115,7 +115,10 @@ describe('usePipelineRunByCanEdit', () => {
     })
 
     mockGetNodes.mockReturnValue([
-      { id: 'node-1', data: { type: 'start', selected: true, _runningStatus: WorkflowRunningStatus.Running } },
+      {
+        id: 'node-1',
+        data: { type: 'start', selected: true, _runningStatus: WorkflowRunningStatus.Running },
+      },
     ])
 
     mockGetViewport.mockReturnValue({ x: 0, y: 0, zoom: 1 })
@@ -299,7 +302,9 @@ describe('usePipelineRunByCanEdit', () => {
       const { result } = renderHook(() => usePipelineRunByCanEdit(true))
 
       act(() => {
-        result.current.handleRestoreFromPublishedWorkflow(publishedWorkflow as unknown as VersionHistory)
+        result.current.handleRestoreFromPublishedWorkflow(
+          publishedWorkflow as unknown as VersionHistory,
+        )
       })
 
       expect(mockHandleUpdateWorkflowCanvas).toHaveBeenCalledWith({
@@ -323,7 +328,9 @@ describe('usePipelineRunByCanEdit', () => {
       const { result } = renderHook(() => usePipelineRunByCanEdit(true))
 
       act(() => {
-        result.current.handleRestoreFromPublishedWorkflow(publishedWorkflow as unknown as VersionHistory)
+        result.current.handleRestoreFromPublishedWorkflow(
+          publishedWorkflow as unknown as VersionHistory,
+        )
       })
 
       expect(mockSetEnvironmentVariables).toHaveBeenCalledWith([{ key: 'ENV', value: 'value' }])
@@ -343,10 +350,14 @@ describe('usePipelineRunByCanEdit', () => {
       const { result } = renderHook(() => usePipelineRunByCanEdit(true))
 
       act(() => {
-        result.current.handleRestoreFromPublishedWorkflow(publishedWorkflow as unknown as VersionHistory)
+        result.current.handleRestoreFromPublishedWorkflow(
+          publishedWorkflow as unknown as VersionHistory,
+        )
       })
 
-      expect(mockSetRagPipelineVariables).toHaveBeenCalledWith([{ variable: 'query', type: 'text-input' }])
+      expect(mockSetRagPipelineVariables).toHaveBeenCalledWith([
+        { variable: 'query', type: 'text-input' },
+      ])
     })
 
     it('should handle empty environment and rag pipeline variables', () => {
@@ -363,7 +374,9 @@ describe('usePipelineRunByCanEdit', () => {
       const { result } = renderHook(() => usePipelineRunByCanEdit(true))
 
       act(() => {
-        result.current.handleRestoreFromPublishedWorkflow(publishedWorkflow as unknown as VersionHistory)
+        result.current.handleRestoreFromPublishedWorkflow(
+          publishedWorkflow as unknown as VersionHistory,
+        )
       })
 
       expect(mockSetEnvironmentVariables).toHaveBeenCalledWith([])
@@ -762,7 +775,9 @@ describe('usePipelineRunByCanEdit', () => {
       const { result } = renderHook(() => usePipelineRunByCanEdit(true))
 
       await act(async () => {
-        await result.current.handleRun({ inputs: {} }, { onData: customCallback } as unknown as Parameters<typeof result.current.handleRun>[1])
+        await result.current.handleRun({ inputs: {} }, {
+          onData: customCallback,
+        } as unknown as Parameters<typeof result.current.handleRun>[1])
       })
 
       expect(capturedCallbacks.onData).toBeDefined()

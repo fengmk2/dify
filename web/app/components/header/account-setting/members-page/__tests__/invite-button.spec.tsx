@@ -1,7 +1,7 @@
 import type { AppContextValue } from '@/context/app-context'
 import type { ICurrentWorkspace } from '@/models/common'
 import { screen } from '@testing-library/react'
-import { vi } from 'vitest'
+import { vi } from 'vite-plus/test'
 import { renderWithSystemFeatures } from '@/__tests__/utils/mock-system-features'
 import { useAppContext } from '@/context/app-context'
 import { useWorkspacePermissions } from '@/service/use-workspace'

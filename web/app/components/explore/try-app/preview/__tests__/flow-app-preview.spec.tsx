@@ -1,5 +1,5 @@
 import { cleanup, render, screen } from '@testing-library/react'
-import { afterEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, describe, expect, it, vi } from 'vite-plus/test'
 import FlowAppPreview from '../flow-app-preview'
 
 const mockUseGetTryAppFlowPreview = vi.fn()
@@ -14,7 +14,12 @@ vi.mock('@/app/components/workflow/workflow-preview', () => ({
     miniMapToRight,
     nodes,
     edges,
-  }: { className?: string, miniMapToRight?: boolean, nodes?: unknown[], edges?: unknown[] }) => (
+  }: {
+    className?: string
+    miniMapToRight?: boolean
+    nodes?: unknown[]
+    edges?: unknown[]
+  }) => (
     <div
       data-testid="workflow-preview"
       className={className}

@@ -2206,8 +2206,8 @@ export const zPostWorkspacesCurrentCustomizedSnippetsImportsByImportIdConfirmPat
 /**
  * Import confirmed successfully
  */
-export const zPostWorkspacesCurrentCustomizedSnippetsImportsByImportIdConfirmResponse
-  = zSnippetImportResponse
+export const zPostWorkspacesCurrentCustomizedSnippetsImportsByImportIdConfirmResponse =
+  zSnippetImportResponse
 
 export const zDeleteWorkspacesCurrentCustomizedSnippetsBySnippetIdPath = z.object({
   snippet_id: z.uuid(),
@@ -2245,8 +2245,8 @@ export const zGetWorkspacesCurrentCustomizedSnippetsBySnippetIdCheckDependencies
 /**
  * Dependencies checked successfully
  */
-export const zGetWorkspacesCurrentCustomizedSnippetsBySnippetIdCheckDependenciesResponse
-  = zSnippetDependencyCheckResponse
+export const zGetWorkspacesCurrentCustomizedSnippetsBySnippetIdCheckDependenciesResponse =
+  zSnippetDependencyCheckResponse
 
 export const zGetWorkspacesCurrentCustomizedSnippetsBySnippetIdExportPath = z.object({
   snippet_id: z.uuid(),
@@ -2268,8 +2268,8 @@ export const zPostWorkspacesCurrentCustomizedSnippetsBySnippetIdUseCountIncremen
 /**
  * Use count incremented successfully
  */
-export const zPostWorkspacesCurrentCustomizedSnippetsBySnippetIdUseCountIncrementResponse
-  = zSnippetUseCountResponse
+export const zPostWorkspacesCurrentCustomizedSnippetsBySnippetIdUseCountIncrementResponse =
+  zSnippetUseCountResponse
 
 /**
  * Success
@@ -2394,14 +2394,14 @@ export const zPostWorkspacesCurrentMembersOwnerTransferCheckBody = zOwnerTransfe
  */
 export const zPostWorkspacesCurrentMembersOwnerTransferCheckResponse = zVerificationTokenResponse
 
-export const zPostWorkspacesCurrentMembersSendOwnerTransferConfirmEmailBody
-  = zOwnerTransferEmailPayload
+export const zPostWorkspacesCurrentMembersSendOwnerTransferConfirmEmailBody =
+  zOwnerTransferEmailPayload
 
 /**
  * Success
  */
-export const zPostWorkspacesCurrentMembersSendOwnerTransferConfirmEmailResponse
-  = zSimpleResultDataResponse
+export const zPostWorkspacesCurrentMembersSendOwnerTransferConfirmEmailResponse =
+  zSimpleResultDataResponse
 
 export const zDeleteWorkspacesCurrentMembersByMemberIdPath = z.object({
   member_id: z.uuid(),
@@ -2452,11 +2452,11 @@ export const zGetWorkspacesCurrentModelProvidersByProviderCheckoutUrlPath = z.ob
 /**
  * Success
  */
-export const zGetWorkspacesCurrentModelProvidersByProviderCheckoutUrlResponse
-  = zModelProviderPaymentCheckoutUrlResponse
+export const zGetWorkspacesCurrentModelProvidersByProviderCheckoutUrlResponse =
+  zModelProviderPaymentCheckoutUrlResponse
 
-export const zDeleteWorkspacesCurrentModelProvidersByProviderCredentialsBody
-  = zParserCredentialDelete
+export const zDeleteWorkspacesCurrentModelProvidersByProviderCredentialsBody =
+  zParserCredentialDelete
 
 export const zDeleteWorkspacesCurrentModelProvidersByProviderCredentialsPath = z.object({
   provider: z.string(),
@@ -2478,8 +2478,8 @@ export const zGetWorkspacesCurrentModelProvidersByProviderCredentialsQuery = z.o
 /**
  * Success
  */
-export const zGetWorkspacesCurrentModelProvidersByProviderCredentialsResponse
-  = zProviderCredentialResponse
+export const zGetWorkspacesCurrentModelProvidersByProviderCredentialsResponse =
+  zProviderCredentialResponse
 
 export const zPostWorkspacesCurrentModelProvidersByProviderCredentialsBody = zParserCredentialCreate
 
@@ -2490,8 +2490,8 @@ export const zPostWorkspacesCurrentModelProvidersByProviderCredentialsPath = z.o
 /**
  * Credential created successfully
  */
-export const zPostWorkspacesCurrentModelProvidersByProviderCredentialsResponse
-  = zSimpleResultResponse
+export const zPostWorkspacesCurrentModelProvidersByProviderCredentialsResponse =
+  zSimpleResultResponse
 
 export const zPutWorkspacesCurrentModelProvidersByProviderCredentialsBody = zParserCredentialUpdate
 
@@ -2502,11 +2502,11 @@ export const zPutWorkspacesCurrentModelProvidersByProviderCredentialsPath = z.ob
 /**
  * Credential updated successfully
  */
-export const zPutWorkspacesCurrentModelProvidersByProviderCredentialsResponse
-  = zSimpleResultResponse
+export const zPutWorkspacesCurrentModelProvidersByProviderCredentialsResponse =
+  zSimpleResultResponse
 
-export const zPostWorkspacesCurrentModelProvidersByProviderCredentialsSwitchBody
-  = zParserCredentialSwitch
+export const zPostWorkspacesCurrentModelProvidersByProviderCredentialsSwitchBody =
+  zParserCredentialSwitch
 
 export const zPostWorkspacesCurrentModelProvidersByProviderCredentialsSwitchPath = z.object({
   provider: z.string(),
@@ -2515,11 +2515,11 @@ export const zPostWorkspacesCurrentModelProvidersByProviderCredentialsSwitchPath
 /**
  * Success
  */
-export const zPostWorkspacesCurrentModelProvidersByProviderCredentialsSwitchResponse
-  = zSimpleResultResponse
+export const zPostWorkspacesCurrentModelProvidersByProviderCredentialsSwitchResponse =
+  zSimpleResultResponse
 
-export const zPostWorkspacesCurrentModelProvidersByProviderCredentialsValidateBody
-  = zParserCredentialValidate
+export const zPostWorkspacesCurrentModelProvidersByProviderCredentialsValidateBody =
+  zParserCredentialValidate
 
 export const zPostWorkspacesCurrentModelProvidersByProviderCredentialsValidatePath = z.object({
   provider: z.string(),
@@ -2528,8 +2528,8 @@ export const zPostWorkspacesCurrentModelProvidersByProviderCredentialsValidatePa
 /**
  * Credential validation result
  */
-export const zPostWorkspacesCurrentModelProvidersByProviderCredentialsValidateResponse
-  = zProviderCredentialValidateResponse
+export const zPostWorkspacesCurrentModelProvidersByProviderCredentialsValidateResponse =
+  zProviderCredentialValidateResponse
 
 export const zDeleteWorkspacesCurrentModelProvidersByProviderModelsBody = zParserDeleteModels
 
@@ -2549,8 +2549,8 @@ export const zGetWorkspacesCurrentModelProvidersByProviderModelsPath = z.object(
 /**
  * Success
  */
-export const zGetWorkspacesCurrentModelProvidersByProviderModelsResponse
-  = zModelWithProviderListResponse
+export const zGetWorkspacesCurrentModelProvidersByProviderModelsResponse =
+  zModelWithProviderListResponse
 
 export const zPostWorkspacesCurrentModelProvidersByProviderModelsBody = zParserPostModels
 
@@ -2563,8 +2563,8 @@ export const zPostWorkspacesCurrentModelProvidersByProviderModelsPath = z.object
  */
 export const zPostWorkspacesCurrentModelProvidersByProviderModelsResponse = zSimpleResultResponse
 
-export const zDeleteWorkspacesCurrentModelProvidersByProviderModelsCredentialsBody
-  = zParserDeleteCredential
+export const zDeleteWorkspacesCurrentModelProvidersByProviderModelsCredentialsBody =
+  zParserDeleteCredential
 
 export const zDeleteWorkspacesCurrentModelProvidersByProviderModelsCredentialsPath = z.object({
   provider: z.string(),
@@ -2589,11 +2589,11 @@ export const zGetWorkspacesCurrentModelProvidersByProviderModelsCredentialsQuery
 /**
  * Success
  */
-export const zGetWorkspacesCurrentModelProvidersByProviderModelsCredentialsResponse
-  = zModelCredentialResponse
+export const zGetWorkspacesCurrentModelProvidersByProviderModelsCredentialsResponse =
+  zModelCredentialResponse
 
-export const zPostWorkspacesCurrentModelProvidersByProviderModelsCredentialsBody
-  = zParserCreateCredential
+export const zPostWorkspacesCurrentModelProvidersByProviderModelsCredentialsBody =
+  zParserCreateCredential
 
 export const zPostWorkspacesCurrentModelProvidersByProviderModelsCredentialsPath = z.object({
   provider: z.string(),
@@ -2602,11 +2602,11 @@ export const zPostWorkspacesCurrentModelProvidersByProviderModelsCredentialsPath
 /**
  * Credential created successfully
  */
-export const zPostWorkspacesCurrentModelProvidersByProviderModelsCredentialsResponse
-  = zSimpleResultResponse
+export const zPostWorkspacesCurrentModelProvidersByProviderModelsCredentialsResponse =
+  zSimpleResultResponse
 
-export const zPutWorkspacesCurrentModelProvidersByProviderModelsCredentialsBody
-  = zParserUpdateCredential
+export const zPutWorkspacesCurrentModelProvidersByProviderModelsCredentialsBody =
+  zParserUpdateCredential
 
 export const zPutWorkspacesCurrentModelProvidersByProviderModelsCredentialsPath = z.object({
   provider: z.string(),
@@ -2615,11 +2615,11 @@ export const zPutWorkspacesCurrentModelProvidersByProviderModelsCredentialsPath 
 /**
  * Credential updated successfully
  */
-export const zPutWorkspacesCurrentModelProvidersByProviderModelsCredentialsResponse
-  = zSimpleResultResponse
+export const zPutWorkspacesCurrentModelProvidersByProviderModelsCredentialsResponse =
+  zSimpleResultResponse
 
-export const zPostWorkspacesCurrentModelProvidersByProviderModelsCredentialsSwitchBody
-  = zParserSwitch
+export const zPostWorkspacesCurrentModelProvidersByProviderModelsCredentialsSwitchBody =
+  zParserSwitch
 
 export const zPostWorkspacesCurrentModelProvidersByProviderModelsCredentialsSwitchPath = z.object({
   provider: z.string(),
@@ -2628,11 +2628,11 @@ export const zPostWorkspacesCurrentModelProvidersByProviderModelsCredentialsSwit
 /**
  * Success
  */
-export const zPostWorkspacesCurrentModelProvidersByProviderModelsCredentialsSwitchResponse
-  = zSimpleResultResponse
+export const zPostWorkspacesCurrentModelProvidersByProviderModelsCredentialsSwitchResponse =
+  zSimpleResultResponse
 
-export const zPostWorkspacesCurrentModelProvidersByProviderModelsCredentialsValidateBody
-  = zParserValidate
+export const zPostWorkspacesCurrentModelProvidersByProviderModelsCredentialsValidateBody =
+  zParserValidate
 
 export const zPostWorkspacesCurrentModelProvidersByProviderModelsCredentialsValidatePath = z.object(
   {
@@ -2643,8 +2643,8 @@ export const zPostWorkspacesCurrentModelProvidersByProviderModelsCredentialsVali
 /**
  * Credential validation result
  */
-export const zPostWorkspacesCurrentModelProvidersByProviderModelsCredentialsValidateResponse
-  = zModelCredentialValidateResponse
+export const zPostWorkspacesCurrentModelProvidersByProviderModelsCredentialsValidateResponse =
+  zModelCredentialValidateResponse
 
 export const zPatchWorkspacesCurrentModelProvidersByProviderModelsDisableBody = zParserDeleteModels
 
@@ -2655,8 +2655,8 @@ export const zPatchWorkspacesCurrentModelProvidersByProviderModelsDisablePath = 
 /**
  * Success
  */
-export const zPatchWorkspacesCurrentModelProvidersByProviderModelsDisableResponse
-  = zSimpleResultResponse
+export const zPatchWorkspacesCurrentModelProvidersByProviderModelsDisableResponse =
+  zSimpleResultResponse
 
 export const zPatchWorkspacesCurrentModelProvidersByProviderModelsEnableBody = zParserDeleteModels
 
@@ -2667,28 +2667,28 @@ export const zPatchWorkspacesCurrentModelProvidersByProviderModelsEnablePath = z
 /**
  * Success
  */
-export const zPatchWorkspacesCurrentModelProvidersByProviderModelsEnableResponse
-  = zSimpleResultResponse
+export const zPatchWorkspacesCurrentModelProvidersByProviderModelsEnableResponse =
+  zSimpleResultResponse
 
-export const zPostWorkspacesCurrentModelProvidersByProviderModelsLoadBalancingConfigsCredentialsValidateBody
-  = zLoadBalancingCredentialPayload
+export const zPostWorkspacesCurrentModelProvidersByProviderModelsLoadBalancingConfigsCredentialsValidateBody =
+  zLoadBalancingCredentialPayload
 
-export const zPostWorkspacesCurrentModelProvidersByProviderModelsLoadBalancingConfigsCredentialsValidatePath
-  = z.object({
+export const zPostWorkspacesCurrentModelProvidersByProviderModelsLoadBalancingConfigsCredentialsValidatePath =
+  z.object({
     provider: z.string(),
   })
 
 /**
  * Credential validation result
  */
-export const zPostWorkspacesCurrentModelProvidersByProviderModelsLoadBalancingConfigsCredentialsValidateResponse
-  = zLoadBalancingCredentialValidateResponse
+export const zPostWorkspacesCurrentModelProvidersByProviderModelsLoadBalancingConfigsCredentialsValidateResponse =
+  zLoadBalancingCredentialValidateResponse
 
-export const zPostWorkspacesCurrentModelProvidersByProviderModelsLoadBalancingConfigsByConfigIdCredentialsValidateBody
-  = zLoadBalancingCredentialPayload
+export const zPostWorkspacesCurrentModelProvidersByProviderModelsLoadBalancingConfigsByConfigIdCredentialsValidateBody =
+  zLoadBalancingCredentialPayload
 
-export const zPostWorkspacesCurrentModelProvidersByProviderModelsLoadBalancingConfigsByConfigIdCredentialsValidatePath
-  = z.object({
+export const zPostWorkspacesCurrentModelProvidersByProviderModelsLoadBalancingConfigsByConfigIdCredentialsValidatePath =
+  z.object({
     config_id: z.string(),
     provider: z.string(),
   })
@@ -2696,8 +2696,8 @@ export const zPostWorkspacesCurrentModelProvidersByProviderModelsLoadBalancingCo
 /**
  * Credential validation result
  */
-export const zPostWorkspacesCurrentModelProvidersByProviderModelsLoadBalancingConfigsByConfigIdCredentialsValidateResponse
-  = zLoadBalancingCredentialValidateResponse
+export const zPostWorkspacesCurrentModelProvidersByProviderModelsLoadBalancingConfigsByConfigIdCredentialsValidateResponse =
+  zLoadBalancingCredentialValidateResponse
 
 export const zGetWorkspacesCurrentModelProvidersByProviderModelsParameterRulesPath = z.object({
   provider: z.string(),
@@ -2710,11 +2710,11 @@ export const zGetWorkspacesCurrentModelProvidersByProviderModelsParameterRulesQu
 /**
  * Success
  */
-export const zGetWorkspacesCurrentModelProvidersByProviderModelsParameterRulesResponse
-  = zModelParameterRulesResponse
+export const zGetWorkspacesCurrentModelProvidersByProviderModelsParameterRulesResponse =
+  zModelParameterRulesResponse
 
-export const zPostWorkspacesCurrentModelProvidersByProviderPreferredProviderTypeBody
-  = zParserPreferredProviderType
+export const zPostWorkspacesCurrentModelProvidersByProviderPreferredProviderTypeBody =
+  zParserPreferredProviderType
 
 export const zPostWorkspacesCurrentModelProvidersByProviderPreferredProviderTypePath = z.object({
   provider: z.string(),
@@ -2723,8 +2723,8 @@ export const zPostWorkspacesCurrentModelProvidersByProviderPreferredProviderType
 /**
  * Success
  */
-export const zPostWorkspacesCurrentModelProvidersByProviderPreferredProviderTypeResponse
-  = zSimpleResultResponse
+export const zPostWorkspacesCurrentModelProvidersByProviderPreferredProviderTypeResponse =
+  zSimpleResultResponse
 
 export const zGetWorkspacesCurrentModelsModelTypesByModelTypePath = z.object({
   model_type: z.string(),
@@ -2733,8 +2733,8 @@ export const zGetWorkspacesCurrentModelsModelTypesByModelTypePath = z.object({
 /**
  * Success
  */
-export const zGetWorkspacesCurrentModelsModelTypesByModelTypeResponse
-  = zProviderWithModelsDataResponse
+export const zGetWorkspacesCurrentModelsModelTypesByModelTypeResponse =
+  zProviderWithModelsDataResponse
 
 /**
  * Success
@@ -2756,8 +2756,8 @@ export const zPostWorkspacesCurrentPluginAutoUpgradeChangeBody = zParserAutoUpgr
 /**
  * Success
  */
-export const zPostWorkspacesCurrentPluginAutoUpgradeChangeResponse
-  = zPluginAutoUpgradeChangeResponse
+export const zPostWorkspacesCurrentPluginAutoUpgradeChangeResponse =
+  zPluginAutoUpgradeChangeResponse
 
 export const zPostWorkspacesCurrentPluginAutoUpgradeExcludeBody = zParserExcludePlugin
 
@@ -2865,17 +2865,17 @@ export const zGetWorkspacesCurrentPluginParametersDynamicOptionsQuery = z.object
 /**
  * Success
  */
-export const zGetWorkspacesCurrentPluginParametersDynamicOptionsResponse
-  = zPluginDynamicOptionsResponse
+export const zGetWorkspacesCurrentPluginParametersDynamicOptionsResponse =
+  zPluginDynamicOptionsResponse
 
-export const zPostWorkspacesCurrentPluginParametersDynamicOptionsWithCredentialsBody
-  = zParserDynamicOptionsWithCredentials
+export const zPostWorkspacesCurrentPluginParametersDynamicOptionsWithCredentialsBody =
+  zParserDynamicOptionsWithCredentials
 
 /**
  * Success
  */
-export const zPostWorkspacesCurrentPluginParametersDynamicOptionsWithCredentialsResponse
-  = zPluginDynamicOptionsResponse
+export const zPostWorkspacesCurrentPluginParametersDynamicOptionsWithCredentialsResponse =
+  zPluginDynamicOptionsResponse
 
 export const zPostWorkspacesCurrentPluginPermissionChangeBody = zParserPermissionChange
 
@@ -3047,8 +3047,8 @@ export const zPutWorkspacesCurrentRbacAccessPolicyBindingsByBindingIdLockPath = 
 /**
  * Success
  */
-export const zPutWorkspacesCurrentRbacAccessPolicyBindingsByBindingIdLockResponse
-  = zAccessPolicyBindingState
+export const zPutWorkspacesCurrentRbacAccessPolicyBindingsByBindingIdLockResponse =
+  zAccessPolicyBindingState
 
 export const zPutWorkspacesCurrentRbacAccessPolicyBindingsByBindingIdUnlockPath = z.object({
   binding_id: z.uuid(),
@@ -3057,11 +3057,11 @@ export const zPutWorkspacesCurrentRbacAccessPolicyBindingsByBindingIdUnlockPath 
 /**
  * Success
  */
-export const zPutWorkspacesCurrentRbacAccessPolicyBindingsByBindingIdUnlockResponse
-  = zAccessPolicyBindingState
+export const zPutWorkspacesCurrentRbacAccessPolicyBindingsByBindingIdUnlockResponse =
+  zAccessPolicyBindingState
 
-export const zDeleteWorkspacesCurrentRbacAppsByAppIdAccessPoliciesByPolicyIdMemberBindingsPath
-  = z.object({
+export const zDeleteWorkspacesCurrentRbacAppsByAppIdAccessPoliciesByPolicyIdMemberBindingsPath =
+  z.object({
     app_id: z.uuid(),
     policy_id: z.string(),
   })
@@ -3069,11 +3069,11 @@ export const zDeleteWorkspacesCurrentRbacAppsByAppIdAccessPoliciesByPolicyIdMemb
 /**
  * Success
  */
-export const zDeleteWorkspacesCurrentRbacAppsByAppIdAccessPoliciesByPolicyIdMemberBindingsResponse
-  = zMemberBindingsResponse
+export const zDeleteWorkspacesCurrentRbacAppsByAppIdAccessPoliciesByPolicyIdMemberBindingsResponse =
+  zMemberBindingsResponse
 
-export const zGetWorkspacesCurrentRbacAppsByAppIdAccessPoliciesByPolicyIdMemberBindingsPath
-  = z.object({
+export const zGetWorkspacesCurrentRbacAppsByAppIdAccessPoliciesByPolicyIdMemberBindingsPath =
+  z.object({
     app_id: z.uuid(),
     policy_id: z.string(),
   })
@@ -3081,11 +3081,11 @@ export const zGetWorkspacesCurrentRbacAppsByAppIdAccessPoliciesByPolicyIdMemberB
 /**
  * Success
  */
-export const zGetWorkspacesCurrentRbacAppsByAppIdAccessPoliciesByPolicyIdMemberBindingsResponse
-  = zMemberBindingsResponse
+export const zGetWorkspacesCurrentRbacAppsByAppIdAccessPoliciesByPolicyIdMemberBindingsResponse =
+  zMemberBindingsResponse
 
-export const zGetWorkspacesCurrentRbacAppsByAppIdAccessPoliciesByPolicyIdRoleBindingsPath
-  = z.object({
+export const zGetWorkspacesCurrentRbacAppsByAppIdAccessPoliciesByPolicyIdRoleBindingsPath =
+  z.object({
     app_id: z.uuid(),
     policy_id: z.uuid(),
   })
@@ -3093,8 +3093,8 @@ export const zGetWorkspacesCurrentRbacAppsByAppIdAccessPoliciesByPolicyIdRoleBin
 /**
  * Success
  */
-export const zGetWorkspacesCurrentRbacAppsByAppIdAccessPoliciesByPolicyIdRoleBindingsResponse
-  = zRoleBindingsResponse
+export const zGetWorkspacesCurrentRbacAppsByAppIdAccessPoliciesByPolicyIdRoleBindingsResponse =
+  zRoleBindingsResponse
 
 export const zGetWorkspacesCurrentRbacAppsByAppIdAccessPolicyPath = z.object({
   app_id: z.uuid(),
@@ -3112,11 +3112,11 @@ export const zGetWorkspacesCurrentRbacAppsByAppIdUserAccessPoliciesPath = z.obje
 /**
  * Success
  */
-export const zGetWorkspacesCurrentRbacAppsByAppIdUserAccessPoliciesResponse
-  = zResourceUserAccessPoliciesResponse
+export const zGetWorkspacesCurrentRbacAppsByAppIdUserAccessPoliciesResponse =
+  zResourceUserAccessPoliciesResponse
 
-export const zPutWorkspacesCurrentRbacAppsByAppIdUsersByTargetAccountIdAccessPoliciesPath
-  = z.object({
+export const zPutWorkspacesCurrentRbacAppsByAppIdUsersByTargetAccountIdAccessPoliciesPath =
+  z.object({
     app_id: z.uuid(),
     target_account_id: z.uuid(),
   })
@@ -3124,8 +3124,8 @@ export const zPutWorkspacesCurrentRbacAppsByAppIdUsersByTargetAccountIdAccessPol
 /**
  * Success
  */
-export const zPutWorkspacesCurrentRbacAppsByAppIdUsersByTargetAccountIdAccessPoliciesResponse
-  = zReplaceUserAccessPoliciesResponse
+export const zPutWorkspacesCurrentRbacAppsByAppIdUsersByTargetAccountIdAccessPoliciesResponse =
+  zReplaceUserAccessPoliciesResponse
 
 export const zGetWorkspacesCurrentRbacAppsByAppIdWhitelistPath = z.object({
   app_id: z.uuid(),
@@ -3145,8 +3145,8 @@ export const zPutWorkspacesCurrentRbacAppsByAppIdWhitelistPath = z.object({
  */
 export const zPutWorkspacesCurrentRbacAppsByAppIdWhitelistResponse = zResourceWhitelist
 
-export const zDeleteWorkspacesCurrentRbacDatasetsByDatasetIdAccessPoliciesByPolicyIdMemberBindingsPath
-  = z.object({
+export const zDeleteWorkspacesCurrentRbacDatasetsByDatasetIdAccessPoliciesByPolicyIdMemberBindingsPath =
+  z.object({
     dataset_id: z.uuid(),
     policy_id: z.string(),
   })
@@ -3154,11 +3154,11 @@ export const zDeleteWorkspacesCurrentRbacDatasetsByDatasetIdAccessPoliciesByPoli
 /**
  * Success
  */
-export const zDeleteWorkspacesCurrentRbacDatasetsByDatasetIdAccessPoliciesByPolicyIdMemberBindingsResponse
-  = zMemberBindingsResponse
+export const zDeleteWorkspacesCurrentRbacDatasetsByDatasetIdAccessPoliciesByPolicyIdMemberBindingsResponse =
+  zMemberBindingsResponse
 
-export const zGetWorkspacesCurrentRbacDatasetsByDatasetIdAccessPoliciesByPolicyIdMemberBindingsPath
-  = z.object({
+export const zGetWorkspacesCurrentRbacDatasetsByDatasetIdAccessPoliciesByPolicyIdMemberBindingsPath =
+  z.object({
     dataset_id: z.uuid(),
     policy_id: z.string(),
   })
@@ -3166,11 +3166,11 @@ export const zGetWorkspacesCurrentRbacDatasetsByDatasetIdAccessPoliciesByPolicyI
 /**
  * Success
  */
-export const zGetWorkspacesCurrentRbacDatasetsByDatasetIdAccessPoliciesByPolicyIdMemberBindingsResponse
-  = zMemberBindingsResponse
+export const zGetWorkspacesCurrentRbacDatasetsByDatasetIdAccessPoliciesByPolicyIdMemberBindingsResponse =
+  zMemberBindingsResponse
 
-export const zGetWorkspacesCurrentRbacDatasetsByDatasetIdAccessPoliciesByPolicyIdRoleBindingsPath
-  = z.object({
+export const zGetWorkspacesCurrentRbacDatasetsByDatasetIdAccessPoliciesByPolicyIdRoleBindingsPath =
+  z.object({
     dataset_id: z.uuid(),
     policy_id: z.uuid(),
   })
@@ -3178,8 +3178,8 @@ export const zGetWorkspacesCurrentRbacDatasetsByDatasetIdAccessPoliciesByPolicyI
 /**
  * Success
  */
-export const zGetWorkspacesCurrentRbacDatasetsByDatasetIdAccessPoliciesByPolicyIdRoleBindingsResponse
-  = zRoleBindingsResponse
+export const zGetWorkspacesCurrentRbacDatasetsByDatasetIdAccessPoliciesByPolicyIdRoleBindingsResponse =
+  zRoleBindingsResponse
 
 export const zGetWorkspacesCurrentRbacDatasetsByDatasetIdAccessPolicyPath = z.object({
   dataset_id: z.uuid(),
@@ -3197,11 +3197,11 @@ export const zGetWorkspacesCurrentRbacDatasetsByDatasetIdUserAccessPoliciesPath 
 /**
  * Success
  */
-export const zGetWorkspacesCurrentRbacDatasetsByDatasetIdUserAccessPoliciesResponse
-  = zResourceUserAccessPoliciesResponse
+export const zGetWorkspacesCurrentRbacDatasetsByDatasetIdUserAccessPoliciesResponse =
+  zResourceUserAccessPoliciesResponse
 
-export const zPutWorkspacesCurrentRbacDatasetsByDatasetIdUsersByTargetAccountIdAccessPoliciesPath
-  = z.object({
+export const zPutWorkspacesCurrentRbacDatasetsByDatasetIdUsersByTargetAccountIdAccessPoliciesPath =
+  z.object({
     dataset_id: z.uuid(),
     target_account_id: z.uuid(),
   })
@@ -3209,8 +3209,8 @@ export const zPutWorkspacesCurrentRbacDatasetsByDatasetIdUsersByTargetAccountIdA
 /**
  * Success
  */
-export const zPutWorkspacesCurrentRbacDatasetsByDatasetIdUsersByTargetAccountIdAccessPoliciesResponse
-  = zReplaceUserAccessPoliciesResponse
+export const zPutWorkspacesCurrentRbacDatasetsByDatasetIdUsersByTargetAccountIdAccessPoliciesResponse =
+  zReplaceUserAccessPoliciesResponse
 
 export const zGetWorkspacesCurrentRbacDatasetsByDatasetIdWhitelistPath = z.object({
   dataset_id: z.uuid(),
@@ -3266,8 +3266,8 @@ export const zGetWorkspacesCurrentRbacRolePermissionsCatalogAppResponse = zPermi
 /**
  * Success
  */
-export const zGetWorkspacesCurrentRbacRolePermissionsCatalogDatasetResponse
-  = zPermissionCatalogResponse
+export const zGetWorkspacesCurrentRbacRolePermissionsCatalogDatasetResponse =
+  zPermissionCatalogResponse
 
 /**
  * Success
@@ -3331,68 +3331,68 @@ export const zPutWorkspacesCurrentRbacWorkspaceAppsAccessPoliciesByPolicyIdBindi
 /**
  * Success
  */
-export const zPutWorkspacesCurrentRbacWorkspaceAppsAccessPoliciesByPolicyIdBindingsResponse
-  = zAccessMatrixItem
+export const zPutWorkspacesCurrentRbacWorkspaceAppsAccessPoliciesByPolicyIdBindingsResponse =
+  zAccessMatrixItem
 
-export const zGetWorkspacesCurrentRbacWorkspaceAppsAccessPoliciesByPolicyIdMemberBindingsPath
-  = z.object({
+export const zGetWorkspacesCurrentRbacWorkspaceAppsAccessPoliciesByPolicyIdMemberBindingsPath =
+  z.object({
     policy_id: z.uuid(),
   })
 
 /**
  * Success
  */
-export const zGetWorkspacesCurrentRbacWorkspaceAppsAccessPoliciesByPolicyIdMemberBindingsResponse
-  = zMemberBindingsResponse
+export const zGetWorkspacesCurrentRbacWorkspaceAppsAccessPoliciesByPolicyIdMemberBindingsResponse =
+  zMemberBindingsResponse
 
-export const zGetWorkspacesCurrentRbacWorkspaceAppsAccessPoliciesByPolicyIdRoleBindingsPath
-  = z.object({
+export const zGetWorkspacesCurrentRbacWorkspaceAppsAccessPoliciesByPolicyIdRoleBindingsPath =
+  z.object({
     policy_id: z.uuid(),
   })
 
 /**
  * Success
  */
-export const zGetWorkspacesCurrentRbacWorkspaceAppsAccessPoliciesByPolicyIdRoleBindingsResponse
-  = zRoleBindingsResponse
+export const zGetWorkspacesCurrentRbacWorkspaceAppsAccessPoliciesByPolicyIdRoleBindingsResponse =
+  zRoleBindingsResponse
 
 /**
  * Success
  */
 export const zGetWorkspacesCurrentRbacWorkspaceAppsAccessPolicyResponse = zWorkspaceAccessMatrix
 
-export const zPutWorkspacesCurrentRbacWorkspaceDatasetsAccessPoliciesByPolicyIdBindingsPath
-  = z.object({
+export const zPutWorkspacesCurrentRbacWorkspaceDatasetsAccessPoliciesByPolicyIdBindingsPath =
+  z.object({
     policy_id: z.uuid(),
   })
 
 /**
  * Success
  */
-export const zPutWorkspacesCurrentRbacWorkspaceDatasetsAccessPoliciesByPolicyIdBindingsResponse
-  = zAccessMatrixItem
+export const zPutWorkspacesCurrentRbacWorkspaceDatasetsAccessPoliciesByPolicyIdBindingsResponse =
+  zAccessMatrixItem
 
-export const zGetWorkspacesCurrentRbacWorkspaceDatasetsAccessPoliciesByPolicyIdMemberBindingsPath
-  = z.object({
+export const zGetWorkspacesCurrentRbacWorkspaceDatasetsAccessPoliciesByPolicyIdMemberBindingsPath =
+  z.object({
     policy_id: z.uuid(),
   })
 
 /**
  * Success
  */
-export const zGetWorkspacesCurrentRbacWorkspaceDatasetsAccessPoliciesByPolicyIdMemberBindingsResponse
-  = zMemberBindingsResponse
+export const zGetWorkspacesCurrentRbacWorkspaceDatasetsAccessPoliciesByPolicyIdMemberBindingsResponse =
+  zMemberBindingsResponse
 
-export const zGetWorkspacesCurrentRbacWorkspaceDatasetsAccessPoliciesByPolicyIdRoleBindingsPath
-  = z.object({
+export const zGetWorkspacesCurrentRbacWorkspaceDatasetsAccessPoliciesByPolicyIdRoleBindingsPath =
+  z.object({
     policy_id: z.uuid(),
   })
 
 /**
  * Success
  */
-export const zGetWorkspacesCurrentRbacWorkspaceDatasetsAccessPoliciesByPolicyIdRoleBindingsResponse
-  = zRoleBindingsResponse
+export const zGetWorkspacesCurrentRbacWorkspaceDatasetsAccessPoliciesByPolicyIdRoleBindingsResponse =
+  zRoleBindingsResponse
 
 /**
  * Success
@@ -3475,8 +3475,8 @@ export const zPostWorkspacesCurrentToolProviderBuiltinByProviderAddPath = z.obje
 /**
  * Success
  */
-export const zPostWorkspacesCurrentToolProviderBuiltinByProviderAddResponse
-  = zToolProviderOpaqueResponse
+export const zPostWorkspacesCurrentToolProviderBuiltinByProviderAddResponse =
+  zToolProviderOpaqueResponse
 
 export const zGetWorkspacesCurrentToolProviderBuiltinByProviderCredentialInfoPath = z.object({
   provider: z.string(),
@@ -3489,11 +3489,11 @@ export const zGetWorkspacesCurrentToolProviderBuiltinByProviderCredentialInfoQue
 /**
  * Success
  */
-export const zGetWorkspacesCurrentToolProviderBuiltinByProviderCredentialInfoResponse
-  = zToolProviderOpaqueResponse
+export const zGetWorkspacesCurrentToolProviderBuiltinByProviderCredentialInfoResponse =
+  zToolProviderOpaqueResponse
 
-export const zGetWorkspacesCurrentToolProviderBuiltinByProviderCredentialSchemaByCredentialTypePath
-  = z.object({
+export const zGetWorkspacesCurrentToolProviderBuiltinByProviderCredentialSchemaByCredentialTypePath =
+  z.object({
     credential_type: z.string(),
     provider: z.string(),
   })
@@ -3501,8 +3501,8 @@ export const zGetWorkspacesCurrentToolProviderBuiltinByProviderCredentialSchemaB
 /**
  * Success
  */
-export const zGetWorkspacesCurrentToolProviderBuiltinByProviderCredentialSchemaByCredentialTypeResponse
-  = zToolProviderOpaqueResponse
+export const zGetWorkspacesCurrentToolProviderBuiltinByProviderCredentialSchemaByCredentialTypeResponse =
+  zToolProviderOpaqueResponse
 
 export const zGetWorkspacesCurrentToolProviderBuiltinByProviderCredentialsPath = z.object({
   provider: z.string(),
@@ -3515,11 +3515,11 @@ export const zGetWorkspacesCurrentToolProviderBuiltinByProviderCredentialsQuery 
 /**
  * Success
  */
-export const zGetWorkspacesCurrentToolProviderBuiltinByProviderCredentialsResponse
-  = zToolProviderOpaqueResponse
+export const zGetWorkspacesCurrentToolProviderBuiltinByProviderCredentialsResponse =
+  zToolProviderOpaqueResponse
 
-export const zPostWorkspacesCurrentToolProviderBuiltinByProviderDefaultCredentialBody
-  = zBuiltinProviderDefaultCredentialPayload
+export const zPostWorkspacesCurrentToolProviderBuiltinByProviderDefaultCredentialBody =
+  zBuiltinProviderDefaultCredentialPayload
 
 export const zPostWorkspacesCurrentToolProviderBuiltinByProviderDefaultCredentialPath = z.object({
   provider: z.string(),
@@ -3528,11 +3528,11 @@ export const zPostWorkspacesCurrentToolProviderBuiltinByProviderDefaultCredentia
 /**
  * Success
  */
-export const zPostWorkspacesCurrentToolProviderBuiltinByProviderDefaultCredentialResponse
-  = zToolProviderOpaqueResponse
+export const zPostWorkspacesCurrentToolProviderBuiltinByProviderDefaultCredentialResponse =
+  zToolProviderOpaqueResponse
 
-export const zPostWorkspacesCurrentToolProviderBuiltinByProviderDeleteBody
-  = zBuiltinToolCredentialDeletePayload
+export const zPostWorkspacesCurrentToolProviderBuiltinByProviderDeleteBody =
+  zBuiltinToolCredentialDeletePayload
 
 export const zPostWorkspacesCurrentToolProviderBuiltinByProviderDeletePath = z.object({
   provider: z.string(),
@@ -3541,8 +3541,8 @@ export const zPostWorkspacesCurrentToolProviderBuiltinByProviderDeletePath = z.o
 /**
  * Success
  */
-export const zPostWorkspacesCurrentToolProviderBuiltinByProviderDeleteResponse
-  = zToolProviderOpaqueResponse
+export const zPostWorkspacesCurrentToolProviderBuiltinByProviderDeleteResponse =
+  zToolProviderOpaqueResponse
 
 export const zGetWorkspacesCurrentToolProviderBuiltinByProviderIconPath = z.object({
   provider: z.string(),
@@ -3560,8 +3560,8 @@ export const zGetWorkspacesCurrentToolProviderBuiltinByProviderInfoPath = z.obje
 /**
  * Success
  */
-export const zGetWorkspacesCurrentToolProviderBuiltinByProviderInfoResponse
-  = zToolProviderOpaqueResponse
+export const zGetWorkspacesCurrentToolProviderBuiltinByProviderInfoResponse =
+  zToolProviderOpaqueResponse
 
 export const zGetWorkspacesCurrentToolProviderBuiltinByProviderOauthClientSchemaPath = z.object({
   provider: z.string(),
@@ -3570,8 +3570,8 @@ export const zGetWorkspacesCurrentToolProviderBuiltinByProviderOauthClientSchema
 /**
  * Success
  */
-export const zGetWorkspacesCurrentToolProviderBuiltinByProviderOauthClientSchemaResponse
-  = zToolOAuthClientSchemaResponse
+export const zGetWorkspacesCurrentToolProviderBuiltinByProviderOauthClientSchemaResponse =
+  zToolOAuthClientSchemaResponse
 
 export const zDeleteWorkspacesCurrentToolProviderBuiltinByProviderOauthCustomClientPath = z.object({
   provider: z.string(),
@@ -3580,8 +3580,8 @@ export const zDeleteWorkspacesCurrentToolProviderBuiltinByProviderOauthCustomCli
 /**
  * Success
  */
-export const zDeleteWorkspacesCurrentToolProviderBuiltinByProviderOauthCustomClientResponse
-  = zSimpleResultResponse
+export const zDeleteWorkspacesCurrentToolProviderBuiltinByProviderOauthCustomClientResponse =
+  zSimpleResultResponse
 
 export const zGetWorkspacesCurrentToolProviderBuiltinByProviderOauthCustomClientPath = z.object({
   provider: z.string(),
@@ -3590,11 +3590,11 @@ export const zGetWorkspacesCurrentToolProviderBuiltinByProviderOauthCustomClient
 /**
  * Success
  */
-export const zGetWorkspacesCurrentToolProviderBuiltinByProviderOauthCustomClientResponse
-  = zToolOAuthCustomClientResponse
+export const zGetWorkspacesCurrentToolProviderBuiltinByProviderOauthCustomClientResponse =
+  zToolOAuthCustomClientResponse
 
-export const zPostWorkspacesCurrentToolProviderBuiltinByProviderOauthCustomClientBody
-  = zToolOAuthCustomClientPayload
+export const zPostWorkspacesCurrentToolProviderBuiltinByProviderOauthCustomClientBody =
+  zToolOAuthCustomClientPayload
 
 export const zPostWorkspacesCurrentToolProviderBuiltinByProviderOauthCustomClientPath = z.object({
   provider: z.string(),
@@ -3603,8 +3603,8 @@ export const zPostWorkspacesCurrentToolProviderBuiltinByProviderOauthCustomClien
 /**
  * Success
  */
-export const zPostWorkspacesCurrentToolProviderBuiltinByProviderOauthCustomClientResponse
-  = zSimpleResultResponse
+export const zPostWorkspacesCurrentToolProviderBuiltinByProviderOauthCustomClientResponse =
+  zSimpleResultResponse
 
 export const zGetWorkspacesCurrentToolProviderBuiltinByProviderToolsPath = z.object({
   provider: z.string(),
@@ -3613,11 +3613,11 @@ export const zGetWorkspacesCurrentToolProviderBuiltinByProviderToolsPath = z.obj
 /**
  * Success
  */
-export const zGetWorkspacesCurrentToolProviderBuiltinByProviderToolsResponse
-  = zToolProviderOpaqueResponse
+export const zGetWorkspacesCurrentToolProviderBuiltinByProviderToolsResponse =
+  zToolProviderOpaqueResponse
 
-export const zPostWorkspacesCurrentToolProviderBuiltinByProviderUpdateBody
-  = zBuiltinToolUpdatePayload
+export const zPostWorkspacesCurrentToolProviderBuiltinByProviderUpdateBody =
+  zBuiltinToolUpdatePayload
 
 export const zPostWorkspacesCurrentToolProviderBuiltinByProviderUpdatePath = z.object({
   provider: z.string(),
@@ -3626,8 +3626,8 @@ export const zPostWorkspacesCurrentToolProviderBuiltinByProviderUpdatePath = z.o
 /**
  * Success
  */
-export const zPostWorkspacesCurrentToolProviderBuiltinByProviderUpdateResponse
-  = zToolProviderOpaqueResponse
+export const zPostWorkspacesCurrentToolProviderBuiltinByProviderUpdateResponse =
+  zToolProviderOpaqueResponse
 
 export const zDeleteWorkspacesCurrentToolProviderMcpBody = zMcpProviderDeletePayload
 
@@ -3664,8 +3664,8 @@ export const zGetWorkspacesCurrentToolProviderMcpToolsByProviderIdPath = z.objec
 /**
  * Success
  */
-export const zGetWorkspacesCurrentToolProviderMcpToolsByProviderIdResponse
-  = zToolProviderOpaqueResponse
+export const zGetWorkspacesCurrentToolProviderMcpToolsByProviderIdResponse =
+  zToolProviderOpaqueResponse
 
 export const zGetWorkspacesCurrentToolProviderMcpUpdateByProviderIdPath = z.object({
   provider_id: z.string(),
@@ -3674,8 +3674,8 @@ export const zGetWorkspacesCurrentToolProviderMcpUpdateByProviderIdPath = z.obje
 /**
  * Success
  */
-export const zGetWorkspacesCurrentToolProviderMcpUpdateByProviderIdResponse
-  = zToolProviderOpaqueResponse
+export const zGetWorkspacesCurrentToolProviderMcpUpdateByProviderIdResponse =
+  zToolProviderOpaqueResponse
 
 export const zPostWorkspacesCurrentToolProviderWorkflowCreateBody = zWorkflowToolCreatePayload
 
@@ -3762,8 +3762,8 @@ export const zGetWorkspacesCurrentTriggerProviderByProviderInfoPath = z.object({
 /**
  * Success
  */
-export const zGetWorkspacesCurrentTriggerProviderByProviderInfoResponse
-  = zTriggerProviderOpaqueResponse
+export const zGetWorkspacesCurrentTriggerProviderByProviderInfoResponse =
+  zTriggerProviderOpaqueResponse
 
 export const zDeleteWorkspacesCurrentTriggerProviderByProviderOauthClientPath = z.object({
   provider: z.string(),
@@ -3772,8 +3772,8 @@ export const zDeleteWorkspacesCurrentTriggerProviderByProviderOauthClientPath = 
 /**
  * Success
  */
-export const zDeleteWorkspacesCurrentTriggerProviderByProviderOauthClientResponse
-  = zSimpleResultResponse
+export const zDeleteWorkspacesCurrentTriggerProviderByProviderOauthClientResponse =
+  zSimpleResultResponse
 
 export const zGetWorkspacesCurrentTriggerProviderByProviderOauthClientPath = z.object({
   provider: z.string(),
@@ -3782,11 +3782,11 @@ export const zGetWorkspacesCurrentTriggerProviderByProviderOauthClientPath = z.o
 /**
  * Success
  */
-export const zGetWorkspacesCurrentTriggerProviderByProviderOauthClientResponse
-  = zTriggerOAuthClientResponse
+export const zGetWorkspacesCurrentTriggerProviderByProviderOauthClientResponse =
+  zTriggerOAuthClientResponse
 
-export const zPostWorkspacesCurrentTriggerProviderByProviderOauthClientBody
-  = zTriggerOAuthClientPayload
+export const zPostWorkspacesCurrentTriggerProviderByProviderOauthClientBody =
+  zTriggerOAuthClientPayload
 
 export const zPostWorkspacesCurrentTriggerProviderByProviderOauthClientPath = z.object({
   provider: z.string(),
@@ -3795,14 +3795,14 @@ export const zPostWorkspacesCurrentTriggerProviderByProviderOauthClientPath = z.
 /**
  * Success
  */
-export const zPostWorkspacesCurrentTriggerProviderByProviderOauthClientResponse
-  = zSimpleResultResponse
+export const zPostWorkspacesCurrentTriggerProviderByProviderOauthClientResponse =
+  zSimpleResultResponse
 
-export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderBuildBySubscriptionBuilderIdBody
-  = zTriggerSubscriptionBuilderUpdatePayload
+export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderBuildBySubscriptionBuilderIdBody =
+  zTriggerSubscriptionBuilderUpdatePayload
 
-export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderBuildBySubscriptionBuilderIdPath
-  = z.object({
+export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderBuildBySubscriptionBuilderIdPath =
+  z.object({
     provider: z.string(),
     subscription_builder_id: z.string(),
   })
@@ -3810,40 +3810,25 @@ export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilder
 /**
  * Success
  */
-export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderBuildBySubscriptionBuilderIdResponse
-  = zTriggerProviderOpaqueResponse
+export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderBuildBySubscriptionBuilderIdResponse =
+  zTriggerProviderOpaqueResponse
 
-export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderCreateBody
-  = zTriggerSubscriptionBuilderCreatePayload
+export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderCreateBody =
+  zTriggerSubscriptionBuilderCreatePayload
 
-export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderCreatePath
-  = z.object({
+export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderCreatePath =
+  z.object({
     provider: z.string(),
   })
 
 /**
  * Success
  */
-export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderCreateResponse
-  = zTriggerProviderOpaqueResponse
+export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderCreateResponse =
+  zTriggerProviderOpaqueResponse
 
-export const zGetWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderLogsBySubscriptionBuilderIdPath
-  = z.object({
-    provider: z.string(),
-    subscription_builder_id: z.string(),
-  })
-
-/**
- * Success
- */
-export const zGetWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderLogsBySubscriptionBuilderIdResponse
-  = zTriggerProviderOpaqueResponse
-
-export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderUpdateBySubscriptionBuilderIdBody
-  = zTriggerSubscriptionBuilderUpdatePayload
-
-export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderUpdateBySubscriptionBuilderIdPath
-  = z.object({
+export const zGetWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderLogsBySubscriptionBuilderIdPath =
+  z.object({
     provider: z.string(),
     subscription_builder_id: z.string(),
   })
@@ -3851,14 +3836,14 @@ export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilder
 /**
  * Success
  */
-export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderUpdateBySubscriptionBuilderIdResponse
-  = zTriggerProviderOpaqueResponse
+export const zGetWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderLogsBySubscriptionBuilderIdResponse =
+  zTriggerProviderOpaqueResponse
 
-export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderVerifyAndUpdateBySubscriptionBuilderIdBody
-  = zTriggerSubscriptionBuilderVerifyPayload
+export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderUpdateBySubscriptionBuilderIdBody =
+  zTriggerSubscriptionBuilderUpdatePayload
 
-export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderVerifyAndUpdateBySubscriptionBuilderIdPath
-  = z.object({
+export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderUpdateBySubscriptionBuilderIdPath =
+  z.object({
     provider: z.string(),
     subscription_builder_id: z.string(),
   })
@@ -3866,11 +3851,14 @@ export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilder
 /**
  * Success
  */
-export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderVerifyAndUpdateBySubscriptionBuilderIdResponse
-  = zTriggerProviderOpaqueResponse
+export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderUpdateBySubscriptionBuilderIdResponse =
+  zTriggerProviderOpaqueResponse
 
-export const zGetWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderBySubscriptionBuilderIdPath
-  = z.object({
+export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderVerifyAndUpdateBySubscriptionBuilderIdBody =
+  zTriggerSubscriptionBuilderVerifyPayload
+
+export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderVerifyAndUpdateBySubscriptionBuilderIdPath =
+  z.object({
     provider: z.string(),
     subscription_builder_id: z.string(),
   })
@@ -3878,8 +3866,20 @@ export const zGetWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderB
 /**
  * Success
  */
-export const zGetWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderBySubscriptionBuilderIdResponse
-  = zTriggerProviderOpaqueResponse
+export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderVerifyAndUpdateBySubscriptionBuilderIdResponse =
+  zTriggerProviderOpaqueResponse
+
+export const zGetWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderBySubscriptionBuilderIdPath =
+  z.object({
+    provider: z.string(),
+    subscription_builder_id: z.string(),
+  })
+
+/**
+ * Success
+ */
+export const zGetWorkspacesCurrentTriggerProviderByProviderSubscriptionsBuilderBySubscriptionBuilderIdResponse =
+  zTriggerProviderOpaqueResponse
 
 export const zGetWorkspacesCurrentTriggerProviderByProviderSubscriptionsListPath = z.object({
   provider: z.string(),
@@ -3888,25 +3888,25 @@ export const zGetWorkspacesCurrentTriggerProviderByProviderSubscriptionsListPath
 /**
  * Success
  */
-export const zGetWorkspacesCurrentTriggerProviderByProviderSubscriptionsListResponse
-  = zTriggerProviderOpaqueResponse
+export const zGetWorkspacesCurrentTriggerProviderByProviderSubscriptionsListResponse =
+  zTriggerProviderOpaqueResponse
 
-export const zGetWorkspacesCurrentTriggerProviderByProviderSubscriptionsOauthAuthorizePath
-  = z.object({
+export const zGetWorkspacesCurrentTriggerProviderByProviderSubscriptionsOauthAuthorizePath =
+  z.object({
     provider: z.string(),
   })
 
 /**
  * Authorization URL retrieved successfully
  */
-export const zGetWorkspacesCurrentTriggerProviderByProviderSubscriptionsOauthAuthorizeResponse
-  = zTriggerOAuthAuthorizeResponse
+export const zGetWorkspacesCurrentTriggerProviderByProviderSubscriptionsOauthAuthorizeResponse =
+  zTriggerOAuthAuthorizeResponse
 
-export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsVerifyBySubscriptionIdBody
-  = zTriggerSubscriptionBuilderVerifyPayload
+export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsVerifyBySubscriptionIdBody =
+  zTriggerSubscriptionBuilderVerifyPayload
 
-export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsVerifyBySubscriptionIdPath
-  = z.object({
+export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsVerifyBySubscriptionIdPath =
+  z.object({
     provider: z.string(),
     subscription_id: z.string(),
   })
@@ -3914,33 +3914,33 @@ export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsVerifyB
 /**
  * Success
  */
-export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsVerifyBySubscriptionIdResponse
-  = zTriggerProviderOpaqueResponse
+export const zPostWorkspacesCurrentTriggerProviderByProviderSubscriptionsVerifyBySubscriptionIdResponse =
+  zTriggerProviderOpaqueResponse
 
-export const zPostWorkspacesCurrentTriggerProviderBySubscriptionIdSubscriptionsDeletePath
-  = z.object({
+export const zPostWorkspacesCurrentTriggerProviderBySubscriptionIdSubscriptionsDeletePath =
+  z.object({
     subscription_id: z.string(),
   })
 
 /**
  * Success
  */
-export const zPostWorkspacesCurrentTriggerProviderBySubscriptionIdSubscriptionsDeleteResponse
-  = zSimpleResultResponse
+export const zPostWorkspacesCurrentTriggerProviderBySubscriptionIdSubscriptionsDeleteResponse =
+  zSimpleResultResponse
 
-export const zPostWorkspacesCurrentTriggerProviderBySubscriptionIdSubscriptionsUpdateBody
-  = zTriggerSubscriptionBuilderUpdatePayload
+export const zPostWorkspacesCurrentTriggerProviderBySubscriptionIdSubscriptionsUpdateBody =
+  zTriggerSubscriptionBuilderUpdatePayload
 
-export const zPostWorkspacesCurrentTriggerProviderBySubscriptionIdSubscriptionsUpdatePath
-  = z.object({
+export const zPostWorkspacesCurrentTriggerProviderBySubscriptionIdSubscriptionsUpdatePath =
+  z.object({
     subscription_id: z.string(),
   })
 
 /**
  * Success
  */
-export const zPostWorkspacesCurrentTriggerProviderBySubscriptionIdSubscriptionsUpdateResponse
-  = zTriggerProviderOpaqueResponse
+export const zPostWorkspacesCurrentTriggerProviderBySubscriptionIdSubscriptionsUpdateResponse =
+  zTriggerProviderOpaqueResponse
 
 /**
  * Success
@@ -3983,5 +3983,5 @@ export const zGetWorkspacesByTenantIdModelProvidersByProviderByIconTypeByLangPat
 /**
  * Success
  */
-export const zGetWorkspacesByTenantIdModelProvidersByProviderByIconTypeByLangResponse
-  = zBinaryFileResponse
+export const zGetWorkspacesByTenantIdModelProvidersByProviderByIconTypeByLangResponse =
+  zBinaryFileResponse

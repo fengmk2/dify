@@ -10,32 +10,32 @@ import {
 describe('integration routes', () => {
   it('maps integration sections to canonical paths', () => {
     expect(integrationPathBySection).toEqual({
-      'provider': '/integrations/model-provider',
-      'builtin': '/integrations/tools/built-in',
+      provider: '/integrations/model-provider',
+      builtin: '/integrations/tools/built-in',
       'custom-tool': '/integrations/tools/api',
       'workflow-tool': '/integrations/tools/workflow',
-      'mcp': '/integrations/tools/mcp',
+      mcp: '/integrations/tools/mcp',
       'data-source': '/integrations/data-source',
       'custom-endpoint': '/integrations/custom-endpoint',
-      'trigger': '/integrations/trigger',
+      trigger: '/integrations/trigger',
       'agent-strategy': '/integrations/agent-strategy',
-      'extension': '/integrations/extension',
+      extension: '/integrations/extension',
     })
     expect(buildIntegrationPath('custom-tool')).toBe('/integrations/tools/api')
   })
 
   it('maps integration sections to marketplace platform paths', () => {
     expect(marketplaceUrlPathByIntegrationSection).toEqual({
-      'provider': '/plugins/model',
-      'builtin': '/plugins/tool',
-      'mcp': '/plugins/tool',
+      provider: '/plugins/model',
+      builtin: '/plugins/tool',
+      mcp: '/plugins/tool',
       'custom-tool': '/plugins/tool',
       'workflow-tool': '/plugins/tool',
       'data-source': '/plugins/datasource',
       'custom-endpoint': '/plugins/extension',
-      'trigger': '/plugins/trigger',
+      trigger: '/plugins/trigger',
       'agent-strategy': '/plugins/agent-strategy',
-      'extension': '/plugins/extension',
+      extension: '/plugins/extension',
     })
     expect(buildMarketplaceUrlPathByIntegrationSection('provider')).toBe('/plugins/model')
     expect(buildMarketplaceUrlPathByIntegrationSection('custom-tool')).toBe('/plugins/tool')
@@ -72,10 +72,12 @@ describe('integration routes', () => {
   })
 
   it('preserves query params when redirecting legacy custom tool route', () => {
-    expect(getIntegrationRouteTargetBySlug(['tool', 'api'], {
-      q: 'slack',
-      tags: ['a', 'b'],
-    })).toEqual({
+    expect(
+      getIntegrationRouteTargetBySlug(['tool', 'api'], {
+        q: 'slack',
+        tags: ['a', 'b'],
+      }),
+    ).toEqual({
       type: 'redirect',
       destination: '/integrations/tools/api?q=slack&tags=a&tags=b',
     })
@@ -91,7 +93,10 @@ describe('integration routes', () => {
     [{ category: 'mcp' }, '/integrations/tools/mcp'],
     [{ section: 'data-source' }, '/integrations/data-source'],
     [{ section: 'custom-endpoint' }, '/integrations/custom-endpoint'],
-    [{ section: 'custom-tool', category: 'api', q: 'slack', tags: ['a', 'b'] }, '/integrations/tools/api?q=slack&tags=a&tags=b'],
+    [
+      { section: 'custom-tool', category: 'api', q: 'slack', tags: ['a', 'b'] },
+      '/integrations/tools/api?q=slack&tags=a&tags=b',
+    ],
   ])('builds legacy /tools redirect for search params %j', (searchParams, expected) => {
     expect(getIntegrationRedirectPathByLegacyToolsSearchParams(searchParams)).toBe(expected)
   })

@@ -33,17 +33,9 @@ type AccountMenuRouteItemProps = {
   trailing?: ReactNode
 }
 
-function AccountMenuRouteItem({
-  href,
-  iconClassName,
-  label,
-  trailing,
-}: AccountMenuRouteItemProps) {
+function AccountMenuRouteItem({ href, iconClassName, label, trailing }: AccountMenuRouteItemProps) {
   return (
-    <DropdownMenuLinkItem
-      className="justify-between"
-      render={<Link href={href} />}
-    >
+    <DropdownMenuLinkItem className="justify-between" render={<Link href={href} />}>
       <MenuItemContent iconClassName={iconClassName} label={label} trailing={trailing} />
     </DropdownMenuLinkItem>
   )
@@ -88,10 +80,7 @@ function AccountMenuActionItem({
   trailing,
 }: AccountMenuActionItemProps) {
   return (
-    <DropdownMenuItem
-      className="justify-between"
-      onClick={onClick}
-    >
+    <DropdownMenuItem className="justify-between" onClick={onClick}>
       <MenuItemContent iconClassName={iconClassName} label={label} trailing={trailing} />
     </DropdownMenuItem>
   )
@@ -137,7 +126,9 @@ export function DefaultMenuContent({
                 </PremiumBadge>
               )}
             </div>
-            <div className="system-xs-regular break-all text-text-tertiary">{userProfile.email}</div>
+            <div className="system-xs-regular break-all text-text-tertiary">
+              {userProfile.email}
+            </div>
           </div>
           <Avatar avatar={userProfile.avatar_url} name={userProfile.name} size="lg" />
         </div>
@@ -177,12 +168,12 @@ export function DefaultMenuContent({
               href="https://github.com/langgenius/dify"
               iconClassName="i-ri-github-line"
               label={t('userProfile.github', { ns: 'common' })}
-              trailing={(
+              trailing={
                 <div className="flex items-center gap-0.5 rounded-[5px] border border-divider-deep bg-components-badge-bg-dimm px-[5px] py-[3px]">
                   <span aria-hidden className="i-ri-star-line size-3 shrink-0 text-text-tertiary" />
                   <GithubStar className="system-2xs-medium-uppercase text-text-tertiary" />
                 </div>
-              )}
+              }
             />
             {env.NEXT_PUBLIC_SITE_ABOUT !== 'hide' && (
               <AccountMenuActionItem
@@ -192,12 +183,21 @@ export function DefaultMenuContent({
                   onShowAbout()
                   closeAccountDropdown()
                 }}
-                trailing={(
+                trailing={
                   <div className="flex shrink-0 items-center">
-                    <div className="mr-2 system-xs-regular text-text-tertiary">{langGeniusVersionInfo.current_version}</div>
-                    <StatusDot status={langGeniusVersionInfo.current_version === langGeniusVersionInfo.latest_version ? 'success' : 'warning'} />
+                    <div className="mr-2 system-xs-regular text-text-tertiary">
+                      {langGeniusVersionInfo.current_version}
+                    </div>
+                    <StatusDot
+                      status={
+                        langGeniusVersionInfo.current_version ===
+                        langGeniusVersionInfo.latest_version
+                          ? 'success'
+                          : 'warning'
+                      }
+                    />
                   </div>
-                )}
+                }
               />
             )}
           </AccountMenuSection>

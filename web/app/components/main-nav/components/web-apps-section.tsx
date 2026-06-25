@@ -35,7 +35,8 @@ const appNavItemHeight = 32
 const appNavItemGap = 2
 const appNavSeparatorHeight = 17
 const virtualizationThreshold = 50
-const webAppSkeletonClassName = 'animate-pulse rounded bg-text-quaternary opacity-20 motion-reduce:animate-none'
+const webAppSkeletonClassName =
+  'animate-pulse rounded bg-text-quaternary opacity-20 motion-reduce:animate-none'
 const webAppSkeletonWidths = ['w-24', 'w-32', 'w-28']
 
 function WebAppsHeaderSkeleton() {
@@ -50,7 +51,7 @@ function WebAppsHeaderSkeleton() {
 function WebAppsSkeleton() {
   return (
     <div aria-hidden="true" className="space-y-0.5 pb-2">
-      {webAppSkeletonWidths.map(width => (
+      {webAppSkeletonWidths.map((width) => (
         <div key={width} className="flex h-8 items-center gap-2 rounded-lg py-0.5 pr-0.5 pl-2">
           <div className={cn(webAppSkeletonClassName, 'size-5 shrink-0 rounded-md')} />
           <div className="min-w-0 flex-1 py-1 pr-1">
@@ -63,16 +64,16 @@ function WebAppsSkeleton() {
   )
 }
 
-type WebAppListRow
-  = | {
-    key: string
-    kind: 'app'
-    app: InstalledApp
-  }
+type WebAppListRow =
   | {
-    key: string
-    kind: 'separator'
-  }
+      key: string
+      kind: 'app'
+      app: InstalledApp
+    }
+  | {
+      key: string
+      kind: 'separator'
+    }
 
 const WebAppsSectionContent = () => {
   const { t } = useTranslation()
@@ -90,10 +91,9 @@ const WebAppsSectionContent = () => {
 
   const filteredApps = useMemo(() => {
     const normalizedSearch = searchText.trim().toLowerCase()
-    if (!normalizedSearch)
-      return installedApps
+    if (!normalizedSearch) return installedApps
 
-    return installedApps.filter(item => item.app.name.toLowerCase().includes(normalizedSearch))
+    return installedApps.filter((item) => item.app.name.toLowerCase().includes(normalizedSearch))
   }, [installedApps, searchText])
   const webAppRows = useMemo<WebAppListRow[]>(() => {
     const pinnedAppsCount = filteredApps.filter(({ is_pinned }) => is_pinned).length
@@ -121,9 +121,10 @@ const WebAppsSectionContent = () => {
 
   const rowVirtualizer = useVirtualizer({
     count: webAppRows.length,
-    estimateSize: index => webAppRows[index]?.kind === 'separator' ? appNavSeparatorHeight : appNavItemHeight,
+    estimateSize: (index) =>
+      webAppRows[index]?.kind === 'separator' ? appNavSeparatorHeight : appNavItemHeight,
     gap: appNavItemGap,
-    getItemKey: index => webAppRows[index]?.key ?? index,
+    getItemKey: (index) => webAppRows[index]?.key ?? index,
     getScrollElement: () => scrollRef.current,
     overscan: 6,
     paddingEnd: 8,
@@ -141,10 +142,14 @@ const WebAppsSectionContent = () => {
     toast.success(t('api.success', { ns: 'common' }))
   }
 
-  if (!isPending && installedApps.length === 0)
-    return null
+  if (!isPending && installedApps.length === 0) return null
 
-  const renderAppNavItem = ({ id, is_pinned, uninstallable, app }: (typeof filteredApps)[number]) => (
+  const renderAppNavItem = ({
+    id,
+    is_pinned,
+    uninstallable,
+    app,
+  }: (typeof filteredApps)[number]) => (
     <AppNavItem
       key={id}
       variant="mainNav"
@@ -168,44 +173,52 @@ const WebAppsSectionContent = () => {
     />
   )
   const renderRow = (row: WebAppListRow) => {
-    if (row.kind === 'separator')
-      return <Divider />
+    if (row.kind === 'separator') return <Divider />
 
     return renderAppNavItem(row.app)
   }
 
   return (
     <div className="flex min-h-0 flex-1 flex-col">
-      {isPending
-        ? <WebAppsHeaderSkeleton />
-        : (
-            <div className="flex items-center justify-between py-1 pr-2 pl-2">
-              <button
-                type="button"
-                aria-expanded={appsExpanded}
-                className="flex min-w-0 items-center rounded-md px-2 py-1 text-left system-xs-medium-uppercase text-text-tertiary outline-hidden hover:text-text-secondary focus-visible:ring-2 focus-visible:ring-state-accent-solid"
-                onClick={() => setAppsExpanded(value => !value)}
-              >
-                <span>{t('sidebar.webApps', { ns: 'explore' })}</span>
-                <span aria-hidden className={cn('i-ri-arrow-down-s-fill h-4 w-4 shrink-0 transition-transform', !appsExpanded && '-rotate-90')} />
-              </button>
-              <div className="flex items-center gap-0.5">
-                <button
-                  type="button"
-                  aria-label={t('operation.search', { ns: 'common' })}
-                  className={cn('flex h-6 w-6 items-center justify-center rounded-md p-0.5 text-text-tertiary outline-hidden hover:bg-state-base-hover hover:text-text-secondary focus-visible:ring-2 focus-visible:ring-state-accent-solid', searchVisible && 'bg-state-base-hover text-text-secondary')}
-                  onClick={() => {
-                    setAppsExpanded(true)
-                    setSearchVisible(value => !value)
-                  }}
-                >
-                  <span className="flex size-5 shrink-0 items-center justify-center">
-                    <span aria-hidden className="i-ri-search-line size-3.5" />
-                  </span>
-                </button>
-              </div>
-            </div>
-          )}
+      {isPending ? (
+        <WebAppsHeaderSkeleton />
+      ) : (
+        <div className="flex items-center justify-between py-1 pr-2 pl-2">
+          <button
+            type="button"
+            aria-expanded={appsExpanded}
+            className="flex min-w-0 items-center rounded-md px-2 py-1 text-left system-xs-medium-uppercase text-text-tertiary outline-hidden hover:text-text-secondary focus-visible:ring-2 focus-visible:ring-state-accent-solid"
+            onClick={() => setAppsExpanded((value) => !value)}
+          >
+            <span>{t('sidebar.webApps', { ns: 'explore' })}</span>
+            <span
+              aria-hidden
+              className={cn(
+                'i-ri-arrow-down-s-fill h-4 w-4 shrink-0 transition-transform',
+                !appsExpanded && '-rotate-90',
+              )}
+            />
+          </button>
+          <div className="flex items-center gap-0.5">
+            <button
+              type="button"
+              aria-label={t('operation.search', { ns: 'common' })}
+              className={cn(
+                'flex h-6 w-6 items-center justify-center rounded-md p-0.5 text-text-tertiary outline-hidden hover:bg-state-base-hover hover:text-text-secondary focus-visible:ring-2 focus-visible:ring-state-accent-solid',
+                searchVisible && 'bg-state-base-hover text-text-secondary',
+              )}
+              onClick={() => {
+                setAppsExpanded(true)
+                setSearchVisible((value) => !value)
+              }}
+            >
+              <span className="flex size-5 shrink-0 items-center justify-center">
+                <span aria-hidden className="i-ri-search-line size-3.5" />
+              </span>
+            </button>
+          </div>
+        </div>
+      )}
       {!isPending && appsExpanded && searchVisible && (
         <div className="px-2 pb-2">
           <SearchInput
@@ -227,9 +240,7 @@ const WebAppsSectionContent = () => {
             role="region"
           >
             <ScrollAreaContent className="w-full max-w-full min-w-0! px-2">
-              {isPending && (
-                <WebAppsSkeleton />
-              )}
+              {isPending && <WebAppsSkeleton />}
               {!isPending && filteredApps.length === 0 && (
                 <div className="px-2 py-1 system-xs-regular">
                   {t('mainNav.webApps.noResults', { ns: 'common' })}
@@ -237,10 +248,8 @@ const WebAppsSectionContent = () => {
               )}
               {!isPending && webAppRows.length > 0 && !shouldVirtualize && (
                 <div className="space-y-0.5 pb-2">
-                  {webAppRows.map(row => (
-                    <Fragment key={row.key}>
-                      {renderRow(row)}
-                    </Fragment>
+                  {webAppRows.map((row) => (
+                    <Fragment key={row.key}>{renderRow(row)}</Fragment>
                   ))}
                 </div>
               )}
@@ -290,7 +299,11 @@ const WebAppsSectionContent = () => {
             <AlertDialogCancelButton disabled={isUninstalling}>
               {t('operation.cancel', { ns: 'common' })}
             </AlertDialogCancelButton>
-            <AlertDialogConfirmButton loading={isUninstalling} disabled={isUninstalling} onClick={handleDelete}>
+            <AlertDialogConfirmButton
+              loading={isUninstalling}
+              disabled={isUninstalling}
+              onClick={handleDelete}
+            >
               {t('operation.confirm', { ns: 'common' })}
             </AlertDialogConfirmButton>
           </AlertDialogActions>
@@ -304,8 +317,7 @@ const WebAppsSection = () => {
   const { workspacePermissionKeys } = useAppContext()
   const canAccessAppLibrary = hasPermission(workspacePermissionKeys, 'app_library.access')
 
-  if (!canAccessAppLibrary)
-    return null
+  if (!canAccessAppLibrary) return null
 
   return <WebAppsSectionContent />
 }

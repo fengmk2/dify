@@ -9,11 +9,15 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
   ### 基础 URL
   <CodeGroup title="Code" targetCode={props.appDetail.api_base_url} />
 
-  ### 鉴权
+### 鉴权
 
-  Service API 使用 `API-Key` 进行鉴权。
-  <i>**强烈建议开发者把 `API-Key` 放在后端存储，而非分享或者放在客户端存储，以免 `API-Key` 泄露，导致财产损失。**</i>
-  所有 API 请求都应在 **`Authorization`** HTTP Header 中包含您的 `API-Key`，如下所示：
+Service API 使用 `API-Key` 进行鉴权。
+
+<i>
+  **强烈建议开发者把 `API-Key` 放在后端存储，而非分享或者放在客户端存储，以免 `API-Key`
+  泄露，导致财产损失。**
+</i>
+所有 API 请求都应在 **`Authorization`** HTTP Header 中包含您的 `API-Key`，如下所示：
 
   <CodeGroup title="Code" targetCode='Authorization: Bearer {API_KEY}' />
 </div>
@@ -196,6 +200,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     - 500，服务内部异常
 
     </Properties>
+
   </Col>
   <Col sticky>
 
@@ -204,26 +209,26 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="POST"
       label="/chat-messages"
       targetCode={`curl -X POST '${props.appDetail.api_base_url}/chat-messages' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --header 'Content-Type: application/json' \\
 --data-raw '{
-    "inputs": ${JSON.stringify(props.inputs)},
-    "query": "What are the specs of the iPhone 13 Pro Max?",
-    "response_mode": "streaming",
-    "conversation_id": "",
-    "user": "abc-123",
-    "files": [
-        {
-          "type": "image",
-        "transfer_method": "remote_url",
-        "url": "https://cloud.dify.ai/logo/logo-site.png"
-      }
-    ]
+"inputs": ${JSON.stringify(props.inputs)},
+"query": "What are the specs of the iPhone 13 Pro Max?",
+"response_mode": "streaming",
+"conversation_id": "",
+"user": "abc-123",
+"files": [
+{
+"type": "image",
+"transfer_method": "remote_url",
+"url": "https://cloud.dify.ai/logo/logo-site.png"
+}
+]
 }'`}
-    />
-    ### 阻塞模式
-    <CodeGroup title="Response">
-    ```json {{ title: 'Response' }}
+/> ### 阻塞模式
+<CodeGroup title="Response">
+`json {{ title: 'Response' }}
     {
         "event": "message",
         "task_id": "c3800678-a077-43df-a102-53f23ed20b88",
@@ -262,11 +267,10 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
         },
         "created_at": 1705407629
     }
-    ```
-    </CodeGroup>
-    ### 流式模式（基础助手）
-    <CodeGroup title="Response">
-    ```streaming {{ title: 'Response' }}
+    `
+</CodeGroup> ### 流式模式（基础助手）
+<CodeGroup title="Response">
+`streaming {{ title: 'Response' }}
       data: {"event": "message", "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290", "conversation_id": "45701982-8118-4bc5-8e9b-64562b4555f2", "answer": " I", "created_at": 1679586595}
       data: {"event": "message", "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290", "conversation_id": "45701982-8118-4bc5-8e9b-64562b4555f2", "answer": "'m", "created_at": 1679586595}
       data: {"event": "message", "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290", "conversation_id": "45701982-8118-4bc5-8e9b-64562b4555f2", "answer": " glad", "created_at": 1679586595}
@@ -276,8 +280,8 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       data: {"event": "message_end", "id": "5e52ce04-874b-4d27-9045-b3bc80def685", "conversation_id": "45701982-8118-4bc5-8e9b-64562b4555f2", "metadata": {"usage": {"prompt_tokens": 1033, "prompt_unit_price": "0.001", "prompt_price_unit": "0.001", "prompt_price": "0.0010330", "completion_tokens": 135, "completion_unit_price": "0.002", "completion_price_unit": "0.001", "completion_price": "0.0002700", "total_tokens": 1168, "total_price": "0.0013030", "currency": "USD", "latency": 1.381760165997548}, "retriever_resources": [{"position": 1, "dataset_id": "101b4c97-fc2e-463c-90b1-5261a4cdcafb", "dataset_name": "iPhone", "document_id": "8dd1ad74-0b5f-4175-b735-7d98bbbb4e00", "document_name": "iPhone List", "segment_id": "ed599c7f-2766-4294-9d1d-e5235a61270a", "score": 0.98457545, "content": "\"Model\",\"Release Date\",\"Display Size\",\"Resolution\",\"Processor\",\"RAM\",\"Storage\",\"Camera\",\"Battery\",\"Operating System\"\n\"iPhone 13 Pro Max\",\"September 24, 2021\",\"6.7 inch\",\"1284 x 2778\",\"Hexa-core (2x3.23 GHz Avalanche + 4x1.82 GHz Blizzard)\",\"6 GB\",\"128, 256, 512 GB, 1TB\",\"12 MP\",\"4352 mAh\",\"iOS 15\""}]}}
       data: {"event": "tts_message", "conversation_id": "23dd85f3-1a41-4ea0-b7a9-062734ccfaf9", "message_id": "a8bdc41c-13b2-4c18-bfd9-054b9803038c", "created_at": 1721205487, "task_id": "3bf8a0bb-e73b-4690-9e66-4e429bad8ee7", "audio": "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"}
       data: {"event": "tts_message_end", "conversation_id": "23dd85f3-1a41-4ea0-b7a9-062734ccfaf9", "message_id": "a8bdc41c-13b2-4c18-bfd9-054b9803038c", "created_at": 1721205487, "task_id": "3bf8a0bb-e73b-4690-9e66-4e429bad8ee7", "audio": ""}
-    ```
-    </CodeGroup>
+    `
+</CodeGroup>
 
     ### 流式模式（智能助手）
     <CodeGroup title="Response">
@@ -297,10 +301,12 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       data: {"event": "tts_message_end", "conversation_id": "23dd85f3-1a41-4ea0-b7a9-062734ccfaf9", "message_id": "a8bdc41c-13b2-4c18-bfd9-054b9803038c", "created_at": 1721205487, "task_id": "3bf8a0bb-e73b-4690-9e66-4e429bad8ee7", "audio": ""}
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
 ---
+
 <Heading
   url='/files/upload'
   method='POST'
@@ -344,6 +350,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     - 503，`s3_connection_failed`，无法连接到 S3 服务
     - 503，`s3_permission_denied`，无权限上传文件到 S3
     - 503，`s3_file_too_large`，文件超出 S3 大小限制
+
   </Col>
   <Col sticky>
 
@@ -352,10 +359,11 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="POST"
       label="/files/upload"
       targetCode={`curl -X POST '${props.appDetail.api_base_url}/files/upload' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --form 'file=@localfile;type=image/[png|jpeg|jpg|webp|gif]' \\
 --form 'user=abc-123'`}
-    />
+/>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -370,6 +378,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -433,6 +442,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -490,9 +500,10 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
 
     ### 作为附件下载
     <CodeGroup title="Request" tag="GET" label="/files/:file_id/preview?as_attachment=true" targetCode={`curl -X GET '${props.appDetail.api_base_url}/files/72fa9618-8f89-4a37-9b33-7e1178a24a67/preview?as_attachment=true' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --output downloaded_file.png`}
-    />
+/>
 
     ### 响应标头示例
     <CodeGroup title="Response Headers">
@@ -512,6 +523,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     Cache-Control: public, max-age=3600
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -528,12 +540,16 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
   ### Path
   - `task_id` (string) 任务 ID，可在流式返回 Chunk 中获取
 
-  ### Request Body
-  - `user` (string) Required
-    用户标识，用于定义终端用户的身份，必须和发送消息接口传入 user 保持一致。API 无法访问 WebApp 创建的会话。
-  ### Response
-  - `result` (string) 固定返回 success
-  </Col>
+### Request Body
+
+- `user` (string) Required
+  用户标识，用于定义终端用户的身份，必须和发送消息接口传入 user 保持一致。API 无法访问 WebApp 创建的会话。
+
+### Response
+
+- `result` (string) 固定返回 success
+
+    </Col>
   <Col sticky>
     <CodeGroup
       title="Request"
@@ -545,15 +561,17 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
 --data-raw '{ "user": "abc-123"}'`}
     />
 
-    <CodeGroup title="Response">
-    ```json {{ title: 'Response' }}
-    {
-      "result": "success"
-    }
-    ```
-    </CodeGroup>
-  </Col>
+      <CodeGroup title="Response">
+      ```json {{ title: 'Response' }}
+      {
+        "result": "success"
+      }
+      ```
+      </CodeGroup>
+
+    </Col>
 </Row>
+
 ---
 
 <Heading
@@ -589,6 +607,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
 
     ### Response
     - `result` (string) 固定返回 success
+
   </Col>
   <Col sticky>
 
@@ -597,14 +616,15 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="POST"
       label="/messages/:message_id/feedbacks"
       targetCode={`curl -X POST '${props.appDetail.api_base_url}/messages/:message_id/feedbacks \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --header 'Content-Type: application/json' \\
 --data-raw '{
-    "rating": "like",
-    "user": "abc-123",
-    "content": "message feedback information"
+"rating": "like",
+"user": "abc-123",
+"content": "message feedback information"
 }'`}
-    />
+/>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -613,6 +633,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -643,6 +664,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
 
     ### Response
     - `data` (List) 返回该APP的点赞、反馈列表。
+
   </Col>
   <Col sticky>
 
@@ -674,6 +696,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
         }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -702,6 +725,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
         用户标识，由开发者定义规则，需保证用户标识在应用内唯一。
       </Property>
     </Properties>
+
   </Col>
   <Col sticky>
 
@@ -710,9 +734,10 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="GET"
       label="/messages/{message_id}/suggested"
       targetCode={`curl --location --request GET '${props.appDetail.api_base_url}/messages/{message_id}/suggested?user=abc-123 \\
+
 --header 'Authorization: Bearer ENTER-YOUR-SECRET-KEY' \\
 --header 'Content-Type: application/json'`}
-    />
+/>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -726,6 +751,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -790,6 +816,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       - `retriever_resources` (array[RetrieverResource]) 引用和归属分段列表
     - `has_more` (bool) 是否存在下一页
     - `limit` (int) 返回条数，若传入超过系统限制，返回系统限制数量
+
   </Col>
   <Col sticky>
     ### Request Example
@@ -895,6 +922,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -949,8 +977,9 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="GET"
       label="/conversations"
       targetCode={`curl -X GET '${props.appDetail.api_base_url}/conversations?user=abc-123&last_id=&limit=20'\\
+
 --header 'Authorization: Bearer {api_key}'`}
-    />
+/>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -977,10 +1006,12 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
 ---
+
 <Heading
   url='/conversations/:conversation_id'
   method='DELETE'
@@ -1004,6 +1035,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
 
     ### Response
     - `result` (string) 固定返回 success
+
   </Col>
   <Col sticky>
 
@@ -1012,18 +1044,20 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="DELETE"
       label="/conversations/:conversation_id"
       targetCode={`curl -X DELETE '${props.appDetail.api_base_url}/conversations/:conversation_id' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --header 'Content-Type: application/json' \\
 --data-raw '{
-    "user": "abc-123"
+"user": "abc-123"
 }'`}
-    />
+/>
 
     <CodeGroup title="Response">
     ```text {{ title: 'Response' }}
     204 No Content
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1064,6 +1098,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     - `introduction` (string) 开场白
     - `created_at` (timestamp) 创建时间
     - `updated_at` (timestamp) 更新时间
+
   </Col>
   <Col sticky>
 
@@ -1072,14 +1107,15 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="POST"
       label="/conversations/:conversation_id/name"
       targetCode={`curl -X POST '${props.appDetail.api_base_url}/conversations/:conversation_id/name' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --header 'Content-Type: application/json' \\
 --data-raw '{
-    "name": "",
-    "auto_generate": true,
-    "user": "abc-123"
+"name": "",
+"auto_generate": true,
+"user": "abc-123"
 }'`}
-    />
+/>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -1094,6 +1130,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1155,8 +1192,9 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="GET"
       label="/conversations/:conversation_id/variables"
       targetCode={`curl -X GET '${props.appDetail.api_base_url}/conversations/{conversation_id}/variables?user=abc-123' \\
+
 --header 'Authorization: Bearer {api_key}'`}
-    />
+/>
 
     <CodeGroup title="Request with variable name filter">
     ```bash {{ title: 'cURL' }}
@@ -1193,6 +1231,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1254,13 +1293,14 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="PUT"
       label="/conversations/:conversation_id/variables/:variable_id"
       targetCode={`curl -X PUT '${props.appDetail.api_base_url}/conversations/{conversation_id}/variables/{variable_id}' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --header 'Content-Type: application/json' \\
 --data-raw '{
-    "value": "Updated Value",
-    "user": "abc-123"
+"value": "Updated Value",
+"user": "abc-123"
 }'`}
-    />
+/>
 
     <CodeGroup title="使用不同值类型更新">
     ```bash {{ title: '字符串值' }}
@@ -1307,6 +1347,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1335,6 +1376,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
 
     ### Response
     - `text` (string) 输出文字
+
   </Col>
   <Col sticky>
 
@@ -1343,9 +1385,10 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="POST"
       label="/audio-to-text"
       targetCode={`curl -X POST '${props.appDetail.api_base_url}/audio-to-text' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --form 'file=@localfile;type=audio/[mp3|mp4|mpeg|mpga|m4a|wav|webm]`}
-    />
+/>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -1354,6 +1397,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1382,6 +1426,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
         用户标识，由开发者定义规则，需保证用户标识在应用内唯一。
       </Property>
     </Properties>
+
   </Col>
   <Col sticky>
 
@@ -1390,9 +1435,10 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="POST"
       label="/text-to-audio"
       targetCode={`curl --location --request POST '${props.appDetail.api_base_url}/text-to-audio' \\
+
 --header 'Authorization: Bearer ENTER-YOUR-SECRET-KEY' \\
 --form 'text=你好Dify;user=abc-123;message_id=5ad4cb98-f0c7-4085-b384-88c403be6290`}
-    />
+/>
 
     <CodeGroup title="headers">
     ```json {{ title: 'headers' }}
@@ -1401,6 +1447,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -1523,6 +1570,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       - `image_file_size_limit` (int) 图片文件上传大小限制（MB）
       - `audio_file_size_limit` (int) 音频文件上传大小限制 (MB)
       - `video_file_size_limit` (int) 视频文件上传大小限制 (MB)
+
   </Col>
   <Col sticky>
 
@@ -1531,8 +1579,9 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="GET"
       label="/parameters"
       targetCode={` curl -X GET '${props.appDetail.api_base_url}/parameters'\\
+
 --header 'Authorization: Bearer {api_key}'`}
-    />
+/>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -1571,6 +1620,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1616,6 +1666,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
@@ -1675,6 +1726,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ___

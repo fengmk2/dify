@@ -4,9 +4,7 @@ import { cn } from '@langgenius/dify-ui/cn'
 import { useTranslation } from 'react-i18next'
 import Link from '@/next/link'
 
-export function CreateDeploymentButton({ className }: {
-  className?: string
-}) {
+export function CreateDeploymentButton({ className }: { className?: string }) {
   const { t } = useTranslation('deployments')
 
   return (

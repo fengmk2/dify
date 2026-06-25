@@ -1,6 +1,6 @@
 import type { InitialDocumentDetail } from '@/models/pipeline'
 import { render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import StepThreeContent from '../step-three-content'
 
 // Mock context hooks used by Processing component
@@ -25,7 +25,11 @@ vi.mock('@/context/i18n', () => ({
 
 // Mock EmbeddingProcess component as it has complex dependencies
 vi.mock('../../processing/embedding-process', () => ({
-  default: ({ datasetId, batchId, documents }: {
+  default: ({
+    datasetId,
+    batchId,
+    documents,
+  }: {
     datasetId: string
     batchId: string
     documents: InitialDocumentDetail[]

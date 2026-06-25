@@ -2,10 +2,7 @@
 
 import type { ComboboxRootChangeEventDetails } from '@langgenius/dify-ui/combobox'
 import type { AccessSubjectSelectionProps } from './types'
-import type {
-  AccessControlGroup,
-  Subject,
-} from '@/models/access-control'
+import type { AccessControlGroup, Subject } from '@/models/access-control'
 import {
   Combobox,
   ComboboxContent,
@@ -56,13 +53,16 @@ export function AccessSubjectAddButton({
   const debouncedKeyword = useDebounce(keyword, { wait: 500 })
 
   const lastAvailableGroup = selectedGroupsForBreadcrumb[selectedGroupsForBreadcrumb.length - 1]
-  const { isLoading, isFetchingNextPage, fetchNextPage, data } = useSearchForWhiteListCandidates({
-    keyword: debouncedKeyword,
-    groupId: lastAvailableGroup?.id,
-    resultsPerPage: 10,
-  }, open && !disabled)
+  const { isLoading, isFetchingNextPage, fetchNextPage, data } = useSearchForWhiteListCandidates(
+    {
+      keyword: debouncedKeyword,
+      groupId: lastAvailableGroup?.id,
+      resultsPerPage: 10,
+    },
+    open && !disabled,
+  )
   const pages = data?.pages ?? []
-  const subjects = pages.flatMap(page => page.subjects ?? [])
+  const subjects = pages.flatMap((page) => page.subjects ?? [])
   const selectedSubjects = selectionValueToSubjects({
     groups: selectedGroups,
     members: selectedMembers,
@@ -74,27 +74,27 @@ export function AccessSubjectAddButton({
   useEffect(() => {
     let observer: IntersectionObserver | undefined
     if (anchorRef.current) {
-      observer = new IntersectionObserver((entries) => {
-        if (entries[0]!.isIntersecting && !isLoading && !isFetchingNextPage && hasMore)
-          fetchNextPage()
-      }, { root: scrollRootRef.current, rootMargin: '20px' })
+      observer = new IntersectionObserver(
+        (entries) => {
+          if (entries[0]!.isIntersecting && !isLoading && !isFetchingNextPage && hasMore)
+            fetchNextPage()
+        },
+        { root: scrollRootRef.current, rootMargin: '20px' },
+      )
       observer.observe(anchorRef.current)
     }
     return () => observer?.disconnect()
   }, [fetchNextPage, hasMore, isFetchingNextPage, isLoading])
 
   const handleOpenChange = (nextOpen: boolean) => {
-    if (nextOpen && disabled)
-      return
-    if (!nextOpen)
-      setKeyword('')
+    if (nextOpen && disabled) return
+    if (!nextOpen) setKeyword('')
 
     setOpen(nextOpen)
   }
 
   const handleInputValueChange = (inputValue: string, details: ComboboxRootChangeEventDetails) => {
-    if (!disabled && details.reason !== 'item-press')
-      setKeyword(inputValue)
+    if (!disabled && details.reason !== 'item-press') setKeyword(inputValue)
   }
 
   const handleValueChange = (nextSubjects: Subject[]) => {
@@ -137,55 +137,60 @@ export function AccessSubjectAddButton({
         <div ref={scrollRootRef} className="min-h-0 overflow-y-auto">
           <div className="sticky top-0 z-10 bg-components-panel-bg-blur p-2 pb-0.5 backdrop-blur-[5px]">
             <ComboboxInputGroup className="h-8 min-h-8 px-2">
-              <span className="mr-0.5 i-ri-search-line size-4 shrink-0 text-text-tertiary" aria-hidden="true" />
+              <span
+                className="mr-0.5 i-ri-search-line size-4 shrink-0 text-text-tertiary"
+                aria-hidden="true"
+              />
               <ComboboxInput
-                aria-label={t('accessControlDialog.operateGroupAndMember.searchPlaceholder', { ns: 'app' })}
-                placeholder={t('accessControlDialog.operateGroupAndMember.searchPlaceholder', { ns: 'app' })}
+                aria-label={t('accessControlDialog.operateGroupAndMember.searchPlaceholder', {
+                  ns: 'app',
+                })}
+                placeholder={t('accessControlDialog.operateGroupAndMember.searchPlaceholder', {
+                  ns: 'app',
+                })}
                 className="block h-4.5 grow px-1 py-0 text-[13px] text-text-primary"
               />
             </ComboboxInputGroup>
           </div>
-          {isLoading
-            ? (
-                <ComboboxStatus className="p-1">
-                  <SubjectOptionsSkeleton />
-                </ComboboxStatus>
-              )
-            : (
-                <>
-                  {shouldShowBreadcrumb && (
-                    <div className="flex h-7 items-center px-2 py-0.5">
-                      <SelectedGroupsBreadCrumb
-                        selectedGroupsForBreadcrumb={selectedGroupsForBreadcrumb}
-                        onChange={setSelectedGroupsForBreadcrumb}
-                      />
-                    </div>
-                  )}
-                  {hasResults
-                    ? (
-                        <>
-                          <ComboboxList className="max-h-none p-1">
-                            {(subject: Subject) => (
-                              <SubjectItem
-                                key={getSubjectValue(subject)}
-                                subject={subject}
-                                selectedGroups={selectedGroups}
-                                selectedMembers={selectedMembers}
-                                onExpandGroup={group => setSelectedGroupsForBreadcrumb([...selectedGroupsForBreadcrumb, group])}
-                              />
-                            )}
-                          </ComboboxList>
-                          {isFetchingNextPage && <Loading />}
-                          <div ref={anchorRef} className="h-0" />
-                        </>
-                      )
-                    : (
-                        <ComboboxEmpty className="flex h-7 items-center justify-center px-2 py-0.5">
-                          {t('accessControlDialog.operateGroupAndMember.noResult', { ns: 'app' })}
-                        </ComboboxEmpty>
-                      )}
-                </>
+          {isLoading ? (
+            <ComboboxStatus className="p-1">
+              <SubjectOptionsSkeleton />
+            </ComboboxStatus>
+          ) : (
+            <>
+              {shouldShowBreadcrumb && (
+                <div className="flex h-7 items-center px-2 py-0.5">
+                  <SelectedGroupsBreadCrumb
+                    selectedGroupsForBreadcrumb={selectedGroupsForBreadcrumb}
+                    onChange={setSelectedGroupsForBreadcrumb}
+                  />
+                </div>
               )}
+              {hasResults ? (
+                <>
+                  <ComboboxList className="max-h-none p-1">
+                    {(subject: Subject) => (
+                      <SubjectItem
+                        key={getSubjectValue(subject)}
+                        subject={subject}
+                        selectedGroups={selectedGroups}
+                        selectedMembers={selectedMembers}
+                        onExpandGroup={(group) =>
+                          setSelectedGroupsForBreadcrumb([...selectedGroupsForBreadcrumb, group])
+                        }
+                      />
+                    )}
+                  </ComboboxList>
+                  {isFetchingNextPage && <Loading />}
+                  <div ref={anchorRef} className="h-0" />
+                </>
+              ) : (
+                <ComboboxEmpty className="flex h-7 items-center justify-center px-2 py-0.5">
+                  {t('accessControlDialog.operateGroupAndMember.noResult', { ns: 'app' })}
+                </ComboboxEmpty>
+              )}
+            </>
+          )}
         </div>
       </ComboboxContent>
     </Combobox>
@@ -195,7 +200,7 @@ export function AccessSubjectAddButton({
 function SubjectOptionsSkeleton() {
   return (
     <div className="flex flex-col gap-1">
-      {[0, 1, 2, 3, 4].map(index => (
+      {[0, 1, 2, 3, 4].map((index) => (
         <div key={index} className="flex min-h-8 items-center gap-2 rounded-lg p-1 pl-2">
           <SkeletonRectangle className="my-0 size-4 shrink-0 animate-pulse rounded-sm" />
           <SkeletonRectangle className="my-0 size-5 shrink-0 animate-pulse rounded-full" />

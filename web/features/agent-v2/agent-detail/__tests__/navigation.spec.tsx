@@ -27,7 +27,7 @@ vi.mock('@/next/navigation', () => ({
 }))
 
 vi.mock('@/app/components/app-sidebar/nav-link', () => ({
-  default: ({ href, name }: { href: string, name: string }) => <a href={href}>{name}</a>,
+  default: ({ href, name }: { href: string; name: string }) => <a href={href}>{name}</a>,
 }))
 
 vi.mock('@/app/components/base/divider', () => ({

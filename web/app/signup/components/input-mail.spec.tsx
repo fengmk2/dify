@@ -1,4 +1,4 @@
-import type { MockedFunction } from 'vitest'
+import type { MockedFunction } from 'vite-plus/test'
 import { fireEvent, screen, waitFor } from '@testing-library/react'
 import * as React from 'react'
 import { renderWithSystemFeatures } from '@/__tests__/utils/mock-system-features'
@@ -10,7 +10,19 @@ const mockSubmitMail = vi.fn()
 const mockOnSuccess = vi.fn()
 
 vi.mock('@/next/link', () => ({
-  default: ({ children, href, className, target, rel }: { children: React.ReactNode, href: string, className?: string, target?: string, rel?: string }) => (
+  default: ({
+    children,
+    href,
+    className,
+    target,
+    rel,
+  }: {
+    children: React.ReactNode
+    href: string
+    className?: string
+    target?: string
+    rel?: string
+  }) => (
     <a href={href} className={className} target={target} rel={rel}>
       {children}
     </a>

@@ -45,7 +45,8 @@ export const deploymentEnvironmentDeploymentsQueryAtom = atomWithQuery((get) => 
         }
       : skipToken,
     enabled: Boolean(appInstanceId),
-    refetchInterval: query => deploymentStatusPollingInterval(query.state.data?.environmentDeployments),
+    refetchInterval: (query) =>
+      deploymentStatusPollingInterval(query.state.data?.environmentDeployments),
   })
 })
 
@@ -53,9 +54,7 @@ export const deploymentSourceAppQueryAtom = atomWithQuery((get) => {
   const sourceAppId = get(deploymentSourceAppIdAtom)
 
   return consoleQuery.apps.byAppId.get.queryOptions({
-    input: sourceAppId
-      ? { params: { app_id: sourceAppId } }
-      : skipToken,
+    input: sourceAppId ? { params: { app_id: sourceAppId } } : skipToken,
     enabled: Boolean(sourceAppId),
   })
 })

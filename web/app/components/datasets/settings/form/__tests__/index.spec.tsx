@@ -120,7 +120,9 @@ const createMockDataset = (overrides: Partial<DataSet> = {}): DataSet => ({
 let mockDataset: DataSet = createMockDataset()
 
 vi.mock('@/context/dataset-detail', () => ({
-  useDatasetDetailContextWithSelector: (selector: (state: { dataset: DataSet | null, mutateDatasetRes: () => void }) => unknown) => {
+  useDatasetDetailContextWithSelector: (
+    selector: (state: { dataset: DataSet | null; mutateDatasetRes: () => void }) => unknown,
+  ) => {
     const state = {
       dataset: mockDataset,
       mutateDatasetRes: mockMutateDatasets,
@@ -142,8 +144,28 @@ vi.mock('@/service/use-common', () => ({
   useMembers: () => ({
     data: {
       accounts: [
-        { id: 'user-1', name: 'User 1', email: 'user1@example.com', role: 'owner', avatar: '', avatar_url: '', last_login_at: '', created_at: '', status: 'active' },
-        { id: 'user-2', name: 'User 2', email: 'user2@example.com', role: 'admin', avatar: '', avatar_url: '', last_login_at: '', created_at: '', status: 'active' },
+        {
+          id: 'user-1',
+          name: 'User 1',
+          email: 'user1@example.com',
+          role: 'owner',
+          avatar: '',
+          avatar_url: '',
+          last_login_at: '',
+          created_at: '',
+          status: 'active',
+        },
+        {
+          id: 'user-2',
+          name: 'User 2',
+          email: 'user2@example.com',
+          role: 'admin',
+          avatar: '',
+          avatar_url: '',
+          last_login_at: '',
+          created_at: '',
+          status: 'active',
+        },
       ],
     },
   }),
@@ -228,12 +250,12 @@ vi.mock('../components/indexing-section', () => ({
           </a>
         </>
       )}
-      {!!(currentDataset
-        && currentDataset.doc_form !== ChunkingMode.parentChild
-        && currentDataset.indexing_technique
-        && indexMethod) && (
-        <div>form.indexMethod</div>
-      )}
+      {!!(
+        currentDataset &&
+        currentDataset.doc_form !== ChunkingMode.parentChild &&
+        currentDataset.indexing_technique &&
+        indexMethod
+      ) && <div>form.indexMethod</div>}
       {indexMethod === IndexingType.QUALIFIED && <div>form.embeddingModel</div>}
       {currentDataset?.provider !== 'external' && indexMethod && (
         <>
@@ -389,7 +411,7 @@ describe('Form', () => {
     it('should show loading state on save button while saving', async () => {
       const { updateDatasetSetting } = await import('@/service/datasets')
       vi.mocked(updateDatasetSetting).mockImplementation(
-        () => new Promise(resolve => setTimeout(resolve, 100)),
+        () => new Promise((resolve) => setTimeout(resolve, 100)),
       )
 
       render(<Form />)

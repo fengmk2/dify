@@ -1,6 +1,6 @@
 import { RuntimeInstanceStatus } from '@dify/contracts/enterprise/types.gen'
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import { DeploymentStatusBadge } from '../deployment-status-badge'
 
 describe('DeploymentStatusBadge', () => {
@@ -14,7 +14,12 @@ describe('DeploymentStatusBadge', () => {
 
     const badge = screen.getByText('Running').parentElement
 
-    expect(badge).toHaveClass('border', 'rounded-md', 'bg-util-colors-green-green-50', 'system-2xs-medium-uppercase')
+    expect(badge).toHaveClass(
+      'border',
+      'rounded-md',
+      'bg-util-colors-green-green-50',
+      'system-2xs-medium-uppercase',
+    )
     expect(container.querySelector('.bg-util-colors-green-green-500')).not.toBeInTheDocument()
     expect(container.querySelector('.shadow-status-indicator-green-shadow')).toBeInTheDocument()
   })
@@ -47,6 +52,8 @@ describe('DeploymentStatusBadge', () => {
     )
 
     expect(screen.getByText('Deploying')).toHaveClass('text-util-colors-blue-light-blue-light-600')
-    expect(container.querySelector('.shadow-status-indicator-blue-shadow')).toHaveClass('animate-pulse')
+    expect(container.querySelector('.shadow-status-indicator-blue-shadow')).toHaveClass(
+      'animate-pulse',
+    )
   })
 })

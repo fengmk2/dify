@@ -36,9 +36,7 @@ type DatasetDetailSectionProps = {
   expand?: boolean
 }
 
-const DatasetDetailSection = ({
-  expand = true,
-}: DatasetDetailSectionProps) => {
+const DatasetDetailSection = ({ expand = true }: DatasetDetailSectionProps) => {
   const { t } = useTranslation()
   const pathname = usePathname()
   const datasetId = getDatasetIdFromPathname(pathname)
@@ -46,27 +44,35 @@ const DatasetDetailSection = ({
   const { userProfile, workspacePermissionKeys } = useAppContext()
   const isRbacEnabled = systemFeatures.rbac_enabled
   const { data: datasetRes, refetch: mutateDatasetRes } = useDatasetDetail(datasetId ?? '')
-  const { data: relatedApps } = useDatasetRelatedApps(datasetId ?? '', { enabled: !!datasetId && !!datasetRes })
-  const datasetACLCapabilities = useMemo(() => getDatasetACLCapabilities(datasetRes?.permission_keys, {
-    currentUserId: userProfile?.id,
-    resourceMaintainer: datasetRes?.maintainer,
-    workspacePermissionKeys,
-    isRbacEnabled,
-  }), [datasetRes?.maintainer, datasetRes?.permission_keys, isRbacEnabled, userProfile?.id, workspacePermissionKeys])
+  const { data: relatedApps } = useDatasetRelatedApps(datasetId ?? '', {
+    enabled: !!datasetId && !!datasetRes,
+  })
+  const datasetACLCapabilities = useMemo(
+    () =>
+      getDatasetACLCapabilities(datasetRes?.permission_keys, {
+        currentUserId: userProfile?.id,
+        resourceMaintainer: datasetRes?.maintainer,
+        workspacePermissionKeys,
+        isRbacEnabled,
+      }),
+    [
+      datasetRes?.maintainer,
+      datasetRes?.permission_keys,
+      isRbacEnabled,
+      userProfile?.id,
+      workspacePermissionKeys,
+    ],
+  )
 
   const isButtonDisabledWithPipeline = useMemo(() => {
-    if (!datasetRes)
-      return true
-    if (datasetRes.provider === 'external')
-      return false
-    if (datasetRes.runtime_mode === 'general')
-      return false
+    if (!datasetRes) return true
+    if (datasetRes.provider === 'external') return false
+    if (datasetRes.runtime_mode === 'general') return false
     return !datasetRes.is_published
   }, [datasetRes])
 
   const navigation = useMemo(() => {
-    if (!datasetId)
-      return []
+    if (!datasetId) return []
 
     const baseNavigation = [
       {
@@ -84,15 +90,16 @@ const DatasetDetailSection = ({
         disabled: false,
       },
       ...(datasetACLCapabilities.canAccessConfig
-        ? [{
-            name: t('settings.resourceAccess', { ns: 'common' }),
-            href: `/datasets/${datasetId}/access-config`,
-            icon: RiLock2Line,
-            selectedIcon: RiLock2Fill,
-            disabled: false,
-          }]
-        : []
-      ),
+        ? [
+            {
+              name: t('settings.resourceAccess', { ns: 'common' }),
+              href: `/datasets/${datasetId}/access-config`,
+              icon: RiLock2Line,
+              selectedIcon: RiLock2Fill,
+              disabled: false,
+            },
+          ]
+        : []),
     ]
 
     if (datasetRes?.provider !== 'external') {
@@ -115,15 +122,15 @@ const DatasetDetailSection = ({
     return baseNavigation
   }, [t, datasetId, isButtonDisabledWithPipeline, datasetRes?.provider, datasetACLCapabilities])
 
-  if (!datasetRes)
-    return null
+  if (!datasetRes) return null
 
   return (
-    <DatasetDetailContext.Provider value={{
-      indexingTechnique: datasetRes.indexing_technique,
-      dataset: datasetRes,
-      mutateDatasetRes,
-    }}
+    <DatasetDetailContext.Provider
+      value={{
+        indexingTechnique: datasetRes.indexing_technique,
+        dataset: datasetRes,
+        mutateDatasetRes,
+      }}
     >
       <div className={cn('flex min-h-0 flex-1 flex-col', expand ? 'px-2 pb-2' : 'pb-2')}>
         {!expand && (
@@ -139,7 +146,7 @@ const DatasetDetailSection = ({
           <DatasetInfo expand={expand} />
         </div>
         <nav className={cn('mt-3 flex flex-col gap-y-0.5 pb-2', expand ? 'px-1' : 'px-3')}>
-          {navigation.map(item => (
+          {navigation.map((item) => (
             <NavLink
               key={item.href}
               mode={expand ? 'expand' : 'collapse'}

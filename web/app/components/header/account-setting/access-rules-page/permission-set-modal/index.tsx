@@ -44,15 +44,16 @@ const PermissionSetModalBody = ({
   const { t } = useTranslation()
   const [name, setName] = useState(initialValues?.name ?? '')
   const [description, setDescription] = useState(initialValues?.description ?? '')
-  const [permissionKeys, setPermissionKeys] = useState<string[]>(initialValues?.permissionKeys ?? [])
+  const [permissionKeys, setPermissionKeys] = useState<string[]>(
+    initialValues?.permissionKeys ?? [],
+  )
 
   const trimmedName = name.trim()
   const readonly = mode === 'view'
   const canSubmit = trimmedName.length > 0
 
   const handleConfirm = () => {
-    if (readonly || !canSubmit)
-      return
+    if (readonly || !canSubmit) return
     onSubmit({
       name: trimmedName,
       description: description.trim(),
@@ -84,25 +85,30 @@ const PermissionSetModalBody = ({
         <div className="flex shrink-0 flex-col gap-1">
           <label htmlFor="permission-set-name" className="system-sm-medium text-text-secondary">
             {t('permissionSet.nameLabel', { ns: 'permission' })}
-            <span aria-hidden className="ml-0.5 text-text-destructive">*</span>
+            <span aria-hidden className="ml-0.5 text-text-destructive">
+              *
+            </span>
           </label>
           <Input
             id="permission-set-name"
             value={name}
-            onChange={e => setName(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
             placeholder={t('permissionSet.namePlaceholder', { ns: 'permission' })}
             disabled={readonly}
           />
         </div>
 
         <div className="flex shrink-0 flex-col gap-1">
-          <label htmlFor="permission-set-description" className="system-sm-medium text-text-secondary">
+          <label
+            htmlFor="permission-set-description"
+            className="system-sm-medium text-text-secondary"
+          >
             {t('permissionSet.descriptionLabel', { ns: 'permission' })}
           </label>
           <Textarea
             id="permission-set-description"
             value={description}
-            onValueChange={value => setDescription(value)}
+            onValueChange={(value) => setDescription(value)}
             placeholder={t('permissionSet.descriptionPlaceholder', { ns: 'permission' })}
             className="min-h-20 resize-none"
             disabled={readonly}
@@ -110,7 +116,9 @@ const PermissionSetModalBody = ({
         </div>
 
         <div className="flex min-h-0 flex-1 flex-col gap-2">
-          <div className="system-sm-medium text-text-secondary">{t('permissionSet.permissions', { ns: 'permission' })}</div>
+          <div className="system-sm-medium text-text-secondary">
+            {t('permissionSet.permissions', { ns: 'permission' })}
+          </div>
           <PermissionPicker
             resourceType={resourceType}
             value={permissionKeys}
@@ -132,14 +140,12 @@ const PermissionSetModalBody = ({
         </a>
         <div className="flex items-center gap-2">
           <Button variant="secondary" onClick={onClose}>
-            {readonly ? t('operation.close', { ns: 'common' }) : t('operation.cancel', { ns: 'common' })}
+            {readonly
+              ? t('operation.close', { ns: 'common' })
+              : t('operation.cancel', { ns: 'common' })}
           </Button>
           {!readonly && (
-            <Button
-              variant="primary"
-              disabled={!canSubmit}
-              onClick={handleConfirm}
-            >
+            <Button variant="primary" disabled={!canSubmit} onClick={handleConfirm}>
               {t('operation.confirm', { ns: 'common' })}
             </Button>
           )}
@@ -161,8 +167,7 @@ const PermissionSetModal = ({
     <Dialog
       open={open}
       onOpenChange={(nextOpen) => {
-        if (!nextOpen)
-          onClose()
+        if (!nextOpen) onClose()
       }}
     >
       <PermissionSetModalBody

@@ -1,6 +1,10 @@
 import type { EditorState } from 'lexical'
 import type { FC } from 'react'
-import type { Hotkey, ShortcutPopupDisplayMode, ShortcutPopupInsertHandler } from './plugins/shortcuts-popup-plugin'
+import type {
+  Hotkey,
+  ShortcutPopupDisplayMode,
+  ShortcutPopupInsertHandler,
+} from './plugins/shortcuts-popup-plugin'
 import type {
   AgentOutputBlockType,
   ContextBlockType,
@@ -23,46 +27,19 @@ import { HistoryPlugin } from '@lexical/react/LexicalHistoryPlugin'
 import { OnChangePlugin } from '@lexical/react/LexicalOnChangePlugin'
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin'
 import * as React from 'react'
-import {
-  AgentOutputBlock,
-  AgentOutputBlockReplacementBlock,
-} from './plugins/agent-output-block'
+import { AgentOutputBlock, AgentOutputBlockReplacementBlock } from './plugins/agent-output-block'
 import ComponentPickerBlock from './plugins/component-picker-block'
-import {
-  ContextBlock,
-  ContextBlockReplacementBlock,
-} from './plugins/context-block'
-import {
-  CurrentBlock,
-  CurrentBlockReplacementBlock,
-} from './plugins/current-block'
+import { ContextBlock, ContextBlockReplacementBlock } from './plugins/context-block'
+import { CurrentBlock, CurrentBlockReplacementBlock } from './plugins/current-block'
 import DraggableBlockPlugin from './plugins/draggable-plugin'
-import {
-  ErrorMessageBlock,
-  ErrorMessageBlockReplacementBlock,
-} from './plugins/error-message-block'
-import {
-  HistoryBlock,
-  HistoryBlockReplacementBlock,
-} from './plugins/history-block'
-import {
-  HITLInputBlock,
-  HITLInputBlockReplacementBlock,
-} from './plugins/hitl-input-block'
-import {
-  LastRunBlock,
-  LastRunReplacementBlock,
-} from './plugins/last-run-block'
+import { ErrorMessageBlock, ErrorMessageBlockReplacementBlock } from './plugins/error-message-block'
+import { HistoryBlock, HistoryBlockReplacementBlock } from './plugins/history-block'
+import { HITLInputBlock, HITLInputBlockReplacementBlock } from './plugins/hitl-input-block'
+import { LastRunBlock, LastRunReplacementBlock } from './plugins/last-run-block'
 import OnBlurBlock from './plugins/on-blur-or-focus-block'
 import Placeholder from './plugins/placeholder'
-import {
-  QueryBlock,
-  QueryBlockReplacementBlock,
-} from './plugins/query-block'
-import {
-  RequestURLBlock,
-  RequestURLBlockReplacementBlock,
-} from './plugins/request-url-block'
+import { QueryBlock, QueryBlockReplacementBlock } from './plugins/query-block'
+import { RequestURLBlock, RequestURLBlockReplacementBlock } from './plugins/request-url-block'
 import RosterReferenceBlock from './plugins/roster-reference-block'
 import { RosterReferenceBlockContext } from './plugins/roster-reference-block/context'
 import ShortcutsPopupPlugin from './plugins/shortcuts-popup-plugin'
@@ -77,7 +54,7 @@ import {
 type ShortcutPopup = {
   hotkey: Hotkey
   displayMode?: ShortcutPopupDisplayMode
-  Popup: React.ComponentType<{ onClose: () => void, onInsert: ShortcutPopupInsertHandler }>
+  Popup: React.ComponentType<{ onClose: () => void; onInsert: ShortcutPopupInsertHandler }>
 }
 
 type PromptEditorContentProps = {
@@ -142,7 +119,7 @@ const PromptEditorContent: FC<PromptEditorContentProps> = ({
   return (
     <RosterReferenceBlockContext value={rosterReferenceBlock}>
       <RichTextPlugin
-        contentEditable={(
+        contentEditable={
           <ContentEditable
             className={cn(
               'group/editable text-text-secondary outline-hidden group-[.clamp]:max-h-24 group-[.clamp]:overflow-y-auto',
@@ -151,14 +128,14 @@ const PromptEditorContent: FC<PromptEditorContentProps> = ({
             )}
             style={style || {}}
           />
-        )}
-        placeholder={(
+        }
+        placeholder={
           <Placeholder
             value={placeholder}
             className={cn('truncate', placeholderClassName)}
             compact={compact}
           />
-        )}
+        }
         ErrorBoundary={LexicalErrorBoundary}
       />
       {shortcutPopups.map(({ hotkey, displayMode, Popup }, idx) => (
@@ -224,9 +201,7 @@ const PromptEditorContent: FC<PromptEditorContentProps> = ({
           <VariableValueBlock />
         </>
       )}
-      {rosterReferenceBlock?.show && (
-        <RosterReferenceBlock />
-      )}
+      {rosterReferenceBlock?.show && <RosterReferenceBlock />}
       {workflowVariableBlock?.show && (
         <>
           <WorkflowVariableBlock {...workflowVariableBlock} />
@@ -269,16 +244,12 @@ const PromptEditorContent: FC<PromptEditorContentProps> = ({
           <LastRunReplacementBlock {...lastRunBlock} />
         </>
       )}
-      {isSupportFileVar && (
-        <VariableValueBlock />
-      )}
+      {isSupportFileVar && <VariableValueBlock />}
       <OnChangePlugin onChange={onEditorChange} />
       <OnBlurBlock onBlur={onBlur} onFocus={onFocus} />
       <UpdateBlock instanceId={instanceId} />
       <HistoryPlugin />
-      {floatingAnchorElem && (
-        <DraggableBlockPlugin anchorElem={floatingAnchorElem} />
-      )}
+      {floatingAnchorElem && <DraggableBlockPlugin anchorElem={floatingAnchorElem} />}
     </RosterReferenceBlockContext>
   )
 }

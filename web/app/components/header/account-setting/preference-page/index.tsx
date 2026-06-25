@@ -1,6 +1,13 @@
 'use client'
 import type { Locale } from '@/i18n-config'
-import { Select, SelectContent, SelectItem, SelectItemIndicator, SelectItemText, SelectTrigger } from '@langgenius/dify-ui/select'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectItemIndicator,
+  SelectItemText,
+  SelectTrigger,
+} from '@langgenius/dify-ui/select'
 import { toast } from '@langgenius/dify-ui/toast'
 import { useTheme } from 'next-themes'
 import { useState } from 'react'
@@ -27,7 +34,7 @@ const titleClassName = `
   mb-1 system-sm-medium text-text-secondary
 `
 const themes = ['system', 'light', 'dark'] as const
-type ThemeOption = typeof themes[number]
+type ThemeOption = (typeof themes)[number]
 
 const isThemeOption = (value: string): value is ThemeOption => {
   return (themes as readonly string[]).includes(value)
@@ -40,18 +47,19 @@ export default function PreferencePage() {
   const { t } = useTranslation()
   const router = useRouter()
   const { theme, setTheme } = useTheme()
-  const languageOptions: SelectOption[] = languages.filter(item => item.supported)
+  const languageOptions: SelectOption[] = languages.filter((item) => item.supported)
   const themeOptions: SelectOption[] = [
     { value: 'system', name: t('account.appearanceFollowSystem', { ns: 'common' }) },
     { value: 'light', name: t('account.appearanceLight', { ns: 'common' }) },
     { value: 'dark', name: t('account.appearanceDark', { ns: 'common' }) },
   ]
-  const selectedLanguage = languageOptions.find(item => item.value === (locale || userProfile.interface_language))
-  const selectedTheme = themeOptions.find(item => item.value === (theme || 'system'))
-  const selectedTimezone = timezones.find(item => item.value === userProfile.timezone)
+  const selectedLanguage = languageOptions.find(
+    (item) => item.value === (locale || userProfile.interface_language),
+  )
+  const selectedTheme = themeOptions.find((item) => item.value === (theme || 'system'))
+  const selectedTimezone = timezones.find((item) => item.value === userProfile.timezone)
   const handleSelectTheme = (item: SelectOption) => {
-    if (isThemeOption(item.value))
-      setTheme(item.value)
+    if (isThemeOption(item.value)) setTheme(item.value)
   }
   const handleSelectLanguage = async (item: SelectOption) => {
     const url = '/account/interface-language'
@@ -62,11 +70,9 @@ export default function PreferencePage() {
       toast.success(t('actionMsg.modifiedSuccessfully', { ns: 'common' }))
       setLocaleOnClient(item.value.toString() as Locale, false)
       router.refresh()
-    }
-    catch (e) {
+    } catch (e) {
       toast.error((e as Error).message)
-    }
-    finally {
+    } finally {
       setEditing(false)
     }
   }
@@ -78,11 +84,9 @@ export default function PreferencePage() {
       await updateUserProfile({ url, body: { [bodyKey]: item.value } })
       toast.success(t('actionMsg.modifiedSuccessfully', { ns: 'common' }))
       mutateUserProfile()
-    }
-    catch (e) {
+    } catch (e) {
       toast.error((e as Error).message)
-    }
-    finally {
+    } finally {
       setEditing(false)
     }
   }
@@ -93,18 +97,16 @@ export default function PreferencePage() {
         <Select
           value={selectedTheme?.value ?? 'system'}
           onValueChange={(nextValue) => {
-            if (!nextValue)
-              return
-            const nextItem = themeOptions.find(item => item.value === nextValue)
-            if (nextItem)
-              handleSelectTheme(nextItem)
+            if (!nextValue) return
+            const nextItem = themeOptions.find((item) => item.value === nextValue)
+            if (nextItem) handleSelectTheme(nextItem)
           }}
         >
           <SelectTrigger size="medium">
             {selectedTheme?.name ?? t('account.appearanceFollowSystem', { ns: 'common' })}
           </SelectTrigger>
           <SelectContent>
-            {themeOptions.map(item => (
+            {themeOptions.map((item) => (
               <SelectItem key={item.value} value={item.value}>
                 <SelectItemText>{item.name}</SelectItemText>
                 <SelectItemIndicator />
@@ -119,18 +121,16 @@ export default function PreferencePage() {
           value={selectedLanguage?.value ?? null}
           disabled={editing}
           onValueChange={(nextValue) => {
-            if (!nextValue)
-              return
-            const nextItem = languageOptions.find(item => item.value === nextValue)
-            if (nextItem)
-              handleSelectLanguage(nextItem)
+            if (!nextValue) return
+            const nextItem = languageOptions.find((item) => item.value === nextValue)
+            if (nextItem) handleSelectLanguage(nextItem)
           }}
         >
           <SelectTrigger size="medium">
             {selectedLanguage?.name ?? t('placeholder.select', { ns: 'common' })}
           </SelectTrigger>
           <SelectContent>
-            {languageOptions.map(item => (
+            {languageOptions.map((item) => (
               <SelectItem key={item.value} value={item.value}>
                 <SelectItemText>{item.name}</SelectItemText>
                 <SelectItemIndicator />
@@ -145,18 +145,16 @@ export default function PreferencePage() {
           value={selectedTimezone ? String(selectedTimezone.value) : null}
           disabled={editing}
           onValueChange={(nextValue) => {
-            if (!nextValue)
-              return
-            const nextItem = timezones.find(item => String(item.value) === nextValue)
-            if (nextItem)
-              handleSelectTimezone(nextItem)
+            if (!nextValue) return
+            const nextItem = timezones.find((item) => String(item.value) === nextValue)
+            if (nextItem) handleSelectTimezone(nextItem)
           }}
         >
           <SelectTrigger size="medium">
             {selectedTimezone?.name ?? t('placeholder.select', { ns: 'common' })}
           </SelectTrigger>
           <SelectContent>
-            {timezones.map(item => (
+            {timezones.map((item) => (
               <SelectItem key={item.value} value={String(item.value)}>
                 <SelectItemText>{item.name}</SelectItemText>
                 <SelectItemIndicator />

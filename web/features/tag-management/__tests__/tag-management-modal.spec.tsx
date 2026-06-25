@@ -36,7 +36,7 @@ vi.mock('@tanstack/react-query', () => ({
   useQuery: () => ({ data: mockUseQueryData.current }),
   useMutation: (mutationOptions: { mutationFn: (input: unknown) => Promise<unknown> }) => ({
     isPending: false,
-    mutate: (input: unknown, options?: { onSuccess?: () => void, onError?: () => void }) => {
+    mutate: (input: unknown, options?: { onSuccess?: () => void; onError?: () => void }) => {
       Promise.resolve(mutationOptions.mutationFn(input))
         .then(() => options?.onSuccess?.())
         .catch(() => options?.onError?.())
@@ -45,9 +45,10 @@ vi.mock('@tanstack/react-query', () => ({
 }))
 
 vi.mock('@/context/app-context', () => ({
-  useSelector: <T,>(selector: (state: { workspacePermissionKeys: string[] }) => T): T => selector({
-    workspacePermissionKeys: mockWorkspacePermissionKeys.value,
-  }),
+  useSelector: <T,>(selector: (state: { workspacePermissionKeys: string[] }) => T): T =>
+    selector({
+      workspacePermissionKeys: mockWorkspacePermissionKeys.value,
+    }),
 }))
 
 vi.mock('@/service/client', () => ({
@@ -58,7 +59,8 @@ vi.mock('@/service/client', () => ({
       },
       create: {
         mutationOptions: () => ({
-          mutationFn: ({ body }: { body: { name: string, type: 'app' | 'knowledge' } }) => createTag(body.name, body.type),
+          mutationFn: ({ body }: { body: { name: string; type: 'app' | 'knowledge' } }) =>
+            createTag(body.name, body.type),
         }),
       },
       update: {
@@ -99,8 +101,17 @@ describe('TagManagementModal', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     mockUseQueryData.current = mockTags
-    mockWorkspacePermissionKeys.value = ['app.tag.manage', 'dataset.tag.manage', 'snippets.management']
-    vi.mocked(createTag).mockResolvedValue({ id: 'new-tag', name: 'NewTag', type: 'app', binding_count: 0 })
+    mockWorkspacePermissionKeys.value = [
+      'app.tag.manage',
+      'dataset.tag.manage',
+      'snippets.management',
+    ]
+    vi.mocked(createTag).mockResolvedValue({
+      id: 'new-tag',
+      name: 'NewTag',
+      type: 'app',
+      binding_count: 0,
+    })
   })
 
   describe('Rendering', () => {
@@ -277,7 +288,12 @@ describe('TagManagementModal', () => {
 
     it('should handle tag creation with knowledge type', async () => {
       const user = userEvent.setup()
-      vi.mocked(createTag).mockResolvedValue({ id: 'new-k', name: 'KnowledgeTag', type: 'knowledge', binding_count: 0 })
+      vi.mocked(createTag).mockResolvedValue({
+        id: 'new-k',
+        name: 'KnowledgeTag',
+        type: 'knowledge',
+        binding_count: 0,
+      })
 
       render(<TagManagementModal {...defaultProps} type="knowledge" />)
 

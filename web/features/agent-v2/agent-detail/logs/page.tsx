@@ -26,7 +26,10 @@ const queryDateFormat = 'YYYY-MM-DD HH:mm'
 
 const periodOptions: Array<{
   value: PeriodKey
-  labelKey: 'agentDetail.logs.filters.period.last7days' | 'agentDetail.logs.filters.period.last30days' | 'agentDetail.logs.filters.period.allTime'
+  labelKey:
+    | 'agentDetail.logs.filters.period.last7days'
+    | 'agentDetail.logs.filters.period.last30days'
+    | 'agentDetail.logs.filters.period.allTime'
 }> = [
   { value: 'last7days', labelKey: 'agentDetail.logs.filters.period.last7days' },
   { value: 'last30days', labelKey: 'agentDetail.logs.filters.period.last30days' },
@@ -34,8 +37,7 @@ const periodOptions: Array<{
 ]
 
 const getPeriodQuery = (period: PeriodKey) => {
-  if (period === 'allTime')
-    return {}
+  if (period === 'allTime') return {}
 
   const days = period === 'last7days' ? 7 : 30
   return {
@@ -44,7 +46,9 @@ const getPeriodQuery = (period: PeriodKey) => {
   }
 }
 
-const parseSortValue = (value: string): {
+const parseSortValue = (
+  value: string,
+): {
   field: LogsSortField
   order: LogsSortOrder
 } => {
@@ -57,32 +61,32 @@ const parseSortValue = (value: string): {
   }
 }
 
-export function AgentLogsPage({
-  agentId,
-}: AgentLogsPageProps) {
+export function AgentLogsPage({ agentId }: AgentLogsPageProps) {
   const { t } = useTranslation('agentV2')
   const { t: tCommon } = useTranslation('common')
   const docLink = useDocLink()
   const [period, setPeriod] = useState<PeriodKey>('last7days')
   const [source, setSource] = useState<SourceFilterValue>([])
   const [keyword, setKeyword] = useState('')
-  const [sort, setSort] = useState<{ field: LogsSortField, order: LogsSortOrder }>({
+  const [sort, setSort] = useState<{ field: LogsSortField; order: LogsSortOrder }>({
     field: 'created_at',
     order: 'desc',
   })
   const [page, setPage] = useState(1)
   const [limit, setLimit] = useState(25)
-  const periodItems = periodOptions.map(option => ({
+  const periodItems = periodOptions.map((option) => ({
     value: option.value,
     name: t(option.labelKey),
   }))
-  const logSourcesQuery = useQuery(consoleQuery.agent.byAgentId.logSources.get.queryOptions({
-    input: {
-      params: {
-        agent_id: agentId,
+  const logSourcesQuery = useQuery(
+    consoleQuery.agent.byAgentId.logSources.get.queryOptions({
+      input: {
+        params: {
+          agent_id: agentId,
+        },
       },
-    },
-  }))
+    }),
+  )
   const logsQuery = useQuery({
     ...consoleQuery.agent.byAgentId.logs.get.queryOptions({
       input: {
@@ -113,9 +117,7 @@ export function AgentLogsPage({
     >
       <header className="h-26.5 shrink-0 px-6 pt-3 pb-2">
         <div className="min-w-0">
-          <h2 className="system-xl-semibold text-text-primary">
-            {t('agentDetail.logs.title')}
-          </h2>
+          <h2 className="system-xl-semibold text-text-primary">{t('agentDetail.logs.title')}</h2>
           <p className="mt-1 flex min-w-0 flex-wrap items-center gap-x-0.5 system-xs-regular text-text-tertiary">
             <span>{t('agentDetail.logs.description')}</span>
             <a
@@ -135,7 +137,9 @@ export function AgentLogsPage({
             <Chip
               value={period}
               items={periodItems}
-              leftIcon={<span aria-hidden className="i-ri-calendar-line block size-4 text-text-secondary" />}
+              leftIcon={
+                <span aria-hidden className="i-ri-calendar-line block size-4 text-text-secondary" />
+              }
               className="min-w-32"
               onSelect={(item) => {
                 setPage(1)
@@ -208,7 +212,8 @@ export function AgentLogsPage({
         labels={{
           previous: tCommon('pagination.previous'),
           next: tCommon('pagination.next'),
-          editPageNumber: (page, totalPages) => tCommon('pagination.editPageNumber', { page, totalPages }),
+          editPageNumber: (page, totalPages) =>
+            tCommon('pagination.editPageNumber', { page, totalPages }),
           pageNumberInput: tCommon('pagination.pageNumber'),
         }}
         pageSize={{

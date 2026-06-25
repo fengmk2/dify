@@ -45,26 +45,41 @@ function toPanelFeatures(appFeatures?: AgentSoulAppFeaturesConfig): Features {
       opening_statement: appFeatures?.opening_statement ?? '',
       suggested_questions: appFeatures?.suggested_questions ?? [],
     },
-    suggested: (appFeatures?.suggested_questions_after_answer as Features['suggested'] | undefined) ?? defaultFeatureState.suggested,
-    text2speech: (appFeatures?.text_to_speech as Features['text2speech'] | undefined) ?? defaultFeatureState.text2speech,
+    suggested:
+      (appFeatures?.suggested_questions_after_answer as Features['suggested'] | undefined) ??
+      defaultFeatureState.suggested,
+    text2speech:
+      (appFeatures?.text_to_speech as Features['text2speech'] | undefined) ??
+      defaultFeatureState.text2speech,
     speech2text: appFeatures?.speech_to_text ?? defaultFeatureState.speech2text,
     citation: appFeatures?.retriever_resource ?? defaultFeatureState.citation,
-    moderation: (appFeatures?.sensitive_word_avoidance as Features['moderation'] | undefined) ?? defaultFeatureState.moderation,
+    moderation:
+      (appFeatures?.sensitive_word_avoidance as Features['moderation'] | undefined) ??
+      defaultFeatureState.moderation,
     file: (appFeatures?.file_upload as Features['file'] | undefined) ?? defaultFeatureState.file,
-    annotationReply: (appFeatures?.annotation_reply as Features['annotationReply'] | undefined) ?? defaultFeatureState.annotationReply,
+    annotationReply:
+      (appFeatures?.annotation_reply as Features['annotationReply'] | undefined) ??
+      defaultFeatureState.annotationReply,
   }
 }
 
-function toAppFeatures(features: Features, appFeatures?: AgentSoulAppFeaturesConfig): AgentSoulAppFeaturesConfig {
+function toAppFeatures(
+  features: Features,
+  appFeatures?: AgentSoulAppFeaturesConfig,
+): AgentSoulAppFeaturesConfig {
   return {
     ...appFeatures,
     opening_statement: features.opening?.enabled ? (features.opening.opening_statement ?? '') : '',
-    suggested_questions: features.opening?.enabled ? (features.opening.suggested_questions ?? []) : [],
-    suggested_questions_after_answer: features.suggested as AgentSoulAppFeaturesConfig['suggested_questions_after_answer'],
+    suggested_questions: features.opening?.enabled
+      ? (features.opening.suggested_questions ?? [])
+      : [],
+    suggested_questions_after_answer:
+      features.suggested as AgentSoulAppFeaturesConfig['suggested_questions_after_answer'],
     text_to_speech: features.text2speech as AgentSoulAppFeaturesConfig['text_to_speech'],
     speech_to_text: features.speech2text,
     retriever_resource: features.citation,
-    sensitive_word_avoidance: features.moderation as AgentSoulAppFeaturesConfig['sensitive_word_avoidance'],
+    sensitive_word_avoidance:
+      features.moderation as AgentSoulAppFeaturesConfig['sensitive_word_avoidance'],
     file_upload: features.file,
     annotation_reply: features.annotationReply,
   }
@@ -81,10 +96,11 @@ function AgentChatFeaturesPanelContent({
   const setAppFeatures = useSetAppFeatures()
   const handleChange = useCallback(() => {
     const features = featuresStore?.getState().features
-    if (!features)
-      return
+    if (!features) return
 
-    setAppFeatures(currentAppFeatures => toAppFeatures(features, currentAppFeatures ?? appFeatures))
+    setAppFeatures((currentAppFeatures) =>
+      toAppFeatures(features, currentAppFeatures ?? appFeatures),
+    )
   }, [appFeatures, featuresStore, setAppFeatures])
 
   return (
@@ -104,10 +120,7 @@ function AgentChatFeaturesPanelContent({
   )
 }
 
-export function AgentChatFeaturesPanel({
-  appFeatures,
-  ...props
-}: AgentChatFeaturesPanelProps) {
+export function AgentChatFeaturesPanel({ appFeatures, ...props }: AgentChatFeaturesPanelProps) {
   const features = useMemo(() => toPanelFeatures(appFeatures), [appFeatures])
   const featuresKey = useMemo(() => JSON.stringify(appFeatures ?? {}), [appFeatures])
 

@@ -13,16 +13,31 @@ import { basePath } from '@/utils/var'
 
 const ThreeDotsIcon = ({ className }: SVGProps<SVGElement>) => {
   return (
-    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" className={className ?? ''}>
-      <path d="M5 6.5V5M8.93934 7.56066L10 6.5M10.0103 11.5H11.5103" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className ?? ''}
+    >
+      <path
+        d="M5 6.5V5M8.93934 7.56066L10 6.5M10.0103 11.5H11.5103"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
     </svg>
   )
 }
 
 const EmptyElement: FC<{ appDetail: App }> = ({ appDetail }) => {
   const { t } = useTranslation()
-  const currentUserId = useAppContextWithSelector(state => state.userProfile?.id)
-  const workspacePermissionKeys = useAppContextWithSelector(state => state.workspacePermissionKeys)
+  const currentUserId = useAppContextWithSelector((state) => state.userProfile?.id)
+  const workspacePermissionKeys = useAppContextWithSelector(
+    (state) => state.workspacePermissionKeys,
+  )
   const { data: systemFeatures } = useSuspenseQuery(systemFeaturesQueryOptions())
   const isRbacEnabled = systemFeatures.rbac_enabled
 

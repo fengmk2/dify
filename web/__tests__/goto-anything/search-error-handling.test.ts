@@ -1,4 +1,4 @@
-import type { MockedFunction } from 'vitest'
+import type { MockedFunction } from 'vite-plus/test'
 /**
  * Test GotoAnything search error handling mechanisms
  *
@@ -124,8 +124,20 @@ describe('GotoAnything Search Error Handling', () => {
   describe('Unified search entry error handling', () => {
     it('regular search (without @prefix) should return successful results even when partial APIs fail', async () => {
       // Set app and knowledge success, plugin failure
-      mockFetchAppList.mockResolvedValue({ data: [], has_more: false, limit: 10, page: 1, total: 0 })
-      mockFetchDatasets.mockResolvedValue({ data: [], has_more: false, limit: 10, page: 1, total: 0 })
+      mockFetchAppList.mockResolvedValue({
+        data: [],
+        has_more: false,
+        limit: 10,
+        page: 1,
+        total: 0,
+      })
+      mockFetchDatasets.mockResolvedValue({
+        data: [],
+        has_more: false,
+        limit: 10,
+        page: 1,
+        total: 0,
+      })
       mockPostMarketplace.mockRejectedValue(new Error('Plugin API failed'))
 
       const result = await searchAnything('en', 'test')

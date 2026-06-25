@@ -13,7 +13,8 @@ import { Button } from '../button'
 import { FieldControl, FieldDescription, FieldError, FieldLabel, FieldRoot } from '../field'
 import { Form } from '../form'
 
-const triggerButtonClassName = 'rounded-lg border border-divider-subtle bg-components-button-secondary-bg px-3 py-1.5 text-sm text-text-secondary shadow-xs hover:bg-state-base-hover'
+const triggerButtonClassName =
+  'rounded-lg border border-divider-subtle bg-components-button-secondary-bg px-3 py-1.5 text-sm text-text-secondary shadow-xs hover:bg-state-base-hover'
 
 const meta = {
   title: 'Base/UI/Dialog',
@@ -22,7 +23,8 @@ const meta = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Compound modal dialog built on Base UI Dialog. Use it for focused flows that interrupt the user, such as editing settings, confirming non-destructive actions, or collecting short-form input. Compose `DialogTitle`, `DialogDescription`, and optional `DialogCloseButton` inside `DialogContent`.',
+        component:
+          'Compound modal dialog built on Base UI Dialog. Use it for focused flows that interrupt the user, such as editing settings, confirming non-destructive actions, or collecting short-form input. Compose `DialogTitle`, `DialogDescription`, and optional `DialogCloseButton` inside `DialogContent`.',
       },
     },
   },
@@ -35,9 +37,7 @@ type Story = StoryObj<typeof meta>
 export const Default: Story = {
   render: () => (
     <Dialog>
-      <DialogTrigger
-        render={<button type="button" className={triggerButtonClassName} />}
-      >
+      <DialogTrigger render={<button type="button" className={triggerButtonClassName} />}>
         Open dialog
       </DialogTrigger>
       <DialogContent>
@@ -80,7 +80,9 @@ export const Default: Story = {
 
     await userEvent.click(body.getByRole('button', { name: 'Close' }))
     await waitFor(async () => {
-      await expect(body.queryByRole('dialog', { name: 'Invite collaborators' })).not.toBeInTheDocument()
+      await expect(
+        body.queryByRole('dialog', { name: 'Invite collaborators' }),
+      ).not.toBeInTheDocument()
     })
   },
 }
@@ -88,9 +90,7 @@ export const Default: Story = {
 export const WithoutCloseButton: Story = {
   render: () => (
     <Dialog>
-      <DialogTrigger
-        render={<button type="button" className={triggerButtonClassName} />}
-      >
+      <DialogTrigger render={<button type="button" className={triggerButtonClassName} />}>
         Start onboarding
       </DialogTrigger>
       <DialogContent>
@@ -99,7 +99,8 @@ export const WithoutCloseButton: Story = {
             Welcome to Dify
           </DialogTitle>
           <DialogDescription className="text-sm leading-5 text-text-secondary">
-            Let's get your workspace ready. This takes about a minute and sets up your default models, datasets, and API keys.
+            Let's get your workspace ready. This takes about a minute and sets up your default
+            models, datasets, and API keys.
           </DialogDescription>
         </div>
         <div className="mt-6 flex items-center justify-end gap-2">
@@ -119,11 +120,7 @@ const ControlledDemo = () => {
       <Button variant="secondary" onClick={() => setOpen(true)}>
         Open controlled dialog
       </Button>
-      <span className="text-xs text-text-tertiary">
-        State:
-        {' '}
-        {open ? 'open' : 'closed'}
-      </span>
+      <span className="text-xs text-text-tertiary">State: {open ? 'open' : 'closed'}</span>
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent>
           <DialogCloseButton />
@@ -169,9 +166,7 @@ const FormDialogDemo = () => {
 
   return (
     <Dialog open={open} onOpenChange={setOpen} disablePointerDismissal>
-      <DialogTrigger
-        render={<button type="button" className={triggerButtonClassName} />}
-      >
+      <DialogTrigger render={<button type="button" className={triggerButtonClassName} />}>
         Configure API extension
       </DialogTrigger>
       <DialogContent backdropProps={{ forceRender: true }} className="w-160">
@@ -244,9 +239,7 @@ export const FormDialog: Story = {
 export const ScrollingContent: Story = {
   render: () => (
     <Dialog>
-      <DialogTrigger
-        render={<button type="button" className={triggerButtonClassName} />}
-      >
+      <DialogTrigger render={<button type="button" className={triggerButtonClassName} />}>
         Review release notes
       </DialogTrigger>
       <DialogContent>
@@ -262,13 +255,9 @@ export const ScrollingContent: Story = {
         <ul className="mt-4 flex flex-col gap-3 text-sm leading-5 text-text-secondary">
           {Array.from({ length: 24 }, (_, index) => `improvement-${index + 1}`).map((id, index) => (
             <li key={id} className="rounded-lg bg-background-default-subtle px-3 py-2">
-              <span className="font-medium text-text-primary">
-                Improvement #
-                {index + 1}
-                :
-              </span>
-              {' '}
-              Refined a workflow behavior so long content naturally overflows and scrolls inside the dialog.
+              <span className="font-medium text-text-primary">Improvement #{index + 1}:</span>{' '}
+              Refined a workflow behavior so long content naturally overflows and scrolls inside the
+              dialog.
             </li>
           ))}
         </ul>

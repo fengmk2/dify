@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { render } from '@testing-library/react'
 import { Provider as JotaiProvider } from 'jotai'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { createNuqsTestWrapper } from '@/test/nuqs-testing'
 import StickySearchAndSwitchWrapper from '../sticky-search-and-switch-wrapper'
 
@@ -24,9 +24,7 @@ const createWrapper = () => {
   const { wrapper: NuqsWrapper } = createNuqsTestWrapper()
   const Wrapper = ({ children }: { children: ReactNode }) => (
     <JotaiProvider>
-      <NuqsWrapper>
-        {children}
-      </NuqsWrapper>
+      <NuqsWrapper>{children}</NuqsWrapper>
     </JotaiProvider>
   )
   return { Wrapper }
@@ -39,10 +37,7 @@ describe('StickySearchAndSwitchWrapper', () => {
 
   it('should render SearchBoxWrapper and PluginTypeSwitch', () => {
     const { Wrapper } = createWrapper()
-    const { getByTestId } = render(
-      <StickySearchAndSwitchWrapper />,
-      { wrapper: Wrapper },
-    )
+    const { getByTestId } = render(<StickySearchAndSwitchWrapper />, { wrapper: Wrapper })
 
     expect(getByTestId('search-box-wrapper')).toBeInTheDocument()
     expect(getByTestId('plugin-type-switch')).toBeInTheDocument()
@@ -50,10 +45,7 @@ describe('StickySearchAndSwitchWrapper', () => {
 
   it('should not apply sticky class when no pluginTypeSwitchClassName', () => {
     const { Wrapper } = createWrapper()
-    const { container } = render(
-      <StickySearchAndSwitchWrapper />,
-      { wrapper: Wrapper },
-    )
+    const { container } = render(<StickySearchAndSwitchWrapper />, { wrapper: Wrapper })
 
     const outerDiv = container.firstChild as HTMLElement
     expect(outerDiv.className).toContain('mt-4')

@@ -3,7 +3,7 @@ import type { MutationFunctionContext } from '@tanstack/react-query'
 import type { consoleQuery as ConsoleQuery } from './client'
 import type { Tag } from '@/contract/console/tags'
 import { QueryClient } from '@tanstack/react-query'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 
 const loadGetBaseURL = async (isClientValue: boolean) => {
   vi.resetModules()
@@ -36,7 +36,9 @@ const createTag = (overrides: Partial<Tag> = {}): Tag => ({
   ...overrides,
 })
 
-const createApiBasedExtension = (overrides: Partial<ApiBasedExtensionResponse> = {}): ApiBasedExtensionResponse => ({
+const createApiBasedExtension = (
+  overrides: Partial<ApiBasedExtensionResponse> = {},
+): ApiBasedExtensionResponse => ({
   id: 'extension-1',
   name: 'Weather',
   api_endpoint: 'https://api.example.com/weather',
@@ -44,8 +46,14 @@ const createApiBasedExtension = (overrides: Partial<ApiBasedExtensionResponse> =
   ...overrides,
 })
 
-type AgentMutationResponse = Parameters<NonNullable<ReturnType<typeof ConsoleQuery.agent.post.mutationOptions>['onSuccess']>>[0]
-type AgentComposerMutationResponse = Parameters<NonNullable<ReturnType<typeof ConsoleQuery.agent.byAgentId.composer.put.mutationOptions>['onSuccess']>>[0]
+type AgentMutationResponse = Parameters<
+  NonNullable<ReturnType<typeof ConsoleQuery.agent.post.mutationOptions>['onSuccess']>
+>[0]
+type AgentComposerMutationResponse = Parameters<
+  NonNullable<
+    ReturnType<typeof ConsoleQuery.agent.byAgentId.composer.put.mutationOptions>['onSuccess']
+  >
+>[0]
 
 const createAgent = (overrides: Partial<AgentMutationResponse> = {}): AgentMutationResponse => ({
   ...overrides,
@@ -60,7 +68,9 @@ const createAgent = (overrides: Partial<AgentMutationResponse> = {}): AgentMutat
   role: overrides.role ?? 'Assistant',
 })
 
-const createComposerState = (overrides: Partial<AgentComposerMutationResponse> = {}): AgentComposerMutationResponse => ({
+const createComposerState = (
+  overrides: Partial<AgentComposerMutationResponse> = {},
+): AgentComposerMutationResponse => ({
   active_config_snapshot: {
     id: 'snapshot-1',
     version: 1,
@@ -116,7 +126,9 @@ describe('getBaseURL', () => {
     // Assert
     expect(url.href).toBe('http://localhost/api')
     expect(warnSpy).toHaveBeenCalledTimes(1)
-    expect(warnSpy).toHaveBeenCalledWith('Using localhost as base URL in server environment, please configure accordingly.')
+    expect(warnSpy).toHaveBeenCalledWith(
+      'Using localhost as base URL in server environment, please configure accordingly.',
+    )
   })
 
   // Scenario: non-http protocols surface warnings.
@@ -207,13 +219,17 @@ describe('consoleQuery agent mutation defaults', () => {
       createMutationContext(queryClient),
     )
 
-    expect(queryClient.getQueryData(consoleQuery.agent.byAgentId.get.queryKey({
-      input: {
-        params: {
-          agent_id: copiedAgent.id,
-        },
-      },
-    }))).toEqual(copiedAgent)
+    expect(
+      queryClient.getQueryData(
+        consoleQuery.agent.byAgentId.get.queryKey({
+          input: {
+            params: {
+              agent_id: copiedAgent.id,
+            },
+          },
+        }),
+      ),
+    ).toEqual(copiedAgent)
     expect(invalidateQueries).toHaveBeenCalledWith({
       queryKey: consoleQuery.agent.get.key(),
     })
@@ -493,10 +509,7 @@ describe('consoleQuery tag mutation defaults', () => {
       createMutationContext(queryClient),
     )
 
-    expect(queryClient.getQueryData(appListKey)).toEqual([
-      updatedTag,
-      otherTag,
-    ])
+    expect(queryClient.getQueryData(appListKey)).toEqual([updatedTag, otherTag])
     expect(queryClient.getQueryData(knowledgeListKey)).toEqual([knowledgeTag])
   })
 

@@ -1,7 +1,7 @@
 import type { Plugin } from '@/app/components/plugins/types'
 import type { Collection } from '@/app/components/tools/types'
 import { act, renderHook, waitFor } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { SCROLL_BOTTOM_THRESHOLD } from '@/app/components/plugins/marketplace/constants'
 import { getMarketplaceListCondition } from '@/app/components/plugins/marketplace/utils'
 import { PluginCategoryEnum } from '@/app/components/plugins/types'
@@ -19,7 +19,8 @@ const mockFetchNextPage = vi.fn()
 const mockUseMarketplaceCollectionsAndPlugins = vi.fn()
 const mockUseMarketplacePlugins = vi.fn()
 vi.mock('@/app/components/plugins/marketplace/hooks', () => ({
-  useMarketplaceCollectionsAndPlugins: (...args: unknown[]) => mockUseMarketplaceCollectionsAndPlugins(...args),
+  useMarketplaceCollectionsAndPlugins: (...args: unknown[]) =>
+    mockUseMarketplaceCollectionsAndPlugins(...args),
   useMarketplacePlugins: (...args: unknown[]) => mockUseMarketplacePlugins(...args),
 }))
 

@@ -16,10 +16,7 @@ import {
 import { ScrollArea } from '@langgenius/dify-ui/scroll-area'
 import { Fragment } from 'react'
 
-type AgentFileTreeFolderOpenStrategy = (context: {
-  file: AgentFileNode
-  depth: number
-}) => boolean
+type AgentFileTreeFolderOpenStrategy = (context: { file: AgentFileNode; depth: number }) => boolean
 
 type AgentFileTreeRenderFile = (context: {
   depth: number
@@ -47,19 +44,20 @@ function AgentFileTreeRows({
     const children = (
       <>
         <FileTreeIcon type={file.icon} />
-        <FileTreeLabel className="max-w-full" title={file.name}>{file.name}</FileTreeLabel>
+        <FileTreeLabel className="max-w-full" title={file.name}>
+          {file.name}
+        </FileTreeLabel>
       </>
     )
 
     if (file.children?.length) {
       return (
-        <FileTreeFolder
-          key={file.id}
-          defaultOpen={folderOpenStrategy({ file, depth })}
-        >
+        <FileTreeFolder key={file.id} defaultOpen={folderOpenStrategy({ file, depth })}>
           <FileTreeFolderTrigger>
             <FileTreeIcon type="folder" />
-            <FileTreeLabel className="max-w-full" title={file.name}>{file.name}</FileTreeLabel>
+            <FileTreeLabel className="max-w-full" title={file.name}>
+              {file.name}
+            </FileTreeLabel>
           </FileTreeFolderTrigger>
           <FileTreeFolderPanel>
             <AgentFileTreeRows
@@ -88,9 +86,7 @@ function AgentFileTreeRows({
 }
 
 const defaultRenderFile: AgentFileTreeRenderFile = ({ selected, children }) => (
-  <FileTreeFile selected={selected}>
-    {children}
-  </FileTreeFile>
+  <FileTreeFile selected={selected}>{children}</FileTreeFile>
 )
 
 export function AgentFileTree({

@@ -25,8 +25,7 @@ export function OutputTypeSelect({
     <Select<OutputTypeOptionValue>
       value={value}
       onValueChange={(nextValue) => {
-        if (nextValue)
-          onChange(nextValue)
+        if (nextValue) onChange(nextValue)
       }}
     >
       <SelectLabel className="sr-only">
@@ -39,7 +38,7 @@ export function OutputTypeSelect({
         {selected.label}
       </SelectTrigger>
       <SelectContent popupClassName="w-40">
-        {OUTPUT_TYPE_OPTIONS.map(option => (
+        {OUTPUT_TYPE_OPTIONS.map((option) => (
           <SelectItem key={option.value} value={option.value}>
             <SelectItemText>{option.label}</SelectItemText>
             <SelectItemIndicator />

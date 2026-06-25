@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import useWebAppBrand from '../hooks/use-web-app-brand'
 import CustomWebAppBrand from '../index'
 
@@ -9,7 +9,9 @@ vi.mock('../hooks/use-web-app-brand', () => ({
 
 const mockUseWebAppBrand = vi.mocked(useWebAppBrand)
 
-const createHookState = (overrides: Partial<ReturnType<typeof useWebAppBrand>> = {}): ReturnType<typeof useWebAppBrand> => ({
+const createHookState = (
+  overrides: Partial<ReturnType<typeof useWebAppBrand>> = {},
+): ReturnType<typeof useWebAppBrand> => ({
   fileId: '',
   imgKey: 100,
   uploadProgress: 0,

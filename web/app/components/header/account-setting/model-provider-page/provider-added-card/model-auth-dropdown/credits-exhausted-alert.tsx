@@ -12,9 +12,13 @@ type CreditsExhaustedAlertProps = {
   totalCredits?: number
 }
 
-export default function CreditsExhaustedAlert({ hasApiKeyFallback, credits: creditsOverride, totalCredits: totalCreditsOverride }: CreditsExhaustedAlertProps) {
+export default function CreditsExhaustedAlert({
+  hasApiKeyFallback,
+  credits: creditsOverride,
+  totalCredits: totalCreditsOverride,
+}: CreditsExhaustedAlertProps) {
   const { t } = useTranslation()
-  const setShowPricingModal = useModalContextSelector(s => s.setShowPricingModal)
+  const setShowPricingModal = useModalContextSelector((s) => s.setShowPricingModal)
   const trialCredits = useTrialCredits()
   const credits = creditsOverride ?? trialCredits.credits
   const totalCredits = totalCreditsOverride ?? trialCredits.totalCredits
@@ -34,23 +38,21 @@ export default function CreditsExhaustedAlert({ hasApiKeyFallback, credits: cred
   return (
     <div className="mx-2 mt-0.5 mb-1 rounded-lg bg-background-section-burn p-3">
       <div className="flex flex-col gap-1">
-        <div className="system-sm-medium text-text-primary">
-          {t(titleKey, { ns: 'common' })}
-        </div>
+        <div className="system-sm-medium text-text-primary">{t(titleKey, { ns: 'common' })}</div>
         <div className="system-xs-regular text-text-tertiary">
           <Trans
             i18nKey={descriptionKey}
             ns="common"
             components={{
-              upgradeLink: IS_CLOUD_EDITION
-                ? (
-                    <button
-                      type="button"
-                      className="cursor-pointer border-0 bg-transparent p-0 text-left system-xs-medium text-text-accent"
-                      onClick={() => setShowPricingModal()}
-                    />
-                  )
-                : <span />,
+              upgradeLink: IS_CLOUD_EDITION ? (
+                <button
+                  type="button"
+                  className="cursor-pointer border-0 bg-transparent p-0 text-left system-xs-medium text-text-accent"
+                  onClick={() => setShowPricingModal()}
+                />
+              ) : (
+                <span />
+              ),
             }}
           />
         </div>
@@ -64,9 +66,7 @@ export default function CreditsExhaustedAlert({ hasApiKeyFallback, credits: cred
             {/* eslint-disable-next-line hyoban/prefer-tailwind-icons -- This generated icon class is not available to Tailwind. */}
             <CreditsCoin className="size-3" />
             <span>
-              {formatNumber(usedCredits)}
-              /
-              {formatNumber(totalCredits)}
+              {formatNumber(usedCredits)}/{formatNumber(totalCredits)}
             </span>
           </div>
         </div>

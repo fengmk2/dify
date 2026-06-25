@@ -1,7 +1,16 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import SnippetCreateButton from '../snippet-create-button'
 
-const { mockPush, mockCreateMutateAsync, mockSyncDraftWorkflow, mockImportMutateAsync, mockConfirmImportMutateAsync, mockToastSuccess, mockToastError, mockWorkspacePermissionKeys } = vi.hoisted(() => ({
+const {
+  mockPush,
+  mockCreateMutateAsync,
+  mockSyncDraftWorkflow,
+  mockImportMutateAsync,
+  mockConfirmImportMutateAsync,
+  mockToastSuccess,
+  mockToastError,
+  mockWorkspacePermissionKeys,
+} = vi.hoisted(() => ({
   mockPush: vi.fn(),
   mockCreateMutateAsync: vi.fn(),
   mockSyncDraftWorkflow: vi.fn(),
@@ -29,9 +38,10 @@ vi.mock('@/context/app-context', () => ({
   useAppContext: () => ({
     workspacePermissionKeys: mockWorkspacePermissionKeys(),
   }),
-  useSelector: <T,>(selector: (state: { workspacePermissionKeys: string[] }) => T): T => selector({
-    workspacePermissionKeys: mockWorkspacePermissionKeys(),
-  }),
+  useSelector: <T,>(selector: (state: { workspacePermissionKeys: string[] }) => T): T =>
+    selector({
+      workspacePermissionKeys: mockWorkspacePermissionKeys(),
+    }),
 }))
 
 vi.mock('@/service/use-snippets', () => ({
@@ -73,7 +83,11 @@ describe('SnippetCreateButton', () => {
 
   it('should open the create dialog and create a snippet from the modal', async () => {
     mockCreateMutateAsync.mockResolvedValue({ id: 'snippet-123' })
-    mockSyncDraftWorkflow.mockResolvedValue({ result: 'success', hash: 'draft-hash', updated_at: 1704067200 })
+    mockSyncDraftWorkflow.mockResolvedValue({
+      result: 'success',
+      hash: 'draft-hash',
+      updated_at: 1704067200,
+    })
 
     render(<SnippetCreateButton />)
 

@@ -10,7 +10,9 @@ import {
 } from '@/context/app-context'
 import AgentLogItem from '../agent-log-item'
 
-const createLogItem = (overrides: Partial<AgentLogItemWithChildren> = {}): AgentLogItemWithChildren => ({
+const createLogItem = (
+  overrides: Partial<AgentLogItemWithChildren> = {},
+): AgentLogItemWithChildren => ({
   message_id: 'message-1',
   label: 'Planner',
   children: [],
@@ -43,7 +45,7 @@ const createAppContextValue = (): AppContextValue => {
     isValidatingCurrentWorkspace: false,
     workspacePermissionKeys: [],
   }
-  const useSelector: AppContextValue['useSelector'] = selector => selector(value)
+  const useSelector: AppContextValue['useSelector'] = (selector) => selector(value)
   value = {
     ...base,
     useSelector,
@@ -66,10 +68,7 @@ describe('AgentLogItem', () => {
 
     render(
       <AppContext.Provider value={createAppContextValue()}>
-        <AgentLogItem
-          item={item}
-          onShowAgentOrToolLog={onShowAgentOrToolLog}
-        />
+        <AgentLogItem item={item} onShowAgentOrToolLog={onShowAgentOrToolLog} />
       </AppContext.Provider>,
     )
 
@@ -79,7 +78,9 @@ describe('AgentLogItem', () => {
     await user.click(screen.getByText('Planner'))
 
     expect(screen.getByRole('button', { name: /1 Action Logs/i })).toBeInTheDocument()
-    expect((screen.getByTestId('monaco-editor') as HTMLTextAreaElement).value).toContain('inspect data')
+    expect((screen.getByTestId('monaco-editor') as HTMLTextAreaElement).value).toContain(
+      'inspect data',
+    )
 
     await user.click(screen.getByRole('button', { name: /1 Action Logs/i }))
 

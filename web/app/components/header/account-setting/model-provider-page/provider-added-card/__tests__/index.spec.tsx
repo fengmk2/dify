@@ -8,19 +8,27 @@ import { ConfigurationMethodEnum } from '../../declarations'
 import ProviderAddedCard from '../index'
 
 let mockIsCurrentWorkspaceManager = true
-let mockWorkspacePermissionKeys: string[] = ['plugin.model_config', 'credential.use', 'credential.create', 'credential.manage']
+let mockWorkspacePermissionKeys: string[] = [
+  'plugin.model_config',
+  'credential.use',
+  'credential.create',
+  'credential.manage',
+]
 const mockFetchModelProviderModels = vi.fn()
-const mockQueryOptions = vi.fn(({ input, ...options }: { input: { params: { provider: string } }, enabled?: boolean }) => ({
-  queryKey: ['console', 'modelProviders', 'models', input.params.provider],
-  queryFn: () => mockFetchModelProviderModels(input.params.provider),
-  ...options,
-}))
+const mockQueryOptions = vi.fn(
+  ({ input, ...options }: { input: { params: { provider: string } }; enabled?: boolean }) => ({
+    queryKey: ['console', 'modelProviders', 'models', input.params.provider],
+    queryFn: () => mockFetchModelProviderModels(input.params.provider),
+    ...options,
+  }),
+)
 
 vi.mock('@/service/client', () => ({
   consoleQuery: {
     modelProviders: {
       models: {
-        queryOptions: (options: { input: { params: { provider: string } }, enabled?: boolean }) => mockQueryOptions(options),
+        queryOptions: (options: { input: { params: { provider: string } }; enabled?: boolean }) =>
+          mockQueryOptions(options),
       },
     },
   },
@@ -30,9 +38,10 @@ vi.mock('@/context/app-context', () => ({
   useAppContext: () => ({
     isCurrentWorkspaceManager: mockIsCurrentWorkspaceManager,
   }),
-  useSelector: (selector: (state: { workspacePermissionKeys: string[] }) => unknown) => selector({
-    workspacePermissionKeys: mockWorkspacePermissionKeys,
-  }),
+  useSelector: (selector: (state: { workspacePermissionKeys: string[] }) => unknown) =>
+    selector({
+      workspacePermissionKeys: mockWorkspacePermissionKeys,
+    }),
 }))
 
 // Mock internal components to simplify testing of the index file
@@ -41,10 +50,20 @@ vi.mock('../credential-panel', () => ({
 }))
 
 vi.mock('../model-list', () => ({
-  default: ({ onCollapse, onChange }: { onCollapse: () => void, onChange: (provider: string) => void }) => (
+  default: ({
+    onCollapse,
+    onChange,
+  }: {
+    onCollapse: () => void
+    onChange: (provider: string) => void
+  }) => (
     <div data-testid="model-list">
-      <button type="button" onClick={onCollapse}>collapse list</button>
-      <button type="button" onClick={() => onChange('langgenius/openai/openai')}>refresh list</button>
+      <button type="button" onClick={onCollapse}>
+        collapse list
+      </button>
+      <button type="button" onClick={() => onChange('langgenius/openai/openai')}>
+        refresh list
+      </button>
     </div>
   ),
 }))
@@ -62,20 +81,19 @@ vi.mock('@/app/components/header/account-setting/model-provider-page/model-auth'
   ManageCustomModelCredentials: () => <div data-testid="manage-custom-model" />,
 }))
 
-const createTestQueryClient = () => new QueryClient({
-  defaultOptions: {
-    queries: { retry: false, gcTime: 0 },
-  },
-})
+const createTestQueryClient = () =>
+  new QueryClient({
+    defaultOptions: {
+      queries: { retry: false, gcTime: 0 },
+    },
+  })
 
 const renderWithQueryClient = (node: ReactNode) => {
   const queryClient = createTestQueryClient()
   const store = createStore()
   return render(
     <JotaiProvider store={store}>
-      <QueryClientProvider client={queryClient}>
-        {node}
-      </QueryClientProvider>
+      <QueryClientProvider client={queryClient}>{node}</QueryClientProvider>
     </JotaiProvider>,
   )
 }
@@ -84,10 +102,18 @@ const ExternalExpandControls = () => {
   const expandModelProviderList = useExpandModelProviderList()
   return (
     <>
-      <button type="button" data-testid="expand-other-provider" onClick={() => expandModelProviderList('langgenius/anthropic/anthropic')}>
+      <button
+        type="button"
+        data-testid="expand-other-provider"
+        onClick={() => expandModelProviderList('langgenius/anthropic/anthropic')}
+      >
         expand other
       </button>
-      <button type="button" data-testid="expand-current-provider" onClick={() => expandModelProviderList('langgenius/openai/openai')}>
+      <button
+        type="button"
+        data-testid="expand-current-provider"
+        onClick={() => expandModelProviderList('langgenius/openai/openai')}
+      >
         expand current
       </button>
     </>
@@ -105,7 +131,12 @@ describe('ProviderAddedCard', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     mockIsCurrentWorkspaceManager = true
-    mockWorkspacePermissionKeys = ['plugin.model_config', 'credential.use', 'credential.create', 'credential.manage']
+    mockWorkspacePermissionKeys = [
+      'plugin.model_config',
+      'credential.use',
+      'credential.create',
+      'credential.manage',
+    ]
   })
 
   it('should render provider added card component', () => {
@@ -145,7 +176,7 @@ describe('ProviderAddedCard', () => {
   })
 
   it('should handle concurrent getModelList calls (loading state coverage)', async () => {
-    let resolveOuter: (value: unknown) => void = () => { }
+    let resolveOuter: (value: unknown) => void = () => {}
     const promise = new Promise((resolve) => {
       resolveOuter = resolve
     })

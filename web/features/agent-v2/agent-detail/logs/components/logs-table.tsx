@@ -99,9 +99,7 @@ function AgentLogsTableBody({
 
   return (
     <tbody className="system-sm-regular text-text-secondary">
-      {isPending && (
-        <LogsSkeletonRows />
-      )}
+      {isPending && <LogsSkeletonRows />}
       {isError && (
         <LogsStateRow>
           <div className="flex items-center justify-center gap-2">
@@ -112,49 +110,39 @@ function AgentLogsTableBody({
           </div>
         </LogsStateRow>
       )}
-      {isSuccess && logs.length === 0 && (
-        <LogsStateRow>
-          {t('agentDetail.logs.empty')}
-        </LogsStateRow>
-      )}
-      {isSuccess && logs.map(log => (
-        <tr
-          key={log.id}
-          className="h-10 border-b border-divider-subtle hover:bg-background-default-hover"
-        >
-          <td className="px-0">
-            <span className={cn(
-              'mx-auto block size-1.5 rounded-full',
-              log.unread ? 'bg-util-colors-blue-blue-500' : 'bg-transparent',
-            )}
-            />
-          </td>
-          <TableCell className="system-sm-medium text-text-secondary">
-            {log.title || notAvailable}
-          </TableCell>
-          <td className="px-3">
-            <LogSourceCell source={log.source} />
-          </td>
-          <TableCell translate="no">
-            {log.end_user_id || notAvailable}
-          </TableCell>
-          <TableCell className="tabular-nums">
-            {log.message_count}
-          </TableCell>
-          <TableCell className="text-text-quaternary">
-            {formatRate(log.user_rate, notAvailable)}
-          </TableCell>
-          <TableCell className="text-text-quaternary">
-            {formatRate(log.operation_rate, notAvailable)}
-          </TableCell>
-          <TableCell>
-            {formatLogTime(log.updated_at)}
-          </TableCell>
-          <TableCell>
-            {formatLogTime(log.created_at)}
-          </TableCell>
-        </tr>
-      ))}
+      {isSuccess && logs.length === 0 && <LogsStateRow>{t('agentDetail.logs.empty')}</LogsStateRow>}
+      {isSuccess &&
+        logs.map((log) => (
+          <tr
+            key={log.id}
+            className="h-10 border-b border-divider-subtle hover:bg-background-default-hover"
+          >
+            <td className="px-0">
+              <span
+                className={cn(
+                  'mx-auto block size-1.5 rounded-full',
+                  log.unread ? 'bg-util-colors-blue-blue-500' : 'bg-transparent',
+                )}
+              />
+            </td>
+            <TableCell className="system-sm-medium text-text-secondary">
+              {log.title || notAvailable}
+            </TableCell>
+            <td className="px-3">
+              <LogSourceCell source={log.source} />
+            </td>
+            <TableCell translate="no">{log.end_user_id || notAvailable}</TableCell>
+            <TableCell className="tabular-nums">{log.message_count}</TableCell>
+            <TableCell className="text-text-quaternary">
+              {formatRate(log.user_rate, notAvailable)}
+            </TableCell>
+            <TableCell className="text-text-quaternary">
+              {formatRate(log.operation_rate, notAvailable)}
+            </TableCell>
+            <TableCell>{formatLogTime(log.updated_at)}</TableCell>
+            <TableCell>{formatLogTime(log.created_at)}</TableCell>
+          </tr>
+        ))}
     </tbody>
   )
 }
@@ -184,7 +172,12 @@ function LogsTableHeader({
 }) {
   return (
     <thead>
-      <tr className={cn('h-7 bg-background-section-burn text-left system-xs-medium-uppercase text-text-tertiary', rowClassName)}>
+      <tr
+        className={cn(
+          'h-7 bg-background-section-burn text-left system-xs-medium-uppercase text-text-tertiary',
+          rowClassName,
+        )}
+      >
         <th scope="col" className="rounded-l-lg px-0">
           <span className="sr-only">{labels.unread}</span>
         </th>
@@ -217,11 +210,7 @@ function LogsTableColGroup() {
   )
 }
 
-function LogsStateRow({
-  children,
-}: {
-  children: ReactNode
-}) {
+function LogsStateRow({ children }: { children: ReactNode }) {
   return (
     <tr className="h-20 border-b border-divider-subtle">
       <td colSpan={9} className="px-3 text-center text-text-tertiary">
@@ -272,32 +261,14 @@ function LogsSkeletonRows() {
   )
 }
 
-function TableHead({
-  className,
-  ...props
-}: ThHTMLAttributes<HTMLTableCellElement>) {
-  return (
-    <th
-      scope="col"
-      className={cn('px-3 text-left whitespace-nowrap', className)}
-      {...props}
-    />
-  )
+function TableHead({ className, ...props }: ThHTMLAttributes<HTMLTableCellElement>) {
+  return <th scope="col" className={cn('px-3 text-left whitespace-nowrap', className)} {...props} />
 }
 
-function TableCell({
-  children,
-  className,
-  ...props
-}: TdHTMLAttributes<HTMLTableCellElement>) {
+function TableCell({ children, className, ...props }: TdHTMLAttributes<HTMLTableCellElement>) {
   return (
-    <td
-      className={cn('min-w-0 px-3 whitespace-nowrap', className)}
-      {...props}
-    >
-      <div className="truncate">
-        {children}
-      </div>
+    <td className={cn('min-w-0 px-3 whitespace-nowrap', className)} {...props}>
+      <div className="truncate">{children}</div>
     </td>
   )
 }

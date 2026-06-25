@@ -21,24 +21,19 @@ const marketplacePluginTabs = new Set<string>([
 ])
 
 const getFirstSearchParamValue = (value: string | string[] | undefined) => {
-  if (Array.isArray(value))
-    return value[0]
+  if (Array.isArray(value)) return value[0]
 
   return value
 }
 
-const buildMarketplaceRedirectPath = (
-  searchParams: LegacyPluginsSearchParams,
-  tab: string,
-) => {
+const buildMarketplaceRedirectPath = (searchParams: LegacyPluginsSearchParams, tab: string) => {
   const preservedSearchParams = new URLSearchParams()
 
   Object.entries(searchParams).forEach(([key, value]) => {
-    if (key === 'tab' || value === undefined)
-      return
+    if (key === 'tab' || value === undefined) return
 
     if (Array.isArray(value)) {
-      value.forEach(item => preservedSearchParams.append(key, item))
+      value.forEach((item) => preservedSearchParams.append(key, item))
       return
     }
 
@@ -52,20 +47,15 @@ const buildMarketplaceRedirectPath = (
   return query ? `/marketplace?${query}` : '/marketplace'
 }
 
-export const getLegacyPluginRedirectPath = (
-  searchParams: LegacyPluginsSearchParams = {},
-) => {
+export const getLegacyPluginRedirectPath = (searchParams: LegacyPluginsSearchParams = {}) => {
   const tab = getFirstSearchParamValue(searchParams.tab)
 
-  if (!tab || tab === INSTALLED_PLUGINS_TAB)
-    return '/integrations'
+  if (!tab || tab === INSTALLED_PLUGINS_TAB) return '/integrations'
 
   const integrationPluginPath = getIntegrationPluginPathByTab(tab)
-  if (integrationPluginPath)
-    return integrationPluginPath
+  if (integrationPluginPath) return integrationPluginPath
 
-  if (marketplacePluginTabs.has(tab))
-    return buildMarketplaceRedirectPath(searchParams, tab)
+  if (marketplacePluginTabs.has(tab)) return buildMarketplaceRedirectPath(searchParams, tab)
 
   return undefined
 }

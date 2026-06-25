@@ -39,16 +39,19 @@ registry discovery and from coverage checks.
 ## Adding an agent guide
 
 1. Create `src/commands/<topic>/<verb>/guide.ts` exporting a plain string:
+
    ```ts
    export const agentGuide = `
    WORKFLOW
      1. ...
-
+   
    ERROR RECOVERY
      ...
    `
    ```
+
 1. Import and assign in `index.ts`:
+
    ```ts
    import { agentGuide } from './guide.js'
 
@@ -56,6 +59,7 @@ registry discovery and from coverage checks.
      static agentGuide = agentGuide
    }
    ```
+
 1. The guide appears at the bottom of `difyctl <cmd> --help` automatically.
 1. Agents call `difyctl <cmd> --help` to read both structural help and workflow guidance.
 

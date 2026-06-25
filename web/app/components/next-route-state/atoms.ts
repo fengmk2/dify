@@ -31,15 +31,15 @@ function routeParamsKey(params: NextRouteParams) {
   return JSON.stringify(normalizedParamEntries(params))
 }
 
-export const nextParamsAtom = atom(get => get(nextRouteStateAtom).params)
+export const nextParamsAtom = atom((get) => get(nextRouteStateAtom).params)
 
 export const setNextRouteStateAtom = atom(null, (get, set, routeState: NextRouteState) => {
   const nextParams = normalizeNextRouteParams(routeState.params)
   const currentRouteState = get(nextRouteStateAtom)
 
   if (
-    currentRouteState.pathname !== routeState.pathname
-    || routeParamsKey(currentRouteState.params) !== routeParamsKey(nextParams)
+    currentRouteState.pathname !== routeState.pathname ||
+    routeParamsKey(currentRouteState.params) !== routeParamsKey(nextParams)
   ) {
     set(nextRouteStateAtom, {
       pathname: routeState.pathname,

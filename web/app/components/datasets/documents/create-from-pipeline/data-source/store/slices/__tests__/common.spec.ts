@@ -1,5 +1,5 @@
 import type { CommonShape } from '../common'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import { createStore } from 'zustand'
 import { createCommonSlice } from '../common'
 

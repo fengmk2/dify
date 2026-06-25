@@ -10,7 +10,7 @@
  */
 import { act, render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import ApiServer from '@/app/components/develop/ApiServer'
 
 // ---------- fake timers (modal transitions) ----------

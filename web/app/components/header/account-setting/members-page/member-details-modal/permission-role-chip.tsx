@@ -37,49 +37,44 @@ const PermissionRoleChip = ({
   const permissions = permissionKeys
   const canOpenMenu = !isOwner && !!onRemove
   const permissionLabels = permissions
-    .map(key => t(key, {
-      ns: 'permissionKeys',
-      defaultValue: key,
-    }))
+    .map((key) =>
+      t(key, {
+        ns: 'permissionKeys',
+        defaultValue: key,
+      }),
+    )
     .join(', ')
   const hasPermissionLabels = permissionLabels.length > 0
 
   const chipClassName = cn(
     'inline-flex h-6 max-w-full items-center rounded-full border-[0.5px] border-components-panel-border-subtle bg-background-body p-1 system-xs-regular text-text-primary shadow-xs transition-colors outline-none',
-    canOpenMenu && 'cursor-pointer hover:bg-background-section-burn focus-visible:ring-1 focus-visible:ring-components-input-border-active focus-visible:outline-hidden',
+    canOpenMenu &&
+      'cursor-pointer hover:bg-background-section-burn focus-visible:ring-1 focus-visible:ring-components-input-border-active focus-visible:outline-hidden',
     open && 'bg-background-section-burn',
     className,
   )
 
-  const chipContent = (
-    <span className="min-w-0 truncate px-1 leading-4">{label}</span>
-  )
+  const chipContent = <span className="min-w-0 truncate px-1 leading-4">{label}</span>
 
-  const chip = canOpenMenu
-    ? (
-        <button
-          type="button"
-          className={chipClassName}
-          aria-label={t('members.memberDetails.roleActionsAria', {
-            ns: 'common',
-            role: label,
-            defaultValue: 'Open actions for {{role}} role',
-          })}
-          data-testid="permission-role-chip"
-          data-role-id={roleId}
-        >
-          {chipContent}
-        </button>
-      )
-    : (
-        <span
-          className={chipClassName}
-          data-testid="permission-role-chip"
-          data-role-id={roleId}
-        >
-          {chipContent}
-        </span>
-      )
+  const chip = canOpenMenu ? (
+    <button
+      type="button"
+      className={chipClassName}
+      aria-label={t('members.memberDetails.roleActionsAria', {
+        ns: 'common',
+        role: label,
+        defaultValue: 'Open actions for {{role}} role',
+      })}
+      data-testid="permission-role-chip"
+      data-role-id={roleId}
+    >
+      {chipContent}
+    </button>
+  ) : (
+    <span className={chipClassName} data-testid="permission-role-chip" data-role-id={roleId}>
+      {chipContent}
+    </span>
+  )
 
   const permissionSummary = (
     <div className="flex w-58 flex-col gap-1 px-4 py-3.5">
@@ -87,24 +82,24 @@ const PermissionRoleChip = ({
         {label}
       </div>
       <div className="body-xs-regular text-text-secondary">
-        {hasPermissionLabels
-          ? (
-              <Trans
-                i18nKey="members.memberDetails.rolePermissionSummary"
-                ns="common"
-                values={{
-                  role: label,
-                  permissions: permissionLabels,
-                }}
-                components={{
-                  permissionList: <span className="text-text-accent" />,
-                }}
-              />
-            )
-          : t('members.memberDetails.roleNoPermissionSummary', {
-              ns: 'common',
-              defaultValue: 'Current role has no permissions.',
-            })}
+        {hasPermissionLabels ? (
+          <Trans
+            i18nKey="members.memberDetails.rolePermissionSummary"
+            ns="common"
+            values={{
+              role: label,
+              permissions: permissionLabels,
+            }}
+            components={{
+              permissionList: <span className="text-text-accent" />,
+            }}
+          />
+        ) : (
+          t('members.memberDetails.roleNoPermissionSummary', {
+            ns: 'common',
+            defaultValue: 'Current role has no permissions.',
+          })
+        )}
       </div>
     </div>
   )
@@ -122,8 +117,7 @@ const PermissionRoleChip = ({
     </PreviewCard>
   )
 
-  if (!canOpenMenu)
-    return chipWithPermissions
+  if (!canOpenMenu) return chipWithPermissions
 
   const menuTrigger = (
     <PreviewCard>

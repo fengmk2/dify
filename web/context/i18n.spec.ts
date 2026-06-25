@@ -175,7 +175,9 @@ describe('useDocLink', () => {
 
       const { result } = renderHook(() => useDocLink())
       const url = result.current('/use-dify/workspace/subscription-management#dify-for-education')
-      expect(url).toBe(`${defaultDocBaseUrl}/en/cloud/use-dify/workspace/subscription-management#dify-for-education`)
+      expect(url).toBe(
+        `${defaultDocBaseUrl}/en/cloud/use-dify/workspace/subscription-management#dify-for-education`,
+      )
     })
 
     it('should use the existing self-host docs path for self-host-only product docs in cloud edition', () => {
@@ -266,7 +268,9 @@ describe('useDocLink', () => {
 
       const { result } = renderHook(() => useDocLink())
       const url = result.current('/api-reference/applications/get-app-info')
-      expect(url).toBe(`${defaultDocBaseUrl}/api-reference/アプリケーション設定/アプリケーションの基本情報を取得`)
+      expect(url).toBe(
+        `${defaultDocBaseUrl}/api-reference/アプリケーション設定/アプリケーションの基本情報を取得`,
+      )
     })
 
     it('should not translate API reference path for English locale', () => {
@@ -320,8 +324,12 @@ describe('useDocLink', () => {
   describe('Edge Cases', () => {
     it('should handle path with anchor', () => {
       const { result } = renderHook(() => useDocLink())
-      const url = result.current('/use-dify/getting-started/introduction#overview' as DocPathWithoutLang)
-      expect(url).toBe(`${defaultDocBaseUrl}/en/cloud/use-dify/getting-started/introduction#overview`)
+      const url = result.current(
+        '/use-dify/getting-started/introduction#overview' as DocPathWithoutLang,
+      )
+      expect(url).toBe(
+        `${defaultDocBaseUrl}/en/cloud/use-dify/getting-started/introduction#overview`,
+      )
     })
 
     it('should handle multiple calls with same hook instance', () => {

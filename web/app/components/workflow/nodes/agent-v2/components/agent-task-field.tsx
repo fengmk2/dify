@@ -17,13 +17,7 @@ import useAvailableVarList from '../../_base/hooks/use-available-var-list'
 
 const i18nPrefix = 'nodes.agent'
 
-function AgentTaskToolbar({
-  taskLength,
-  onInsert,
-}: {
-  taskLength: number
-  onInsert: () => void
-}) {
+function AgentTaskToolbar({ taskLength, onInsert }: { taskLength: number; onInsert: () => void }) {
   const { t } = useTranslation()
   const [editor] = useLexicalComposerContext()
 
@@ -71,14 +65,8 @@ export function AgentTaskField({
 }) {
   const { t } = useTranslation()
   const getVarType = useWorkflowVariableType()
-  const {
-    availableVars,
-    availableNodesWithParent,
-  } = useAvailableVarList(id)
-  const [isFocus, {
-    setTrue: setFocus,
-    setFalse: setBlur,
-  }] = useBoolean(false)
+  const { availableVars, availableNodesWithParent } = useAvailableVarList(id)
+  const [isFocus, { setTrue: setFocus, setFalse: setBlur }] = useBoolean(false)
 
   const workflowNodesMap = availableNodesWithParent.reduce<WorkflowNodesMap>((acc, node) => {
     acc[node.id] = {
@@ -110,11 +98,18 @@ export function AgentTaskField({
       <div
         className={cn(
           'h-80 rounded-[9px]! p-0.5',
-          isFocus ? 'bg-linear-to-r from-components-input-border-active-prompt-1 to-components-input-border-active-prompt-2' : 'bg-transparent',
+          isFocus
+            ? 'bg-linear-to-r from-components-input-border-active-prompt-1 to-components-input-border-active-prompt-2'
+            : 'bg-transparent',
           readOnly && 'pointer-events-none',
         )}
       >
-        <div className={cn('flex h-full flex-col rounded-lg', isFocus ? 'bg-background-default' : 'bg-components-input-bg-normal')}>
+        <div
+          className={cn(
+            'flex h-full flex-col rounded-lg',
+            isFocus ? 'bg-background-default' : 'bg-components-input-bg-normal',
+          )}
+        >
           <PromptEditor
             wrapperClassName="flex h-full flex-col"
             value={data.agent_task || ''}
@@ -139,10 +134,7 @@ export function AgentTaskField({
             }}
           >
             {isFocus && (
-              <AgentTaskToolbar
-                taskLength={(data.agent_task || '').length}
-                onInsert={setFocus}
-              />
+              <AgentTaskToolbar taskLength={(data.agent_task || '').length} onInsert={setFocus} />
             )}
           </PromptEditor>
         </div>

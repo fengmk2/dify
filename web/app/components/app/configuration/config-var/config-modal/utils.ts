@@ -30,7 +30,9 @@ export const getCheckboxDefaultSelectValue = (value: InputVar['default'] | boole
   if (typeof value === 'boolean')
     return value ? CHECKBOX_DEFAULT_TRUE_VALUE : CHECKBOX_DEFAULT_FALSE_VALUE
   if (typeof value === 'string')
-    return value.toLowerCase() === CHECKBOX_DEFAULT_TRUE_VALUE ? CHECKBOX_DEFAULT_TRUE_VALUE : CHECKBOX_DEFAULT_FALSE_VALUE
+    return value.toLowerCase() === CHECKBOX_DEFAULT_TRUE_VALUE
+      ? CHECKBOX_DEFAULT_TRUE_VALUE
+      : CHECKBOX_DEFAULT_FALSE_VALUE
   return CHECKBOX_DEFAULT_FALSE_VALUE
 }
 export const normalizeSelectDefaultValue = (inputVar: InputVar) => {
@@ -39,26 +41,24 @@ export const normalizeSelectDefaultValue = (inputVar: InputVar) => {
   return inputVar
 }
 
-export const getJsonSchemaEditorValue = (type: InputVarType, jsonSchema?: InputVar['json_schema']) => {
-  if (type !== InputVarType.jsonObject || !jsonSchema)
-    return ''
+export const getJsonSchemaEditorValue = (
+  type: InputVarType,
+  jsonSchema?: InputVar['json_schema'],
+) => {
+  if (type !== InputVarType.jsonObject || !jsonSchema) return ''
 
   try {
-    if (typeof jsonSchema !== 'string')
-      return JSON.stringify(jsonSchema, null, 2)
+    if (typeof jsonSchema !== 'string') return JSON.stringify(jsonSchema, null, 2)
 
     return jsonSchema
-  }
-  catch {
+  } catch {
     return ''
   }
 }
 
 export const isJsonSchemaEmpty = (value: InputVar['json_schema']) => {
-  if (value === null || value === undefined)
-    return true
-  if (typeof value !== 'string')
-    return false
+  if (value === null || value === undefined) return true
+  if (typeof value !== 'string') return false
   return value.trim() === ''
 }
 
@@ -70,8 +70,7 @@ export const updatePayloadField = (payload: InputVar, key: string, value: unknow
 
   if (key === 'options' && payload.default) {
     const options = Array.isArray(value) ? value : []
-    if (!options.includes(payload.default))
-      nextPayload.default = undefined
+    if (!options.includes(payload.default)) nextPayload.default = undefined
   }
 
   return nextPayload
@@ -80,15 +79,15 @@ export const updatePayloadField = (payload: InputVar, key: string, value: unknow
 export const createPayloadForType = (payload: InputVar, type: InputVarType) => {
   return produce(payload, (draft) => {
     draft.type = type
-    if (type === InputVarType.select)
-      draft.default = undefined
+    if (type === InputVarType.select) draft.default = undefined
 
     if ([InputVarType.singleFile, InputVarType.multiFiles].includes(type)) {
       draft.hide = false
-      const fileUploadSettingKeys = Object.keys(DEFAULT_FILE_UPLOAD_SETTING) as Array<keyof typeof DEFAULT_FILE_UPLOAD_SETTING>
+      const fileUploadSettingKeys = Object.keys(DEFAULT_FILE_UPLOAD_SETTING) as Array<
+        keyof typeof DEFAULT_FILE_UPLOAD_SETTING
+      >
       fileUploadSettingKeys.forEach((key) => {
-        if (key !== 'max_length')
-          draft[key] = DEFAULT_FILE_UPLOAD_SETTING[key] as never
+        if (key !== 'max_length') draft[key] = DEFAULT_FILE_UPLOAD_SETTING[key] as never
       })
 
       if (type === InputVarType.multiFiles)
@@ -156,25 +155,28 @@ export const validateConfigModalPayload = ({
   checkVariableName,
   t,
 }: ValidateConfigModalPayloadOptions): ValidateConfigModalPayloadResult => {
-  const normalizedTempPayload = [InputVarType.singleFile, InputVarType.multiFiles].includes(tempPayload.type)
+  const normalizedTempPayload = [InputVarType.singleFile, InputVarType.multiFiles].includes(
+    tempPayload.type,
+  )
     ? { ...tempPayload, hide: false }
     : tempPayload
   const jsonSchemaValue = tempPayload.json_schema
   const schemaEmpty = isJsonSchemaEmpty(jsonSchemaValue)
   const normalizedJsonSchema = schemaEmpty ? undefined : jsonSchemaValue
-  const payloadToSave = normalizedTempPayload.type === InputVarType.jsonObject && schemaEmpty
-    ? { ...normalizedTempPayload, json_schema: undefined }
-    : normalizedTempPayload
+  const payloadToSave =
+    normalizedTempPayload.type === InputVarType.jsonObject && schemaEmpty
+      ? { ...normalizedTempPayload, json_schema: undefined }
+      : normalizedTempPayload
 
-  const moreInfo = normalizedTempPayload.variable === payload?.variable
-    ? undefined
-    : {
-        type: ChangeType.changeVarName,
-        payload: { beforeKey: payload?.variable || '', afterKey: normalizedTempPayload.variable },
-      }
+  const moreInfo =
+    normalizedTempPayload.variable === payload?.variable
+      ? undefined
+      : {
+          type: ChangeType.changeVarName,
+          payload: { beforeKey: payload?.variable || '', afterKey: normalizedTempPayload.variable },
+        }
 
-  if (!checkVariableName(normalizedTempPayload.variable))
-    return {}
+  if (!checkVariableName(normalizedTempPayload.variable)) return {}
 
   if (!normalizedTempPayload.label) {
     return {
@@ -191,8 +193,7 @@ export const validateConfigModalPayload = ({
 
     const duplicated = new Set<string>()
     const hasRepeatedItem = normalizedTempPayload.options.some((option) => {
-      if (duplicated.has(option))
-        return true
+      if (duplicated.has(option)) return true
 
       duplicated.add(option)
       return false
@@ -215,7 +216,10 @@ export const validateConfigModalPayload = ({
       }
     }
 
-    if (normalizedTempPayload.allowed_file_types.includes(SupportUploadFileTypes.custom) && !normalizedTempPayload.allowed_file_extensions?.length) {
+    if (
+      normalizedTempPayload.allowed_file_types.includes(SupportUploadFileTypes.custom) &&
+      !normalizedTempPayload.allowed_file_extensions?.length
+    ) {
       return {
         errorMessage: t('errorMsg.fieldRequired', {
           ns: 'workflow',
@@ -225,7 +229,11 @@ export const validateConfigModalPayload = ({
     }
   }
 
-  if (normalizedTempPayload.type === InputVarType.jsonObject && !schemaEmpty && typeof normalizedJsonSchema === 'string') {
+  if (
+    normalizedTempPayload.type === InputVarType.jsonObject &&
+    !schemaEmpty &&
+    typeof normalizedJsonSchema === 'string'
+  ) {
     try {
       const schema = JSON.parse(normalizedJsonSchema)
       if (schema?.type !== 'object') {
@@ -233,8 +241,7 @@ export const validateConfigModalPayload = ({
           errorMessage: t('variableConfig.errorMsg.jsonSchemaMustBeObject', { ns: 'appDebug' }),
         }
       }
-    }
-    catch {
+    } catch {
       return {
         errorMessage: t('variableConfig.errorMsg.jsonSchemaInvalid', { ns: 'appDebug' }),
       }

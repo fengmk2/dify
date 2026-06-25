@@ -9,12 +9,15 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
   ### 基础 URL
   <CodeGroup title="Code" targetCode={props.appDetail.api_base_url} />
 
-  ### 鉴权
+### 鉴权
 
+Service API 使用 `API-Key` 进行鉴权。
 
-  Service API 使用 `API-Key` 进行鉴权。
-  <i>**强烈建议开发者把 `API-Key` 放在后端存储，而非分享或者放在客户端存储，以免 `API-Key` 泄露，导致财产损失。**</i>
-  所有 API 请求都应在 **`Authorization`** HTTP Header 中包含您的 `API-Key`，如下所示：
+<i>
+  **强烈建议开发者把 `API-Key` 放在后端存储，而非分享或者放在客户端存储，以免 `API-Key`
+  泄露，导致财产损失。**
+</i>
+所有 API 请求都应在 **`Authorization`** HTTP Header 中包含您的 `API-Key`，如下所示：
 
   <CodeGroup title="Code" targetCode='Authorization: Bearer {API_KEY}' />
 </div>
@@ -36,41 +39,25 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     <Properties>
       <Property name='inputs' type='object' key='inputs'>
         (选填)允许传入 App 定义的各变量值。
-  inputs 参数包含了多组键值对（Key/Value pairs），每组的键对应一个特定变量，每组的值则是该变量的具体值。
-  文本生成型应用要求至少传入一组键值对。
-      - `query` (string) 必填
-        用户输入的文本内容。
-      </Property>
-      <Property name='response_mode' type='string' key='response_mode'>
-        - `streaming` 流式模式（推荐）。基于 SSE（**[Server-Sent Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events)**）实现类似打字机输出方式的流式返回。
-        - `blocking` 阻塞模式，等待执行完毕后返回结果。（请求若流程较长可能会被中断）。
-        <i>由于 Cloudflare 限制，请求会在 100 秒超时无返回后中断。</i>
-      </Property>
-      <Property name='user' type='string' key='user'>
-        用户标识，用于定义终端用户的身份，方便检索、统计。
-        由开发者定义规则，需保证用户标识在应用内唯一。
-      </Property>
-      <Property name='files' type='array[object]' key='files'>
-          文件列表，适用于传入文件结合文本理解并回答问题，仅当模型支持 Vision/Video 能力时可用。
-          - `type` (string) 支持类型：
-            - `document` 具体类型包含：'TXT', 'MD', 'MARKDOWN', 'MDX', 'PDF', 'HTML', 'XLSX', 'XLS', 'VTT', 'PROPERTIES', 'DOC', 'DOCX', 'CSV', 'EML', 'MSG', 'PPTX', 'PPT', 'XML', 'EPUB'
-            - `image` 具体类型包含：'JPG', 'JPEG', 'PNG', 'GIF', 'WEBP', 'SVG'
-            - `audio` 具体类型包含：'MP3', 'M4A', 'WAV', 'WEBM', 'MPGA'
-            - `video` 具体类型包含：'MP4', 'MOV', 'MPEG', 'WEBM'
-            - `custom` 具体类型包含：其他文件类型
-          - `transfer_method` (string)  传递方式:
-            - `remote_url`: 文件地址。
-            - `local_file`: 上传文件。
-          - `url` 文件地址。（仅当传递方式为 `remote_url` 时）。
-          - `upload_file_id` 上传文件 ID。（仅当传递方式为 `local_file `时）。
-      </Property>
-      <Property name='trace_session_id' type='string' key='trace_session_id'>
-      （选填）用于可观测性分组的链路会话 ID。支持会话分组的追踪提供商可将该值用作导出的会话标识。它不会改变 conversation_id、workflow_run_id、trace_id 或 span 关系。支持以下三种方式传递，具体优先级依次为：<br/>
-        - Header：通过 HTTP Header <code>X-Trace-Session-Id</code> 传递，优先级最高。<br/>
-        - Query 参数：通过 URL 查询参数 <code>trace_session_id</code> 传递。<br/>
-        - Request Body：通过请求体字段 <code>trace_session_id</code> 传递（即本字段）。<br/>
-      </Property>
-    </Properties>
+
+inputs 参数包含了多组键值对（Key/Value pairs），每组的键对应一个特定变量，每组的值则是该变量的具体值。
+文本生成型应用要求至少传入一组键值对。- `query` (string) 必填
+用户输入的文本内容。
+</Property>
+<Property name='response_mode' type='string' key='response_mode'> - `streaming` 流式模式（推荐）。基于 SSE（**[Server-Sent Events](https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events/Using_server-sent_events)**）实现类似打字机输出方式的流式返回。- `blocking` 阻塞模式，等待执行完毕后返回结果。（请求若流程较长可能会被中断）。
+<i>由于 Cloudflare 限制，请求会在 100 秒超时无返回后中断。</i>
+</Property>
+<Property name='user' type='string' key='user'>
+用户标识，用于定义终端用户的身份，方便检索、统计。
+由开发者定义规则，需保证用户标识在应用内唯一。
+</Property>
+<Property name='files' type='array[object]' key='files'>
+文件列表，适用于传入文件结合文本理解并回答问题，仅当模型支持 Vision/Video 能力时可用。- `type` (string) 支持类型：- `document` 具体类型包含：'TXT', 'MD', 'MARKDOWN', 'MDX', 'PDF', 'HTML', 'XLSX', 'XLS', 'VTT', 'PROPERTIES', 'DOC', 'DOCX', 'CSV', 'EML', 'MSG', 'PPTX', 'PPT', 'XML', 'EPUB' - `image` 具体类型包含：'JPG', 'JPEG', 'PNG', 'GIF', 'WEBP', 'SVG' - `audio` 具体类型包含：'MP3', 'M4A', 'WAV', 'WEBM', 'MPGA' - `video` 具体类型包含：'MP4', 'MOV', 'MPEG', 'WEBM' - `custom` 具体类型包含：其他文件类型 - `transfer_method` (string) 传递方式: - `remote_url`: 文件地址。- `local_file`: 上传文件。- `url` 文件地址。（仅当传递方式为 `remote_url` 时）。- `upload_file_id` 上传文件 ID。（仅当传递方式为 `local_file `时）。
+</Property>
+<Property name='trace_session_id' type='string' key='trace_session_id'>
+（选填）用于可观测性分组的链路会话 ID。支持会话分组的追踪提供商可将该值用作导出的会话标识。它不会改变 conversation_id、workflow_run_id、trace_id 或 span 关系。支持以下三种方式传递，具体优先级依次为：<br/> - Header：通过 HTTP Header <code>X-Trace-Session-Id</code> 传递，优先级最高。<br/> - Query 参数：通过 URL 查询参数 <code>trace_session_id</code> 传递。<br/> - Request Body：通过请求体字段 <code>trace_session_id</code> 传递（即本字段）。<br/>
+</Property>
+</Properties>
 
     ### Response
     <Properties>
@@ -143,6 +130,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     - 500，服务内部异常
 
     </Properties>
+
   </Col>
   <Col sticky>
 
@@ -151,37 +139,38 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="POST"
       label="/completion-messages"
       targetCode={`curl -X POST '${props.appDetail.api_base_url}/completion-messages' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --header 'Content-Type: application/json' \\
 --data-raw '{
-    "inputs": {"query": "Hello, world!"},
-    "response_mode": "streaming",
-    "user": "abc-123"
+"inputs": {"query": "Hello, world!"},
+"response_mode": "streaming",
+"user": "abc-123"
 }'`}
-    />
-    ### blocking
-    <CodeGroup title="Response">
-    ```json {{ title: 'Response' }}
+/> ### blocking
+<CodeGroup title="Response">
+`json {{ title: 'Response' }}
     {
       "id": "0b089b9a-24d9-48cc-94f8-762677276261",
       "answer": "how are you?",
       "created_at": 1679586667
     }
-    ```
-    </CodeGroup>
-    ### streaming
-    <CodeGroup title="Response">
-    ```streaming {{ title: 'Response' }}
+    `
+</CodeGroup> ### streaming
+<CodeGroup title="Response">
+`streaming {{ title: 'Response' }}
       data: {"id": "5ad4cb98-f0c7-4085-b384-88c403be6290", "answer": " I", "created_at": 1679586595}
       data: {"id": "5ad4cb98-f0c7-4085-b384-88c403be6290", "answer": " I", "created_at": 1679586595}
       data: {"event": "tts_message", "conversation_id": "23dd85f3-1a41-4ea0-b7a9-062734ccfaf9", "message_id": "a8bdc41c-13b2-4c18-bfd9-054b9803038c", "created_at": 1721205487, "task_id": "3bf8a0bb-e73b-4690-9e66-4e429bad8ee7", "audio": "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq"}
       data: {"event": "tts_message_end", "conversation_id": "23dd85f3-1a41-4ea0-b7a9-062734ccfaf9", "message_id": "a8bdc41c-13b2-4c18-bfd9-054b9803038c", "created_at": 1721205487, "task_id": "3bf8a0bb-e73b-4690-9e66-4e429bad8ee7", "audio": ""}
-    ```
-    </CodeGroup>
+    `
+</CodeGroup>
+
   </Col>
 </Row>
 
 ---
+
 <Heading
   url='/files/upload'
   method='POST'
@@ -225,6 +214,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     - 503，`s3_connection_failed`，无法连接到 S3 服务
     - 503，`s3_permission_denied`，无权限上传文件到 S3
     - 503，`s3_file_too_large`，文件超出 S3 大小限制
+
   </Col>
   <Col sticky>
 
@@ -233,10 +223,11 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="POST"
       label="/files/upload"
       targetCode={`curl -X POST '${props.appDetail.api_base_url}/files/upload' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --form 'file=@localfile;type=image/[png|jpeg|jpg|webp|gif]' \\
 --form 'user=abc-123'`}
-    />
+/>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -251,6 +242,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -314,6 +306,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -369,9 +362,10 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="GET"
       label="/files/:file_id/preview?as_attachment=true"
       targetCode={`curl -X GET '${props.appDetail.api_base_url}/files/72fa9618-8f89-4a37-9b33-7e1178a24a67/preview?as_attachment=true' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --output downloaded_file.png`}
-    />
+/>
 
     ### 响应标头示例
     <CodeGroup title="Response Headers">
@@ -391,6 +385,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     Cache-Control: public, max-age=3600
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -407,12 +402,16 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
   ### Path
   - `task_id` (string) 任务 ID，可在流式返回 Chunk 中获取
 
-  ### Request Body
-  - `user` (string) Required
-    用户标识，用于定义终端用户的身份，必须和发送消息接口传入 user 保持一致。API 无法访问 WebApp 创建的会话。
-  ### Response
-  - `result` (string) 固定返回 success
-  </Col>
+### Request Body
+
+- `user` (string) Required
+  用户标识，用于定义终端用户的身份，必须和发送消息接口传入 user 保持一致。API 无法访问 WebApp 创建的会话。
+
+### Response
+
+- `result` (string) 固定返回 success
+
+    </Col>
   <Col sticky>
     <CodeGroup
       title="Request"
@@ -424,15 +423,17 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
 --data-raw '{ "user": "abc-123"}'`}
     />
 
-    <CodeGroup title="Response">
-    ```json {{ title: 'Response' }}
-    {
-      "result": "success"
-    }
-    ```
-    </CodeGroup>
-  </Col>
+      <CodeGroup title="Response">
+      ```json {{ title: 'Response' }}
+      {
+        "result": "success"
+      }
+      ```
+      </CodeGroup>
+
+    </Col>
 </Row>
+
 ---
 
 <Heading
@@ -468,6 +469,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
 
     ### Response
     - `result` (string) 固定返回 success
+
   </Col>
   <Col sticky>
 
@@ -476,14 +478,15 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="POST"
       label="/messages/:message_id/feedbacks"
       targetCode={`curl -X POST '${props.appDetail.api_base_url}/messages/:message_id/feedbacks \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --header 'Content-Type: application/json' \\
 --data-raw '{
-    "rating": "like",
-    "user": "abc-123",
-    "content": "message feedback information"
+"rating": "like",
+"user": "abc-123",
+"content": "message feedback information"
 }'`}
-    />
+/>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -492,10 +495,12 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 
 ---
+
 <Heading
   url='/app/feedbacks'
   method='GET'
@@ -521,6 +526,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
 
     ### Response
     - `data` (List) return apps feedback list.
+
   </Col>
   <Col sticky>
 
@@ -552,6 +558,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -579,6 +586,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
         用户标识，由开发者定义规则，需保证用户标识在应用内唯一。
       </Property>
     </Properties>
+
   </Col>
   <Col sticky>
 
@@ -587,14 +595,15 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="POST"
       label="/text-to-audio"
       targetCode={`curl -o text-to-audio.mp3 -X POST '${props.appDetail.api_base_url}/text-to-audio' \\
+
 --header 'Authorization: Bearer {api_key}' \\
 --header 'Content-Type: application/json' \\
 --data-raw '{
-    "message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290",
-    "text": "你好Dify",
-    "user": "abc-123"
+"message_id": "5ad4cb98-f0c7-4085-b384-88c403be6290",
+"text": "你好Dify",
+"user": "abc-123"
 }'`}
-    />
+/>
 
     <CodeGroup title="headers">
     ```json {{ title: 'headers' }}
@@ -603,6 +612,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -717,6 +727,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       - `image_file_size_limit` (int) 图片文件上传大小限制（MB）
       - `audio_file_size_limit` (int) 音频文件上传大小限制 (MB)
       - `video_file_size_limit` (int) 视频文件上传大小限制 (MB)
+
   </Col>
   <Col sticky>
 
@@ -725,8 +736,9 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
       tag="GET"
       label="/parameters"
       targetCode={` curl -X GET '${props.appDetail.api_base_url}/parameters'\\
+
 --header 'Authorization: Bearer {api_key}'`}
-    />
+/>
 
     <CodeGroup title="Response">
     ```json {{ title: 'Response' }}
@@ -765,6 +777,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -823,6 +836,7 @@ import { Row, Col, Properties, Property, Heading, SubProperty } from '../md.tsx'
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ___
@@ -877,6 +891,7 @@ ___
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -921,6 +936,7 @@ ___
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -968,6 +984,7 @@ ___
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -1007,6 +1024,7 @@ ___
     204 No Content
     ```
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -1057,6 +1075,7 @@ ___
     ```
 
     </CodeGroup>
+
   </Col>
 </Row>
 ---
@@ -1097,5 +1116,6 @@ ___
     }
     ```
     </CodeGroup>
+
   </Col>
 </Row>

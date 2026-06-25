@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import UpgradeCard from '../upgrade-card'
 
 const mockSetShowPricingModal = vi.fn()
@@ -19,7 +19,7 @@ vi.mock('@/context/modal-context', () => ({
 }))
 
 vi.mock('@/app/components/billing/upgrade-btn', () => ({
-  default: ({ onClick, className }: { onClick?: () => void, className?: string }) => (
+  default: ({ onClick, className }: { onClick?: () => void; className?: string }) => (
     <button type="button" className={className} onClick={onClick} data-testid="upgrade-btn">
       upgrade
     </button>

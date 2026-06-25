@@ -11,15 +11,16 @@ import { canCreateAndModifySnippets } from '../utils/permission'
 export const useCreateSnippet = () => {
   const { t } = useTranslation()
   const { push } = useRouter()
-  const workspacePermissionKeys = useAppContextWithSelector(state => state.workspacePermissionKeys)
+  const workspacePermissionKeys = useAppContextWithSelector(
+    (state) => state.workspacePermissionKeys,
+  )
   const createSnippetMutation = useCreateSnippetMutation()
   const [isCreateSnippetDialogOpen, setIsCreateSnippetDialogOpen] = useState(false)
   const [isCreatingSnippet, setIsCreatingSnippet] = useState(false)
   const canCreateAndModifySnippet = canCreateAndModifySnippets(workspacePermissionKeys)
 
   const handleOpenCreateSnippetDialog = () => {
-    if (!canCreateAndModifySnippet)
-      return
+    if (!canCreateAndModifySnippet) return
 
     setIsCreateSnippetDialogOpen(true)
   }
@@ -34,8 +35,7 @@ export const useCreateSnippet = () => {
     graph,
     input_fields,
   }: CreateSnippetDialogPayload) => {
-    if (!canCreateAndModifySnippet)
-      return
+    if (!canCreateAndModifySnippet) return
 
     setIsCreatingSnippet(true)
 
@@ -60,11 +60,9 @@ export const useCreateSnippet = () => {
       toast.success(t('snippet.createSuccess', { ns: 'workflow' }))
       handleCloseCreateSnippetDialog()
       push(`/snippets/${snippet.id}/orchestrate`)
-    }
-    catch {
+    } catch {
       // The API client surfaces the response message. Avoid showing a second generic create-failed toast here.
-    }
-    finally {
+    } finally {
       setIsCreatingSnippet(false)
     }
   }

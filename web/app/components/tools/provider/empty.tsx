@@ -31,25 +31,23 @@ const getLink = (type?: ToolTypeEnum) => {
       return buildIntegrationPath('custom-tool')
   }
 }
-const Empty = ({
-  type,
-  isAgent,
-}: Props) => {
+const Empty = ({ type, isAgent }: Props) => {
   const { t } = useTranslation()
   const docLink = useDocLink()
   const { theme } = useTheme()
 
   const hasLink = type && [ToolTypeEnum.Custom, ToolTypeEnum.MCP].includes(type)
-  const renderType = isAgent ? 'agent' as const : type
-  const hasTitle = renderType && t(`addToolModal.${renderType}.title`, { ns: 'tools' }) !== `addToolModal.${renderType}.title`
+  const renderType = isAgent ? ('agent' as const) : type
+  const hasTitle =
+    renderType &&
+    t(`addToolModal.${renderType}.title`, { ns: 'tools' }) !== `addToolModal.${renderType}.title`
   const tipClassName = cn(
     'flex items-center text-[13px] leading-[18px] text-text-tertiary',
     hasLink && 'cursor-pointer hover:text-text-accent',
   )
   const tipContent = renderType && (
     <>
-      {t(`addToolModal.${renderType}.tip`, { ns: 'tools' })}
-      {' '}
+      {t(`addToolModal.${renderType}.tip`, { ns: 'tools' })}{' '}
       {hasLink && <RiArrowRightUpLine className="ml-0.5 size-3" />}
     </>
   )
@@ -110,22 +108,17 @@ const Empty = ({
     <div className="flex flex-col items-center justify-center">
       <NoToolPlaceholder className={theme === 'dark' ? 'invert' : ''} />
       <div className="mt-2 mb-1 text-[13px] leading-[18px] font-medium text-text-primary">
-        {(hasTitle && renderType) ? t(`addToolModal.${renderType}.title`, { ns: 'tools' }) : 'No tools available'}
+        {hasTitle && renderType
+          ? t(`addToolModal.${renderType}.title`, { ns: 'tools' })
+          : 'No tools available'}
       </div>
       {!!(!isAgent && hasTitle && renderType && hasLink) && (
-        <Link
-          href={getLink(type)}
-          target="_blank"
-          rel="noreferrer"
-          className={tipClassName}
-        >
+        <Link href={getLink(type)} target="_blank" rel="noreferrer" className={tipClassName}>
           {tipContent}
         </Link>
       )}
       {!!(!isAgent && hasTitle && renderType && !hasLink) && (
-        <div className={tipClassName}>
-          {tipContent}
-        </div>
+        <div className={tipClassName}>{tipContent}</div>
       )}
     </div>
   )

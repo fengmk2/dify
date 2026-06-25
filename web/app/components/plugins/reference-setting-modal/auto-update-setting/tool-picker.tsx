@@ -3,11 +3,7 @@ import type { FC } from 'react'
 import type { ActivePluginType } from '../../marketplace/constants'
 import type { PluginCategoryEnum } from '../../types'
 import { cn } from '@langgenius/dify-ui/cn'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@langgenius/dify-ui/popover'
+import { Popover, PopoverContent, PopoverTrigger } from '@langgenius/dify-ui/popover'
 import * as React from 'react'
 import { useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -49,7 +45,7 @@ const ToolPicker: FC<Props> = ({
     { key: PLUGIN_TYPE_SEARCH_MAP.bundle, name: t('category.bundles', { ns: 'plugin' }) },
   ]
   const tabs = integrationCategory
-    ? allTabs.filter(tab => tab.key === integrationCategory)
+    ? allTabs.filter((tab) => tab.key === integrationCategory)
     : allTabs
 
   const [pluginType, setPluginType] = useState<ActivePluginType>(PLUGIN_TYPE_SEARCH_MAP.all)
@@ -62,23 +58,25 @@ const ToolPicker: FC<Props> = ({
     return list.filter((plugin) => {
       const isFromMarketPlace = plugin.source === PluginSource.marketplace
       return (
-        isFromMarketPlace && (effectivePluginType === PLUGIN_TYPE_SEARCH_MAP.all || plugin.declaration.category === effectivePluginType)
-        && (tags.length === 0 || tags.some(tag => plugin.declaration.tags.includes(tag)))
-        && (query === '' || plugin.plugin_id.toLowerCase().includes(query.toLowerCase()))
+        isFromMarketPlace &&
+        (effectivePluginType === PLUGIN_TYPE_SEARCH_MAP.all ||
+          plugin.declaration.category === effectivePluginType) &&
+        (tags.length === 0 || tags.some((tag) => plugin.declaration.tags.includes(tag))) &&
+        (query === '' || plugin.plugin_id.toLowerCase().includes(query.toLowerCase()))
       )
     })
   }, [data, effectivePluginType, query, tags])
 
   const handleCheckChange = (pluginId: string) => {
     const newValue = value.includes(pluginId)
-      ? value.filter(id => id !== pluginId)
+      ? value.filter((id) => id !== pluginId)
       : [...value, pluginId]
     onChange(newValue)
   }
 
   const listContent = (
     <div className="max-h-[396px] overflow-y-auto p-1">
-      {filteredList.map(item => (
+      {filteredList.map((item) => (
         <ToolItem
           key={item.plugin_id}
           payload={item}
@@ -95,9 +93,7 @@ const ToolPicker: FC<Props> = ({
     </div>
   )
 
-  const noData = (
-    <NoDataPlaceholder className="h-[396px]" noPlugins={!query} />
-  )
+  const noData = <NoDataPlaceholder className="h-[396px]" noPlugins={!query} />
 
   const resolvedTrigger = React.isValidElement(trigger) ? trigger : <div>{trigger}</div>
 
@@ -123,11 +119,12 @@ const ToolPicker: FC<Props> = ({
             </div>
             <div className="flex items-center justify-between bg-components-panel-bg px-3 pb-2">
               <div className="flex min-w-0 items-center gap-0.5 overflow-x-auto">
-                {tabs.map(tab => (
+                {tabs.map((tab) => (
                   <div
                     className={cn(
                       'flex h-6 shrink-0 cursor-pointer items-center rounded-md px-2 system-xs-medium text-text-tertiary hover:bg-state-base-hover',
-                      effectivePluginType === tab.key && 'bg-state-base-hover-alt system-xs-semibold text-text-primary',
+                      effectivePluginType === tab.key &&
+                        'bg-state-base-hover-alt system-xs-semibold text-text-primary',
                     )}
                     key={tab.key}
                     onClick={() => setPluginType(tab.key)}

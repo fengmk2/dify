@@ -13,9 +13,10 @@ let mockWebappAuth = {
   allow_email_code_login: false,
 }
 
-const render = (ui: ReactElement) => renderWithSystemFeatures(ui, {
-  systemFeatures: { webapp_auth: mockWebappAuth },
-})
+const render = (ui: ReactElement) =>
+  renderWithSystemFeatures(ui, {
+    systemFeatures: { webapp_auth: mockWebappAuth },
+  })
 
 const mockMutate = vi.fn()
 const mockUseMutation = vi.hoisted(() => vi.fn())
@@ -24,7 +25,8 @@ const mockUseSearchForWhiteListCandidates = vi.fn()
 
 vi.mock('@/service/access-control/use-app-access-control', () => ({
   useAppWhiteListSubjects: (...args: unknown[]) => mockUseAppWhiteListSubjects(...args),
-  useSearchForWhiteListCandidates: (...args: unknown[]) => mockUseSearchForWhiteListCandidates(...args),
+  useSearchForWhiteListCandidates: (...args: unknown[]) =>
+    mockUseSearchForWhiteListCandidates(...args),
 }))
 
 vi.mock('@tanstack/react-query', async (importOriginal) => {
@@ -75,13 +77,7 @@ describe('AccessControl', () => {
       access_mode: AccessMode.PUBLIC,
     } as App
 
-    render(
-      <AccessControl
-        app={app}
-        onClose={onClose}
-        onConfirm={onConfirm}
-      />,
-    )
+    render(<AccessControl app={app} onClose={onClose} onConfirm={onConfirm} />)
 
     fireEvent.click(screen.getByText('common.operation.confirm'))
 

@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 
 import Uploader from '../uploader'
 
@@ -134,8 +134,7 @@ describe('Uploader', () => {
       const { container } = render(<Uploader {...defaultProps} file={file} />)
 
       const deleteButton = container.querySelector('[class*="group-hover:flex"] button')
-      if (deleteButton)
-        fireEvent.click(deleteButton)
+      if (deleteButton) fireEvent.click(deleteButton)
 
       expect(defaultProps.updateFile).toHaveBeenCalledWith()
     })

@@ -1,9 +1,6 @@
 'use client'
 
-import type {
-  AccessPermissionKind,
-  SelectableAccessSubject,
-} from './access-policy'
+import type { AccessPermissionKind, SelectableAccessSubject } from './access-policy'
 import type { AccessSubjectSelectionValue } from '@/app/components/app/app-access-control/access-subject-selector/types'
 import type { AccessControlDraft } from '@/app/components/app/app-access-control/store'
 import { AccessSubjectType } from '@dify/contracts/enterprise/types.gen'
@@ -14,10 +11,7 @@ import { AccessControlDialogContent } from '@/app/components/app/app-access-cont
 import { useAccessControlStore } from '@/app/components/app/app-access-control/store'
 import { AccessControlDraftProvider } from '@/app/components/app/app-access-control/store-provider'
 import { AccessMode as AppAccessMode } from '@/models/access-control'
-import {
-  appAccessModeToPermissionKey,
-  permissionIcon,
-} from './access-policy'
+import { appAccessModeToPermissionKey, permissionIcon } from './access-policy'
 
 export function PermissionSummaryButton({
   value,
@@ -35,18 +29,24 @@ export function PermissionSummaryButton({
   onClick: () => void
 }) {
   const { t } = useTranslation('deployments')
-  const groupCount = subjects?.filter(subject => subject.subjectType === AccessSubjectType.ACCESS_SUBJECT_TYPE_GROUP).length ?? 0
+  const groupCount =
+    subjects?.filter(
+      (subject) => subject.subjectType === AccessSubjectType.ACCESS_SUBJECT_TYPE_GROUP,
+    ).length ?? 0
   const memberCount = (subjects?.length ?? 0) - groupCount
   const countLabels = [
     ...(groupCount > 0 ? [t('access.members.groupCount', { count: groupCount })] : []),
     ...(memberCount > 0 ? [t('access.members.memberCount', { count: memberCount })] : []),
   ]
-  const specificSubjectLabel = value === 'specific'
-    ? subjects && subjects.length > 0
-      ? countLabels.join(' · ')
-      : t('access.permission.specificDesc')
-    : undefined
-  const IconClassName = loading ? 'i-ri-loader-2-line animate-spin motion-reduce:animate-none' : permissionIcon[value]
+  const specificSubjectLabel =
+    value === 'specific'
+      ? subjects && subjects.length > 0
+        ? countLabels.join(' · ')
+        : t('access.permission.specificDesc')
+      : undefined
+  const IconClassName = loading
+    ? 'i-ri-loader-2-line animate-spin motion-reduce:animate-none'
+    : permissionIcon[value]
 
   return (
     <button
@@ -69,9 +69,7 @@ export function PermissionSummaryButton({
         </p>
       </div>
       {specificSubjectLabel && (
-        <p className="shrink-0 system-xs-regular text-text-tertiary">
-          {specificSubjectLabel}
-        </p>
+        <p className="shrink-0 system-xs-regular text-text-tertiary">{specificSubjectLabel}</p>
       )}
       <div className="flex size-4 shrink-0 items-center justify-center">
         <span className="i-ri-arrow-right-s-line size-4 text-text-quaternary" aria-hidden="true" />
@@ -95,8 +93,12 @@ export function DeploymentAccessControlDialog({
 }) {
   const draftKey = [
     initialDraft.currentMenu,
-    initialDraft.specificGroups ? initialDraft.specificGroups.map(group => group.id).join(',') : 'no-groups',
-    initialDraft.specificMembers ? initialDraft.specificMembers.map(member => member.id).join(',') : 'no-members',
+    initialDraft.specificGroups
+      ? initialDraft.specificGroups.map((group) => group.id).join(',')
+      : 'no-groups',
+    initialDraft.specificMembers
+      ? initialDraft.specificMembers.map((member) => member.id).join(',')
+      : 'no-members',
   ].join(':')
 
   return (
@@ -123,17 +125,16 @@ function DeploymentAccessControlDialogBody({
   onSubmit: (kind: AccessPermissionKind, subjects: AccessSubjectSelectionValue) => void
 }) {
   const { t } = useTranslation('deployments')
-  const currentMenu = useAccessControlStore(s => s.currentMenu)
-  const specificGroups = useAccessControlStore(s => s.specificGroups)
-  const specificMembers = useAccessControlStore(s => s.specificMembers)
+  const currentMenu = useAccessControlStore((s) => s.currentMenu)
+  const specificGroups = useAccessControlStore((s) => s.specificGroups)
+  const specificMembers = useAccessControlStore((s) => s.specificMembers)
   const specificSelected = currentMenu === AppAccessMode.SPECIFIC_GROUPS_MEMBERS
   const selectedSubjectCount = specificGroups.length + specificMembers.length
   const specificEmpty = specificSelected && selectedSubjectCount === 0
   const confirmDisabled = saving || (specificSelected && (subjectsLoading || specificEmpty))
 
   const handleConfirm = () => {
-    if (confirmDisabled)
-      return
+    if (confirmDisabled) return
 
     onSubmit(
       appAccessModeToPermissionKey(currentMenu),

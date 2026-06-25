@@ -12,28 +12,25 @@ type Props = Readonly<{
 
 const MIN_VALUE = 0
 
-const Input: FC<Props> = ({
-  value,
-  onChange,
-  placeholder = '',
-  isNumber = false,
-}) => {
-  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value
-    if (isNumber) {
-      let numberValue = Number.parseInt(value, 10) // integer only
-      if (Number.isNaN(numberValue)) {
-        onChange('')
+const Input: FC<Props> = ({ value, onChange, placeholder = '', isNumber = false }) => {
+  const handleChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const value = e.target.value
+      if (isNumber) {
+        let numberValue = Number.parseInt(value, 10) // integer only
+        if (Number.isNaN(numberValue)) {
+          onChange('')
+          return
+        }
+        if (numberValue < MIN_VALUE) numberValue = MIN_VALUE
+
+        onChange(numberValue)
         return
       }
-      if (numberValue < MIN_VALUE)
-        numberValue = MIN_VALUE
-
-      onChange(numberValue)
-      return
-    }
-    onChange(value)
-  }, [isNumber, onChange])
+      onChange(value)
+    },
+    [isNumber, onChange],
+  )
 
   const otherOption = (() => {
     if (isNumber) {
@@ -41,9 +38,7 @@ const Input: FC<Props> = ({
         min: MIN_VALUE,
       }
     }
-    return {
-
-    }
+    return {}
   })()
   return (
     <input

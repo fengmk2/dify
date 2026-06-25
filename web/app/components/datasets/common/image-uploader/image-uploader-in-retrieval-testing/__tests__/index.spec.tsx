@@ -1,6 +1,6 @@
 import type { FileEntity } from '../../types'
 import { fireEvent, render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 import ImageUploaderInRetrievalTestingWrapper from '../index'
 
 vi.mock('@/service/use-common', () => ({
@@ -16,7 +16,9 @@ vi.mock('@/service/use-common', () => ({
 vi.mock('@/app/components/datasets/common/image-previewer', () => ({
   default: ({ onClose }: { onClose: () => void }) => (
     <div data-testid="image-previewer">
-      <button data-testid="close-preview" onClick={onClose}>Close</button>
+      <button data-testid="close-preview" onClick={onClose}>
+        Close
+      </button>
     </div>
   ),
 }))

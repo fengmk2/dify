@@ -40,8 +40,10 @@ vi.mock('@/next/link', () => ({
     href,
     className,
     ...props
-  }: AnchorHTMLAttributes<HTMLAnchorElement> & { children?: ReactNode, href: string }) => (
-    <a href={href} className={className} {...props}>{children}</a>
+  }: AnchorHTMLAttributes<HTMLAnchorElement> & { children?: ReactNode; href: string }) => (
+    <a href={href} className={className} {...props}>
+      {children}
+    </a>
   ),
 }))
 
@@ -76,7 +78,9 @@ const createApp = (overrides: Partial<App> = {}): App => ({
 
 const renderItem = (
   app: App,
-  systemFeatures: NonNullable<Parameters<typeof renderWithSystemFeatures>[1]>['systemFeatures'] = { rbac_enabled: true },
+  systemFeatures: NonNullable<Parameters<typeof renderWithSystemFeatures>[1]>['systemFeatures'] = {
+    rbac_enabled: true,
+  },
 ) => renderWithSystemFeatures(<ContinueWorkItem app={app} />, { systemFeatures })
 
 describe('ContinueWorkItem', () => {
@@ -94,7 +98,9 @@ describe('ContinueWorkItem', () => {
 
     expect(link).toHaveAttribute('href', '/app/app-1/configuration')
     expect(screen.getByText('Alice')).toBeInTheDocument()
-    expect(screen.getByText('explore.continueWork.editedAt:{"time":"5 minutes ago"}')).toBeInTheDocument()
+    expect(
+      screen.getByText('explore.continueWork.editedAt:{"time":"5 minutes ago"}'),
+    ).toBeInTheDocument()
     expect(mockFormatTimeFromNow).toHaveBeenCalledWith(200000)
   })
 
@@ -107,13 +113,21 @@ describe('ContinueWorkItem', () => {
   it('should link to access config when RBAC is enabled and only access config permission is available', () => {
     renderItem(createApp({ permission_keys: [AppACLPermission.AccessConfig] }))
 
-    expect(screen.getByRole('link', { name: /Continue App/ })).toHaveAttribute('href', '/app/app-1/access-config')
+    expect(screen.getByRole('link', { name: /Continue App/ })).toHaveAttribute(
+      'href',
+      '/app/app-1/access-config',
+    )
   })
 
   it('should fall back to develop when RBAC is disabled for an access-config-only app', () => {
-    renderItem(createApp({ permission_keys: [AppACLPermission.AccessConfig] }), { rbac_enabled: false })
+    renderItem(createApp({ permission_keys: [AppACLPermission.AccessConfig] }), {
+      rbac_enabled: false,
+    })
 
-    expect(screen.getByRole('link', { name: /Continue App/ })).toHaveAttribute('href', '/app/app-1/develop')
+    expect(screen.getByRole('link', { name: /Continue App/ })).toHaveAttribute(
+      'href',
+      '/app/app-1/develop',
+    )
   })
 
   it('should render preview-only apps as disabled buttons and warn on click', () => {

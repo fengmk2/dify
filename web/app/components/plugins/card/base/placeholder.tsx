@@ -1,5 +1,10 @@
 import { cn } from '@langgenius/dify-ui/cn'
-import { SkeletonContainer, SkeletonPoint, SkeletonRectangle, SkeletonRow } from '@/app/components/base/skeleton'
+import {
+  SkeletonContainer,
+  SkeletonPoint,
+  SkeletonRectangle,
+  SkeletonRow,
+} from '@/app/components/base/skeleton'
 import { Group } from '../../../base/icons/src/vender/other'
 import Title from './title'
 
@@ -12,10 +17,7 @@ export const LoadingPlaceholder = ({ className }: { className?: string }) => (
   <div className={cn('h-2 rounded-xs bg-text-quaternary opacity-20', className)} />
 )
 
-const Placeholder = ({
-  wrapClassName,
-  loadingFileName,
-}: Props) => {
+const Placeholder = ({ wrapClassName, loadingFileName }: Props) => {
   return (
     <div className={cn(wrapClassName, 'p-3')}>
       <SkeletonRow>
@@ -30,13 +32,11 @@ const Placeholder = ({
         <div className="grow">
           <SkeletonContainer>
             <div className="flex h-5 items-center">
-              {loadingFileName
-                ? (
-                    <Title title={loadingFileName} />
-                  )
-                : (
-                    <SkeletonRectangle className="w-[260px]" />
-                  )}
+              {loadingFileName ? (
+                <Title title={loadingFileName} />
+              ) : (
+                <SkeletonRectangle className="w-[260px]" />
+              )}
             </div>
             <SkeletonRow className="h-4">
               <SkeletonRectangle className="w-[41px]" />

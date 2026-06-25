@@ -4,13 +4,7 @@ import type { MainNavItem } from '../types'
 import { cn } from '@langgenius/dify-ui/cn'
 import Link from '@/next/link'
 
-const NavIcon = ({
-  icon,
-  className,
-}: {
-  icon: string
-  className?: string
-}) => (
+const NavIcon = ({ icon, className }: { icon: string; className?: string }) => (
   <span aria-hidden className={cn(icon, 'h-5 w-5 shrink-0', className)} />
 )
 
@@ -19,10 +13,7 @@ type MainNavLinkProps = {
   pathname: string
 }
 
-const MainNavLink = ({
-  item,
-  pathname,
-}: MainNavLinkProps) => {
+const MainNavLink = ({ item, pathname }: MainNavLinkProps) => {
   const activated = item.active(pathname)
 
   return (
@@ -38,7 +29,9 @@ const MainNavLink = ({
     >
       <NavIcon icon={item.icon} className="group-aria-[current=page]:hidden" />
       <NavIcon icon={item.activeIcon} className="hidden group-aria-[current=page]:block" />
-      <span className="truncate group-aria-[current=page]:text-shadow-[0px_0px_8px_var(--color-components-main-nav-glass-text-glow)]">{item.label}</span>
+      <span className="truncate group-aria-[current=page]:text-shadow-[0px_0px_8px_var(--color-components-main-nav-glass-text-glow)]">
+        {item.label}
+      </span>
     </Link>
   )
 }

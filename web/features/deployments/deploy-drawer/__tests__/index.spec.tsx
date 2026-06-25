@@ -1,11 +1,8 @@
 import { render, screen } from '@testing-library/react'
 import { createStore, Provider as JotaiProvider } from 'jotai'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 import { DeployDrawer } from '../index'
-import {
-  deployDrawerAppInstanceIdAtom,
-  deployDrawerOpenAtom,
-} from '../state'
+import { deployDrawerAppInstanceIdAtom, deployDrawerOpenAtom } from '../state'
 
 vi.mock('../ui/form', () => ({
   DeployForm: () => <div data-testid="deploy-form" />,

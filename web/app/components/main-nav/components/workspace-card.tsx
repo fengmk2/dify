@@ -2,12 +2,7 @@
 
 import type { ReactNode } from 'react'
 import { cn } from '@langgenius/dify-ui/cn'
-import {
-  Popover,
-  PopoverContent,
-  PopoverTitle,
-  PopoverTrigger,
-} from '@langgenius/dify-ui/popover'
+import { Popover, PopoverContent, PopoverTitle, PopoverTrigger } from '@langgenius/dify-ui/popover'
 import { toast } from '@langgenius/dify-ui/toast'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
@@ -31,7 +26,8 @@ import { WorkspaceSwitcher } from './workspace-switcher'
 
 const workspaceMenuTriggerHeight = 36
 const workspaceMenuAlignOffset = -28
-const workspaceCardSkeletonClassName = 'animate-pulse rounded bg-text-quaternary opacity-20 motion-reduce:animate-none'
+const workspaceCardSkeletonClassName =
+  'animate-pulse rounded bg-text-quaternary opacity-20 motion-reduce:animate-none'
 const workspacePlans = new Set<string>(Object.values(Plan))
 
 function isWorkspacePlan(plan: string): plan is Plan {
@@ -71,13 +67,7 @@ function WorkspaceCardSkeleton({
   )
 }
 
-function WorkspaceCreditsLabel({
-  credits,
-  unit,
-}: {
-  credits: string
-  unit: string
-}) {
+function WorkspaceCreditsLabel({ credits, unit }: { credits: string; unit: string }) {
   const label = `${credits} ${unit}`
 
   return (
@@ -127,11 +117,19 @@ function WorkspaceCardTrigger({
         <WorkspaceIcon name={name} className="h-6 w-6 rounded-lg" />
         <div className="min-w-0 grow">
           <div className="flex min-w-0 items-center gap-1 pr-0.5">
-            <span className="max-w-[120px] min-w-0 shrink truncate system-sm-medium text-text-primary" title={name}>{name}</span>
+            <span
+              className="max-w-[120px] min-w-0 shrink truncate system-sm-medium text-text-primary"
+              title={name}
+            >
+              {name}
+            </span>
             {showStatus && <span className="flex shrink-0 items-center">{status}</span>}
           </div>
         </div>
-        <span aria-hidden className="i-ri-expand-up-down-line h-4 w-4 shrink-0 text-text-tertiary" />
+        <span
+          aria-hidden
+          className="i-ri-expand-up-down-line h-4 w-4 shrink-0 text-text-tertiary"
+        />
       </PopoverTrigger>
       {showCloudBilling && (
         <div className="flex items-center justify-center gap-1.5 border-t border-divider-subtle py-2 pr-2.5 pl-2">
@@ -181,7 +179,12 @@ function WorkspaceMenuHeader({
       <div className="rounded-xl border-[0.5px] border-components-panel-border bg-linear-to-b from-background-section-burn to-background-section pb-2">
         <div className="flex h-16 items-center gap-2 px-3">
           <div className="flex min-w-0 flex-1 flex-col items-start justify-center gap-1">
-            <PopoverTitle className="w-full min-w-0 truncate text-base/5 font-medium text-text-primary" title={name}>{name}</PopoverTitle>
+            <PopoverTitle
+              className="w-full min-w-0 truncate text-base/5 font-medium text-text-primary"
+              title={name}
+            >
+              {name}
+            </PopoverTitle>
             {status}
           </div>
           <WorkspaceIcon name={name} className="h-9 w-9 shrink-0" />
@@ -191,7 +194,12 @@ function WorkspaceMenuHeader({
           className="flex h-8 w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-1 text-left outline-hidden hover:bg-state-base-hover focus-visible:ring-2 focus-visible:ring-state-accent-solid focus-visible:ring-inset"
           onClick={onOpenSettings}
         >
-          <WorkspaceMenuItemContent icon={<span aria-hidden className="i-custom-vender-main-nav-workspace-settings h-4 w-4" />} label={settingsLabel} />
+          <WorkspaceMenuItemContent
+            icon={
+              <span aria-hidden className="i-custom-vender-main-nav-workspace-settings h-4 w-4" />
+            }
+            label={settingsLabel}
+          />
         </button>
         {showInviteMembers && (
           <button
@@ -199,7 +207,10 @@ function WorkspaceMenuHeader({
             className="flex h-8 w-full cursor-pointer items-center gap-2 rounded-lg px-3 py-1 text-left outline-hidden hover:bg-state-base-hover focus-visible:ring-2 focus-visible:ring-state-accent-solid focus-visible:ring-inset"
             onClick={onInviteMembers}
           >
-            <WorkspaceMenuItemContent icon={<span aria-hidden className="i-ri-user-add-line h-4 w-4" />} label={inviteMembersLabel} />
+            <WorkspaceMenuItemContent
+              icon={<span aria-hidden className="i-ri-user-add-line h-4 w-4" />}
+              label={inviteMembersLabel}
+            />
           </button>
         )}
       </div>
@@ -222,22 +233,32 @@ const selectCurrentWorkspaceCardData = (workspace: {
 
 export function WorkspaceCard() {
   const { t } = useTranslation()
-  const currentWorkspaceQuery = useQuery(consoleQuery.workspaces.current.post.queryOptions({
-    select: selectCurrentWorkspaceCardData,
-  }))
+  const currentWorkspaceQuery = useQuery(
+    consoleQuery.workspaces.current.post.queryOptions({
+      select: selectCurrentWorkspaceCardData,
+    }),
+  )
   const workspacesQuery = useQuery(consoleQuery.workspaces.get.queryOptions())
   const switchWorkspaceMutation = useMutation(consoleQuery.workspaces.switch.post.mutationOptions())
   const currentWorkspace = currentWorkspaceQuery.data
   const workspacesData = workspacesQuery.data
   const workspaces = workspacesData?.workspaces
-  const currentWorkspaceInList = workspaces?.find(workspace => workspace.current)
+  const currentWorkspaceInList = workspaces?.find((workspace) => workspace.current)
   const { enableBilling } = useProviderContext()
-  const workspacePermissionKeys = useAppContextSelector(state => state.workspacePermissionKeys)
+  const workspacePermissionKeys = useAppContextSelector((state) => state.workspacePermissionKeys)
   const { setShowPricingModal, setShowAccountSettingModal } = useModalContext()
   const showCloudBilling = IS_CLOUD_EDITION && enableBilling
   const [open, setOpen] = useState(false)
 
-  if (currentWorkspaceQuery.isPending || workspacesQuery.isPending || !currentWorkspace?.name || !currentWorkspace.role || !workspaces || !currentWorkspaceInList || !isWorkspacePlan(currentWorkspaceInList.plan)) {
+  if (
+    currentWorkspaceQuery.isPending ||
+    workspacesQuery.isPending ||
+    !currentWorkspace?.name ||
+    !currentWorkspace.role ||
+    !workspaces ||
+    !currentWorkspaceInList ||
+    !isWorkspacePlan(currentWorkspaceInList.plan)
+  ) {
     return (
       <WorkspaceCardSkeleton
         showCloudBilling={showCloudBilling}
@@ -250,20 +271,21 @@ export function WorkspaceCard() {
   const workspacePlan = currentWorkspaceInList.plan
   const isFreePlan = workspacePlan === Plan.sandbox
   const showPlanAction = showCloudBilling
-  const planActionLabel = t(isFreePlan ? 'upgradeBtn.encourageShort' : 'upgradeBtn.plain', { ns: 'billing' })
+  const planActionLabel = t(isFreePlan ? 'upgradeBtn.encourageShort' : 'upgradeBtn.plain', {
+    ns: 'billing',
+  })
   const showInviteMembers = hasPermission(workspacePermissionKeys, 'workspace.member.manage')
-  const renderWorkspaceStatus = () => enableBilling ? <WorkspacePlanBadge plan={workspacePlan} /> : <LicenseNav />
+  const renderWorkspaceStatus = () =>
+    enableBilling ? <WorkspacePlanBadge plan={workspacePlan} /> : <LicenseNav />
 
   const handleSwitchWorkspace = async (tenant_id: string) => {
     try {
-      if (currentWorkspace.id === tenant_id)
-        return
+      if (currentWorkspace.id === tenant_id) return
 
       await switchWorkspaceMutation.mutateAsync({ body: { tenant_id } })
       toast.success(t('actionMsg.modifiedSuccessfully', { ns: 'common' }))
       location.assign(`${location.origin}${basePath}`)
-    }
-    catch {
+    } catch {
       toast.error(t('actionMsg.modifiedUnsuccessfully', { ns: 'common' }))
     }
   }
@@ -297,9 +319,7 @@ export function WorkspaceCard() {
             onOpenSettings={() => {
               setOpen(false)
               setShowAccountSettingModal({
-                payload: enableBilling
-                  ? ACCOUNT_SETTING_TAB.BILLING
-                  : ACCOUNT_SETTING_TAB.MEMBERS,
+                payload: enableBilling ? ACCOUNT_SETTING_TAB.BILLING : ACCOUNT_SETTING_TAB.MEMBERS,
               })
             }}
             onInviteMembers={() => {

@@ -38,7 +38,10 @@ export const MAIN_NAV_ROUTES = [
     key: 'apps',
     href: '/apps',
     labelKey: 'menus.apps',
-    active: (path: string) => isPathUnderRoute(path, '/apps') || isPathUnderRoute(path, '/app') || isPathUnderRoute(path, '/snippets'),
+    active: (path: string) =>
+      isPathUnderRoute(path, '/apps') ||
+      isPathUnderRoute(path, '/app') ||
+      isPathUnderRoute(path, '/snippets'),
     icon: 'i-custom-vender-main-nav-studio',
     activeIcon: 'i-custom-vender-main-nav-studio-active',
     visibility: 'all',
@@ -66,7 +69,8 @@ export const MAIN_NAV_ROUTES = [
     key: 'integrations',
     href: buildIntegrationPath('provider'),
     labelKey: 'mainNav.integrations',
-    active: (path: string) => isPathUnderRoute(path, '/integrations') || isPathUnderRoute(path, '/tools'),
+    active: (path: string) =>
+      isPathUnderRoute(path, '/integrations') || isPathUnderRoute(path, '/tools'),
     icon: 'i-custom-vender-main-nav-integrations',
     activeIcon: 'i-custom-vender-main-nav-integrations-active',
     visibility: 'all',
@@ -75,7 +79,8 @@ export const MAIN_NAV_ROUTES = [
     key: 'marketplace',
     href: '/marketplace',
     labelKey: 'mainNav.marketplace',
-    active: (path: string) => isPathUnderRoute(path, '/marketplace') || isPathUnderRoute(path, '/plugins'),
+    active: (path: string) =>
+      isPathUnderRoute(path, '/marketplace') || isPathUnderRoute(path, '/plugins'),
     icon: 'i-custom-vender-main-nav-marketplace',
     activeIcon: 'i-custom-vender-main-nav-marketplace-active',
     visibility: 'all',
@@ -92,18 +97,17 @@ export const MAIN_NAV_ROUTES = [
   },
 ] as const satisfies readonly MainNavRouteConfig[]
 
-export function isMainNavRouteVisible(route: MainNavRouteConfig, options: MainNavRouteVisibilityOptions) {
-  if (route.feature === 'agentV2' && !options.agentV2Enabled)
-    return false
+export function isMainNavRouteVisible(
+  route: MainNavRouteConfig,
+  options: MainNavRouteVisibilityOptions,
+) {
+  if (route.feature === 'agentV2' && !options.agentV2Enabled) return false
 
-  if (route.feature === 'marketplace' && !options.marketplaceEnabled)
-    return false
+  if (route.feature === 'marketplace' && !options.marketplaceEnabled) return false
 
-  if (route.visibility === 'all')
-    return true
+  if (route.visibility === 'all') return true
 
-  if (route.visibility === 'notDatasetOperator')
-    return !options.isCurrentWorkspaceDatasetOperator
+  if (route.visibility === 'notDatasetOperator') return !options.isCurrentWorkspaceDatasetOperator
 
   return options.canUseAppDeploy
 }

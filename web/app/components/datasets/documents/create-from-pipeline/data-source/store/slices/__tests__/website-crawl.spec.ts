@@ -1,11 +1,12 @@
 import type { WebsiteCrawlSliceShape } from '../website-crawl'
 import type { CrawlResult, CrawlResultItem } from '@/models/datasets'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import { createStore } from 'zustand'
 import { CrawlStep } from '@/models/datasets'
 import { createWebsiteCrawlSlice } from '../website-crawl'
 
-const createTestStore = () => createStore<WebsiteCrawlSliceShape>((...args) => createWebsiteCrawlSlice(...args))
+const createTestStore = () =>
+  createStore<WebsiteCrawlSliceShape>((...args) => createWebsiteCrawlSlice(...args))
 
 describe('createWebsiteCrawlSlice', () => {
   it('should initialize with default values', () => {

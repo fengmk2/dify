@@ -1,7 +1,7 @@
 import type { PluginDetail } from '../../../../types'
 import type { ModalStates, VersionTarget } from '../use-detail-header-state'
 import { act, renderHook } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import * as amplitude from '@/app/components/base/amplitude'
 import { PluginSource } from '../../../../types'
 import { usePluginOperations } from '../use-plugin-operations'
@@ -26,14 +26,18 @@ const {
     mockRefreshPluginList: vi.fn(),
     mockUninstallPlugin: vi.fn(() => Promise.resolve({ success: true })),
     mockFetchReleases: vi.fn(() => Promise.resolve([{ tag_name: 'v2.0.0' }])),
-    mockCheckForUpdates: vi.fn(() => ({ needUpdate: true, toastProps: { type: 'success', message: 'Update available' } })),
+    mockCheckForUpdates: vi.fn(() => ({
+      needUpdate: true,
+      toastProps: { type: 'success', message: 'Update available' },
+    })),
     mockToastNotify: vi.fn(),
   }
 })
 
 vi.mock('@langgenius/dify-ui/toast', () => ({
   toast: Object.assign(
-    (message: string, options?: { type?: string }) => mockToastNotify({ type: options?.type, message }),
+    (message: string, options?: { type?: string }) =>
+      mockToastNotify({ type: options?.type, message }),
     {
       success: (message: string) => mockToastNotify({ type: 'success', message }),
       error: (message: string) => mockToastNotify({ type: 'error', message }),
@@ -529,10 +533,13 @@ describe('usePluginOperations', () => {
         await result.current.handleDelete()
       })
 
-      expect(amplitude.trackEvent).toHaveBeenCalledWith('plugin_uninstalled', expect.objectContaining({
-        plugin_id: 'test-plugin',
-        plugin_name: 'test-plugin-name',
-      }))
+      expect(amplitude.trackEvent).toHaveBeenCalledWith(
+        'plugin_uninstalled',
+        expect.objectContaining({
+          plugin_id: 'test-plugin',
+          plugin_name: 'test-plugin-name',
+        }),
+      )
     })
 
     it('should not call onUpdate when delete fails', async () => {

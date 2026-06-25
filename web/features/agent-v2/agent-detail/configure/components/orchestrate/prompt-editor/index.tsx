@@ -29,42 +29,31 @@ import { AgentPromptSlashMenu } from './slash'
 
 const subscribeHydrationState = () => () => {}
 
-const useIsHydrated = () => useSyncExternalStore(
-  subscribeHydrationState,
-  () => true,
-  () => false,
-)
+const useIsHydrated = () =>
+  useSyncExternalStore(
+    subscribeHydrationState,
+    () => true,
+    () => false,
+  )
 
-function AgentPromptPlaceholder({
-  insertLabel,
-  text,
-}: {
-  insertLabel: string
-  text: string
-}) {
+function AgentPromptPlaceholder({ insertLabel, text }: { insertLabel: string; text: string }) {
   return (
     <span className="flex items-center gap-0.5 system-sm-regular whitespace-nowrap text-components-input-text-placeholder">
       <span>{text}</span>
-      <Kbd className="text-text-placeholder">
-        /
-      </Kbd>
-      <span className="underline decoration-dotted underline-offset-2">
-        {insertLabel}
-      </span>
+      <Kbd className="text-text-placeholder">/</Kbd>
+      <span className="underline decoration-dotted underline-offset-2">{insertLabel}</span>
     </span>
   )
 }
 
 function getProviderToolFromToken(token: RosterReferenceToken, tools: AgentTool[]) {
-  if (token.kind !== 'tool' && token.kind !== 'tool-all')
-    return
+  if (token.kind !== 'tool' && token.kind !== 'tool-all') return
 
-  return tools.find(tool =>
-    tool.kind === 'provider'
-    && (
-      token.id === `${tool.id}/*`
-      || tool.actions.some(action => token.id === `${tool.id}/${action.toolName}`)
-    ),
+  return tools.find(
+    (tool) =>
+      tool.kind === 'provider' &&
+      (token.id === `${tool.id}/*` ||
+        tool.actions.some((action) => token.id === `${tool.id}/${action.toolName}`)),
   )
 }
 
@@ -87,33 +76,20 @@ function AgentPromptRosterReferenceIcon({
   }
 
   const providerTool = getProviderToolFromToken(token, tools)
-  if (!providerTool || providerTool.kind !== 'provider')
-    return null
+  if (!providerTool || providerTool.kind !== 'provider') return null
 
-  const icon = theme === Theme.dark && providerTool.iconDark ? providerTool.iconDark : providerTool.icon
+  const icon =
+    theme === Theme.dark && providerTool.iconDark ? providerTool.iconDark : providerTool.icon
 
   if (icon) {
-    return (
-      <BlockIcon
-        className="shrink-0"
-        type={BlockEnum.Tool}
-        size="xs"
-        toolIcon={icon}
-      />
-    )
+    return <BlockIcon className="shrink-0" type={BlockEnum.Tool} size="xs" toolIcon={icon} />
   }
 
-  return (
-    <span
-      aria-hidden
-      className={cn('size-3.5 shrink-0', providerTool.iconClassName)}
-    />
-  )
+  return <span aria-hidden className={cn('size-3.5 shrink-0', providerTool.iconClassName)} />
 }
 
 const getLastTextContent = (node: Node): string => {
-  if (node.nodeType === Node.TEXT_NODE)
-    return node.textContent ?? ''
+  if (node.nodeType === Node.TEXT_NODE) return node.textContent ?? ''
 
   const textParts: string[] = []
   const walker = document.createTreeWalker(node, NodeFilter.SHOW_TEXT)
@@ -127,16 +103,14 @@ const getLastTextContent = (node: Node): string => {
 }
 
 const isSelectionAfterSlash = (rootElement: HTMLElement | null, fallbackValue: string) => {
-  if (!rootElement)
-    return fallbackValue.endsWith('/')
+  if (!rootElement) return fallbackValue.endsWith('/')
 
   const selection = window.getSelection()
   if (!selection || !selection.isCollapsed || selection.rangeCount === 0)
     return fallbackValue.endsWith('/')
 
   const anchorNode = selection.anchorNode
-  if (!anchorNode || !rootElement.contains(anchorNode))
-    return false
+  if (!anchorNode || !rootElement.contains(anchorNode)) return false
 
   if (anchorNode.nodeType === Node.TEXT_NODE)
     return (anchorNode.textContent ?? '').slice(0, selection.anchorOffset).endsWith('/')
@@ -188,18 +162,14 @@ export function AgentPromptEditor() {
   }
 
   const syncSlashMenuWithSelection = useCallback(() => {
-    if (!isHydrated || readOnly)
-      return
+    if (!isHydrated || readOnly) return
 
-    if (isSelectionAfterSlash(editorRef.current, value))
-      openSlashMenu()
-    else
-      closeSlashMenu()
+    if (isSelectionAfterSlash(editorRef.current, value)) openSlashMenu()
+    else closeSlashMenu()
   }, [isHydrated, readOnly, value])
 
   const handleEditorKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
-    if (!isHydrated || readOnly)
-      return
+    if (!isHydrated || readOnly) return
 
     if (event.key === 'Escape' && isSlashMenuOpen) {
       event.preventDefault()
@@ -207,8 +177,7 @@ export function AgentPromptEditor() {
       return
     }
 
-    if (event.key !== '/' || event.metaKey || event.ctrlKey || event.altKey)
-      return
+    if (event.key !== '/' || event.metaKey || event.ctrlKey || event.altKey) return
 
     openSlashMenu()
   }
@@ -219,10 +188,7 @@ export function AgentPromptEditor() {
 
   const handleEditorPointerUp = (event: ReactPointerEvent<HTMLDivElement>) => {
     const target = event.target
-    if (
-      target instanceof Element
-      && target.closest('[data-agent-prompt-toolbar]')
-    ) {
+    if (target instanceof Element && target.closest('[data-agent-prompt-toolbar]')) {
       return
     }
 
@@ -231,18 +197,14 @@ export function AgentPromptEditor() {
 
   const handleRootPointerDown = (event: MouseEvent<HTMLDivElement>) => {
     const target = event.target
-    if (!(target instanceof Node))
-      return
+    if (!(target instanceof Node)) return
 
-    if (editorRef.current?.contains(target))
-      return
+    if (editorRef.current?.contains(target)) return
 
     if (
-      target instanceof Element
-      && (
-        target.closest('[data-agent-prompt-slash-menu]')
-        || target.closest('[data-agent-prompt-toolbar]')
-      )
+      target instanceof Element &&
+      (target.closest('[data-agent-prompt-slash-menu]') ||
+        target.closest('[data-agent-prompt-toolbar]'))
     ) {
       return
     }
@@ -260,24 +222,24 @@ export function AgentPromptEditor() {
     openSlashMenu()
   }
 
-  const renderRosterReferenceIcon = useCallback((token: RosterReferenceToken) => {
-    if (token.kind !== 'tool' && token.kind !== 'tool-all' && token.kind !== 'cli_tool')
-      return null
+  const renderRosterReferenceIcon = useCallback(
+    (token: RosterReferenceToken) => {
+      if (token.kind !== 'tool' && token.kind !== 'tool-all' && token.kind !== 'cli_tool')
+        return null
 
-    return <AgentPromptRosterReferenceIcon token={token} tools={tools} />
-  }, [tools])
+      return <AgentPromptRosterReferenceIcon token={token} tools={tools} />
+    },
+    [tools],
+  )
 
   useEffect(() => {
-    if (!isSlashMenuOpen)
-      return
+    if (!isSlashMenuOpen) return
 
     const handlePointerDown = (event: PointerEvent) => {
       const target = event.target
-      if (!(target instanceof Node))
-        return
+      if (!(target instanceof Node)) return
 
-      if (!rootRef.current?.contains(target))
-        closeSlashMenu()
+      if (!rootRef.current?.contains(target)) closeSlashMenu()
     }
 
     document.addEventListener('pointerdown', handlePointerDown)
@@ -310,7 +272,10 @@ export function AgentPromptEditor() {
   ]
 
   return (
-    <section className="flex flex-col gap-1 px-0 py-0" aria-labelledby="agent-configure-prompt-label">
+    <section
+      className="flex flex-col gap-1 px-0 py-0"
+      aria-labelledby="agent-configure-prompt-label"
+    >
       <div className="flex items-center gap-2">
         <div className="flex min-h-6 min-w-0 flex-1 items-center gap-0.5">
           <h3
@@ -325,29 +290,34 @@ export function AgentPromptEditor() {
         </div>
         <Tooltip>
           <TooltipTrigger
-            render={(
+            render={
               <button
                 type="button"
-                aria-label={copied ? t('agentDetail.configure.prompt.copied') : t('agentDetail.configure.prompt.copy')}
+                aria-label={
+                  copied
+                    ? t('agentDetail.configure.prompt.copied')
+                    : t('agentDetail.configure.prompt.copy')
+                }
                 className="flex size-6 shrink-0 items-center justify-center rounded-md p-0.5 text-text-tertiary hover:bg-state-base-hover hover:text-text-secondary focus-visible:ring-2 focus-visible:ring-state-accent-solid focus-visible:outline-hidden"
                 onClick={handleCopyPrompt}
                 onMouseLeave={reset}
               >
-                <span aria-hidden className={copied ? 'i-ri-check-line size-4' : 'i-ri-clipboard-line size-4'} />
+                <span
+                  aria-hidden
+                  className={copied ? 'i-ri-check-line size-4' : 'i-ri-clipboard-line size-4'}
+                />
               </button>
-            )}
+            }
           />
           <TooltipContent>
-            {copied ? t('agentDetail.configure.prompt.copied') : t('agentDetail.configure.prompt.copy')}
+            {copied
+              ? t('agentDetail.configure.prompt.copied')
+              : t('agentDetail.configure.prompt.copy')}
           </TooltipContent>
         </Tooltip>
       </div>
 
-      <div
-        ref={rootRef}
-        className="relative"
-        onPointerDownCapture={handleRootPointerDown}
-      >
+      <div ref={rootRef} className="relative" onPointerDownCapture={handleRootPointerDown}>
         <div
           className="group min-h-28 overflow-hidden rounded-[10px] border-[1.5px] border-transparent bg-components-input-bg-normal pt-1 focus-within:border-components-input-border-active-prompt-1 focus-within:bg-components-input-bg-active focus-within:shadow-xs focus-within:shadow-shadow-shadow-3"
           onKeyDownCapture={handleEditorKeyDown}

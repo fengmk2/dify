@@ -1,6 +1,6 @@
 import type { FileEntity } from '../../types'
 import { fireEvent, render } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 import { FileContextProvider } from '../../store'
 import ImageInput from '../image-input'
 
@@ -15,11 +15,7 @@ vi.mock('@/service/use-common', () => ({
 }))
 
 const renderWithProvider = (ui: React.ReactElement, initialFiles: FileEntity[] = []) => {
-  return render(
-    <FileContextProvider value={initialFiles}>
-      {ui}
-    </FileContextProvider>,
-  )
+  return render(<FileContextProvider value={initialFiles}>{ui}</FileContextProvider>)
 }
 
 describe('ImageInput (image-uploader-in-retrieval-testing)', () => {
@@ -93,8 +89,7 @@ describe('ImageInput (image-uploader-in-retrieval-testing)', () => {
       const input = document.querySelector('input[type="file"]') as HTMLInputElement
       const clickSpy = vi.spyOn(input, 'click')
 
-      if (clickableArea)
-        fireEvent.click(clickableArea)
+      if (clickableArea) fireEvent.click(clickableArea)
 
       expect(clickSpy).toHaveBeenCalled()
     })

@@ -1,7 +1,7 @@
 import type { HumanInputFilledFormData } from '@/types/workflow'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import HumanInputFilledFormList from '../human-input-filled-form-list'
 
 /**

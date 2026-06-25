@@ -44,12 +44,8 @@ export function SourceStepContent() {
   return (
     <div className="flex min-h-0 flex-1 flex-col gap-4">
       <SourceMethodSection />
-      {method === 'bindApp' && (
-        <SourceAppSelectionSection />
-      )}
-      {method === 'importDsl' && (
-        <DslUploadSection />
-      )}
+      {method === 'bindApp' && <SourceAppSelectionSection />}
+      {method === 'importDsl' && <DslUploadSection />}
       <UnsupportedDslNodesAlert nodes={unsupportedDslNodes} />
     </div>
   )
@@ -91,7 +87,13 @@ function SourceMethodSection() {
   )
 }
 
-function SourceMethodCard({ value, icon, title, description, badge }: {
+function SourceMethodCard({
+  value,
+  icon,
+  title,
+  description,
+  badge,
+}: {
   value: GuideMethod
   icon: string
   title: string
@@ -158,12 +160,15 @@ function SourceSearchInput() {
 
   return (
     <div className="relative">
-      <span className="pointer-events-none absolute top-1/2 left-2.5 i-ri-search-line size-4 -translate-y-1/2 text-text-tertiary" aria-hidden="true" />
+      <span
+        className="pointer-events-none absolute top-1/2 left-2.5 i-ri-search-line size-4 -translate-y-1/2 text-text-tertiary"
+        aria-hidden="true"
+      />
       <Input
         id="create-guide-source-search"
         aria-label={t('createGuide.source.sourceApp')}
         value={sourceSearchText}
-        onChange={event => setSourceSearchText(event.target.value)}
+        onChange={(event) => setSourceSearchText(event.target.value)}
         placeholder={t('createGuide.source.searchPlaceholder')}
         className="h-9 pr-8 pl-8"
       />
@@ -186,8 +191,12 @@ function SourceAppList() {
   const selectSourceApp = useSetAtom(selectSourceAppAtom)
   const effectiveSelectedApp = useAtomValue(effectiveSelectedAppAtom)
   const sourceAppsQuery = useAtomValue(sourceAppsQueryAtom)
-  const sourceApps = (sourceAppsQuery.data?.pages.flatMap(page => page.data) ?? []) as WorkflowSourceApp[]
-  const sourceAppsLoading = sourceAppsQuery.isLoading || sourceAppsQuery.isPlaceholderData || (sourceAppsQuery.isFetching && sourceApps.length === 0)
+  const sourceApps = (sourceAppsQuery.data?.pages.flatMap((page) => page.data) ??
+    []) as WorkflowSourceApp[]
+  const sourceAppsLoading =
+    sourceAppsQuery.isLoading ||
+    sourceAppsQuery.isPlaceholderData ||
+    (sourceAppsQuery.isFetching && sourceApps.length === 0)
   const { rootRef, sentinelRef } = useInfiniteScroll<HTMLDivElement>(sourceAppsQuery, {
     enabled: !sourceAppsLoading,
     rootMargin: '0px 0px 160px 0px',
@@ -195,33 +204,36 @@ function SourceAppList() {
   })
 
   return (
-    <div ref={rootRef} className="min-h-0 flex-1 overflow-y-auto rounded-lg border border-divider-subtle bg-background-default">
-      {sourceAppsLoading
-        ? <SourceAppSkeleton />
-        : sourceApps.length === 0
-          ? (
-              <DeploymentStateMessage variant="embedded">
-                {t('createGuide.source.empty')}
-              </DeploymentStateMessage>
-            )
-          : (
-              <div>
-                {sourceApps.map(app => (
-                  <SourceAppOption
-                    key={app.id}
-                    app={app}
-                    selected={effectiveSelectedApp?.id === app.id}
-                    onSelect={() => selectSourceApp(app)}
-                  />
-                ))}
-                {sourceAppsQuery.isFetchingNextPage && (
-                  <div className="border-t border-divider-subtle px-3 py-2 text-center system-xs-regular text-text-tertiary">
-                    {t('createModal.loadingApps')}
-                  </div>
-                )}
-                {sourceAppsQuery.hasNextPage && <div ref={sentinelRef} aria-hidden="true" className="h-px" />}
-              </div>
-            )}
+    <div
+      ref={rootRef}
+      className="min-h-0 flex-1 overflow-y-auto rounded-lg border border-divider-subtle bg-background-default"
+    >
+      {sourceAppsLoading ? (
+        <SourceAppSkeleton />
+      ) : sourceApps.length === 0 ? (
+        <DeploymentStateMessage variant="embedded">
+          {t('createGuide.source.empty')}
+        </DeploymentStateMessage>
+      ) : (
+        <div>
+          {sourceApps.map((app) => (
+            <SourceAppOption
+              key={app.id}
+              app={app}
+              selected={effectiveSelectedApp?.id === app.id}
+              onSelect={() => selectSourceApp(app)}
+            />
+          ))}
+          {sourceAppsQuery.isFetchingNextPage && (
+            <div className="border-t border-divider-subtle px-3 py-2 text-center system-xs-regular text-text-tertiary">
+              {t('createModal.loadingApps')}
+            </div>
+          )}
+          {sourceAppsQuery.hasNextPage && (
+            <div ref={sentinelRef} aria-hidden="true" className="h-px" />
+          )}
+        </div>
+      )}
     </div>
   )
 }
@@ -229,7 +241,7 @@ function SourceAppList() {
 function SourceAppSkeleton() {
   return (
     <div className="divide-y divide-divider-subtle">
-      {sourceAppSkeletonKeys.map(key => (
+      {sourceAppSkeletonKeys.map((key) => (
         <SkeletonRow key={key} className="h-14 px-3 py-2">
           <SkeletonRectangle className="my-0 size-7 animate-pulse rounded-lg" />
           <div className="flex min-w-0 grow flex-col gap-1">
@@ -242,7 +254,11 @@ function SourceAppSkeleton() {
   )
 }
 
-function SourceAppOption({ app, onSelect, selected }: {
+function SourceAppOption({
+  app,
+  onSelect,
+  selected,
+}: {
   app: WorkflowSourceApp
   onSelect: () => void
   selected: boolean
@@ -265,7 +281,14 @@ function SourceAppOption({ app, onSelect, selected }: {
         imageUrl={app.icon_url}
       />
       <span className="flex min-w-0 grow">
-        <span className={cn('truncate system-sm-medium', selected ? 'text-text-accent' : 'text-text-primary')}>{app.name}</span>
+        <span
+          className={cn(
+            'truncate system-sm-medium',
+            selected ? 'text-text-accent' : 'text-text-primary',
+          )}
+        >
+          {app.name}
+        </span>
       </span>
       <input
         type="radio"
@@ -293,20 +316,27 @@ function DslUploadSection() {
   const selectDslFile = useSetAtom(selectDslFileAtom)
 
   return (
-    <StepShell title={t('createGuide.dsl.title')} description={t('createGuide.dsl.description')} hideHeader>
+    <StepShell
+      title={t('createGuide.dsl.title')}
+      description={t('createGuide.dsl.description')}
+      hideHeader
+    >
       <div className="flex flex-col gap-4 rounded-xl border border-components-panel-border bg-components-panel-bg-blur p-5">
         <div className="flex items-start gap-3">
-          <span className="mt-0.5 i-ri-upload-cloud-2-line size-5 shrink-0 text-text-tertiary" aria-hidden="true" />
+          <span
+            className="mt-0.5 i-ri-upload-cloud-2-line size-5 shrink-0 text-text-tertiary"
+            aria-hidden="true"
+          />
           <div className="flex min-w-0 flex-col gap-1">
-            <div className="system-sm-semibold text-text-primary">{t('createGuide.dsl.dropTitle')}</div>
-            <div className="system-sm-regular text-text-tertiary">{t('createGuide.dsl.dropDescription')}</div>
+            <div className="system-sm-semibold text-text-primary">
+              {t('createGuide.dsl.dropTitle')}
+            </div>
+            <div className="system-sm-regular text-text-tertiary">
+              {t('createGuide.dsl.dropDescription')}
+            </div>
           </div>
         </div>
-        <Uploader
-          className="mt-0"
-          file={dslFile}
-          updateFile={selectDslFile}
-        />
+        <Uploader className="mt-0" file={dslFile} updateFile={selectDslFile} />
         <DslReadStatus />
       </div>
     </StepShell>
@@ -322,9 +352,7 @@ function DslReadStatus() {
   return (
     <>
       {isReadingDsl && (
-        <div className="system-xs-regular text-text-tertiary">
-          {t('createGuide.dsl.reading')}
-        </div>
+        <div className="system-xs-regular text-text-tertiary">{t('createGuide.dsl.reading')}</div>
       )}
       {dslReadError && (
         <div className="system-xs-regular text-text-destructive">
@@ -350,10 +378,12 @@ export function SourceActionButtons() {
       type="button"
       variant="primary"
       disabled={!canGoNext}
-      onClick={() => continueFromSource({
-        defaultDslAppName: t('createGuide.dsl.defaultAppName'),
-        defaultReleaseName: t('createGuide.release.defaultName'),
-      })}
+      onClick={() =>
+        continueFromSource({
+          defaultDslAppName: t('createGuide.dsl.defaultAppName'),
+          defaultReleaseName: t('createGuide.release.defaultName'),
+        })
+      }
     >
       {t('createGuide.actions.next')}
     </Button>

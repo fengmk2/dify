@@ -33,9 +33,7 @@ export default async function Layout({ children }: { children: ReactNode }) {
               <ProviderContextProvider>
                 <ModalContextProvider>
                   <MainNavLayout>
-                    <RoleRouteGuard>
-                      {children}
-                    </RoleRouteGuard>
+                    <RoleRouteGuard>{children}</RoleRouteGuard>
                   </MainNavLayout>
                   <InSiteMessageNotification />
                   <PartnerStack />

@@ -9,10 +9,8 @@ import { agentComposerDraftAtom, agentComposerOriginalDraftAtom } from './store'
 function createAgentComposerStore(initialDraft?: AgentSoulConfigFormState) {
   const store = createStore()
 
-  if (initialDraft)
-    store.set(agentComposerDraftAtom, initialDraft)
-  if (initialDraft)
-    store.set(agentComposerOriginalDraftAtom, initialDraft)
+  if (initialDraft) store.set(agentComposerDraftAtom, initialDraft)
+  if (initialDraft) store.set(agentComposerOriginalDraftAtom, initialDraft)
 
   return store
 }
@@ -25,13 +23,8 @@ export function AgentComposerProvider({
   initialDraft?: AgentSoulConfigFormState
 }) {
   const storeRef = useRef<ReturnType<typeof createAgentComposerStore> | null>(null)
-  if (!storeRef.current)
-    storeRef.current = createAgentComposerStore(initialDraft)
+  if (!storeRef.current) storeRef.current = createAgentComposerStore(initialDraft)
   const store = storeRef.current
 
-  return (
-    <JotaiProvider store={store}>
-      {children}
-    </JotaiProvider>
-  )
+  return <JotaiProvider store={store}>{children}</JotaiProvider>
 }

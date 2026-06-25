@@ -18,22 +18,28 @@ const mockDefaultModel = vi.hoisted(() => ({
     },
   },
 }))
-const mockComposerMutationFn = vi.hoisted(() => vi.fn(async (variables: unknown) => ({
-  agent_soul: (variables as {
-    body?: {
-      agent_soul?: unknown
-    }
-  }).body?.agent_soul,
-  binding: {
-    binding_type: 'inline_agent',
-    agent_id: 'inline-agent-1',
-    current_snapshot_id: 'inline-snapshot-1',
-  },
-  variables,
-})))
-const mockComposerMutationOptions = vi.hoisted(() => vi.fn(() => ({
-  mutationFn: mockComposerMutationFn,
-})))
+const mockComposerMutationFn = vi.hoisted(() =>
+  vi.fn(async (variables: unknown) => ({
+    agent_soul: (
+      variables as {
+        body?: {
+          agent_soul?: unknown
+        }
+      }
+    ).body?.agent_soul,
+    binding: {
+      binding_type: 'inline_agent',
+      agent_id: 'inline-agent-1',
+      current_snapshot_id: 'inline-snapshot-1',
+    },
+    variables,
+  })),
+)
+const mockComposerMutationOptions = vi.hoisted(() =>
+  vi.fn(() => ({
+    mutationFn: mockComposerMutationFn,
+  })),
+)
 
 vi.mock('@langgenius/dify-ui/toast', () => ({
   toast: {
@@ -64,11 +70,11 @@ vi.mock('@/service/client', () => ({
               byNodeId: {
                 agentComposer: {
                   get: {
-                    queryKey: ({ input }: { input: { params: { app_id: string, node_id: string } } }) => [
-                      'workflow-agent-composer',
-                      input.params.app_id,
-                      input.params.node_id,
-                    ],
+                    queryKey: ({
+                      input,
+                    }: {
+                      input: { params: { app_id: string; node_id: string } }
+                    }) => ['workflow-agent-composer', input.params.app_id, input.params.node_id],
                   },
                   put: {
                     mutationOptions: mockComposerMutationOptions,
@@ -124,38 +130,43 @@ describe('useCreateInlineAgentBinding', () => {
     })
 
     await waitFor(() => expect(mockComposerMutationFn).toHaveBeenCalled())
-    expect(mockComposerMutationFn).toHaveBeenCalledWith({
-      params: {
-        app_id: 'app-1',
-        node_id: 'node-1',
-      },
-      body: {
-        variant: 'workflow',
-        save_strategy: 'node_job_only',
-        binding: {
-          binding_type: 'inline_agent',
+    expect(mockComposerMutationFn).toHaveBeenCalledWith(
+      {
+        params: {
+          app_id: 'app-1',
+          node_id: 'node-1',
         },
-        soul_lock: {
-          locked: false,
-        },
-        agent_soul: {
-          schema_version: 1,
-          prompt: {
-            system_prompt: '',
+        body: {
+          variant: 'workflow',
+          save_strategy: 'node_job_only',
+          binding: {
+            binding_type: 'inline_agent',
           },
-          model: {
-            model_provider: 'langgenius/openai/openai',
-            model: 'gpt-4o-mini',
-            plugin_id: 'langgenius/openai',
+          soul_lock: {
+            locked: false,
+          },
+          agent_soul: {
+            schema_version: 1,
+            prompt: {
+              system_prompt: '',
+            },
+            model: {
+              model_provider: 'langgenius/openai/openai',
+              model: 'gpt-4o-mini',
+              plugin_id: 'langgenius/openai',
+            },
           },
         },
       },
-    }, expect.any(Object))
-    await waitFor(() => expect(onSuccess).toHaveBeenCalledWith({
-      binding_type: 'inline_agent',
-      agent_id: 'inline-agent-1',
-      current_snapshot_id: 'inline-snapshot-1',
-    }))
+      expect.any(Object),
+    )
+    await waitFor(() =>
+      expect(onSuccess).toHaveBeenCalledWith({
+        binding_type: 'inline_agent',
+        agent_id: 'inline-agent-1',
+        current_snapshot_id: 'inline-snapshot-1',
+      }),
+    )
   })
 
   it('creates inline agent with a model-less initial soul before the default model loads', async () => {
@@ -184,33 +195,38 @@ describe('useCreateInlineAgentBinding', () => {
     })
 
     await waitFor(() => expect(mockComposerMutationFn).toHaveBeenCalled())
-    expect(mockComposerMutationFn).toHaveBeenCalledWith({
-      params: {
-        app_id: 'app-1',
-        node_id: 'node-1',
-      },
-      body: {
-        variant: 'workflow',
-        save_strategy: 'node_job_only',
-        binding: {
-          binding_type: 'inline_agent',
+    expect(mockComposerMutationFn).toHaveBeenCalledWith(
+      {
+        params: {
+          app_id: 'app-1',
+          node_id: 'node-1',
         },
-        soul_lock: {
-          locked: false,
-        },
-        agent_soul: {
-          schema_version: 1,
-          prompt: {
-            system_prompt: '',
+        body: {
+          variant: 'workflow',
+          save_strategy: 'node_job_only',
+          binding: {
+            binding_type: 'inline_agent',
+          },
+          soul_lock: {
+            locked: false,
+          },
+          agent_soul: {
+            schema_version: 1,
+            prompt: {
+              system_prompt: '',
+            },
           },
         },
       },
-    }, expect.any(Object))
-    await waitFor(() => expect(onSuccess).toHaveBeenCalledWith({
-      binding_type: 'inline_agent',
-      agent_id: 'inline-agent-1',
-      current_snapshot_id: 'inline-snapshot-1',
-    }))
+      expect.any(Object),
+    )
+    await waitFor(() =>
+      expect(onSuccess).toHaveBeenCalledWith({
+        binding_type: 'inline_agent',
+        agent_id: 'inline-agent-1',
+        current_snapshot_id: 'inline-snapshot-1',
+      }),
+    )
   })
 })
 
@@ -231,56 +247,65 @@ describe('useWorkflowInlineAgentConfigureSync', () => {
         },
       },
     })
-    const { result } = renderWorkflowHook(() => useWorkflowInlineAgentConfigureSync({
-      nodeId: 'node-1',
-      baseConfig: {
-        schema_version: 1,
-      },
-      currentModel: {
-        provider: 'langgenius/openai/openai',
-        model: 'gpt-4o-mini',
-      },
-      enabled: true,
-    }), {
-      queryClient,
-      hooksStoreProps: {
-        configsMap: {
-          flowId: 'app-1',
-          flowType: FlowType.appFlow,
-          fileSettings: {} as never,
+    const { result } = renderWorkflowHook(
+      () =>
+        useWorkflowInlineAgentConfigureSync({
+          nodeId: 'node-1',
+          baseConfig: {
+            schema_version: 1,
+          },
+          currentModel: {
+            provider: 'langgenius/openai/openai',
+            model: 'gpt-4o-mini',
+          },
+          enabled: true,
+        }),
+      {
+        queryClient,
+        hooksStoreProps: {
+          configsMap: {
+            flowId: 'app-1',
+            flowType: FlowType.appFlow,
+            fileSettings: {} as never,
+          },
         },
       },
-    })
+    )
 
     await act(async () => {
       await result.current.saveDraft()
     })
 
-    expect(mockComposerMutationFn).toHaveBeenCalledWith({
-      params: {
-        app_id: 'app-1',
-        node_id: 'node-1',
-      },
-      body: expect.objectContaining({
-        variant: 'workflow',
-        save_strategy: 'node_job_only',
-        agent_soul: expect.objectContaining({
-          schema_version: 1,
-          prompt: expect.objectContaining({
-            system_prompt: '',
-          }),
-          model: expect.objectContaining({
-            model_provider: 'langgenius/openai/openai',
-            model: 'gpt-4o-mini',
+    expect(mockComposerMutationFn).toHaveBeenCalledWith(
+      {
+        params: {
+          app_id: 'app-1',
+          node_id: 'node-1',
+        },
+        body: expect.objectContaining({
+          variant: 'workflow',
+          save_strategy: 'node_job_only',
+          agent_soul: expect.objectContaining({
+            schema_version: 1,
+            prompt: expect.objectContaining({
+              system_prompt: '',
+            }),
+            model: expect.objectContaining({
+              model_provider: 'langgenius/openai/openai',
+              model: 'gpt-4o-mini',
+            }),
           }),
         }),
-      }),
-    }, expect.any(Object))
+      },
+      expect.any(Object),
+    )
     await waitFor(() => expect(result.current.draftSavedAt).toBe(1710000300000))
-    expect(queryClient.getQueryData(['workflow-agent-composer', 'app-1', 'node-1'])).toEqual(expect.objectContaining({
-      agent_soul: expect.objectContaining({
-        schema_version: 1,
+    expect(queryClient.getQueryData(['workflow-agent-composer', 'app-1', 'node-1'])).toEqual(
+      expect.objectContaining({
+        agent_soul: expect.objectContaining({
+          schema_version: 1,
+        }),
       }),
-    }))
+    )
   })
 })

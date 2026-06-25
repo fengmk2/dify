@@ -25,24 +25,24 @@ function EnvironmentOptionIcon() {
   return <span className="i-ri-server-line size-[14px]" />
 }
 
-export function EnvironmentFilter({ className }: {
-  className?: string
-}) {
+export function EnvironmentFilter({ className }: { className?: string }) {
   const { t } = useTranslation('deployments')
   const [open, setOpen] = useState(false)
   const [envFilter, setEnvFilter] = useQueryState('env', envFilterQueryState)
-  const environmentsQuery = useQuery(consoleQuery.enterprise.environmentService.listEnvironments.queryOptions({
-    input: {
-      query: {
-        // The filter lists every deployable environment; environment count is
-        // capped well below the 100-per-page maximum.
-        pageNumber: 1,
-        resultsPerPage: 100,
+  const environmentsQuery = useQuery(
+    consoleQuery.enterprise.environmentService.listEnvironments.queryOptions({
+      input: {
+        query: {
+          // The filter lists every deployable environment; environment count is
+          // capped well below the 100-per-page maximum.
+          pageNumber: 1,
+          resultsPerPage: 100,
+        },
       },
-    },
-  }))
-  const environmentOptions: EnvironmentFilterOption[] = environmentsQuery.data?.environments
-    ?.map(environment => ({
+    }),
+  )
+  const environmentOptions: EnvironmentFilterOption[] =
+    environmentsQuery.data?.environments?.map((environment) => ({
       value: environment.id,
       text: environment.displayName,
       icon: <EnvironmentOptionIcon />,
@@ -55,8 +55,9 @@ export function EnvironmentFilter({ className }: {
     },
     ...environmentOptions,
   ]
-  const selectedOption = filterOptions.find(option => option.value === envFilter)
-    ?? (envFilter
+  const selectedOption =
+    filterOptions.find((option) => option.value === envFilter) ??
+    (envFilter
       ? {
           value: envFilter,
           text: envFilter,
@@ -74,14 +75,17 @@ export function EnvironmentFilter({ className }: {
           className,
         )}
       >
-        <div className="p-px text-text-tertiary">
-          {selectedOption?.icon}
-        </div>
+        <div className="p-px text-text-tertiary">{selectedOption?.icon}</div>
         <div className="max-w-40 min-w-0 truncate system-sm-regular text-text-secondary">
           {selectedOption?.text}
         </div>
         <div className="shrink-0 p-px">
-          <span className={cn('i-ri-arrow-down-s-line size-3.5 text-text-tertiary transition-transform', open && 'rotate-180')} />
+          <span
+            className={cn(
+              'i-ri-arrow-down-s-line size-3.5 text-text-tertiary transition-transform',
+              open && 'rotate-180',
+            )}
+          />
         </div>
       </DropdownMenuTrigger>
       {open && (
@@ -91,7 +95,7 @@ export function EnvironmentFilter({ className }: {
           popupClassName="w-60 rounded-lg border border-components-panel-border bg-components-panel-bg-blur shadow-lg backdrop-blur-xs"
         >
           <div className="max-h-72 overflow-auto p-1">
-            {filterOptions.map(option => (
+            {filterOptions.map((option) => (
               <DropdownMenuItem
                 key={option.value ?? 'all'}
                 onClick={() => {

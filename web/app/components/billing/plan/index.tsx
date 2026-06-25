@@ -1,11 +1,7 @@
 'use client'
 import type { FC } from 'react'
 import { Button } from '@langgenius/dify-ui/button'
-import {
-  RiBook2Line,
-  RiFileEditLine,
-  RiGroupLine,
-} from '@remixicon/react'
+import { RiBook2Line, RiFileEditLine, RiGroupLine } from '@remixicon/react'
 import { useUnmountedRef } from 'ahooks'
 import * as React from 'react'
 import { useEffect } from 'react'
@@ -35,35 +31,26 @@ type Props = Readonly<{
   loc: string
 }>
 
-const PlanComp: FC<Props> = ({
-  loc,
-}) => {
+const PlanComp: FC<Props> = ({ loc }) => {
   const { t } = useTranslation()
   const router = useRouter()
   const path = usePathname()
   const { userProfile, workspacePermissionKeys } = useAppContext()
-  const { plan, enableEducationPlan, allowRefreshEducationVerify, isEducationAccount } = useProviderContext()
+  const { plan, enableEducationPlan, allowRefreshEducationVerify, isEducationAccount } =
+    useProviderContext()
   const isAboutToExpire = allowRefreshEducationVerify
-  const {
-    type,
-  } = plan
+  const { type } = plan
   const isEnterprisePlan = String(type) === SelfHostedPlan.enterprise
 
-  const {
-    usage,
-    total,
-    reset,
-  } = plan
-  const triggerEventsResetInDays = type === Plan.professional && total.triggerEvents !== NUM_INFINITE
-    ? reset.triggerEvents ?? undefined
-    : undefined
+  const { usage, total, reset } = plan
+  const triggerEventsResetInDays =
+    type === Plan.professional && total.triggerEvents !== NUM_INFINITE
+      ? (reset.triggerEvents ?? undefined)
+      : undefined
   const apiRateLimitResetInDays = (() => {
-    if (total.apiRateLimit === NUM_INFINITE)
-      return undefined
-    if (typeof reset.apiRateLimit === 'number')
-      return reset.apiRateLimit
-    if (type === Plan.sandbox)
-      return getDaysUntilEndOfMonth()
+    if (total.apiRateLimit === NUM_INFINITE) return undefined
+    if (typeof reset.apiRateLimit === 'number') return reset.apiRateLimit
+    if (type === Plan.sandbox) return getDaysUntilEndOfMonth()
     return undefined
   })()
 
@@ -71,70 +58,70 @@ const PlanComp: FC<Props> = ({
   const { handleEducationDiscount, isEducationDiscountLoading } = useEducationDiscount()
   const canManageBilling = hasPermission(workspacePermissionKeys, BillingPermission.Manage)
   const { mutateAsync, isPending } = useEducationVerify()
-  const setShowAccountSettingModal = useModalContextSelector(s => s.setShowAccountSettingModal)
+  const setShowAccountSettingModal = useModalContextSelector((s) => s.setShowAccountSettingModal)
   const setEducationVerifying = useSetEducationVerifying()
   const unmountedRef = useUnmountedRef()
   const handleVerify = () => {
-    if (isPending)
-      return
-    mutateAsync().then((res) => {
-      setEducationVerifying(null)
-      if (unmountedRef.current)
-        return
-      router.push(`/education-apply?token=${res.token}`)
-    }).catch(() => {
-      setShowModal(true)
-    })
+    if (isPending) return
+    mutateAsync()
+      .then((res) => {
+        setEducationVerifying(null)
+        if (unmountedRef.current) return
+        router.push(`/education-apply?token=${res.token}`)
+      })
+      .catch(() => {
+        setShowModal(true)
+      })
   }
   useEffect(() => {
     // setShowAccountSettingModal would prevent navigation
-    if (path.startsWith('/education-apply'))
-      setShowAccountSettingModal(null)
+    if (path.startsWith('/education-apply')) setShowAccountSettingModal(null)
   }, [path, setShowAccountSettingModal])
   return (
     <div className="relative rounded-2xl border-[0.5px] border-effects-highlight-lightmode-off bg-background-section-burn">
       <div className="p-6 pb-2">
-        {plan.type === Plan.sandbox && (
-          <Sandbox />
-        )}
-        {plan.type === Plan.professional && (
-          <Professional />
-        )}
-        {plan.type === Plan.team && (
-          <Team />
-        )}
-        {isEnterprisePlan && (
-          <Enterprise />
-        )}
+        {plan.type === Plan.sandbox && <Sandbox />}
+        {plan.type === Plan.professional && <Professional />}
+        {plan.type === Plan.team && <Team />}
+        {isEnterprisePlan && <Enterprise />}
         <div className="mt-1 flex items-center">
           <div className="grow">
             <div className="mb-1 flex items-center gap-1">
-              <div className="system-md-semibold-uppercase text-text-primary">{t(`plans.${type}.name`, { ns: 'billing' })}</div>
+              <div className="system-md-semibold-uppercase text-text-primary">
+                {t(`plans.${type}.name`, { ns: 'billing' })}
+              </div>
             </div>
-            <div className="system-xs-regular text-util-colors-gray-gray-600">{t(`plans.${type}.for`, { ns: 'billing' })}</div>
+            <div className="system-xs-regular text-util-colors-gray-gray-600">
+              {t(`plans.${type}.for`, { ns: 'billing' })}
+            </div>
           </div>
           <div className="flex shrink-0 items-center gap-1">
-            {IS_CLOUD_EDITION && enableEducationPlan && (!isEducationAccount || isAboutToExpire) && (
-              <Button variant="ghost" onClick={handleVerify} disabled={isPending}>
-                <span className="mr-1 i-ri-graduation-cap-line size-4" />
-                {t('toVerified', { ns: 'education' })}
-                {isPending && <Loading className="ml-1 animate-spin-slow" />}
-              </Button>
-            )}
-            {IS_CLOUD_EDITION && enableEducationPlan && isEducationAccount && type === Plan.sandbox && canManageBilling && (
-              <Button variant="ghost" onClick={handleEducationDiscount} disabled={isEducationDiscountLoading}>
-                <span className="mr-1 i-ri-graduation-cap-line size-4" />
-                {t('useEducationDiscount', { ns: 'education' })}
-                {isEducationDiscountLoading && <Loading className="ml-1 animate-spin-slow" />}
-              </Button>
-            )}
+            {IS_CLOUD_EDITION &&
+              enableEducationPlan &&
+              (!isEducationAccount || isAboutToExpire) && (
+                <Button variant="ghost" onClick={handleVerify} disabled={isPending}>
+                  <span className="mr-1 i-ri-graduation-cap-line size-4" />
+                  {t('toVerified', { ns: 'education' })}
+                  {isPending && <Loading className="ml-1 animate-spin-slow" />}
+                </Button>
+              )}
+            {IS_CLOUD_EDITION &&
+              enableEducationPlan &&
+              isEducationAccount &&
+              type === Plan.sandbox &&
+              canManageBilling && (
+                <Button
+                  variant="ghost"
+                  onClick={handleEducationDiscount}
+                  disabled={isEducationDiscountLoading}
+                >
+                  <span className="mr-1 i-ri-graduation-cap-line size-4" />
+                  {t('useEducationDiscount', { ns: 'education' })}
+                  {isEducationDiscountLoading && <Loading className="ml-1 animate-spin-slow" />}
+                </Button>
+              )}
             {IS_CLOUD_EDITION && !isEnterprisePlan && (
-              <UpgradeBtn
-                className="shrink-0"
-                isPlain={type === Plan.team}
-                isShort
-                loc={loc}
-              />
+              <UpgradeBtn className="shrink-0" isPlain={type === Plan.team} isShort loc={loc} />
             )}
           </div>
         </div>
@@ -174,10 +161,13 @@ const PlanComp: FC<Props> = ({
           name={t('plansCommon.apiRateLimit', { ns: 'billing' })}
           usage={usage.apiRateLimit}
           total={total.apiRateLimit}
-          tooltip={total.apiRateLimit === NUM_INFINITE ? undefined : t('plansCommon.apiRateLimitTooltip', { ns: 'billing' }) as string}
+          tooltip={
+            total.apiRateLimit === NUM_INFINITE
+              ? undefined
+              : (t('plansCommon.apiRateLimitTooltip', { ns: 'billing' }) as string)
+          }
           resetInDays={apiRateLimitResetInDays}
         />
-
       </div>
       <VerifyStateModal
         showLink

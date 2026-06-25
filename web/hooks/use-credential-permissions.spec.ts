@@ -4,9 +4,10 @@ import { useCredentialPermissions } from './use-credential-permissions'
 let mockWorkspacePermissionKeys: string[] | null = []
 
 vi.mock('@/context/app-context', () => ({
-  useSelector: (selector: (state: { workspacePermissionKeys: string[] | null }) => unknown) => selector({
-    workspacePermissionKeys: mockWorkspacePermissionKeys,
-  }),
+  useSelector: (selector: (state: { workspacePermissionKeys: string[] | null }) => unknown) =>
+    selector({
+      workspacePermissionKeys: mockWorkspacePermissionKeys,
+    }),
 }))
 
 describe('useCredentialPermissions', () => {

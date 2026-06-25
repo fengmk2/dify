@@ -1,21 +1,23 @@
 import type { CustomCollectionBackend } from '../../types'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { AuthType } from '../../types'
 import CustomCreateCard, { NewCustomToolButton } from '../custom-create-card'
 
 let mockWorkspacePermissionKeys: string[] = ['tool.manage']
 
 vi.mock('@/context/app-context', () => ({
-  useSelector: <T,>(selector: (state: { workspacePermissionKeys: string[] }) => T): T => selector({
-    workspacePermissionKeys: mockWorkspacePermissionKeys,
-  }),
+  useSelector: <T,>(selector: (state: { workspacePermissionKeys: string[] }) => T): T =>
+    selector({
+      workspacePermissionKeys: mockWorkspacePermissionKeys,
+    }),
 }))
 
 // Mock useLocale and useDocLink
 vi.mock('@/context/i18n', () => ({
   useLocale: () => 'en-US',
-  useDocLink: () => (path?: string) => `https://docs.dify.ai/en${path?.startsWith('/use-dify/') ? `/cloud${path}` : path || ''}`,
+  useDocLink: () => (path?: string) =>
+    `https://docs.dify.ai/en${path?.startsWith('/use-dify/') ? `/cloud${path}` : path || ''}`,
 }))
 
 // Mock getLanguage
@@ -34,7 +36,11 @@ let mockModalVisible = false
 
 // Mock EditCustomToolModal - complex component
 vi.mock('@/app/components/tools/edit-custom-collection-modal', () => ({
-  default: ({ payload, onHide, onAdd }: {
+  default: ({
+    payload,
+    onHide,
+    onAdd,
+  }: {
     payload: null
     onHide: () => void
     onAdd: (data: CustomCollectionBackend) => void
@@ -44,7 +50,9 @@ vi.mock('@/app/components/tools/edit-custom-collection-modal', () => ({
     return (
       <div data-testid="edit-custom-collection-modal">
         <span data-testid="modal-payload">{payload === null ? 'null' : 'not-null'}</span>
-        <button data-testid="close-modal" onClick={onHide}>Close</button>
+        <button data-testid="close-modal" onClick={onHide}>
+          Close
+        </button>
         <button
           data-testid="submit-modal"
           onClick={() => {
@@ -123,7 +131,12 @@ describe('CustomCreateCard', () => {
 
       const card = screen.getByText('tools.createSwaggerAPIAsTool').closest('.col-span-1')
       expect(card).toBeInTheDocument()
-      expect(card).toHaveClass('h-[120px]', 'border-[0.5px]', 'border-components-panel-border', 'shadow-md')
+      expect(card).toHaveClass(
+        'h-[120px]',
+        'border-[0.5px]',
+        'border-components-panel-border',
+        'shadow-md',
+      )
       expect(card).toHaveClass('min-w-0')
       expect(card).not.toHaveClass('flex-1')
     })
@@ -132,7 +145,10 @@ describe('CustomCreateCard', () => {
       render(<CustomCreateCard onRefreshData={mockOnRefreshData} />)
 
       const docLink = screen.getByText('tools.swaggerAPIAsToolTip').closest('a')
-      expect(docLink).toHaveAttribute('href', 'https://docs.dify.ai/en/cloud/use-dify/workspace/tools#custom-tool')
+      expect(docLink).toHaveAttribute(
+        'href',
+        'https://docs.dify.ai/en/cloud/use-dify/workspace/tools#custom-tool',
+      )
       expect(docLink).toHaveAttribute('target', '_blank')
       expect(docLink).toHaveAttribute('rel', 'noopener noreferrer')
     })
@@ -142,7 +158,9 @@ describe('CustomCreateCard', () => {
     it('should render toolbar add button when user has tool.manage', () => {
       render(<NewCustomToolButton onRefreshData={mockOnRefreshData} />)
 
-      expect(screen.getByRole('button', { name: /tools\.addSwaggerAPIAsTool/i })).toBeInTheDocument()
+      expect(
+        screen.getByRole('button', { name: /tools\.addSwaggerAPIAsTool/i }),
+      ).toBeInTheDocument()
     })
 
     it('should not render toolbar add button when user does not have tool.manage', () => {

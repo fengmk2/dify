@@ -1,19 +1,9 @@
-import type {
-  Klass,
-  LexicalEditor,
-  LexicalNode,
-} from 'lexical'
+import type { Klass, LexicalEditor, LexicalNode } from 'lexical'
 import { render, screen } from '@testing-library/react'
 import { createEditor } from 'lexical'
 import RosterReferenceBlockComponent from '../component'
-import {
-  $createRosterReferenceBlockNode,
-  RosterReferenceBlockNode,
-} from '../node'
-import {
-  getRosterReferenceFileIconType,
-  parseRosterReferenceToken,
-} from '../utils'
+import { $createRosterReferenceBlockNode, RosterReferenceBlockNode } from '../node'
+import { getRosterReferenceFileIconType, parseRosterReferenceToken } from '../utils'
 
 describe('RosterReferenceBlockNode', () => {
   let editor: LexicalEditor

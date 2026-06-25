@@ -29,9 +29,14 @@ vi.mock('@/config', () => ({
 
 const setShowAccountSettingModalMock = vi.fn()
 vi.mock('@/context/modal-context', () => ({
-  useModalContextSelector: (selector: (state: { setShowAccountSettingModal: typeof setShowAccountSettingModalMock }) => unknown) => selector({
-    setShowAccountSettingModal: setShowAccountSettingModalMock,
-  }),
+  useModalContextSelector: (
+    selector: (state: {
+      setShowAccountSettingModal: typeof setShowAccountSettingModalMock
+    }) => unknown,
+  ) =>
+    selector({
+      setShowAccountSettingModal: setShowAccountSettingModalMock,
+    }),
 }))
 
 const providerContextMock = vi.fn()
@@ -72,17 +77,29 @@ vi.mock('@/service/use-education', () => ({
   }),
 }))
 
-const verifyStateModalMock = vi.fn(props => (
+const verifyStateModalMock = vi.fn((props) => (
   <div data-testid="verify-modal" data-is-show={props.isShow ? 'true' : 'false'}>
     {props.isShow ? 'visible' : 'hidden'}
   </div>
 ))
 vi.mock('@/app/education-apply/verify-state-modal', () => ({
-  default: (props: { isShow: boolean, title?: string, content?: string, email?: string, showLink?: boolean, onConfirm?: () => void, onCancel?: () => void }) => verifyStateModalMock(props),
+  default: (props: {
+    isShow: boolean
+    title?: string
+    content?: string
+    email?: string
+    showLink?: boolean
+    onConfirm?: () => void
+    onCancel?: () => void
+  }) => verifyStateModalMock(props),
 }))
 
 vi.mock('../../upgrade-btn', () => ({
-  default: () => <button data-testid="plan-upgrade-btn" type="button">Upgrade</button>,
+  default: () => (
+    <button data-testid="plan-upgrade-btn" type="button">
+      Upgrade
+    </button>
+  ),
 }))
 
 describe('PlanComp', () => {
@@ -172,7 +189,9 @@ describe('PlanComp', () => {
     fireEvent.click(verifyBtn)
 
     await waitFor(() => expect(mutateAsyncMock).toHaveBeenCalled())
-    await waitFor(() => expect(screen.getByTestId('verify-modal').getAttribute('data-is-show')).toBe('true'))
+    await waitFor(() =>
+      expect(screen.getByTestId('verify-modal').getAttribute('data-is-show')).toBe('true'),
+    )
   })
 
   it('resets modal context when on education apply path', () => {
@@ -356,7 +375,9 @@ describe('PlanComp', () => {
     const verifyBtn = screen.getByText('education.toVerified')
     fireEvent.click(verifyBtn)
 
-    await waitFor(() => expect(screen.getByTestId('verify-modal').getAttribute('data-is-show')).toBe('true'))
+    await waitFor(() =>
+      expect(screen.getByTestId('verify-modal').getAttribute('data-is-show')).toBe('true'),
+    )
 
     // Get the props passed to the modal and call onConfirm/onCancel
     const lastCall = verifyStateModalMock.mock.calls[verifyStateModalMock.mock.calls.length - 1]![0]

@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { PluginCategoryEnum } from '../../../types'
 
 // Mock invalidation / refresh functions
@@ -24,17 +24,23 @@ vi.mock('@/service/use-plugins', () => ({
 }))
 
 vi.mock('@/app/components/header/account-setting/model-provider-page/declarations', () => ({
-  ModelTypeEnum: { textGeneration: 'llm', textEmbedding: 'text-embedding', rerank: 'rerank', speech2text: 'speech2text', tts: 'tts' },
+  ModelTypeEnum: {
+    textGeneration: 'llm',
+    textEmbedding: 'text-embedding',
+    rerank: 'rerank',
+    speech2text: 'speech2text',
+    tts: 'tts',
+  },
 }))
 
 vi.mock('@/app/components/header/account-setting/model-provider-page/hooks', () => ({
   useModelList: (type: string) => {
     const map: Record<string, { mutate: ReturnType<typeof vi.fn> }> = {
-      'llm': { mutate: mockRefetchLLMModelList },
+      llm: { mutate: mockRefetchLLMModelList },
       'text-embedding': { mutate: mockRefetchEmbeddingModelList },
-      'rerank': { mutate: mockRefetchRerankModelList },
-      'speech2text': { mutate: mockRefetchSpeech2textModelList },
-      'tts': { mutate: mockRefetchTTSModelList },
+      rerank: { mutate: mockRefetchRerankModelList },
+      speech2text: { mutate: mockRefetchSpeech2textModelList },
+      tts: { mutate: mockRefetchTTSModelList },
     }
     return map[type] ?? { mutate: vi.fn() }
   },

@@ -1,15 +1,11 @@
 import { render, screen } from '@testing-library/react'
 import * as React from 'react'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 import List from '../list'
 
 // Mock Item to verify its usage
 vi.mock('../item', () => ({
-  default: ({ item }: { item: { name: string } }) => (
-    <div data-testid="mock-item">
-      {item.name}
-    </div>
-  ),
+  default: ({ item }: { item: { name: string } }) => <div data-testid="mock-item">{item.name}</div>,
 }))
 
 describe('List', () => {

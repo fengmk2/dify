@@ -6,9 +6,7 @@ type AgentOrchestrateHeaderProps = {
   headingId: string
 }
 
-export function AgentOrchestrateHeader({
-  headingId,
-}: AgentOrchestrateHeaderProps) {
+export function AgentOrchestrateHeader({ headingId }: AgentOrchestrateHeaderProps) {
   const { t } = useTranslation('agentV2')
 
   return (

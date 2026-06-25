@@ -40,22 +40,14 @@ function getFileExtension(fileName: string) {
 export function getFileIconType(fileName: string, mimeType?: string | null): FileTreeIconType {
   const extension = getFileExtension(fileName)
 
-  if (mimeType?.startsWith('image/'))
-    return 'image'
-  if (mimeType === 'application/pdf' || extension === 'pdf')
-    return 'pdf'
-  if (extension === 'md' || extension === 'markdown' || extension === 'mdx')
-    return 'markdown'
-  if (extension === 'json')
-    return 'json'
-  if (tableFileExtensions.has(extension))
-    return 'table'
-  if (archiveFileExtensions.has(extension))
-    return 'archive'
-  if (codeFileExtensions.has(extension))
-    return 'code'
-  if (mimeType?.startsWith('text/'))
-    return 'text'
+  if (mimeType?.startsWith('image/')) return 'image'
+  if (mimeType === 'application/pdf' || extension === 'pdf') return 'pdf'
+  if (extension === 'md' || extension === 'markdown' || extension === 'mdx') return 'markdown'
+  if (extension === 'json') return 'json'
+  if (tableFileExtensions.has(extension)) return 'table'
+  if (archiveFileExtensions.has(extension)) return 'archive'
+  if (codeFileExtensions.has(extension)) return 'code'
+  if (mimeType?.startsWith('text/')) return 'text'
 
   return 'file'
 }
@@ -71,8 +63,7 @@ export function getDriveFileIconType({
 }): FileTreeIconType {
   const normalizedFileKind = fileKind?.toLowerCase()
 
-  if (normalizedFileKind === 'directory')
-    return 'folder'
+  if (normalizedFileKind === 'directory') return 'folder'
 
   if (normalizedFileKind && driveFileIconTypes.has(normalizedFileKind as FileTreeIconType))
     return normalizedFileKind as FileTreeIconType

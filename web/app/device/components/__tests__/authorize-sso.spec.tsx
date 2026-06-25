@@ -1,6 +1,6 @@
 import { render, screen, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import AuthorizeSSO from '../authorize-sso'
 
 const mockCtx = {
@@ -51,7 +51,9 @@ describe('AuthorizeSSO', () => {
     render(<AuthorizeSSO onApproved={vi.fn()} onError={vi.fn()} />)
     await screen.findByRole('button', { name: /Authorize/i })
     await userEvent.click(screen.getByRole('button', { name: /Authorize/i }))
-    await waitFor(() => expect(mockApproveExternal).toHaveBeenCalledWith(mockCtx, mockCtx.user_code))
+    await waitFor(() =>
+      expect(mockApproveExternal).toHaveBeenCalledWith(mockCtx, mockCtx.user_code),
+    )
   })
 
   it('calls onApproved after successful approve', async () => {

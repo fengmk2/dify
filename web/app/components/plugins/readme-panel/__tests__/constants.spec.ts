@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import { BUILTIN_TOOLS_ARRAY } from '../constants'
 
 describe('BUILTIN_TOOLS_ARRAY', () => {
@@ -14,7 +14,6 @@ describe('BUILTIN_TOOLS_ARRAY', () => {
   })
 
   it('should be an array of strings', () => {
-    for (const tool of BUILTIN_TOOLS_ARRAY)
-      expect(typeof tool).toBe('string')
+    for (const tool of BUILTIN_TOOLS_ARRAY) expect(typeof tool).toBe('string')
   })
 })

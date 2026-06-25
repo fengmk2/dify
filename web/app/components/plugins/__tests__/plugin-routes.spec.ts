@@ -30,10 +30,10 @@ describe('plugin routes', () => {
     expect(getLegacyPluginRedirectPath(searchParams)).toBe(expected)
   })
 
-  it.each([
-    { tab: 'unsupported' },
-    { tab: 'toString' },
-  ])('does not redirect unsupported plugin URLs for search params %j', (searchParams) => {
-    expect(getLegacyPluginRedirectPath(searchParams)).toBeUndefined()
-  })
+  it.each([{ tab: 'unsupported' }, { tab: 'toString' }])(
+    'does not redirect unsupported plugin URLs for search params %j',
+    (searchParams) => {
+      expect(getLegacyPluginRedirectPath(searchParams)).toBeUndefined()
+    },
+  )
 })

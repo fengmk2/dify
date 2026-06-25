@@ -3,24 +3,16 @@
 import type { EnvironmentDeployment } from '@dify/contracts/enterprise/types.gen'
 import { RuntimeInstanceStatus } from '@dify/contracts/enterprise/types.gen'
 import { useTranslation } from 'react-i18next'
-import {
-  isUndeployedDeploymentRow,
-} from '../../shared/domain/runtime-status'
+import { isUndeployedDeploymentRow } from '../../shared/domain/runtime-status'
 import { DeploymentStatusBadge } from '../../shared/ui/deployment-status-badge'
 
-export function DeploymentStatusSummary({ row }: {
-  row: EnvironmentDeployment
-}) {
+export function DeploymentStatusSummary({ row }: { row: EnvironmentDeployment }) {
   const { t } = useTranslation('deployments')
   const status = row.status
 
   if (status === RuntimeInstanceStatus.RUNTIME_INSTANCE_STATUS_UNDEPLOYING) {
     return (
-      <DeploymentStatusBadge
-        status={status}
-        label={t(`status.${status}`)}
-        variant="status-dot"
-      />
+      <DeploymentStatusBadge status={status} label={t(`status.${status}`)} variant="status-dot" />
     )
   }
 
@@ -60,7 +52,11 @@ export function DeploymentStatusSummary({ row }: {
     return (
       <DeploymentStatusBadge
         status={status}
-        label={t(hasRunningRelease ? 'deployTab.status.runningWithFailed' : 'deployTab.status.deployFailed')}
+        label={t(
+          hasRunningRelease
+            ? 'deployTab.status.runningWithFailed'
+            : 'deployTab.status.deployFailed',
+        )}
         variant="status-dot"
       />
     )
@@ -79,21 +75,13 @@ export function DeploymentStatusSummary({ row }: {
 
   if (status === RuntimeInstanceStatus.RUNTIME_INSTANCE_STATUS_INVALID) {
     return (
-      <DeploymentStatusBadge
-        status={status}
-        label={t(`status.${status}`)}
-        variant="status-dot"
-      />
+      <DeploymentStatusBadge status={status} label={t(`status.${status}`)} variant="status-dot" />
     )
   }
 
   if (status === RuntimeInstanceStatus.RUNTIME_INSTANCE_STATUS_UNSPECIFIED) {
     return (
-      <DeploymentStatusBadge
-        status={status}
-        label={t(`status.${status}`)}
-        variant="status-dot"
-      />
+      <DeploymentStatusBadge status={status} label={t(`status.${status}`)} variant="status-dot" />
     )
   }
 

@@ -1,9 +1,4 @@
-import {
-  RiDeleteBinLine,
-  RiEditLine,
-  RiFileDownloadLine,
-  RiLock2Line,
-} from '@remixicon/react'
+import { RiDeleteBinLine, RiEditLine, RiFileDownloadLine, RiLock2Line } from '@remixicon/react'
 import * as React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDatasetDetailContextWithSelector } from '@/context/dataset-detail'
@@ -32,7 +27,7 @@ const Menu = ({
   openAccessConfig,
 }: MenuProps) => {
   const { t } = useTranslation()
-  const runtimeMode = useDatasetDetailContextWithSelector(state => state.dataset?.runtime_mode)
+  const runtimeMode = useDatasetDetailContextWithSelector((state) => state.dataset?.runtime_mode)
 
   return (
     <div className="flex w-[200px] flex-col rounded-xl border-[0.5px] border-components-panel-border bg-components-panel-bg-blur shadow-lg shadow-shadow-shadow-5 backdrop-blur-[5px]">

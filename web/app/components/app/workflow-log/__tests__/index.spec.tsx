@@ -15,7 +15,7 @@ import type { UseQueryResult } from '@tanstack/react-query'
  * - trigger-by-display.spec.tsx
  */
 
-import type { MockedFunction } from 'vitest'
+import type { MockedFunction } from 'vite-plus/test'
 import type { ILogsProps } from '../index'
 import type { WorkflowAppLogDetail, WorkflowLogsResponse, WorkflowRunDetail } from '@/models/log'
 import type { App, AppIconType, AppModeEnum } from '@/types/app'
@@ -54,12 +54,14 @@ vi.mock('@/next/navigation', () => ({
 }))
 
 vi.mock('@/next/link', () => ({
-  default: ({ children, href }: { children: React.ReactNode, href: string }) => <a href={href}>{children}</a>,
+  default: ({ children, href }: { children: React.ReactNode; href: string }) => (
+    <a href={href}>{children}</a>
+  ),
 }))
 
 // Mock the Run component to avoid complex dependencies
 vi.mock('@/app/components/workflow/run', () => ({
-  default: ({ runDetailUrl, tracingListUrl }: { runDetailUrl: string, tracingListUrl: string }) => (
+  default: ({ runDetailUrl, tracingListUrl }: { runDetailUrl: string; tracingListUrl: string }) => (
     <div data-testid="workflow-run">
       <span data-testid="run-detail-url">{runDetailUrl}</span>
       <span data-testid="tracing-list-url">{tracingListUrl}</span>
@@ -82,20 +84,26 @@ vi.mock('@/context/app-context', () => ({
   useAppContext: () => ({
     userProfile: { timezone: 'UTC' },
   }),
-  useSelector: (selector: (state: { userProfile: { id: string, timezone: string }, workspacePermissionKeys: string[] }) => unknown) => selector({
-    userProfile: { id: 'user-1', timezone: 'UTC' },
-    workspacePermissionKeys: ['app.create_and_management'],
-  }),
+  useSelector: (
+    selector: (state: {
+      userProfile: { id: string; timezone: string }
+      workspacePermissionKeys: string[]
+    }) => unknown,
+  ) =>
+    selector({
+      userProfile: { id: 'user-1', timezone: 'UTC' },
+      workspacePermissionKeys: ['app.create_and_management'],
+    }),
 }))
 
 // Mock WorkflowContextProvider
 vi.mock('@/app/components/workflow/context', () => ({
-  WorkflowContextProvider: ({ children }: { children: React.ReactNode }) => (
-    <>{children}</>
-  ),
+  WorkflowContextProvider: ({ children }: { children: React.ReactNode }) => <>{children}</>,
 }))
 
-const mockedUseWorkflowLogs = useLogModule.useWorkflowLogs as MockedFunction<typeof useLogModule.useWorkflowLogs>
+const mockedUseWorkflowLogs = useLogModule.useWorkflowLogs as MockedFunction<
+  typeof useLogModule.useWorkflowLogs
+>
 
 // ============================================================================
 // Test Utilities
@@ -110,7 +118,7 @@ const renderWithQueryClient = (ui: React.ReactElement) => {
 // ============================================================================
 
 const createMockQueryResult = <T,>(
-  overrides: { data?: T, isLoading?: boolean, error?: Error | null } = {},
+  overrides: { data?: T; isLoading?: boolean; error?: Error | null } = {},
 ): UseQueryResult<T, Error> => {
   const isLoading = overrides.isLoading ?? false
   const error = overrides.error ?? null
@@ -194,7 +202,9 @@ const createMockWorkflowRun = (overrides: Partial<WorkflowRunDetail> = {}): Work
   ...overrides,
 })
 
-const createMockWorkflowLog = (overrides: Partial<WorkflowAppLogDetail> = {}): WorkflowAppLogDetail => ({
+const createMockWorkflowLog = (
+  overrides: Partial<WorkflowAppLogDetail> = {},
+): WorkflowAppLogDetail => ({
   id: 'log-1',
   workflow_run: createMockWorkflowRun(),
   created_from: 'web-app',
@@ -513,7 +523,8 @@ describe('Logs Container', () => {
     it('should render pagination when total exceeds limit', () => {
       // Arrange
       const logs = Array.from({ length: APP_PAGE_LIMIT }, (_, i) =>
-        createMockWorkflowLog({ id: `log-${i}` }))
+        createMockWorkflowLog({ id: `log-${i}` }),
+      )
 
       mockedUseWorkflowLogs.mockReturnValue(
         createMockQueryResult<WorkflowLogsResponse>({
@@ -552,14 +563,17 @@ describe('Logs Container', () => {
       // Arrange
       mockedUseWorkflowLogs.mockReturnValue(
         createMockQueryResult<WorkflowLogsResponse>({
-          data: createMockLogsResponse([
-            createMockWorkflowLog({
-              workflow_run: createMockWorkflowRun({
-                status: 'succeeded',
-                total_tokens: 500,
+          data: createMockLogsResponse(
+            [
+              createMockWorkflowLog({
+                workflow_run: createMockWorkflowRun({
+                  status: 'succeeded',
+                  total_tokens: 500,
+                }),
               }),
-            }),
-          ], 1),
+            ],
+            1,
+          ),
         }),
       )
 

@@ -31,8 +31,7 @@ export function DeleteReleaseDialog({
     <AlertDialog
       open={open}
       onOpenChange={(nextOpen) => {
-        if (isDeleting)
-          return
+        if (isDeleting) return
         onOpenChange(nextOpen)
       }}
     >
@@ -49,11 +48,7 @@ export function DeleteReleaseDialog({
           <AlertDialogCancelButton variant="secondary" disabled={isDeleting}>
             {t('versions.cancelDelete')}
           </AlertDialogCancelButton>
-          <AlertDialogConfirmButton
-            loading={isDeleting}
-            disabled={isDeleting}
-            onClick={onConfirm}
-          >
+          <AlertDialogConfirmButton loading={isDeleting} disabled={isDeleting} onClick={onConfirm}>
             {t('versions.deleteRelease')}
           </AlertDialogConfirmButton>
         </AlertDialogActions>

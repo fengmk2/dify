@@ -504,7 +504,7 @@ export const drive = {
  */
 export const post7 = oc
   .route({
-    description: 'Update an Agent App\'s presentation features (opener, follow-up, citations, ...)',
+    description: "Update an Agent App's presentation features (opener, follow-up, citations, ...)",
     inputStructure: 'detailed',
     method: 'POST',
     operationId: 'postAgentByAgentIdFeatures',
@@ -664,7 +664,7 @@ export const messages2 = {
  */
 export const get17 = oc
   .route({
-    description: 'List workflow apps that reference this Agent App\'s bound Agent (read-only)',
+    description: "List workflow apps that reference this Agent App's bound Agent (read-only)",
     inputStructure: 'detailed',
     method: 'GET',
     operationId: 'getAgentByAgentIdReferencingWorkflows',

@@ -2,7 +2,7 @@ import type { ReactNode } from 'react'
 import type { Credential, PluginPayload } from '../types'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import { AuthCategory, CredentialTypeEnum } from '../types'
 
 // ==================== Mock Setup ====================
@@ -36,7 +36,12 @@ vi.mock('@/service/use-tools', () => ({
 }))
 
 const mockIsCurrentWorkspaceManager = vi.fn()
-const mockUserProfile = { id: 'test-user', name: 'Test User', email: 'test@example.com', avatar_url: '' }
+const mockUserProfile = {
+  id: 'test-user',
+  name: 'Test User',
+  email: 'test@example.com',
+  avatar_url: '',
+}
 vi.mock('@/context/app-context', () => ({
   useAppContext: () => ({
     isCurrentWorkspaceManager: mockIsCurrentWorkspaceManager(),
@@ -68,9 +73,7 @@ const createTestQueryClient = () =>
 const createWrapper = () => {
   const testQueryClient = createTestQueryClient()
   return ({ children }: { children: ReactNode }) => (
-    <QueryClientProvider client={testQueryClient}>
-      {children}
-    </QueryClientProvider>
+    <QueryClientProvider client={testQueryClient}>{children}</QueryClientProvider>
   )
 }
 
@@ -111,10 +114,9 @@ describe('AuthorizedInNode Component', () => {
   it('should render with workspace default when no credentialId', async () => {
     const AuthorizedInNode = (await import('../authorized-in-node')).default
     const pluginPayload = createPluginPayload()
-    render(
-      <AuthorizedInNode pluginPayload={pluginPayload} onAuthorizationItemClick={vi.fn()} />,
-      { wrapper: createWrapper() },
-    )
+    render(<AuthorizedInNode pluginPayload={pluginPayload} onAuthorizationItemClick={vi.fn()} />, {
+      wrapper: createWrapper(),
+    })
     expect(screen.getByText('plugin.auth.workspaceDefault'))!.toBeInTheDocument()
   })
 
@@ -146,7 +148,11 @@ describe('AuthorizedInNode Component', () => {
     })
     const pluginPayload = createPluginPayload()
     render(
-      <AuthorizedInNode pluginPayload={pluginPayload} onAuthorizationItemClick={vi.fn()} credentialId="selected-id" />,
+      <AuthorizedInNode
+        pluginPayload={pluginPayload}
+        onAuthorizationItemClick={vi.fn()}
+        credentialId="selected-id"
+      />,
       { wrapper: createWrapper() },
     )
     expect(screen.getByText('My Credential'))!.toBeInTheDocument()
@@ -161,7 +167,11 @@ describe('AuthorizedInNode Component', () => {
     })
     const pluginPayload = createPluginPayload()
     render(
-      <AuthorizedInNode pluginPayload={pluginPayload} onAuthorizationItemClick={vi.fn()} credentialId="non-existent" />,
+      <AuthorizedInNode
+        pluginPayload={pluginPayload}
+        onAuthorizationItemClick={vi.fn()}
+        credentialId="non-existent"
+      />,
       { wrapper: createWrapper() },
     )
     expect(screen.getByText('plugin.auth.authRemoved'))!.toBeInTheDocument()
@@ -181,7 +191,11 @@ describe('AuthorizedInNode Component', () => {
     })
     const pluginPayload = createPluginPayload()
     render(
-      <AuthorizedInNode pluginPayload={pluginPayload} onAuthorizationItemClick={vi.fn()} credentialId="unavailable-id" />,
+      <AuthorizedInNode
+        pluginPayload={pluginPayload}
+        onAuthorizationItemClick={vi.fn()}
+        credentialId="unavailable-id"
+      />,
       { wrapper: createWrapper() },
     )
     const button = screen.getByRole('button')
@@ -200,10 +214,9 @@ describe('AuthorizedInNode Component', () => {
       allow_custom_token: true,
     })
     const pluginPayload = createPluginPayload()
-    render(
-      <AuthorizedInNode pluginPayload={pluginPayload} onAuthorizationItemClick={vi.fn()} />,
-      { wrapper: createWrapper() },
-    )
+    render(<AuthorizedInNode pluginPayload={pluginPayload} onAuthorizationItemClick={vi.fn()} />, {
+      wrapper: createWrapper(),
+    })
     const button = screen.getByRole('button')
     expect(button.textContent).toContain('plugin.auth.unavailable')
   })
@@ -213,7 +226,10 @@ describe('AuthorizedInNode Component', () => {
     const onAuthorizationItemClick = vi.fn()
     const pluginPayload = createPluginPayload()
     render(
-      <AuthorizedInNode pluginPayload={pluginPayload} onAuthorizationItemClick={onAuthorizationItemClick} />,
+      <AuthorizedInNode
+        pluginPayload={pluginPayload}
+        onAuthorizationItemClick={onAuthorizationItemClick}
+      />,
       { wrapper: createWrapper() },
     )
     const buttons = screen.getAllByRole('button')

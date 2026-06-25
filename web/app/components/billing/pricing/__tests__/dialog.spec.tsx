@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react'
-import type { Mock } from 'vitest'
+import type { Mock } from 'vite-plus/test'
 import type { UsagePlanInfo } from '../../type'
 import { render } from '@testing-library/react'
 import { useAppContext } from '@/context/app-context'
@@ -21,14 +21,16 @@ vi.mock('@langgenius/dify-ui/dialog', () => ({
     latestOnOpenChange = onOpenChange
     return <div data-testid="dialog">{children}</div>
   },
-  DialogContent: ({ children, className }: { children: ReactNode, className?: string }) => (
+  DialogContent: ({ children, className }: { children: ReactNode; className?: string }) => (
     <div className={className}>{children}</div>
   ),
 }))
 
 vi.mock('../header', () => ({
   default: ({ onClose }: { onClose: () => void }) => (
-    <button data-testid="pricing-header-close" onClick={onClose}>close</button>
+    <button data-testid="pricing-header-close" onClick={onClose}>
+      close
+    </button>
   ),
 }))
 

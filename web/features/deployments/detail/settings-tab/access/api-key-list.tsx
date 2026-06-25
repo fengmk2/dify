@@ -1,9 +1,6 @@
 'use client'
 
-import type {
-  ApiKey,
-  Environment,
-} from '@dify/contracts/enterprise/types.gen'
+import type { ApiKey, Environment } from '@dify/contracts/enterprise/types.gen'
 import {
   AlertDialog,
   AlertDialogActions,
@@ -29,23 +26,13 @@ import {
   DetailTableHeader,
   DetailTableRow,
 } from '../../table'
-import {
-  API_KEY_DETAIL_TABLE_COLUMN_CLASS_NAMES,
-} from '../../table-styles'
+import { API_KEY_DETAIL_TABLE_COLUMN_CLASS_NAMES } from '../../table-styles'
 
-function ApiKeyName({ apiKey }: {
-  apiKey: ApiKey
-}) {
-  return (
-    <span className="block truncate text-text-primary">
-      {apiKey.displayName}
-    </span>
-  )
+function ApiKeyName({ apiKey }: { apiKey: ApiKey }) {
+  return <span className="block truncate text-text-primary">{apiKey.displayName}</span>
 }
 
-function EnvironmentBadge({ environment }: {
-  environment?: Environment
-}) {
+function EnvironmentBadge({ environment }: { environment?: Environment }) {
   return (
     <span className="inline-flex h-5 max-w-36 items-center rounded-md bg-background-section-burn px-1.5 text-xs text-text-tertiary">
       <span className="truncate">{environment?.displayName ?? '—'}</span>
@@ -53,9 +40,7 @@ function EnvironmentBadge({ environment }: {
   )
 }
 
-function ApiKeyValue({ value }: {
-  value: string
-}) {
+function ApiKeyValue({ value }: { value: string }) {
   return (
     <div className="flex h-8 min-w-0 items-center rounded-lg border border-components-input-border-active bg-components-input-bg-normal px-2">
       <div className="min-w-0 flex-1 truncate font-mono system-sm-medium text-text-secondary">
@@ -65,18 +50,17 @@ function ApiKeyValue({ value }: {
   )
 }
 
-function RevokeApiKeyButton({ apiKey }: {
-  apiKey: ApiKey
-}) {
+function RevokeApiKeyButton({ apiKey }: { apiKey: ApiKey }) {
   const { t } = useTranslation('deployments')
   const [showRevokeConfirm, setShowRevokeConfirm] = useState(false)
-  const revokeApiKey = useMutation(consoleQuery.enterprise.accessService.deleteApiKey.mutationOptions())
+  const revokeApiKey = useMutation(
+    consoleQuery.enterprise.accessService.deleteApiKey.mutationOptions(),
+  )
   const isRevoking = revokeApiKey.isPending
   const apiKeyName = apiKey.displayName
 
   function handleRevoke() {
-    if (isRevoking)
-      return
+    if (isRevoking) return
 
     revokeApiKey.mutate(
       {
@@ -99,8 +83,7 @@ function RevokeApiKeyButton({ apiKey }: {
   }
 
   function handleRevokeConfirmOpenChange(open: boolean) {
-    if (isRevoking)
-      return
+    if (isRevoking) return
 
     setShowRevokeConfirm(open)
   }
@@ -120,7 +103,12 @@ function RevokeApiKeyButton({ apiKey }: {
             : 'hover:bg-state-destructive-hover hover:text-text-destructive',
         )}
       >
-        <span className={cn(isRevoking ? 'i-ri-loader-2-line animate-spin' : 'i-ri-delete-bin-line', 'size-3.5')} />
+        <span
+          className={cn(
+            isRevoking ? 'i-ri-loader-2-line animate-spin' : 'i-ri-delete-bin-line',
+            'size-3.5',
+          )}
+        />
       </button>
       <AlertDialog open={showRevokeConfirm} onOpenChange={handleRevokeConfirmOpenChange}>
         <AlertDialogContent>
@@ -136,7 +124,11 @@ function RevokeApiKeyButton({ apiKey }: {
             <AlertDialogCancelButton disabled={isRevoking}>
               {t('operation.cancel', { ns: 'common' })}
             </AlertDialogCancelButton>
-            <AlertDialogConfirmButton loading={isRevoking} disabled={isRevoking} onClick={handleRevoke}>
+            <AlertDialogConfirmButton
+              loading={isRevoking}
+              disabled={isRevoking}
+              onClick={handleRevoke}
+            >
               {t('access.revoke')}
             </AlertDialogConfirmButton>
           </AlertDialogActions>
@@ -146,10 +138,7 @@ function RevokeApiKeyButton({ apiKey }: {
   )
 }
 
-function ApiKeyMobileRow({ apiKey, environment }: {
-  apiKey: ApiKey
-  environment?: Environment
-}) {
+function ApiKeyMobileRow({ apiKey, environment }: { apiKey: ApiKey; environment?: Environment }) {
   const { t } = useTranslation('deployments')
   const displayValue = apiKey.maskedToken
 
@@ -176,10 +165,7 @@ function ApiKeyMobileRow({ apiKey, environment }: {
   )
 }
 
-function ApiKeyDesktopRow({ apiKey, environment }: {
-  apiKey: ApiKey
-  environment?: Environment
-}) {
+function ApiKeyDesktopRow({ apiKey, environment }: { apiKey: ApiKey; environment?: Environment }) {
   const displayValue = apiKey.maskedToken
 
   return (
@@ -208,25 +194,36 @@ function ApiKeyTableHeader() {
   return (
     <DetailTableHeader>
       <DetailTableRow>
-        <DetailTableHead className={API_KEY_DETAIL_TABLE_COLUMN_CLASS_NAMES.name}>{t('access.api.table.name')}</DetailTableHead>
-        <DetailTableHead className={API_KEY_DETAIL_TABLE_COLUMN_CLASS_NAMES.environment}>{t('access.api.table.environment')}</DetailTableHead>
-        <DetailTableHead className={API_KEY_DETAIL_TABLE_COLUMN_CLASS_NAMES.key}>{t('access.api.table.key')}</DetailTableHead>
-        <DetailTableHead className={`${API_KEY_DETAIL_TABLE_COLUMN_CLASS_NAMES.action} text-right`}>{t('access.api.table.action')}</DetailTableHead>
+        <DetailTableHead className={API_KEY_DETAIL_TABLE_COLUMN_CLASS_NAMES.name}>
+          {t('access.api.table.name')}
+        </DetailTableHead>
+        <DetailTableHead className={API_KEY_DETAIL_TABLE_COLUMN_CLASS_NAMES.environment}>
+          {t('access.api.table.environment')}
+        </DetailTableHead>
+        <DetailTableHead className={API_KEY_DETAIL_TABLE_COLUMN_CLASS_NAMES.key}>
+          {t('access.api.table.key')}
+        </DetailTableHead>
+        <DetailTableHead className={`${API_KEY_DETAIL_TABLE_COLUMN_CLASS_NAMES.action} text-right`}>
+          {t('access.api.table.action')}
+        </DetailTableHead>
       </DetailTableRow>
     </DetailTableHeader>
   )
 }
 
-export function ApiKeyList({ apiKeys, environments }: {
+export function ApiKeyList({
+  apiKeys,
+  environments,
+}: {
   apiKeys: ApiKey[]
   environments: Environment[]
 }) {
-  const environmentById = new Map(environments.map(environment => [environment.id, environment]))
+  const environmentById = new Map(environments.map((environment) => [environment.id, environment]))
 
   return (
     <>
       <DetailTableCardList className={cn('pc:hidden')}>
-        {apiKeys.map(apiKey => (
+        {apiKeys.map((apiKey) => (
           <ApiKeyMobileRow
             key={apiKey.id}
             apiKey={apiKey}
@@ -238,7 +235,7 @@ export function ApiKeyList({ apiKeys, environments }: {
         <DetailTable>
           <ApiKeyTableHeader />
           <DetailTableBody>
-            {apiKeys.map(apiKey => (
+            {apiKeys.map((apiKey) => (
               <ApiKeyDesktopRow
                 key={apiKey.id}
                 apiKey={apiKey}

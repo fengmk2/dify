@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 
 import NoData from '../index'
 
@@ -10,7 +10,9 @@ describe('NoData', () => {
 
     const title = screen.getByText('share.generation.savedNoData.title')
     const description = screen.getByText('share.generation.savedNoData.description')
-    const button = screen.getByRole('button', { name: 'share.generation.savedNoData.startCreateContent' })
+    const button = screen.getByRole('button', {
+      name: 'share.generation.savedNoData.startCreateContent',
+    })
 
     expect(title).toBeInTheDocument()
     expect(description).toBeInTheDocument()

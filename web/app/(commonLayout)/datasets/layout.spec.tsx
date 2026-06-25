@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 import { render, screen, waitFor } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import DatasetsLayout from './layout'
 
 const mockReplace = vi.fn()
@@ -25,7 +25,13 @@ vi.mock('@/context/external-api-panel-context', () => ({
 }))
 
 vi.mock('@/context/external-knowledge-api-context', () => ({
-  ExternalKnowledgeApiProvider: ({ children, enabled }: { children: ReactNode, enabled?: boolean }) => {
+  ExternalKnowledgeApiProvider: ({
+    children,
+    enabled,
+  }: {
+    children: ReactNode
+    enabled?: boolean
+  }) => {
     mockExternalKnowledgeApiProviderEnabled = enabled
     return <>{children}</>
   },
@@ -74,11 +80,11 @@ describe('DatasetsLayout', () => {
       currentWorkspace: { id: '' },
     })
 
-    render((
+    render(
       <DatasetsLayout>
         <div>datasets</div>
-      </DatasetsLayout>
-    ))
+      </DatasetsLayout>,
+    )
 
     expect(screen.getByRole('status')).toBeInTheDocument()
     expect(screen.queryByText('datasets')).not.toBeInTheDocument()
@@ -91,11 +97,11 @@ describe('DatasetsLayout', () => {
       workspacePermissionKeys: [],
     })
 
-    render((
+    render(
       <DatasetsLayout>
         <div>datasets</div>
-      </DatasetsLayout>
-    ))
+      </DatasetsLayout>,
+    )
 
     expect(screen.getByRole('status')).toBeInTheDocument()
     expect(screen.queryByText('datasets')).not.toBeInTheDocument()
@@ -109,11 +115,11 @@ describe('DatasetsLayout', () => {
       workspacePermissionKeys: ['dataset.create_and_management', 'dataset.external.connect'],
     })
 
-    render((
+    render(
       <DatasetsLayout>
         <div>datasets</div>
-      </DatasetsLayout>
-    ))
+      </DatasetsLayout>,
+    )
 
     expect(screen.getByText('datasets')).toBeInTheDocument()
     expect(mockReplace).not.toHaveBeenCalled()
@@ -126,36 +132,36 @@ describe('DatasetsLayout', () => {
       workspacePermissionKeys: [],
     })
 
-    render((
+    render(
       <DatasetsLayout>
         <div>datasets</div>
-      </DatasetsLayout>
-    ))
+      </DatasetsLayout>,
+    )
 
     expect(screen.getByText('datasets')).toBeInTheDocument()
     expect(mockReplace).not.toHaveBeenCalled()
   })
 
-  it.each([
-    '/datasets/create',
-    '/datasets/create-from-pipeline',
-  ])('should redirect direct dataset creation route to /datasets without dataset.create_and_management: %s', async (pathname) => {
-    mockPathname = pathname
-    setAppContext({
-      workspacePermissionKeys: [],
-    })
+  it.each(['/datasets/create', '/datasets/create-from-pipeline'])(
+    'should redirect direct dataset creation route to /datasets without dataset.create_and_management: %s',
+    async (pathname) => {
+      mockPathname = pathname
+      setAppContext({
+        workspacePermissionKeys: [],
+      })
 
-    render((
-      <DatasetsLayout>
-        <div>datasets</div>
-      </DatasetsLayout>
-    ))
+      render(
+        <DatasetsLayout>
+          <div>datasets</div>
+        </DatasetsLayout>,
+      )
 
-    expect(screen.queryByText('datasets')).not.toBeInTheDocument()
-    await waitFor(() => {
-      expect(mockReplace).toHaveBeenCalledWith('/datasets')
-    })
-  })
+      expect(screen.queryByText('datasets')).not.toBeInTheDocument()
+      await waitFor(() => {
+        expect(mockReplace).toHaveBeenCalledWith('/datasets')
+      })
+    },
+  )
 
   it('should render direct dataset creation route when workspace has dataset.create_and_management', () => {
     mockPathname = '/datasets/create'
@@ -163,11 +169,11 @@ describe('DatasetsLayout', () => {
       workspacePermissionKeys: ['dataset.create_and_management'],
     })
 
-    render((
+    render(
       <DatasetsLayout>
         <div>datasets</div>
-      </DatasetsLayout>
-    ))
+      </DatasetsLayout>,
+    )
 
     expect(screen.getByText('datasets')).toBeInTheDocument()
     expect(mockReplace).not.toHaveBeenCalled()
@@ -179,11 +185,11 @@ describe('DatasetsLayout', () => {
       workspacePermissionKeys: [],
     })
 
-    render((
+    render(
       <DatasetsLayout>
         <div>datasets</div>
-      </DatasetsLayout>
-    ))
+      </DatasetsLayout>,
+    )
 
     expect(screen.queryByText('datasets')).not.toBeInTheDocument()
     await waitFor(() => {
@@ -197,11 +203,11 @@ describe('DatasetsLayout', () => {
       workspacePermissionKeys: ['dataset.external.connect'],
     })
 
-    render((
+    render(
       <DatasetsLayout>
         <div>datasets</div>
-      </DatasetsLayout>
-    ))
+      </DatasetsLayout>,
+    )
 
     expect(screen.getByText('datasets')).toBeInTheDocument()
     expect(mockReplace).not.toHaveBeenCalled()
@@ -212,11 +218,11 @@ describe('DatasetsLayout', () => {
       workspacePermissionKeys: [],
     })
 
-    render((
+    render(
       <DatasetsLayout>
         <div>datasets</div>
-      </DatasetsLayout>
-    ))
+      </DatasetsLayout>,
+    )
 
     expect(mockExternalKnowledgeApiProviderEnabled).toBe(false)
   })
@@ -226,11 +232,11 @@ describe('DatasetsLayout', () => {
       workspacePermissionKeys: ['dataset.external.connect'],
     })
 
-    render((
+    render(
       <DatasetsLayout>
         <div>datasets</div>
-      </DatasetsLayout>
-    ))
+      </DatasetsLayout>,
+    )
 
     expect(mockExternalKnowledgeApiProviderEnabled).toBe(true)
   })

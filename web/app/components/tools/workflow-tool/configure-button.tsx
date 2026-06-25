@@ -32,23 +32,31 @@ const WorkflowToolConfigureButton = ({
     <>
       <Divider type="horizontal" className="h-px bg-divider-subtle" />
       {(!published || !isLoading) && (
-        <div className={cn(
-          'group rounded-lg bg-background-section-burn transition-colors',
-          disabled ? 'cursor-not-allowed opacity-60 shadow-xs' : 'cursor-pointer',
-          !disabled && !published && 'hover:bg-state-accent-hover',
-        )}
+        <div
+          className={cn(
+            'group rounded-lg bg-background-section-burn transition-colors',
+            disabled ? 'cursor-not-allowed opacity-60 shadow-xs' : 'cursor-pointer',
+            !disabled && !published && 'hover:bg-state-accent-hover',
+          )}
         >
           <div
             className="flex items-center justify-start gap-2 p-2 pl-2.5"
             onClick={() => {
-              if (!disabled && !published)
-                onConfigure()
+              if (!disabled && !published) onConfigure()
             }}
           >
-            <span className={cn('relative i-ri-hammer-line size-4 text-text-secondary', !disabled && !published && 'group-hover:text-text-accent')} />
+            <span
+              className={cn(
+                'relative i-ri-hammer-line size-4 text-text-secondary',
+                !disabled && !published && 'group-hover:text-text-accent',
+              )}
+            />
             <div
               title={t('common.workflowAsTool', { ns: 'workflow' }) || ''}
-              className={cn('shrink grow basis-0 truncate system-sm-medium text-text-secondary', !disabled && !published && 'group-hover:text-text-accent')}
+              className={cn(
+                'shrink grow basis-0 truncate system-sm-medium text-text-secondary',
+                !disabled && !published && 'group-hover:text-text-accent',
+              )}
             >
               {t('common.workflowAsTool', { ns: 'workflow' })}
             </div>
@@ -94,7 +102,11 @@ const WorkflowToolConfigureButton = ({
           )}
         </div>
       )}
-      {published && isLoading && <div className="pt-2"><Loading type="app" /></div>}
+      {published && isLoading && (
+        <div className="pt-2">
+          <Loading type="app" />
+        </div>
+      )}
     </>
   )
 }

@@ -8,9 +8,15 @@ import { agentSoulConfigToFormState, formStateToAgentSoulConfig } from './conver
 import { defaultAgentSoulConfigFormState } from './form-state'
 
 export const agentComposerOriginalConfigAtom = atom<AgentSoulConfig | undefined>(undefined)
-export const agentComposerOriginalDraftAtom = atom<AgentSoulConfigFormState | undefined>(defaultAgentSoulConfigFormState)
-export const agentComposerPublishedDraftAtom = atom<AgentSoulConfigFormState | undefined>(defaultAgentSoulConfigFormState)
-export const agentComposerDraftAtom = atom<AgentSoulConfigFormState>(defaultAgentSoulConfigFormState)
+export const agentComposerOriginalDraftAtom = atom<AgentSoulConfigFormState | undefined>(
+  defaultAgentSoulConfigFormState,
+)
+export const agentComposerPublishedDraftAtom = atom<AgentSoulConfigFormState | undefined>(
+  defaultAgentSoulConfigFormState,
+)
+export const agentComposerDraftAtom = atom<AgentSoulConfigFormState>(
+  defaultAgentSoulConfigFormState,
+)
 
 export const isAgentComposerDirtyAtom = atom((get) => {
   const originalDraft = get(agentComposerOriginalDraftAtom)
@@ -56,18 +62,26 @@ function useHydrate({
       setDraft(defaultDraft)
     }
 
-    if (waitForDraft && !draft)
-      return
+    if (waitForDraft && !draft) return
 
-    if (hydratedKeyRef.current === instanceKey)
-      return
+    if (hydratedKeyRef.current === instanceKey) return
 
     hydratedKeyRef.current = instanceKey
     setOriginalConfig(originalConfig)
     setOriginalDraft(draft ?? defaultDraft)
     setPublishedDraft(draft ?? defaultDraft)
     setDraft(draft ?? defaultDraft)
-  }, [defaultDraft, draft, instanceKey, originalConfig, setDraft, setOriginalConfig, setOriginalDraft, setPublishedDraft, waitForDraft])
+  }, [
+    defaultDraft,
+    draft,
+    instanceKey,
+    originalConfig,
+    setDraft,
+    setOriginalConfig,
+    setOriginalDraft,
+    setPublishedDraft,
+    waitForDraft,
+  ])
 }
 
 export function useHydrateAgentSoulConfigDraft({
@@ -104,11 +118,15 @@ export function useAgentComposerConfigSnapshot({
 }) {
   const draft = useAtomValue(agentComposerDraftAtom)
 
-  return useMemo(() => formStateToAgentSoulConfig({
-    baseConfig,
-    formState: draft,
-    currentModel,
-  }), [baseConfig, currentModel, draft])
+  return useMemo(
+    () =>
+      formStateToAgentSoulConfig({
+        baseConfig,
+        formState: draft,
+        currentModel,
+      }),
+    [baseConfig, currentModel, draft],
+  )
 }
 
 export function useConfigPublishPayload({
@@ -125,8 +143,11 @@ export function useConfigPublishPayload({
     currentModel,
   })
 
-  return useMemo(() => ({
-    agent_id: agentId,
-    config_snapshot: configSnapshot,
-  }), [agentId, configSnapshot])
+  return useMemo(
+    () => ({
+      agent_id: agentId,
+      config_snapshot: configSnapshot,
+    }),
+    [agentId, configSnapshot],
+  )
 }

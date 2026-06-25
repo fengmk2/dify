@@ -1,5 +1,5 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react'
-import { beforeEach, describe, expect, it, vi } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 // Import after mock
 import { renameDocumentName } from '@/service/datasets'
 
@@ -151,7 +151,7 @@ describe('RenameModal', () => {
       // The button should be in loading state
       await waitFor(() => {
         const buttons = screen.getAllByRole('button')
-        const saveBtn = buttons.find(btn => btn.textContent?.includes('operation.save'))
+        const saveBtn = buttons.find((btn) => btn.textContent?.includes('operation.save'))
         expect(saveBtn).toBeInTheDocument()
       })
 
@@ -191,7 +191,7 @@ describe('RenameModal', () => {
     it('should handle name with special characters', () => {
       render(<RenameModal {...defaultProps} name="Document <with> 'special' chars" />)
       const input = screen.getByRole('textbox')
-      expect(input).toHaveValue('Document <with> \'special\' chars')
+      expect(input).toHaveValue("Document <with> 'special' chars")
     })
   })
 })

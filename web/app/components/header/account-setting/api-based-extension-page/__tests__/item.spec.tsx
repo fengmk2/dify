@@ -24,7 +24,7 @@ vi.mock('@tanstack/react-query', () => ({
   useMutation: vi.fn((options: { mutationFn: (variables: unknown) => Promise<unknown> }) => ({
     isPending: false,
     mutate: (variables: unknown, mutationOptions?: { onSuccess?: (data: unknown) => void }) => {
-      options.mutationFn(variables).then(data => mutationOptions?.onSuccess?.(data))
+      options.mutationFn(variables).then((data) => mutationOptions?.onSuccess?.(data))
     },
   })),
 }))
@@ -99,7 +99,9 @@ describe('Item Component', () => {
 
       // Assert
       expect(mockOnEdit).not.toHaveBeenCalled()
-      expect(screen.queryByText(/common\.operation\.delete.*Test Extension.*\?/i)).not.toBeInTheDocument()
+      expect(
+        screen.queryByText(/common\.operation\.delete.*Test Extension.*\?/i),
+      ).not.toBeInTheDocument()
     })
   })
 
@@ -111,7 +113,9 @@ describe('Item Component', () => {
 
       // Assert
       // Assert
-      expect(screen.getByText(/common\.operation\.delete.*Test Extension.*\?/i))!.toBeInTheDocument()
+      expect(
+        screen.getByText(/common\.operation\.delete.*Test Extension.*\?/i),
+      )!.toBeInTheDocument()
     })
 
     it('should call delete mutation when confirming deletion', async () => {
@@ -152,7 +156,9 @@ describe('Item Component', () => {
 
       // Assert
       await waitFor(() => {
-        expect(screen.queryByText(/common\.operation\.delete.*Test Extension.*\?/i)).not.toBeInTheDocument()
+        expect(
+          screen.queryByText(/common\.operation\.delete.*Test Extension.*\?/i),
+        ).not.toBeInTheDocument()
       })
     })
 
@@ -164,7 +170,9 @@ describe('Item Component', () => {
 
       // Assert
       await waitFor(() => {
-        expect(screen.queryByText(/common\.operation\.delete.*Test Extension.*\?/i)).not.toBeInTheDocument()
+        expect(
+          screen.queryByText(/common\.operation\.delete.*Test Extension.*\?/i),
+        ).not.toBeInTheDocument()
       })
     })
 
@@ -191,8 +199,7 @@ describe('Item Component', () => {
       useTranslationSpy.mockReturnValue({
         ...originalValue,
         t: vi.fn().mockImplementation((key: string) => {
-          if (key === 'operation.delete')
-            return ''
+          if (key === 'operation.delete') return ''
           return key
         }) as unknown as TFunction,
       } as unknown as ReturnType<typeof reactI18next.useTranslation>)
@@ -201,9 +208,8 @@ describe('Item Component', () => {
       render(<Item apiBasedExtension={mockData} onEdit={mockOnEdit} />)
       const allButtons = screen.getAllByRole('button')
       const editBtn = screen.getByText('operation.edit')
-      const deleteBtn = allButtons.find(btn => btn !== editBtn)
-      if (deleteBtn)
-        fireEvent.click(deleteBtn)
+      const deleteBtn = allButtons.find((btn) => btn !== editBtn)
+      if (deleteBtn) fireEvent.click(deleteBtn)
 
       // Assert
       // Assert

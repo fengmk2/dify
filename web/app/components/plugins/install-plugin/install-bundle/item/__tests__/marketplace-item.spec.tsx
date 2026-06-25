@@ -1,7 +1,7 @@
 import type { Plugin } from '../../../../types'
 import type { VersionProps } from '@/app/components/plugins/types'
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 import MarketPlaceItem from '../marketplace-item'
 
 const mockLoadedItem = vi.fn()
@@ -56,14 +56,16 @@ describe('MarketPlaceItem', () => {
     )
 
     expect(screen.getByTestId('loaded-item')).toBeInTheDocument()
-    expect(mockLoadedItem).toHaveBeenCalledWith(expect.objectContaining({
-      checked: true,
-      isFromMarketPlace: true,
-      versionInfo,
-      payload: expect.objectContaining({
-        ...payload,
-        version: '2.0.0',
+    expect(mockLoadedItem).toHaveBeenCalledWith(
+      expect.objectContaining({
+        checked: true,
+        isFromMarketPlace: true,
+        versionInfo,
+        payload: expect.objectContaining({
+          ...payload,
+          version: '2.0.0',
+        }),
       }),
-    }))
+    )
   })
 })

@@ -56,11 +56,7 @@ function ModelProviderListSkeleton() {
   )
 }
 
-function EmptyProviderState({
-  enableMarketplace,
-}: {
-  enableMarketplace: boolean
-}) {
+function EmptyProviderState({ enableMarketplace }: { enableMarketplace: boolean }) {
   const { t } = useTranslation()
 
   return (
@@ -68,24 +64,26 @@ function EmptyProviderState({
       <div className="flex h-10 w-10 items-center justify-center rounded-[10px] border-[0.5px] border-components-card-border bg-components-card-bg shadow-lg backdrop-blur-sm">
         <span aria-hidden className="i-ri-brain-2-line size-5 text-text-primary" />
       </div>
-      <div className="mt-2 system-sm-medium text-text-secondary">{t('modelProvider.emptyProviderTitle', { ns: 'common' })}</div>
+      <div className="mt-2 system-sm-medium text-text-secondary">
+        {t('modelProvider.emptyProviderTitle', { ns: 'common' })}
+      </div>
       <p className="mt-1 system-xs-regular text-text-tertiary">
-        {enableMarketplace
-          ? (
-              <Trans
-                i18nKey="modelProvider.emptyProviderTipWithMarketplace"
-                ns="common"
-                components={{
-                  marketplace: (
-                    <a
-                      href="#model-provider-marketplace"
-                      className="system-xs-medium text-text-accent hover:underline"
-                    />
-                  ),
-                }}
-              />
-            )
-          : t('modelProvider.emptyProviderTip', { ns: 'common' })}
+        {enableMarketplace ? (
+          <Trans
+            i18nKey="modelProvider.emptyProviderTipWithMarketplace"
+            ns="common"
+            components={{
+              marketplace: (
+                <a
+                  href="#model-provider-marketplace"
+                  className="system-xs-medium text-text-accent hover:underline"
+                />
+              ),
+            }}
+          />
+        ) : (
+          t('modelProvider.emptyProviderTip', { ns: 'common' })
+        )}
       </p>
     </div>
   )
@@ -97,14 +95,10 @@ type ProviderCardListProps = {
   notConfigured?: boolean
 }
 
-function ProviderCardList({
-  providers,
-  pluginDetailMap,
-  notConfigured,
-}: ProviderCardListProps) {
+function ProviderCardList({ providers, pluginDetailMap, notConfigured }: ProviderCardListProps) {
   return (
     <div className="relative flex flex-col gap-2">
-      {providers.map(provider => (
+      {providers.map((provider) => (
         <ProviderAddedCard
           key={provider.provider}
           notConfigured={notConfigured}
@@ -152,7 +146,9 @@ const ModelProviderPageBody: FC<ModelProviderPageBodyProps> = ({
       )}
       {showNotConfiguredProviders && (
         <div className="flex flex-col gap-2 pt-2">
-          <div className="flex h-5 items-center system-md-semibold text-text-primary">{t('modelProvider.toBeConfigured', { ns: 'common' })}</div>
+          <div className="flex h-5 items-center system-md-semibold text-text-primary">
+            {t('modelProvider.toBeConfigured', { ns: 'common' })}
+          </div>
           <ProviderCardList
             notConfigured
             providers={filteredNotConfiguredProviders}
@@ -162,10 +158,7 @@ const ModelProviderPageBody: FC<ModelProviderPageBodyProps> = ({
       )}
       {showMarketplace && (
         <div>
-          <InstallFromMarketplace
-            providers={providers}
-            searchText={searchText}
-          />
+          <InstallFromMarketplace providers={providers} searchText={searchText} />
         </div>
       )}
     </div>

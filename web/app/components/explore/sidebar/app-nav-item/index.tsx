@@ -50,8 +50,12 @@ export default function AppNavItem({
           ? 'group flex h-8 items-center justify-between gap-2 rounded-lg py-0.5 pr-0.5 pl-2 transition-colors has-[>a:focus-visible]:ring-2 has-[>a:focus-visible]:ring-state-accent-solid has-[>a:focus-visible]:ring-inset'
           : 'group flex h-8 items-center justify-between rounded-lg px-2 system-sm-medium text-sm font-normal text-components-menu-item-text has-[>a:focus-visible]:ring-2 has-[>a:focus-visible]:ring-state-accent-solid has-[>a:focus-visible]:ring-inset mobile:justify-center mobile:px-1',
         isMainNav
-          ? (isSelected ? 'bg-state-base-hover' : 'hover:bg-state-base-hover')
-          : (isSelected ? 'bg-state-base-active text-components-menu-item-text-active' : 'hover:bg-state-base-hover hover:text-components-menu-item-text-hover'),
+          ? isSelected
+            ? 'bg-state-base-hover'
+            : 'hover:bg-state-base-hover'
+          : isSelected
+            ? 'bg-state-base-active text-components-menu-item-text-active'
+            : 'hover:bg-state-base-hover hover:text-components-menu-item-text-hover',
       )}
     >
       {isMobile && (
@@ -61,7 +65,13 @@ export default function AppNavItem({
           title={name}
           className="flex min-w-0 flex-1 items-center justify-center outline-hidden"
         >
-          <AppIcon size="tiny" iconType={icon_type} icon={icon} background={icon_background} imageUrl={icon_url} />
+          <AppIcon
+            size="tiny"
+            iconType={icon_type}
+            icon={icon}
+            background={icon_background}
+            imageUrl={icon_url}
+          />
         </Link>
       )}
       {!isMobile && (
@@ -69,12 +79,32 @@ export default function AppNavItem({
           <Link
             href={url}
             title={name}
-            className={cn(isMainNav ? 'flex min-w-0 flex-1 items-center gap-2 outline-hidden' : 'flex w-0 grow items-center space-x-2 outline-hidden')}
+            className={cn(
+              isMainNav
+                ? 'flex min-w-0 flex-1 items-center gap-2 outline-hidden'
+                : 'flex w-0 grow items-center space-x-2 outline-hidden',
+            )}
           >
-            <AppIcon size="tiny" className={cn(isMainNav && 'size-5 rounded-md text-sm')} iconType={icon_type} icon={icon} background={icon_background} imageUrl={icon_url} />
-            <div className={cn(isMainNav ? 'min-w-0 flex-1 truncate py-1 pr-1 system-sm-regular' : 'truncate system-sm-regular text-components-menu-item-text')} title={name}>{name}</div>
+            <AppIcon
+              size="tiny"
+              className={cn(isMainNav && 'size-5 rounded-md text-sm')}
+              iconType={icon_type}
+              icon={icon}
+              background={icon_background}
+              imageUrl={icon_url}
+            />
+            <div
+              className={cn(
+                isMainNav
+                  ? 'min-w-0 flex-1 truncate py-1 pr-1 system-sm-regular'
+                  : 'truncate system-sm-regular text-components-menu-item-text',
+              )}
+              title={name}
+            >
+              {name}
+            </div>
           </Link>
-          <div className="h-6 shrink-0" onClick={e => e.stopPropagation()}>
+          <div className="h-6 shrink-0" onClick={(e) => e.stopPropagation()}>
             <ItemOperation
               isPinned={isPinned}
               togglePin={togglePin}

@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest'
+import { describe, expect, it } from 'vite-plus/test'
 import {
   ACCEPT_TYPES,
   DEFAULT_IMAGE_FILE_BATCH_LIMIT,

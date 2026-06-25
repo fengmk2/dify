@@ -101,7 +101,10 @@ const defaultPlanData = {
   },
 }
 
-const setupContexts = (planOverrides: Record<string, unknown> = {}, appOverrides: Record<string, unknown> = {}) => {
+const setupContexts = (
+  planOverrides: Record<string, unknown> = {},
+  appOverrides: Record<string, unknown> = {},
+) => {
   mockProviderCtx = {
     plan: { ...defaultPlanData, ...planOverrides },
     enableBilling: true,
@@ -112,11 +115,7 @@ const setupContexts = (planOverrides: Record<string, unknown> = {}, appOverrides
   }
   mockAppCtx = {
     isCurrentWorkspaceManager: true,
-    workspacePermissionKeys: [
-      'billing.view',
-      'billing.manage',
-      'billing.subscription.manage',
-    ],
+    workspacePermissionKeys: ['billing.view', 'billing.manage', 'billing.subscription.manage'],
     userProfile: { email: 'test@example.com' },
     langGeniusVersionInfo: { current_version: '1.0.0' },
     ...appOverrides,

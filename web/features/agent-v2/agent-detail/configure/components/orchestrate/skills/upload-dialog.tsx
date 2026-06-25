@@ -6,7 +6,13 @@ import type { AgentDriveApiContext } from '../drive-context'
 import type { AgentSkill } from '@/features/agent-v2/agent-composer/form-state'
 import { Button } from '@langgenius/dify-ui/button'
 import { cn } from '@langgenius/dify-ui/cn'
-import { Dialog, DialogCloseButton, DialogContent, DialogDescription, DialogTitle } from '@langgenius/dify-ui/dialog'
+import {
+  Dialog,
+  DialogCloseButton,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+} from '@langgenius/dify-ui/dialog'
 import { toast } from '@langgenius/dify-ui/toast'
 import { useMutation } from '@tanstack/react-query'
 import { useRef, useState } from 'react'
@@ -18,18 +24,15 @@ import { formatFileSize } from '@/utils/format'
 const skillPackageAccept = '.zip,.skill'
 const skillPackageExtensions = ['.zip', '.skill']
 
-const getSkillNameFromFile = (file: File) => file.name.replace(/\.(?:skill|zip)$/iu, '') || file.name
+const getSkillNameFromFile = (file: File) =>
+  file.name.replace(/\.(?:skill|zip)$/iu, '') || file.name
 
 const toUploadedSkill = (
   response: PostAgentByAgentIdSkillsUploadResponse | PostAppsByAppIdAgentSkillsUploadResponse,
   file: File,
 ): AgentSkill => {
-  const name = response.skill?.name
-    ?? response.manifest?.name
-    ?? getSkillNameFromFile(file)
-  const id = response.skill?.skill_md_key
-    ?? response.skill?.path
-    ?? name
+  const name = response.skill?.name ?? response.manifest?.name ?? getSkillNameFromFile(file)
+  const id = response.skill?.skill_md_key ?? response.skill?.path ?? name
 
   return {
     description: response.skill?.description ?? response.manifest?.description ?? undefined,
@@ -44,7 +47,7 @@ const toUploadedSkill = (
 function isSupportedSkillPackage(file: File) {
   const fileName = file.name.toLowerCase()
 
-  return skillPackageExtensions.some(extension => fileName.endsWith(extension))
+  return skillPackageExtensions.some((extension) => fileName.endsWith(extension))
 }
 
 function AgentSkillPackageUploader({
@@ -101,7 +104,7 @@ function AgentSkillPackageUploader({
             event.preventDefault()
             setDragging(true)
           }}
-          onDragOver={event => event.preventDefault()}
+          onDragOver={(event) => event.preventDefault()}
           onDragLeave={() => setDragging(false)}
           onDrop={handleDrop}
         >
@@ -127,7 +130,9 @@ function AgentSkillPackageUploader({
             <span aria-hidden className="i-custom-public-files-yaml size-6 shrink-0" />
           </div>
           <div className="flex grow flex-col items-start gap-0.5 py-1 pr-2">
-            <span className="max-w-[calc(100%-30px)] overflow-hidden text-[12px] leading-4 font-medium text-ellipsis whitespace-nowrap text-text-secondary">{file.name}</span>
+            <span className="max-w-[calc(100%-30px)] overflow-hidden text-[12px] leading-4 font-medium text-ellipsis whitespace-nowrap text-text-secondary">
+              {file.name}
+            </span>
             <div className="flex h-3 items-center gap-1 self-stretch text-[10px] leading-3 font-medium text-text-tertiary uppercase">
               <span>{t('agentDetail.configure.skills.upload.fileType')}</span>
               <span className="text-text-quaternary">·</span>
@@ -159,16 +164,23 @@ export function AgentSkillUploadDialog({
   const { t } = useTranslation('agentV2')
   const { t: tCommon } = useTranslation('common')
   const [file, setFile] = useState<File>()
-  const uploadAgentSkillMutation = useMutation(consoleQuery.agent.byAgentId.skills.upload.post.mutationOptions())
-  const uploadWorkflowSkillMutation = useMutation(consoleQuery.apps.byAppId.agent.skills.upload.post.mutationOptions())
-  const uploadSkillMutation = apiContext.workflow ? uploadWorkflowSkillMutation : uploadAgentSkillMutation
+  const uploadAgentSkillMutation = useMutation(
+    consoleQuery.agent.byAgentId.skills.upload.post.mutationOptions(),
+  )
+  const uploadWorkflowSkillMutation = useMutation(
+    consoleQuery.apps.byAppId.agent.skills.upload.post.mutationOptions(),
+  )
+  const uploadSkillMutation = apiContext.workflow
+    ? uploadWorkflowSkillMutation
+    : uploadAgentSkillMutation
 
   const handleUpload = () => {
-    if (!file || uploadSkillMutation.isPending)
-      return
+    if (!file || uploadSkillMutation.isPending) return
 
     const options = {
-      onSuccess: (response: PostAgentByAgentIdSkillsUploadResponse | PostAppsByAppIdAgentSkillsUploadResponse) => {
+      onSuccess: (
+        response: PostAgentByAgentIdSkillsUploadResponse | PostAppsByAppIdAgentSkillsUploadResponse,
+      ) => {
         toast.success(t('agentDetail.configure.skills.upload.success'))
         onUploaded?.(toUploadedSkill(response, file))
         setFile(undefined)
@@ -180,28 +192,34 @@ export function AgentSkillUploadDialog({
     }
 
     if (apiContext.workflow) {
-      uploadWorkflowSkillMutation.mutate({
-        params: {
-          app_id: apiContext.workflow.appId,
+      uploadWorkflowSkillMutation.mutate(
+        {
+          params: {
+            app_id: apiContext.workflow.appId,
+          },
+          query: {
+            node_id: apiContext.workflow.nodeId,
+          },
+          body: {
+            file,
+          },
         },
-        query: {
-          node_id: apiContext.workflow.nodeId,
+        options,
+      )
+      return
+    }
+
+    uploadAgentSkillMutation.mutate(
+      {
+        params: {
+          agent_id: apiContext.agentId,
         },
         body: {
           file,
         },
-      }, options)
-      return
-    }
-
-    uploadAgentSkillMutation.mutate({
-      params: {
-        agent_id: apiContext.agentId,
       },
-      body: {
-        file,
-      },
-    }, options)
+      options,
+    )
   }
 
   const handleOpenChange = (nextOpen: boolean) => {
@@ -223,12 +241,13 @@ export function AgentSkillUploadDialog({
         <DialogDescription className="mt-1 system-sm-regular text-text-tertiary">
           {t('agentDetail.configure.skills.upload.description')}
         </DialogDescription>
-        <AgentSkillPackageUploader
-          file={file}
-          onChange={setFile}
-        />
+        <AgentSkillPackageUploader file={file} onChange={setFile} />
         <div className="flex justify-end gap-2 pt-6">
-          <Button type="button" onClick={() => handleOpenChange(false)} disabled={uploadSkillMutation.isPending}>
+          <Button
+            type="button"
+            onClick={() => handleOpenChange(false)}
+            disabled={uploadSkillMutation.isPending}
+          >
             {tCommon('operation.cancel')}
           </Button>
           <Button

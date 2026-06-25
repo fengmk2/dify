@@ -1,7 +1,7 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { hydrateRoot } from 'react-dom/client'
 import { renderToString } from 'react-dom/server'
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vite-plus/test'
 import Countdown from '../countdown'
 import { COUNT_DOWN_KEY, COUNT_DOWN_TIME_MS } from '../storage'
 
@@ -42,7 +42,9 @@ describe('Countdown', () => {
       localStorage.setItem(COUNT_DOWN_KEY, '1000')
       render(<Countdown />)
 
-      expect(screen.queryByRole('button', { name: 'login.checkCode.resend' })).not.toBeInTheDocument()
+      expect(
+        screen.queryByRole('button', { name: 'login.checkCode.resend' }),
+      ).not.toBeInTheDocument()
     })
   })
 
@@ -60,8 +62,7 @@ describe('Countdown', () => {
         await waitFor(() => {
           expect(container).toHaveTextContent('30')
         })
-      }
-      finally {
+      } finally {
         act(() => {
           root.unmount()
         })

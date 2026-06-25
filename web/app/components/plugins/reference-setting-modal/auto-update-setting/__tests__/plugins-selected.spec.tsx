@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react'
-import { describe, expect, it, vi } from 'vitest'
+import { describe, expect, it, vi } from 'vite-plus/test'
 import PluginsSelected from '../plugins-selected'
 
 vi.mock('@/config', () => ({
@@ -15,7 +15,9 @@ describe('PluginsSelected', () => {
     render(<PluginsSelected plugins={['dify/plugin-1', 'dify/plugin-2']} />)
 
     expect(screen.getAllByTestId('plugin-icon')).toHaveLength(2)
-    expect(screen.getByText('https://marketplace.example.com/plugins/dify/plugin-1/icon')).toBeInTheDocument()
+    expect(
+      screen.getByText('https://marketplace.example.com/plugins/dify/plugin-1/icon'),
+    ).toBeInTheDocument()
     expect(screen.queryByText('+1')).not.toBeInTheDocument()
   })
 
