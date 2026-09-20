@@ -30,7 +30,7 @@
     "storybook:build": "storybook build",
     "test": "vp test --project unit",
     "test:browser": "vp test --project browser",
-    "type-check": "tsc",
+    "type-check": "tsc --build",
     "uglify-embed": "node ./bin/uglify-embed"
   },
   "dependencies": {

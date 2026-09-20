@@ -264,7 +264,7 @@ export const CollapsedAncestors: Story = {
     trigger.focus()
     await userEvent.keyboard('{Enter}')
     const body = within(canvasElement.ownerDocument.body)
-    await expect(await body.findByRole('menuitem', { name: 'Projects' })).toBeVisible()
+    await waitFor(() => expect(body.getByRole('menuitem', { name: 'Projects' })).toBeVisible())
     await userEvent.keyboard('{Escape}')
     await waitFor(() => expect(trigger).toHaveFocus())
   },

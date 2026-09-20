@@ -228,7 +228,7 @@ it.each([1, 0.5, 0.25])(
     await userEvent.dragAndDrop(source, target)
     await expect
       .element(screen.getByLabelText('Connection'))
-      .toHaveTextContent('source:out → target:in')
+      .toMatchTextContent('source:out → target:in')
     await expect.element(screen.getByRole('dialog')).not.toBeInTheDocument()
   },
 )
@@ -301,6 +301,6 @@ it('adds and connects the intended human input branch at 25% zoom', async () => 
     await userEvent.dragAndDrop(source, target)
     await expect
       .element(screen.getByLabelText('Connection'))
-      .toHaveTextContent(`source:${handleId} → target:in`)
+      .toMatchTextContent(`source:${handleId} → target:in`)
   }
 })

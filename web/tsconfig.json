@@ -11,14 +11,15 @@
     "allowImportingTsExtensions": true,
     "allowJs": true
   },
-  "include": [
-    "next-env.d.ts",
-    ".storybook/**/*.ts",
-    ".storybook/**/*.tsx",
-    "**/*.ts",
-    "**/*.tsx",
-    ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts"
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.browser.json"
+    }
   ],
+  "files": [],
+  "include": [],
   "exclude": ["node_modules"]
 }

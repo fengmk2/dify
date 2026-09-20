@@ -47,7 +47,7 @@ describe('Drawer wrapper', () => {
       const dialog = asHTMLElement(document.body.querySelector('[role="dialog"]')!)
       expect(document.body).toContainElement(dialog)
       expect(screen.container).not.toContainElement(dialog)
-      await expect.element(dialog).toHaveTextContent('Workspace controls')
+      await expect.element(dialog).toMatchTextContent('Workspace controls')
       await expect.element(screen.getByText('Configure the current workspace.')).toBeInTheDocument()
       await expect.element(screen.getByTestId('drawer-backdrop')).toBeInTheDocument()
 

@@ -39,8 +39,8 @@ describe('Dialog wrapper', () => {
         </Dialog>,
       )
 
-      await expect.element(screen.getByRole('dialog')).toHaveTextContent('Dialog Title')
-      await expect.element(screen.getByRole('dialog')).toHaveTextContent('Dialog Description')
+      await expect.element(screen.getByRole('dialog')).toMatchTextContent('Dialog Title')
+      await expect.element(screen.getByRole('dialog')).toMatchTextContent('Dialog Description')
     })
 
     it('should apply backdrop props to a nested dialog backdrop', async () => {

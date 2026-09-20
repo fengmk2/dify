@@ -19,6 +19,7 @@ const nextConfig: NextConfig = {
   },
   productionBrowserSourceMaps: false, // enable browser source map generation during the production build
   typescript: {
+    tsconfigPath: './tsconfig.app.json',
     // https://nextjs.org/docs/api-reference/next.config.js/ignoring-typescript-errors
     ignoreBuildErrors: true,
   },

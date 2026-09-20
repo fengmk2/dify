@@ -20,6 +20,13 @@ export default defineConfig({
   },
   test: {
     browser: {
+      locators: {
+        // Vitest v4 compatibility: keep partial, case-insensitive locator matching.
+        // Remove after updating locators for full, case-sensitive matches.
+        // https://vitest.dev/guide/migration/#locators-are-strict-by-default
+        exact: false,
+      },
+      expect: { toMatchScreenshot: { screenshotDirectory: './.vitest-browser/screenshots' } },
       enabled: true,
       provider: playwright(),
       instances: [{ browser: 'chromium' }],

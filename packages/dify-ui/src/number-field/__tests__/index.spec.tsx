@@ -140,7 +140,7 @@ describe('NumberField wrapper', () => {
         },
       })
 
-      await expect.element(screen.getByTestId('unit')).toHaveTextContent('ms')
+      await expect.element(screen.getByTestId('unit')).toMatchTextContent('ms')
       await expect.element(screen.getByTestId('unit')).toHaveAttribute('title', 'unit-title')
       await expect.element(screen.getByTestId('unit')).toHaveClass('custom-unit')
     })

@@ -187,7 +187,7 @@ describe('Combobox wrappers', () => {
       await trigger.click()
       await expect.element(screen.getByRole('option', { name: 'Dataset' })).toBeVisible()
       await screen.getByRole('option', { name: 'Dataset' }).click()
-      await expect.element(trigger).toHaveTextContent('workflow')
+      await expect.element(trigger).toMatchTextContent('workflow')
     })
   })
 
