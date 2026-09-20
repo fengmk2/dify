@@ -33,7 +33,8 @@ jobs:
         uses: ./.github/actions/setup-web
 
       - name: Run tests
-        run: vp test run --project unit --reporter=blob --reporter=minimal --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} --coverage
+        # Leave CPU capacity for Vite transforms and coverage on GitHub-hosted runners.
+        run: vp test run --project unit --maxWorkers=2 --reporter=blob --reporter=minimal --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} --coverage
 
       - name: Upload blob report
         if: ${{ !cancelled() }}
