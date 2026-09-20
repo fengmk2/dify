@@ -94,7 +94,7 @@ describe('scroll area', () => {
         .toHaveAttribute('data-dify-scroll-area-viewport')
       await expect
         .element(screen.getByTestId('scroll-area-content'))
-        .toHaveTextContent('Scrollable content')
+        .toMatchTextContent('Scrollable content')
       await expect.element(screen.getByTestId('scroll-area-vertical-scrollbar')).toBeInTheDocument()
       await expect.element(screen.getByTestId('scroll-area-vertical-thumb')).toBeInTheDocument()
       await expect

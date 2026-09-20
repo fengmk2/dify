@@ -80,7 +80,7 @@ describe('Pagination primitive', () => {
     await expect.element(screen.getByRole('button', { name: 'Next page' })).toBeInTheDocument()
     await expect
       .element(screen.getByRole('button', { name: 'Edit page number, current page 2 of 200' }))
-      .toHaveTextContent('2/200')
+      .toMatchTextContent('2/200')
     await expect
       .element(screen.getByRole('button', { name: 'Page 2, current page' }))
       .toHaveAttribute('aria-current', 'page')

@@ -3,6 +3,7 @@ import type { App, AppSSO } from '@/types/app'
 import { fireEvent, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import * as React from 'react'
+import { assert } from 'vite-plus/test'
 import { toast } from '@/app/components/app/configuration/toast'
 import { useStore } from '@/app/components/app/store'
 import { InputVarType, SupportUploadFileTypes } from '@/app/components/workflow/types'
@@ -423,7 +424,9 @@ describe('ConfigModal', () => {
       await user.click(save)
       expect(input).toHaveFocus()
       expect(input).toBeInvalid()
-      expect(input).toHaveAccessibleDescription(toastErrorSpy.mock.lastCall![0])
+      const errorMessage = toastErrorSpy.mock.lastCall![0]
+      assert.isString(errorMessage)
+      expect(input).toHaveAccessibleDescription(errorMessage)
       expect(onConfirm).not.toHaveBeenCalled()
 
       // Repeated invalid submissions must restore focus as well.
@@ -462,7 +465,9 @@ describe('ConfigModal', () => {
         : screen.getByRole('button', { name: 'appDebug.variableConfig.addOption' })
       expect(control).toHaveFocus()
       expect(control).toHaveAttribute('aria-invalid', 'true')
-      expect(control).toHaveAccessibleDescription(toastErrorSpy.mock.lastCall![0])
+      const errorMessage = toastErrorSpy.mock.lastCall![0]
+      assert.isString(errorMessage)
+      expect(control).toHaveAccessibleDescription(errorMessage)
       expect(onConfirm).not.toHaveBeenCalled()
     },
   )
@@ -500,7 +505,9 @@ describe('ConfigModal', () => {
       const control = screen.getByRole(role, { name })
       expect(control).toHaveFocus()
       expect(control).toHaveAttribute('aria-invalid', 'true')
-      expect(control).toHaveAccessibleDescription(toastErrorSpy.mock.lastCall![0])
+      const errorMessage = toastErrorSpy.mock.lastCall![0]
+      assert.isString(errorMessage)
+      expect(control).toHaveAccessibleDescription(errorMessage)
       expect(onConfirm).not.toHaveBeenCalled()
 
       if (role === 'textbox') await user.type(control, '.csv{Enter}')

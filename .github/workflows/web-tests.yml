@@ -12,7 +12,7 @@ permissions:
 jobs:
   test:
     name: Web Tests (${{ matrix.shardIndex }}/${{ matrix.shardTotal }})
-    runs-on: depot-ubuntu-24.04-4
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -33,14 +33,15 @@ jobs:
         uses: ./.github/actions/setup-web
 
       - name: Run tests
-        run: vp test run --project unit --reporter=blob --reporter=minimal --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} --coverage
+        # Leave CPU capacity for Vite transforms and coverage on GitHub-hosted runners.
+        run: vp test run --project unit --maxWorkers=2 --reporter=blob --reporter=minimal --shard=${{ matrix.shardIndex }}/${{ matrix.shardTotal }} --coverage
 
       - name: Upload blob report
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: blob-report-${{ matrix.shardIndex }}
-          path: web/.vitest-reports/*
+          path: web/.vitest/blob/*
           include-hidden-files: true
           retention-days: 1
 
@@ -74,7 +75,9 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: browser-test-failures
-          path: web/.vitest-browser/
+          path: |
+            web/.vitest-browser/
+            web/.vitest/attachments/
           if-no-files-found: ignore
           include-hidden-files: true
           retention-days: 7
@@ -83,7 +86,7 @@ jobs:
     name: Merge Test Reports
     if: ${{ !cancelled() }}
     needs: [test]
-    runs-on: depot-ubuntu-24.04-4
+    runs-on: ubuntu-latest
     env:
       CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     defaults:
@@ -103,7 +106,7 @@ jobs:
       - name: Download blob reports
         uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
         with:
-          path: web/.vitest-reports
+          path: web/.vitest/blob
           pattern: blob-report-*
           merge-multiple: true
 
@@ -150,7 +153,9 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: dify-ui-test-failures
-          path: packages/dify-ui/.vitest-browser/
+          path: |
+            packages/dify-ui/.vitest-browser/
+            packages/dify-ui/.vitest/attachments/
           if-no-files-found: ignore
           include-hidden-files: true
           retention-days: 7
@@ -193,7 +198,9 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: dify-ui-storybook-test-failures
-          path: packages/dify-ui/.vitest-browser/
+          path: |
+            packages/dify-ui/.vitest-browser/
+            packages/dify-ui/.vitest/attachments/
           if-no-files-found: ignore
           include-hidden-files: true
           retention-days: 7

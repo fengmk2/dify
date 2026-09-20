@@ -28,6 +28,17 @@ shellEmulator: true
 strictDepBuilds: true
 trustPolicy: no-downgrade
 trustPolicyExclude:
+  # Registry bridge previews do not carry npm release provenance (vite-plus PR #2551).
+  - '@voidzero-dev/vite-plus-core@0.0.0-commit.df0bd1bf2da4b8516192bbb46440a6ecc68038f9'
+  - '@voidzero-dev/vite-plus-darwin-arm64@0.0.0-commit.df0bd1bf2da4b8516192bbb46440a6ecc68038f9'
+  - '@voidzero-dev/vite-plus-darwin-x64@0.0.0-commit.df0bd1bf2da4b8516192bbb46440a6ecc68038f9'
+  - '@voidzero-dev/vite-plus-linux-arm64-gnu@0.0.0-commit.df0bd1bf2da4b8516192bbb46440a6ecc68038f9'
+  - '@voidzero-dev/vite-plus-linux-arm64-musl@0.0.0-commit.df0bd1bf2da4b8516192bbb46440a6ecc68038f9'
+  - '@voidzero-dev/vite-plus-linux-x64-gnu@0.0.0-commit.df0bd1bf2da4b8516192bbb46440a6ecc68038f9'
+  - '@voidzero-dev/vite-plus-linux-x64-musl@0.0.0-commit.df0bd1bf2da4b8516192bbb46440a6ecc68038f9'
+  - '@voidzero-dev/vite-plus-win32-x64-msvc@0.0.0-commit.df0bd1bf2da4b8516192bbb46440a6ecc68038f9'
+  - '@voidzero-dev/vite-plus-win32-arm64-msvc@0.0.0-commit.df0bd1bf2da4b8516192bbb46440a6ecc68038f9'
+  - vite-plus@0.0.0-commit.df0bd1bf2da4b8516192bbb46440a6ecc68038f9
   - chokidar@4.0.3
   - reselect@5.1.1
   - semver@6.3.1
@@ -43,6 +54,7 @@ overrides:
   '@lexical/code': npm:lexical-code-no-prism@0.41.0
   canvas: ^3.2.3
   esbuild@<0.28.1: ^0.28.2
+  happy-dom@*: 'catalog:'
   is-core-module: npm:@nolyfill/is-core-module@^1.0.39
   js-yaml@<=4.1.1: ^4.1.2
   picomatch@>=4.0.0 <4.0.4: 4.0.7
@@ -137,8 +149,8 @@ catalog:
   '@typescript/native': npm:typescript@7.0.2
   '@vitejs/plugin-react': 6.1.1
   '@vitejs/plugin-rsc': 0.5.35
-  '@vitest/browser-playwright': 4.1.11
-  '@vitest/coverage-v8': 4.1.11
+  '@vitest/browser-playwright': 5.0.1
+  '@vitest/coverage-v8': 5.0.1
   abcjs: 6.7.0
   agentation: 3.0.2
   ahooks: 3.10.0
@@ -255,10 +267,10 @@ catalog:
   use-context-selector: 2.0.0
   uuid: 14.0.2
   vinext: 1.0.0-beta.10
-  vite: npm:@voidzero-dev/vite-plus-core@0.3.3
+  vite: npm:@voidzero-dev/vite-plus-core@0.0.0-commit.df0bd1bf2da4b8516192bbb46440a6ecc68038f9
   vite-plugin-inspect: 12.0.2
-  vite-plus: 0.3.3
-  vitest: 4.1.11
+  vite-plus: 0.0.0-commit.df0bd1bf2da4b8516192bbb46440a6ecc68038f9
+  vitest: 5.0.1
   vitest-browser-react: 2.3.0
   vitest-canvas-mock: 1.2.0
   zod: 4.6.5

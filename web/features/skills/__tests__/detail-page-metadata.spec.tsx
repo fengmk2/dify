@@ -780,40 +780,37 @@ describe('SkillDetailPage metadata', () => {
     renderSkillDetailPage()
 
     const ownerValue = await screen.findByRole('textbox', { name: 'owner value' })
-    fireEvent.change(ownerValue, { target: { value: 'success' } })
-    fireEvent.blur(ownerValue)
+    vi.useFakeTimers()
+    try {
+      fireEvent.change(ownerValue, { target: { value: 'success' } })
+      fireEvent.blur(ownerValue)
+      await act(() => vi.advanceTimersByTimeAsync(1000))
 
-    await waitFor(
-      () => {
-        expect(mocks.saveDraftFileMutationFn).toHaveBeenCalledWith(
-          expect.objectContaining({
-            body: expect.objectContaining({
-              content: expect.stringContaining('  owner: success'),
-              path: 'SKILL.md',
-            }),
+      expect(mocks.saveDraftFileMutationFn).toHaveBeenCalledWith(
+        expect.objectContaining({
+          body: expect.objectContaining({
+            content: expect.stringContaining('  owner: success'),
+            path: 'SKILL.md',
           }),
-          expect.anything(),
-        )
-      },
-      { timeout: 2500 },
-    )
+        }),
+        expect.anything(),
+      )
 
-    fireEvent.click(screen.getByRole('button', { name: 'Remove owner' }))
+      fireEvent.click(screen.getByRole('button', { name: 'Remove owner' }))
+      await act(() => vi.advanceTimersByTimeAsync(1000))
 
-    await waitFor(
-      () => {
-        expect(mocks.saveDraftFileMutationFn).toHaveBeenCalledWith(
-          expect.objectContaining({
-            body: expect.objectContaining({
-              content: expect.not.stringContaining('  owner:'),
-              path: 'SKILL.md',
-            }),
+      expect(mocks.saveDraftFileMutationFn).toHaveBeenCalledWith(
+        expect.objectContaining({
+          body: expect.objectContaining({
+            content: expect.not.stringContaining('  owner:'),
+            path: 'SKILL.md',
           }),
-          expect.anything(),
-        )
-      },
-      { timeout: 2500 },
-    )
+        }),
+        expect.anything(),
+      )
+    } finally {
+      vi.useRealTimers()
+    }
   })
 
   it('does not render Skill metadata controls for non-SKILL markdown files', async () => {

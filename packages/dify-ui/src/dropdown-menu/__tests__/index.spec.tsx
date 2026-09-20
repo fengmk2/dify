@@ -306,7 +306,7 @@ describe('dropdown-menu wrapper', () => {
       const link = screen.getByRole('menuitem', { name: 'account link' }).element()
       expect(link.tagName.toLowerCase()).toBe('a')
       expect(link).toHaveAttribute('href', '/account')
-      expect(link).toHaveTextContent('Account settings')
+      expect(link).toMatchTextContent('Account settings')
     })
 
     it.each(['default', 'destructive'] as const)(

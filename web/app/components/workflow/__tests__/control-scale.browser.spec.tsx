@@ -84,7 +84,9 @@ it('keeps a 24 CSS pixel canvas action reachable while zooming out and panning',
     expect(target.x + target.width / 2).toBeCloseTo(node.x + node.width / 2)
     expect(target.y + target.height / 2).toBeCloseTo(node.y + node.height / 2)
     await action.click({ position: { x: 2, y: 2 } })
-    await expect.element(screen.getByLabelText('Action count')).toHaveTextContent(String(index + 1))
+    await expect
+      .element(screen.getByLabelText('Action count'))
+      .toMatchTextContent(String(index + 1))
   }
 
   const beforePan = action.element().getBoundingClientRect()
@@ -92,5 +94,5 @@ it('keeps a 24 CSS pixel canvas action reachable while zooming out and panning',
   await expect.poll(() => action.element().getBoundingClientRect().x).toBeCloseTo(beforePan.x + 20)
   expect(action.element().getBoundingClientRect().width).toBeCloseTo(24)
   await action.click({ position: { x: 22, y: 22 } })
-  await expect.element(screen.getByLabelText('Action count')).toHaveTextContent('5')
+  await expect.element(screen.getByLabelText('Action count')).toMatchTextContent('5')
 })

@@ -12,6 +12,11 @@ describe('i18n build check', () => {
 
   beforeEach(() => {
     root = realpathSync(mkdtempSync(path.join(tmpdir(), 'dify-i18n-build-')))
+    // These fixtures use ECMAScript types, without DOM or ambient package declarations.
+    writeFileSync(
+      path.join(root, 'tsconfig.json'),
+      JSON.stringify({ compilerOptions: { lib: ['esnext'], types: [] } }),
+    )
     mkdirSync(path.join(root, 'i18n/locales/en-US'), { recursive: true })
     localeFile = path.join(root, 'i18n/locales/en-US/app.json')
     writeFileSync(

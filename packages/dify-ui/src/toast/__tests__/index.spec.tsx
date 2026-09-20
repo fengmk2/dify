@@ -238,8 +238,9 @@ describe('@langgenius/dify-ui/toast', () => {
 
       const backgroundToast = screen.getByRole('dialog', { name: 'Background notification' })
       await expect.element(backgroundToast).toBeInTheDocument()
-      await backgroundToast.hover()
+      await screen.getByRole('dialog', { name: 'Front notification' }).hover()
       await expect.element(backgroundToast).toHaveAttribute('data-expanded')
+      await backgroundToast.hover()
 
       const toastElement = backgroundToast.element()
       const bounds = toastElement.getBoundingClientRect()
@@ -284,8 +285,8 @@ describe('@langgenius/dify-ui/toast', () => {
     const globalViewport = screen.getByText('Global success').element().closest('[role="region"]')
     const localViewport = screen.getByText('Local error').element().closest('[role="region"]')
     expect(globalViewport).not.toBe(localViewport)
-    expect(globalViewport).not.toHaveTextContent('Local error')
-    expect(localViewport).not.toHaveTextContent('Global success')
+    expect(globalViewport).not.toMatchTextContent('Local error')
+    expect(localViewport).not.toMatchTextContent('Global success')
 
     localToast.dismiss()
   })
@@ -328,7 +329,7 @@ describe('@langgenius/dify-ui/toast', () => {
     toast.dismiss(toastId)
 
     await vi.waitFor(() => {
-      expect(document.body).not.toHaveTextContent('Closable')
+      expect(document.body).not.toMatchTextContent('Closable')
     })
   })
 
@@ -349,7 +350,7 @@ describe('@langgenius/dify-ui/toast', () => {
     await screen.getByRole('button', { name: 'Close notification' }).click()
 
     await vi.waitFor(() => {
-      expect(document.body).not.toHaveTextContent('Dismiss me')
+      expect(document.body).not.toMatchTextContent('Dismiss me')
     })
     expect(onClose).toHaveBeenCalledTimes(1)
   })
@@ -442,7 +443,7 @@ describe('@langgenius/dify-ui/toast', () => {
     await expect.element(screen.getByText('Auto dismiss')).toBeInTheDocument()
 
     await vi.advanceTimersByTimeAsync(999)
-    expect(document.body).toHaveTextContent('Auto dismiss')
+    expect(document.body).toMatchTextContent('Auto dismiss')
 
     await vi.advanceTimersByTimeAsync(1)
     await vi.waitFor(() => {
@@ -461,7 +462,7 @@ describe('@langgenius/dify-ui/toast', () => {
     await expect.element(screen.getByText('Persistent')).toBeInTheDocument()
 
     await vi.advanceTimersByTimeAsync(5000)
-    expect(document.body).toHaveTextContent('Persistent')
+    expect(document.body).toMatchTextContent('Persistent')
   })
 
   it('should update an existing toast', async () => {
@@ -480,7 +481,7 @@ describe('@langgenius/dify-ui/toast', () => {
 
     await expect.element(screen.getByText('Done')).toBeInTheDocument()
     await expect.element(screen.getByText('Your data is ready.')).toBeInTheDocument()
-    expect(document.body).not.toHaveTextContent('Loading')
+    expect(document.body).not.toMatchTextContent('Loading')
   })
 
   it('should upsert an existing toast when add is called with the same id', async () => {
@@ -498,7 +499,7 @@ describe('@langgenius/dify-ui/toast', () => {
     })
 
     await vi.waitFor(() => {
-      expect(document.body).not.toHaveTextContent('Draft saving')
+      expect(document.body).not.toMatchTextContent('Draft saving')
     })
     await expect.element(screen.getByText('Draft saved')).toBeInTheDocument()
     await expect.element(screen.getByText('All changes are saved.')).toBeInTheDocument()

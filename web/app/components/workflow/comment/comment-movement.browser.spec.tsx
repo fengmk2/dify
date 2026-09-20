@@ -93,7 +93,7 @@ it('keeps an authored comment focusable and draggable after adding keyboard move
   expect(marker.element().getBoundingClientRect().x).toBeGreaterThan(initial.x + 5)
   await expect.element(screen.getByRole('status')).not.toBeInTheDocument()
   await marker.click()
-  await expect.element(screen.getByRole('status')).toHaveTextContent('Comment opened')
+  await expect.element(screen.getByRole('status')).toMatchTextContent('Comment opened')
 })
 
 it('preserves draft mouse dragging and lets keyboard users move the same handle', async () => {

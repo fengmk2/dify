@@ -86,7 +86,7 @@ it.each(['URL input', 'confirm button', 'toolbar edit button'])(
     await expect.element(openLink).not.toBeInTheDocument()
     await expect.element(edit).not.toBeInTheDocument()
     await userEvent.keyboard('X')
-    await expect.element(note).toHaveTextContent('heXllo')
+    await expect.element(note).toMatchTextContent('heXllo')
     await expect.element(urlInput).not.toBeInTheDocument()
     await expect.element(openLink).not.toBeInTheDocument()
     await expect.element(edit).not.toBeInTheDocument()
@@ -135,7 +135,7 @@ it.each(['{Enter}', '{Space}'])('opens link editing with %s from the keyboard', 
 
   await expect.element(page.getByPlaceholder('workflow.nodes.note.editor.enterUrl')).toHaveFocus()
   await userEvent.keyboard('{Escape}X')
-  await expect.element(note).toHaveTextContent('heXllo')
+  await expect.element(note).toMatchTextContent('heXllo')
 })
 
 it.each(['{Enter}', '{Space}'])(
@@ -158,7 +158,7 @@ it.each(['{Enter}', '{Space}'])(
     await expect.element(page.getByRole('link', { name: 'hello' })).not.toBeInTheDocument()
     await expect.element(note).toHaveFocus()
     await userEvent.keyboard('X')
-    await expect.element(note).toHaveTextContent('heXllo')
+    await expect.element(note).toMatchTextContent('heXllo')
   },
 )
 

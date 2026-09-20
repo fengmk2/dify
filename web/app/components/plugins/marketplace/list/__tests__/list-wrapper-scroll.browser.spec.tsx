@@ -89,7 +89,7 @@ describe('Marketplace result scroll anchoring', () => {
     const scrollTopBefore = scrollContainer.scrollTop
 
     await screen.getByRole('button', { name: 'Type search' }).click()
-    await expect.element(screen.getByRole('status')).toHaveTextContent('1 plugins found')
+    await expect.element(screen.getByRole('status')).toMatchTextContent('1 plugins found')
     await expect.element(screen.getByTestId('catalog-results')).toBeVisible()
     await new Promise(requestAnimationFrame)
 

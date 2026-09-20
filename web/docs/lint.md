@@ -2,6 +2,8 @@
 
 Vite+ provides the primary static check through `vp check`, which combines Oxfmt formatting, Oxlint code-quality rules, and TypeScript diagnostics. The root command also runs ESLint for non-code file types that Oxlint cannot parse.
 
+Web's `tsconfig.json` references `tsconfig.app.json` for application and Node test types and `tsconfig.browser.json` for browser test and Vite configuration types. Vitest 5 browser matchers and Node jest-dom matchers have different signatures and must be checked in separate TypeScript programs. Both `vp check` and `vp run dify-web#type-check` check both programs. Vitest still runs the same unit and browser projects.
+
 ## Check
 
 Run the complete repository check from the root before committing or pushing:

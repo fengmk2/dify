@@ -5,7 +5,7 @@ import type {
   UpdatePluginModalType,
 } from '../../types'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { fireEvent, screen, waitFor } from '@testing-library/react'
+import { fireEvent, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import * as React from 'react'
 import { beforeEach, describe, expect, it, vi } from 'vite-plus/test'
@@ -53,6 +53,17 @@ vi.mock('@/service/plugins', () => ({
 // Mock use-plugins hooks
 const mockHandleInstallTaskStart = vi.fn()
 const mockMutateAsync = vi.fn()
+const mockUseVersionListOfPlugin = vi.fn(() => ({
+  data: {
+    data: {
+      versions: [
+        { version: '1.0.0', unique_identifier: 'plugin-v1.0.0', created_at: 1700000000 },
+        { version: '1.1.0', unique_identifier: 'plugin-v1.1.0', created_at: 1700100000 },
+        { version: '2.0.0', unique_identifier: 'plugin-v2.0.0', created_at: 1700200000 },
+      ],
+    },
+  },
+}))
 
 vi.mock('@/service/use-plugins', () => ({
   usePluginTaskList: () => ({
@@ -61,17 +72,7 @@ vi.mock('@/service/use-plugins', () => ({
   useRemoveAutoUpgrade: () => ({
     mutateAsync: mockMutateAsync,
   }),
-  useVersionListOfPlugin: () => ({
-    data: {
-      data: {
-        versions: [
-          { version: '1.0.0', unique_identifier: 'plugin-v1.0.0', created_at: 1700000000 },
-          { version: '1.1.0', unique_identifier: 'plugin-v1.1.0', created_at: 1700100000 },
-          { version: '2.0.0', unique_identifier: 'plugin-v2.0.0', created_at: 1700200000 },
-        ],
-      },
-    },
-  }),
+  useVersionListOfPlugin: () => mockUseVersionListOfPlugin(),
 }))
 
 // Mock checkTaskStatus
@@ -221,6 +222,7 @@ const renderWithQueryClient = (ui: React.ReactElement) => {
 describe('update-plugin', () => {
   beforeEach(() => {
     vi.clearAllMocks()
+    mockUseVersionListOfPlugin.mockReset()
     toastErrorSpy.mockClear()
     mockCheck.mockResolvedValue({ status: TaskStatus.success })
   })
@@ -1102,10 +1104,7 @@ describe('update-plugin', () => {
     })
 
     it('should handle empty version list in PluginVersionPicker', () => {
-      // Override the mock temporarily
-      vi.mocked(
-        vi.importActual('@/service/use-plugins') as unknown as Record<string, unknown>,
-      ).useVersionListOfPlugin = () => ({
+      mockUseVersionListOfPlugin.mockReturnValue({
         data: { data: { versions: [] } },
       })
 
@@ -1125,6 +1124,7 @@ describe('update-plugin', () => {
 
       // Assert
       expect(screen.getByText('plugin.detailPanel.switchVersion')).toBeInTheDocument()
+      expect(within(screen.getByRole('dialog')).queryAllByRole('button')).toHaveLength(0)
     })
   })
 })
